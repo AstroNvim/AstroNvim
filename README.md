@@ -56,7 +56,7 @@ Example: `:TSInstall python`
 #### Manage plugins
 
 Run `:PackerClean` to remove any disabled or unused plugins<br>
-Run `:PackerUpdate` to clean and update plugins<br>
+Run `:PackerSync` to update and clean plugins<br>
 
 #### Update AstroVim
 
