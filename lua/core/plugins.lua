@@ -189,7 +189,7 @@ packer.startup {
       },
     }
 
-    -- Builtin LSP
+    -- Built-in LSP
     use {
       "neovim/nvim-lspconfig",
       event = "BufRead",
