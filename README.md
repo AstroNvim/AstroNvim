@@ -45,8 +45,8 @@ nvim +PackerSync
 
 #### Install LSP
 
-Enter `:LSPInstall` followed by the name of the server you want to install<br>
-Example: `:LSPInstall pyright`
+Enter `:LspInstall` followed by the name of the server you want to install<br>
+Example: `:LspInstall pyright`
 
 #### Install language parser
 
