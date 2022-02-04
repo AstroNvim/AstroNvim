@@ -1,7 +1,7 @@
 local M = {}
 
-local utils = require "core.defaults"
-local colorscheme = utils.colorscheme
+local utils = require "core.utils"
+local colorscheme = utils.user_settings().colorscheme
 
 vim.cmd [[
   augroup packer_user_config
