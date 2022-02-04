@@ -240,7 +240,7 @@ packer.startup {
     use {
       "nvim-telescope/telescope-fzf-native.nvim",
       run = "make",
-      cmd = "Telescope",
+      after = "telescope.nvim",
     }
 
     -- Git integration
