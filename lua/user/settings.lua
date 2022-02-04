@@ -33,6 +33,7 @@ local config = {
     comment = true,
     symbols_outline = true,
     indent_blankline = true,
+    dashboard = true,
     which_key = true,
     neoscroll = true,
     ts_rainbow = true,
