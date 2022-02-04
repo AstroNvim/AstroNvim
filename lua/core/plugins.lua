@@ -259,6 +259,7 @@ packer.startup {
       config = function()
         require("configs.dashboard").config()
       end,
+      disable = not config.enabled.dashboard,
     }
 
     -- Color highlighting
