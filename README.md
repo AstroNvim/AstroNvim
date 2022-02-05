@@ -10,7 +10,7 @@
     <a href="https://neovim.io/">
       <img src="https://img.shields.io/badge/Neovim-0.6+-blueviolet.svg?style=flat-square&logo=Neovim&logoColor=white"/>
     </a>
-    <a href="https://discord.com/invite/T6EgTAX7ht">
+    <a href="https://discord.gg/UcZutyeaFW">
       <img src="https://img.shields.io/badge/discord-Join-7289da?color=%235865F2%20&label=Discord&logo=discord&logoColor=%23ffffff&style=flat-square"/>
     </a>
 </p>
