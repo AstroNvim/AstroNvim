@@ -134,6 +134,9 @@ null_ls.setup {
 
 [Mappings](https://github.com/kabinspace/AstroVim/blob/main/utils/mappings.txt) file is given to learn about the default key bindings
 
+## **License**
+
+This project is licensed under the [GPLv3 License](https://github.com/kabinspace/AstroVim/blob/main/LICENSE) - see the [`LICENSE`](LICENSE) file for details.
 ## ⭐ Credits
 
 Sincere appreciation to the following repositories, plugin authors and the entire neovim community out there that made the development of AstroVim possible.
