@@ -84,3 +84,7 @@ To resize buffer to the left you need to press `Ctrl` + `left key`<br>
 To resize buffer to the right you need to press `Ctrl` + `right key`<br>
 To resize buffer to the top you need to press `Ctrl` + `up key`<br>
 To resize buffer to the bottom you need to press `Ctrl` + `down key`
+
+#### Disable default plugins
+
+To disable default plugins you need to go to `lua/user/settings.lua` in [here](https://github.com/kabinspace/AstroVim/blob/main/lua/user/settings.lua#L27#L40) and set it to `false` and do `:PackerSync` to delete them
