@@ -8,6 +8,30 @@ function M.config()
 
   local g = vim.g
 
+  g.nvim_tree_indent_markers = 1
+
+  g.nvim_tree_icons = {
+    default = "",
+    symlink = "",
+    git = {
+      deleted = "",
+      ignored = "◌",
+      renamed = "➜",
+      staged = "✓",
+      unmerged = "",
+      unstaged = "✗",
+      untracked = "★",
+    },
+    folder = {
+      default = "",
+      empty = "",
+      empty_open = "",
+      open = "",
+      symlink = "",
+      symlink_open = "",
+    },
+  }
+
   nvimtree.setup {
     filters = {
       dotfiles = false,
@@ -67,29 +91,6 @@ function M.config()
       tree_width = 30,
     },
   }
-
-  g.nvim_tree_icons = {
-    default = "",
-    symlink = "",
-    git = {
-      deleted = "",
-      ignored = "◌",
-      renamed = "➜",
-      staged = "✓",
-      unmerged = "",
-      unstaged = "✗",
-      untracked = "★",
-    },
-    folder = {
-      default = "",
-      empty = "",
-      empty_open = "",
-      open = "",
-      symlink = "",
-      symlink_open = "",
-    },
-  }
-  g.nvim_tree_indent_markers = 1
 end
 
 return M
