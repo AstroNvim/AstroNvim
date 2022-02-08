@@ -1,4 +1,4 @@
 plugin
-lua/user/*.lua
+lua/user/
 
 lua/packer_compiled.lua
