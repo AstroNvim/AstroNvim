@@ -283,7 +283,6 @@ packer.startup {
     -- Terminal
     use {
       "akinsho/nvim-toggleterm.lua",
-      cmd = "ToggleTerm",
       config = function()
         require("configs.toggleterm").config()
       end,
