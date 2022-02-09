@@ -74,6 +74,7 @@ packer.startup {
     use {
       "kyazdani42/nvim-tree.lua",
       cmd = "NvimTreeToggle",
+      commit = "8b27fd4",
       config = function()
         require("configs.nvim-tree").config()
       end,
