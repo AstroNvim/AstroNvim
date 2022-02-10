@@ -31,7 +31,6 @@ function M.disabled_builtins()
   g.loaded_zipPlugin = false
   g.loaded_2html_plugin = false
   g.loaded_remote_plugins = false
-  set.shadafile = "NONE"
 end
 
 function M.user_settings()
