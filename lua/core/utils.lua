@@ -1,7 +1,6 @@
 local M = {}
 
 local g = vim.g
-local set = vim.opt
 
 function M.bootstrap()
   local fn = vim.fn
