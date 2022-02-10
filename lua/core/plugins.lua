@@ -346,6 +346,9 @@ packer.startup {
       end,
     }
 
+    -- Get extra JSON schemas
+    use { "b0o/SchemaStore.nvim" }
+
     -- User defined plugins
     if config.plugins and not vim.tbl_isempty(config.plugins) then
       for _, plugin in pairs(config.plugins) do
