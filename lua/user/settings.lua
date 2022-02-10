@@ -24,6 +24,7 @@ local config = {
 
   -- Disable default plugins
   enabled = {
+    bufferline = true,
     nvim_tree = true,
     lualine = true,
     lspsaga = true,
