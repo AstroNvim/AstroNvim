@@ -12,7 +12,7 @@ To toggle file explorer you need to press `Space` + `e`
 
 #### Opening terminal
 
-To toggle terminal you need to press `Space` + `\`
+To toggle terminal you need to press `Ctrl` + `\`
 
 #### Opening LSP symbols
 
@@ -24,7 +24,7 @@ To close the current buffer you need to press `Space` + `c`
 
 #### Commenting
 
-To comment on a one or multiple lines you need to press `Ctrl` + `/`
+To comment on a one or multiple lines you need to press `Space` + `/`
 
 #### Show line diagnostics
 
