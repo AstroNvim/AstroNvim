@@ -7,6 +7,7 @@ local config = {
   virtual_text = true,
 
   enabled = {
+    bufferline = true,
     nvim_tree = true,
     lualine = true,
     lspsaga = true,

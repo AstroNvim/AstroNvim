@@ -62,12 +62,14 @@ packer.startup {
       config = function()
         require("configs.bufferline").config()
       end,
+      disable = not config.enabled.bufferline,
     }
 
     -- Better buffer closing
     use {
       "moll/vim-bbye",
       after = "bufferline.nvim",
+      disable = not config.enabled.bufferline,
     }
 
     -- File explorer
@@ -84,7 +86,6 @@ packer.startup {
     -- Statusline
     use {
       "nvim-lualine/lualine.nvim",
-      after = "bufferline.nvim",
       config = function()
         require("configs.lualine").config()
       end,
