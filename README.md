@@ -94,6 +94,13 @@ plugins = {
   },
 },
 
+-- Overrides
+overrides = {
+  treesitter = {
+    ensure_installed = {"go"}
+  }
+}
+
 -- On/off virtual diagnostics text
 virtual_text = true,
 

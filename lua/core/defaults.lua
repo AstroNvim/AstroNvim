@@ -21,6 +21,10 @@ local config = {
     symbols_outline = true,
     indent_blankline = true,
   },
+
+  overrides = {
+    treesitter = {}
+  }
 }
 
 return config

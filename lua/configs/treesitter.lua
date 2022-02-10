@@ -1,12 +1,14 @@
 local M = {}
 
+local config = require("core.utils").user_settings()
+
 function M.config()
   local status_ok, treesitter = pcall(require, "nvim-treesitter.configs")
   if not status_ok then
     return
   end
 
-  treesitter.setup {
+  default_opts = {
     ensure_installed = {},
     sync_install = false,
     ignore_install = {},
@@ -37,6 +39,8 @@ function M.config()
       enable = true,
     },
   }
+
+  treesitter.setup(vim.tbl_deep_extend("force", {}, default_opts, config.overrides.treesitter))
 end
 
 return M
