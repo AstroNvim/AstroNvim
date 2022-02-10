@@ -45,6 +45,8 @@ local config = {
     ts_autotag = true,
   },
 
+  packer_file = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
+
   -- A function called after AstroVim is fully set up.
   -- Use it to override settings or run code.
   --

@@ -357,7 +357,7 @@ packer.startup {
     end
   end,
   config = {
-    compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
+    compile_path = config.packer_file,
     display = {
       open_fn = function()
         return require("packer.util").float { border = "rounded" }

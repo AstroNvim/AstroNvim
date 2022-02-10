@@ -46,6 +46,8 @@ local config = {
     ts_rainbow = true,
     ts_autotag = true,
   },
+
+  packer_file = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
 }
 
 -- Set options

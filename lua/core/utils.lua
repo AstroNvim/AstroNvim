@@ -55,9 +55,11 @@ function M.impatient()
 end
 
 function M.compiled()
-  local compiled_ok, _ = pcall(require, "packer_compiled")
-  if compiled_ok then
-    require "packer_compiled"
+  local run_me, _ = loadfile(_user_settings.packer_file)
+  if run_me then
+    run_me()
+  else
+    print "Please run :PackerSync"
   end
 end
 
