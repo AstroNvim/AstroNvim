@@ -2,6 +2,17 @@ local M = {}
 
 local g = vim.g
 
+local function load_user_settings()
+  local default = require "core.defaults"
+  local user_status_ok, user_settings = pcall(require, "user.settings")
+  if user_status_ok then
+    default = vim.tbl_deep_extend("force", default, user_settings)
+  end
+  return default
+end
+
+local _user_settings = load_user_settings()
+
 function M.bootstrap()
   local fn = vim.fn
   local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
@@ -33,12 +44,7 @@ function M.disabled_builtins()
 end
 
 function M.user_settings()
-  local default = require "core.defaults"
-  local user_status_ok, user_settings = pcall(require, "user.settings")
-  if user_status_ok then
-    default = vim.tbl_deep_extend("force", default, user_settings)
-  end
-  return default
+  return _user_settings
 end
 
 function M.impatient()
