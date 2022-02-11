@@ -2,7 +2,11 @@ local config = {
 
   colorscheme = "onedark",
 
-  plugins = {},
+  plugins = {},  
+  
+  overrides = {
+    treesitter = {},
+  },
 
   virtual_text = true,
 
@@ -23,10 +27,6 @@ local config = {
     ts_rainbow = true,
     ts_autotag = true,
   },
-
-  overrides = {
-    treesitter = {}
-  }
 }
 
 return config
