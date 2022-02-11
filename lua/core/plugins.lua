@@ -20,6 +20,9 @@ packer.startup {
       "lewis6991/impatient.nvim",
     }
 
+    -- Extended file type support
+    use { "sheerun/vim-polyglot" }
+
     -- Lua functions
     use {
       "nvim-lua/plenary.nvim",
