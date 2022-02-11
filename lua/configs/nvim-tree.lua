@@ -39,6 +39,7 @@ function M.config()
         ".git",
         "node_modules",
         ".cache",
+        "__pycache__",
       },
     },
     disable_netrw = true,
