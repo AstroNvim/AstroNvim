@@ -18,6 +18,12 @@ local config = {
       -- end,
     -- },
   },
+  
+  overrides = {
+    treesitter = {
+      ensure_installed = { "lua" },
+    },
+  },
 
   -- On/off virtual diagnostics text
   virtual_text = true,
