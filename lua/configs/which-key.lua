@@ -5,6 +5,8 @@ function M.config()
   if not status_ok then
     return
   end
+  local utils = require "core.utils"
+  local user_settings = utils.user_settings()
 
   local setup = {
     plugins = {
@@ -15,7 +17,7 @@ function M.config()
         suggestions = 20,
       },
       presets = {
-        operators = false,
+        operators = user_settings.which_key.enable_operator_preset,
         motions = true,
         text_objects = true,
         windows = true,
@@ -47,7 +49,7 @@ function M.config()
       spacing = 3,
       align = "left",
     },
-    ignore_missing = true,
+    ignore_missing = user_settings.which_key.ignore_missing,
     hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " },
     show_help = true,
     triggers = "auto",

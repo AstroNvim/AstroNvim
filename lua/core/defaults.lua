@@ -23,6 +23,11 @@ local config = {
     ts_rainbow = true,
     ts_autotag = true,
   },
+  which_key = {
+    ignore_missing = true,
+    enable_operator_preset = false,
+  }
+
 }
 
 return config
