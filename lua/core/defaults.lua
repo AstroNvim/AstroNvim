@@ -23,6 +23,10 @@ local config = {
     ts_rainbow = true,
     ts_autotag = true,
   },
+
+  dashboard = {
+    extra = {}
+  }
 }
 
 return config

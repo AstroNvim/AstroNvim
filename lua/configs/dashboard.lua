@@ -5,6 +5,8 @@ function M.config()
   local fn = vim.fn
 
   local plugins_count = fn.len(fn.globpath("~/.local/share/nvim/site/pack/packer/start", "*", 0, 1))
+  local utils = require "core.utils"
+  local user_settings = utils.user_settings()
 
   g.dashboard_disable_statusline = 1
   g.dashboard_default_executive = "telescope"
@@ -30,7 +32,7 @@ function M.config()
     " ",
   }
 
-  g.dashboard_custom_section = {
+  local astro_dashboard_custom_section = {
     a = { description = { "   Find File                 SPC f f" }, command = "Telescope find_files" },
     b = { description = { "   Recents                   SPC f o" }, command = "Telescope oldfiles" },
     c = { description = { "   Find Word                 SPC f w" }, command = "Telescope live_grep" },
@@ -38,6 +40,8 @@ function M.config()
     e = { description = { "   Bookmarks                 SPC b m" }, command = "Telescope marks" },
     f = { description = { "   Last Session              SPC s l" }, command = "SessionLoad" },
   }
+
+  g.dashboard_custom_section = vim.tbl_deep_extend("keep", user_settings.dashboard.extra, astro_dashboard_custom_section)
 
   g.dashboard_custom_footer = {
     " ",
