@@ -97,7 +97,7 @@ plugins = {
 -- Overrides
 overrides = {
   treesitter = {
-    ensure_installed = {"go"},
+    ensure_installed = { "lua" },
   },
 },
 
