@@ -140,7 +140,7 @@ null_ls.setup {
 ## 🗒️ Note
 
 [Guide](https://github.com/kabinspace/AstroVim/blob/main/utils/userguide.md) is given for basic usage<br>
-[Mappings](https://github.com/kabinspace/AstroVim/blob/main/utils/mappings.txt) is given to learn more about the default key bindings
+[Mappings](https://github.com/kabinspace/AstroVim/blob/main/utils/mappings.txt) is given to learn more about the default key bindings<br>
 [Watch](https://www.youtube.com/watch?v=JQLZ7NJRTEo&t=4s&ab_channel=JohnCodes) a review of AstroVim to know about the out of the box experience
 
 ## ⭐ Credits
