@@ -135,7 +135,10 @@ packer.startup {
     use {
       "L3MON4D3/LuaSnip",
       config = function()
-        require("luasnip/loaders/from_vscode").lazy_load()
+        local settings = require("core.utils").user_settings()
+        local loader = require "luasnip/loaders/from_vscode"
+        loader.lazy_load { paths = settings.overrides.luasnip.vscode_snippets_paths }
+        loader.lazy_load()
       end,
       requires = {
         -- Snippet collections

@@ -6,6 +6,10 @@ local config = {
 
   overrides = {
     treesitter = {},
+    luasnip = {
+      -- A set of paths to look up VSCode snippets in
+      vscode_snippets_paths = {},
+    },
   },
 
   virtual_text = true,
