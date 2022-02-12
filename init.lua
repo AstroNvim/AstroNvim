@@ -20,6 +20,14 @@ for _, source in ipairs(sources) do
   end
 end
 
-utils.user_settings()
+local config = utils.user_settings()
 
+
+if type(config.polish) == "function" then
+  config.polish()
+else
+  error("The polish value in your user configuration must be a function")
+end
+
+-- keep this last:
 utils.compiled()

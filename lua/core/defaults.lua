@@ -27,6 +27,13 @@ local config = {
     ts_rainbow = true,
     ts_autotag = true,
   },
+
+  -- A function called after AstroVim is fully set up.
+  -- Use it to override settings or run code.
+  --
+  -- This function takes no input and AstroVim does not expect it to
+  -- return anything either.
+  polish = function() end
 }
 
 return config
