@@ -2,8 +2,8 @@ local config = {
 
   colorscheme = "onedark",
 
-  plugins = {},  
-  
+  plugins = {},
+
   overrides = {
     treesitter = {},
   },
