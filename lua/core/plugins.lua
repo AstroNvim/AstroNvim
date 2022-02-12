@@ -173,6 +173,7 @@ packer.startup {
     -- LSP completion source
     use {
       "hrsh7th/cmp-nvim-lsp",
+      after = "nvim-cmp",
     }
 
     -- LSP manager
