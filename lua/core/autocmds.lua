@@ -37,7 +37,6 @@ vim.cmd(string.format(
   colorscheme
 ))
 
-
 vim.cmd [[
   command! AstroUpdate lua require('core.utils').update()
 ]]

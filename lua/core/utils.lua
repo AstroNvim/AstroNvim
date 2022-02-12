@@ -55,7 +55,6 @@ function M.compiled()
   end
 end
 
-
 function M.list_registered_providers_names(filetype)
   local s = require "null-ls.sources"
   local available_sources = s.get_available(filetype)
@@ -84,20 +83,20 @@ function M.list_registered_linters(filetype)
 end
 
 function M.update()
-  local Job = require('plenary.job')
+  local Job = require "plenary.job"
   local errors = {}
 
   Job
     :new({
       command = "git",
       args = { "pull", "--ff-only" },
-      cwd = vim.fn.stdpath('config'),
+      cwd = vim.fn.stdpath "config",
       on_start = function()
-        print("Updating...")
+        print "Updating..."
       end,
       on_exit = function()
         if vim.tbl_isempty(errors) then
-          print("Updated!")
+          print "Updated!"
         else
           table.insert(errors, 1, "Something went wrong! Please pull changes manually.")
           table.insert(errors, 2, "")
