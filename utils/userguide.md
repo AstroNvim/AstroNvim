@@ -87,4 +87,5 @@ To resize buffer to the bottom you need to press `Ctrl` + `down key`
 
 #### Disable default plugins
 
-To disable default plugins you need to go to `lua/user/settings.lua` in [here](https://github.com/kabinspace/AstroVim/blob/main/lua/user/settings.lua#L27#L40) and set it to `false` and do `:PackerSync` to delete them
+To disable default plugins you need to go to `lua/user/settings.lua` in [here](https://github.com/kabinspace/AstroVim/blob/d60e83d7cc197407109b9c00e5c33dfabefa4d46/lua/user/settings.lua#L32#L48)
+and set it to `false` and do `:PackerSync` to delete them

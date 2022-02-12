@@ -19,16 +19,16 @@
 <p align="center">
 AstroVim is an aesthetic and feature-rich neovim config that is extensible and easy to use with a great set of plugins
 </p>
-	
+
 ## 🌟 Preview
 ![Preview1](./utils/media/preview1.png)
 ![Preview2](./utils/media/preview2.png)
 ![Preview33](./utils/media/preview3.png)
-	
+
 ## ⚡ Requirements
 * [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
 * [Neovim 0.6+](https://github.com/neovim/neovim/releases/tag/v0.6.1)
-	
+
 ## 🛠️ Installation
 ### Linux
 #### Make a backup of your current nvim folder
@@ -153,7 +153,7 @@ Sincere appreciation to the following repositories, plugin authors and the entir
 - [CosmicVim](https://github.com/CosmicNvim/CosmicNvim)
 
 <div align="center" id="madewithlua">
-	
+
 [![Lua](https://img.shields.io/badge/Made%20with%20Lua-blue.svg?style=for-the-badge&logo=lua)](https://lua.org)
 
 </div>

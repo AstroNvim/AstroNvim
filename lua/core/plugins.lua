@@ -225,7 +225,7 @@ packer.startup {
       "jose-elias-alvarez/null-ls.nvim",
       event = "BufRead",
       config = function()
-        require "user.null-ls".config()
+        require("user.null-ls").config()
       end,
     }
 

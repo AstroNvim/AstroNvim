@@ -8,7 +8,7 @@ function M.config()
     return
   end
 
-  default_opts = {
+  local default_opts = {
     ensure_installed = {},
     sync_install = false,
     ignore_install = {},

@@ -9,9 +9,9 @@ Lua Functions                    -->       https://github.com/nvim-lua/plenary.n
 ─────────────────────────────────────────────────────────────────────────────────────────────────
 Popup API                        -->       https://github.com/nvim-lua/popup.nvim
 ─────────────────────────────────────────────────────────────────────────────────────────────────
-Boost Startup time               -->       https://github.com/nathom/filetype.nvim      
+Boost Startup time               -->       https://github.com/nathom/filetype.nvim
 ─────────────────────────────────────────────────────────────────────────────────────────────────
-Curshold Fix                     -->       https://github.com/antoinemadec/FixCursorHold.nvim  
+Curshold Fix                     -->       https://github.com/antoinemadec/FixCursorHold.nvim
 ─────────────────────────────────────────────────────────────────────────────────────────────────
 Icons                            -->       https://github.com/ryanoasis/vim-devicons
 ─────────────────────────────────────────────────────────────────────────────────────────────────
@@ -27,7 +27,7 @@ Syntax Highlighting              -->       https://github.com/nvim-treesitter/nv
 ─────────────────────────────────────────────────────────────────────────────────────────────────
 Parenthesis Highlighting         -->       https://github.com/p00f/nvim-ts-rainbow
 ─────────────────────────────────────────────────────────────────────────────────────────────────
-Autoclose tags                   -->       https://github.com/windwp/nvim-ts-autotag 
+Autoclose tags                   -->       https://github.com/windwp/nvim-ts-autotag
 ─────────────────────────────────────────────────────────────────────────────────────────────────
 Context Commenting               -->       https://github.com/JoosepAlviste/nvim-ts-context-commentstring
 ─────────────────────────────────────────────────────────────────────────────────────────────────
