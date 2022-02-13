@@ -9,19 +9,10 @@ lsp_installer.on_server_ready(function(server)
     capabilities = require("configs.lsp.handlers").capabilities,
   }
 
-  if server.name == "jsonls" then
-    local jsonls_opts = require "configs.lsp.server-settings.jsonls"
-    opts = vim.tbl_deep_extend("force", jsonls_opts, opts)
-  end
-
-  if server.name == "sumneko_lua" then
-    local sumneko_opts = require "configs.lsp.server-settings.sumneko_lua"
-    opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
-  end
-
-  if server.name == "pyright" then
-    local pyright_opts = require "configs.lsp.server-settings.pyright"
-    opts = vim.tbl_deep_extend("force", pyright_opts, opts)
+  -- Apply AstroVim server settings (if available)
+  local present, av_overrides = pcall(require, "configs.lsp.server-settings." .. server.name)
+  if present then
+    opts = vim.tbl_deep_extend("force", av_overrides, opts)
   end
 
   server:setup(opts)
