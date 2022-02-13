@@ -24,5 +24,5 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", pyright_opts, opts)
   end
 
-  server:setup(opts)
+  require("core.utils").user_settings().overrides.lsp_installer.server_registration_override(server, opts)
 end)

@@ -5,6 +5,18 @@ local config = {
   plugins = {},
 
   overrides = {
+    lsp_installer = {
+      -- A function used to override how a LSP is registered
+      --
+      -- Gets the server object and the configuration as input and
+      -- will by default just call `server:setup(opts)`.
+      --
+      -- This function usually does not need to be overriden, only special
+      -- LSP integration plugins like `rust-tools.nvim` need this.
+      server_registration_override = function(server, opts)
+        server:setup(opts)
+      end,
+    },
     treesitter = {},
   },
 
