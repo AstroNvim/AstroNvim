@@ -23,4 +23,4 @@ repos:
 -   repo: https://github.com/JohnnyMorganz/StyLua.git
     rev: v0.12.2
     hooks:
-    -   id: stylua-github
+    -   id: stylua
