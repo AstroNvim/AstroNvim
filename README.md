@@ -137,6 +137,82 @@ null_ls.setup {
 }
 ```
 
+## Extending AstroVim
+
+AstroVim should allow you to extend its functionality without going outside of the `user` directory!
+
+Please get in contact when you run into some setup issue where that is not the case.
+
+### Add more Plugins
+
+Just copy the `packer` configuration without the `use` and with a `,` after the last closing `}` into the `plugins` key of your `user/settings.lua` file.
+
+See the example above.
+
+### Adding sources to `nvim-cmp`
+
+To add new completion sources to `nvim-cmp` you can add the plugin (see above) providing that source like this:
+
+```lua
+    {
+      "Saecki/crates.nvim",
+      after = "nvim-cmp",
+      config = function()
+        require("crates").setup()
+
+        local cmp = require "cmp"
+        local config = cmp.get_config()
+        table.insert(config.sources, { name = "crates" })
+        cmp.setup(config)
+      end,
+    },
+```
+
+Use the options provided by `nvim-cmp` to change the order, etc. as you see fit.
+
+### Compley LSP server setup
+
+Some plugins need to do special magic to the LSP configuration to enable advanced features. One example for this is the `rust-tools.nvim` plugin.
+
+Those can override `overrides.lsp_installer.server_registration_override`.
+
+For example the `rust-tools.nvim` plugin can be set up like this:
+
+```lua
+    -- Plugin definition:
+    {
+      "simrat39/rust-tools.nvim",
+      requires = { "nvim-lspconfig", "nvim-lsp-installer", "nvim-dap", "Comment.nvim" },
+      -- Is configured via the server_registration_override installed below!
+    },
+```
+
+and then wired up with:
+
+```lua
+  overrides = {
+    lsp_installer = {
+      server_registration_override = function(server, server_opts)
+        -- Special code for rust.tools.nvim!
+        if server.name == "rust_analyzer" then
+          local extension_path = vim.fn.stdpath "data" .. "/dapinstall/codelldb/extension/"
+          local codelldb_path = extension_path .. "adapter/codelldb"
+          local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+
+          require("rust-tools").setup {
+            server = server_opts,
+            dap = {
+              adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+            },
+          }
+        else
+          server:setup(server_opts)
+        end
+      end,
+    },
+  },
+```
+
 ## 🗒️ Note
 
 [Guide](https://github.com/kabinspace/AstroVim/blob/main/utils/userguide.md) is given for basic usage<br>
