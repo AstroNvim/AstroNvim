@@ -33,7 +33,7 @@ local config = {
   --
   -- This function takes no input and AstroVim does not expect it to
   -- return anything either.
-  polish = function() end
+  polish = function() end,
 }
 
 return config
