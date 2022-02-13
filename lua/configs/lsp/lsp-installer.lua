@@ -4,10 +4,9 @@ if not status_ok then
 end
 
 lsp_installer.on_server_ready(function(server)
-  local opts = {
-    on_attach = require("configs.lsp.handlers").on_attach,
-    capabilities = require("configs.lsp.handlers").capabilities,
-  }
+  local opts = server:get_default_options()
+  opts.on_attach = require("configs.lsp.handlers").on_attach
+  opts.capabilities = require("configs.lsp.handlers").capabilities
 
   if server.name == "jsonls" then
     local jsonls_opts = require "configs.lsp.server-settings.jsonls"

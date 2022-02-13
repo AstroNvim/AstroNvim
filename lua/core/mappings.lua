@@ -1,7 +1,8 @@
 local M = {}
 
-local opts = { noremap = true, silent = true }
+local config = require("core.utils").user_settings()
 
+local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
 
 -- Remap space as leader key
@@ -31,15 +32,19 @@ map("n", "<A-j>", "<Esc><cmd>m .+1<CR>==gi", opts)
 map("n", "<A-k>", "<Esc><cmd>m .-2<CR>==gi", opts)
 
 -- NvimTree
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", opts)
-map("n", "<leader>o", "<cmd>NvimTreeFocus<CR>", opts)
+if config.enabled.nvim_tree then
+  map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", opts)
+  map("n", "<leader>o", "<cmd>NvimTreeFocus<CR>", opts)
+end
 
 -- Dashboard
-map("n", "<leader>fn", "<cmd>DashboardNewFile<CR>", opts)
-map("n", "<leader>db", "<cmd>Dashboard<CR>", opts)
-map("n", "<leader>bm", "<cmd>DashboardJumpMarks<CR>", opts)
-map("n", "<leader>sl", "<cmd>SessionLoad<CR>", opts)
-map("n", "<leader>ss", "<cmd>SessionSave<CR>", opts)
+if config.enabled.dashboard then
+  map("n", "<leader>fn", "<cmd>DashboardNewFile<CR>", opts)
+  map("n", "<leader>db", "<cmd>Dashboard<CR>", opts)
+  map("n", "<leader>bm", "<cmd>DashboardJumpMarks<CR>", opts)
+  map("n", "<leader>sl", "<cmd>SessionLoad<CR>", opts)
+  map("n", "<leader>ss", "<cmd>SessionSave<CR>", opts)
+end
 
 -- Telescope
 map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", opts)
@@ -51,18 +56,22 @@ map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", opts)
 map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", opts)
 
 -- Lspsaga
-map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
-map("n", "ca", "<cmd>Lspsaga code_action<CR>", opts)
-map("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
-map("n", "rn", "<cmd>Lspsaga rename<CR>", opts)
-map("n", "gj", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
-map("n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
-map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>", opts)
-map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>", opts)
+if config.enabled.lspsaga then
+  map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
+  map("n", "ca", "<cmd>Lspsaga code_action<CR>", opts)
+  map("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
+  map("n", "rn", "<cmd>Lspsaga rename<CR>", opts)
+  map("n", "gj", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
+  map("n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
+  map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>", opts)
+  map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>", opts)
+end
 
 -- Comment
-map("n", "<leader>/", "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>", opts)
-map("v", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>", opts)
+if config.enabled.comment then
+  map("n", "<leader>/", "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>", opts)
+  map("v", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>", opts)
+end
 
 -- ForceWrite
 map("n", "<C-w>", "<cmd>w!<CR>", opts)
@@ -71,10 +80,14 @@ map("n", "<C-w>", "<cmd>w!<CR>", opts)
 map("n", "<C-q>", "<cmd>q!<CR>", opts)
 
 -- Terminal
-map("n", "<C-\\>", "<cmd>ToggleTerm<CR>", opts)
+if config.enabled.toggle_term then
+  map("n", "<C-\\>", "<cmd>ToggleTerm<CR>", opts)
+end
 
 -- SymbolsOutline
-map("n", "<leader>s", "<cmd>SymbolsOutline<CR>", opts)
+if config.enabled.symbols_outline then
+  map("n", "<leader>s", "<cmd>SymbolsOutline<CR>", opts)
+end
 
 -- SaveSession
 map("n", "<leader>ss", "<cmd>SessionSave<CR>", opts)
