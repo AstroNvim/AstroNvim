@@ -110,6 +110,12 @@ local others = {
   DashboardFooter = { fg = C.cyan },
   DashboardCenter = { fg = C.blue },
 
+  -- Hop
+  HopNextKey = { fg = C.red, style = "bold" },
+  HopNextKey1 = { fg = C.cyan, fmt = "bold" },
+  HopNextKey2 = { fg = C.blue },
+  HopUnmatched = { fg = C.grey },
+
   -- WhichKey
   WhichKeyFloat = { fg = C.fg },
   WhichKeyDesc = { fg = C.blue },
