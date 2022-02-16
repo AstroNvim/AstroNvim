@@ -128,6 +128,20 @@ local others = {
   HopNextKey2 = { fg = C.blue },
   HopUnmatched = { fg = C.grey },
 
+  -- Lightspeed
+  LightspeedLabel = { fg = C.red_3, style = "underline" },
+  LightspeedLabelOverlapped = { fg = C.blue, style = "underline" },
+  LightspeedLabelDistant = { fg = C.red_1, style = "underline" },
+  LightspeedLabelDistantOverlapped = { fg = C.blue_1, style = "underline" },
+  LightspeedShortcut = { fg = C.black, bg = C.red_3, style = "bold,underline" },
+  LightspeedShortcutOverlapped = { fg = C.black, bg = C.blue, style = "bold,underline" },
+  LightspeedMaskedChar = { fg = C.green_1 },
+  LightspeedGreyWash = { fg = C.grey_2, bg = C.none },
+  LightspeedUnlabeledMatch = { fg = C.white, style = "bold" },
+  LightspeedOneCharMatch = { fg = C.green, bg = C.red_3, style = "bold" },
+  LightspeedUniqueChar = { fg = C.white, style = "bold" },
+  LightspeedPendingOpArea = { fg = C.yellow },
+
   -- WhichKey
   WhichKeyFloat = { fg = C.fg },
   WhichKeyDesc = { fg = C.blue },
