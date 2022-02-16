@@ -25,6 +25,7 @@ function M.config()
     "packer",
     "neogitstatus",
     "NvimTree",
+    "neo-tree",
     "Trouble",
   }
   vim.g.indent_blankline_context_patterns = {

@@ -37,7 +37,7 @@ function M.config()
 
   local config = {
     options = {
-      disabled_filetypes = { "NvimTree", "dashboard", "Outline" },
+      disabled_filetypes = { "NvimTree", "neo-tree", "dashboard", "Outline" },
       component_separators = "",
       section_separators = "",
       theme = {
