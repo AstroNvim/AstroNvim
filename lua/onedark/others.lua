@@ -124,7 +124,7 @@ local others = {
 
   -- Hop
   HopNextKey = { fg = C.red, style = "bold" },
-  HopNextKey1 = { fg = C.cyan, fmt = "bold" },
+  HopNextKey1 = { fg = C.cyan, style = "bold" },
   HopNextKey2 = { fg = C.blue },
   HopUnmatched = { fg = C.grey },
 
