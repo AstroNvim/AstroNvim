@@ -6,19 +6,6 @@ function M.config()
     return
   end
 
-  local colors = {
-    red = "#d47d85",
-    red_1 = "#ec5f67",
-    grey = "#abb2bf",
-    grey_1 = "#787e87",
-    grey_2 = "#D3D3D3",
-    black = "#1e222a",
-    black_1 = "#252931",
-    black_2 = "#2c323c",
-    green = "#95be76",
-    none = "NONE",
-  }
-
   bufferline.setup {
     options = {
       offsets = {
@@ -46,93 +33,93 @@ function M.config()
 
     highlights = {
       background = {
-        guifg = colors.grey_1,
-        guibg = colors.black_2,
+        guifg = { attribute = "fg", highlight = "BufferLineBackground" },
+        guibg = { attribute = "bg", highlight = "BufferLineBackground" },
       },
 
       -- Buffers
       buffer_selected = {
-        guifg = colors.grey,
-        guibg = colors.black,
-        gui = colors.none,
+        guifg = { attribute = "fg", highlight = "BufferLineBufferSelected" },
+        guibg = { attribute = "bg", highlight = "BufferLineBufferSelected" },
+        gui = "NONE",
       },
       buffer_visible = {
-        guifg = colors.grey,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineBufferVisible" },
+        guibg = { attribute = "bg", highlight = "BufferLineBufferVisible" },
       },
 
       -- Diagnostics
       error = {
-        guifg = colors.red_1,
-        guibg = colors.red_1,
+        guifg = { attribute = "fg", highlight = "BufferLineError" },
+        guibg = { attribute = "bg", highlight = "BufferLineError" },
       },
       error_diagnostic = {
-        guifg = colors.red_1,
-        guibg = colors.red_1,
+        guifg = { attribute = "fg", highlight = "BufferLineErrorDiagnostic" },
+        guibg = { attribute = "bg", highlight = "BufferLineErrorDiagnostic" },
       },
 
       -- Close buttons
       close_button = {
-        guifg = colors.grey_1,
-        guibg = colors.black_2,
+        guifg = { attribute = "fg", highlight = "BufferLineCloseButton" },
+        guibg = { attribute = "bg", highlight = "BufferLineCloseButton" },
       },
       close_button_visible = {
-        guifg = colors.grey_2,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineCloseButtonVisible" },
+        guibg = { attribute = "bg", highlight = "BufferLineCloseButtonVisible" },
       },
       close_button_selected = {
-        guifg = colors.red,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineCloseButtonSelected" },
+        guibg = { attribute = "bg", highlight = "BufferLineCloseButtonSelected" },
       },
       fill = {
-        guifg = colors.grey_1,
-        guibg = colors.black_2,
+        guifg = { attribute = "fg", highlight = "BufferLineFill" },
+        guibg = { attribute = "bg", highlight = "BufferLineFill" },
       },
       indicator_selected = {
-        guifg = colors.black,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineIndicatorSelected" },
+        guibg = { attribute = "bg", highlight = "BufferLineIndicatorSelected" },
       },
 
       -- Modified
       modified = {
-        guifg = colors.red,
-        guibg = colors.black_2,
+        guifg = { attribute = "fg", highlight = "BufferLineModified" },
+        guibg = { attribute = "bg", highlight = "BufferLineModified" },
       },
       modified_visible = {
-        guifg = colors.grey,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineModifiedVisible" },
+        guibg = { attribute = "bg", highlight = "BufferLineModifiedVisible" },
       },
       modified_selected = {
-        guifg = colors.green,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineModifiedSelected" },
+        guibg = { attribute = "bg", highlight = "BufferLineModifiedSelected" },
       },
 
       -- Separators
       separator = {
-        guifg = colors.black_2,
-        guibg = colors.black_2,
+        guifg = { attribute = "fg", highlight = "BufferLineSeparator" },
+        guibg = { attribute = "bg", highlight = "BufferLineSeparator" },
       },
       separator_visible = {
-        guifg = colors.black,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineSeparatorVisible" },
+        guibg = { attribute = "bg", highlight = "BufferLineSeparatorVisible" },
       },
       separator_selected = {
-        guifg = colors.black_2,
-        guibg = colors.black_2,
+        guifg = { attribute = "fg", highlight = "BufferLineSeparatorSelected" },
+        guibg = { attribute = "bg", highlight = "BufferLineSeparatorSelected" },
       },
 
       -- Tabs
       tab = {
-        guifg = colors.grey,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineTab" },
+        guibg = { attribute = "bg", highlight = "BufferLineTab" },
       },
       tab_selected = {
-        guifg = colors.black,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineTabSelected" },
+        guibg = { attribute = "bg", highlight = "BufferLineTabSelected" },
       },
       tab_close = {
-        guifg = colors.black,
-        guibg = colors.black,
+        guifg = { attribute = "fg", highlight = "BufferLineTabClose" },
+        guibg = { attribute = "bg", highlight = "BufferLineTabClose" },
       },
     },
   }
