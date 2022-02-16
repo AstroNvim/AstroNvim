@@ -76,6 +76,18 @@ local others = {
   NvimTreeGitDirty = { fg = C.red },
   NvimTreeGitNew = { fg = C.yellow },
 
+  -- Neo-Tree
+  NeoTreeDirectoryIcon = { fg = C.blue },
+  NeoTreeFileNameOpened = { fg = C.green },
+  NeoTreeGitAdded = { fg = C.green },
+  NeoTreeGitConflict = { fg = C.red },
+  NeoTreeGitModified = { fg = C.orange },
+  NeoTreeGitUntracked = { fg = C.yellow },
+  NeoTreeNormal = { bg = C.blue_2 },
+  NeoTreeNormalNC = { bg = C.blue_2 },
+  NeoTreeRootName = { fg = C.bg },
+  NeoTreeSymbolicLinkTarget = { fg = C.cyan },
+
   -- VimWiki
   VimwikiLink = { fg = C.cyan, bg = C.none },
   VimwikiHeaderChar = { fg = C.grey, bg = C.none },
