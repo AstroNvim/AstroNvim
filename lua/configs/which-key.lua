@@ -1,12 +1,14 @@
 local M = {}
 
+local user_settings = require("core.utils").user_settings()
+
 function M.config()
   local status_ok, which_key = pcall(require, "which-key")
   if not status_ok then
     return
   end
 
-  local setup = {
+  local default_setup = {
     plugins = {
       marks = true,
       registers = true,
@@ -134,7 +136,7 @@ function M.config()
     },
   }
 
-  which_key.setup(setup)
+  which_key.setup(vim.tbl_deep_extend("force", {}, default_setup, user_settings.overrides.which_key))
   which_key.register(mappings, opts)
 end
 
