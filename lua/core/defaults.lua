@@ -22,6 +22,7 @@ local config = {
       -- A set of paths to look up VSCode snippets in
       vscode_snippets_paths = {},
     },
+    which_key = {},
   },
 
   virtual_text = true,
