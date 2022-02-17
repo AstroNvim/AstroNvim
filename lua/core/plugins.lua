@@ -75,7 +75,7 @@ packer.startup {
     -- File explorer
     use {
       "kyazdani42/nvim-tree.lua",
-      cmd = {"NvimTreeToggle", "NvimTreeFocus"},
+      cmd = { "NvimTreeToggle", "NvimTreeFocus" },
       commit = "8b27fd4",
       config = function()
         require("configs.nvim-tree").config()
