@@ -20,7 +20,7 @@ local others = {
   TelescopeTitle = { fg = C.fg },
   TelescopePromptCounter = { fg = C.grey_1 },
   TelescopePromptPrefix = { fg = C.blue },
-  TelescopePreviewLine = { fg = C.grey_5 },
+  TelescopePreviewLine = { bg = C.grey_5 },
   TelescopePreviewMatch = { fg = C.yellow },
   TelescopePreviewPipe = { fg = C.yellow },
   TelescopePreviewCharDev = { fg = C.yellow },
