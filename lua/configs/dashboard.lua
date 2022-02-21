@@ -6,7 +6,7 @@ function M.config()
 
   local plugins_count = fn.len(fn.globpath("~/.local/share/nvim/site/pack/packer/start", "*", 0, 1))
 
-  if fn.has("Win32") == 1 then
+  if fn.has "Win32" == 1 then
     plugins_count = vim.fn.len(vim.fn.globpath("~/AppData/Local/nvim-data/site/pack/packer/start", "*", 0, 1))
   end
 
