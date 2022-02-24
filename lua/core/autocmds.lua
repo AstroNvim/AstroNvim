@@ -1,7 +1,8 @@
 local M = {}
 
 local utils = require "core.utils"
-local colorscheme = utils.user_settings().colorscheme
+local config = utils.user_settings()
+local colorscheme = config.colorscheme
 
 vim.cmd [[
   augroup packer_user_config
@@ -18,15 +19,17 @@ vim.cmd [[
   augroup end
 ]]
 
-vim.cmd [[
-  augroup dashboard_settings
-    autocmd!
-    autocmd FileType dashboard set showtabline=0
-    autocmd BufWinLeave <buffer> set showtabline=2
-    autocmd BufEnter * if &ft is "dashboard" | set laststatus=0 | else | set laststatus=2 | endif
-    autocmd BufEnter * if &ft is "dashboard" | set nocursorline | endif
-  augroup end
-]]
+if config.enabled.dashboard and config.enabled.bufferline then
+  vim.cmd [[
+    augroup dashboard_settings
+      autocmd!
+      autocmd FileType dashboard set showtabline=0
+      autocmd BufWinLeave <buffer> set showtabline=2
+      autocmd BufEnter * if &ft is "dashboard" | set laststatus=0 | else | set laststatus=2 | endif
+      autocmd BufEnter * if &ft is "dashboard" | set nocursorline | endif
+    augroup end
+  ]]
+end
 
 vim.cmd(string.format(
   [[
