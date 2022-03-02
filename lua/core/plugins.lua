@@ -68,8 +68,6 @@ packer.startup {
     -- Better buffer closing
     use {
       "moll/vim-bbye",
-      after = "bufferline.nvim",
-      disable = not config.enabled.bufferline,
     }
 
     -- File explorer
