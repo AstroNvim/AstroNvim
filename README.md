@@ -149,6 +149,25 @@ Just copy the `packer` configuration without the `use` and with a `,` after the 
 
 See the example above.
 
+### Change Configfuration of default Plugins
+
+AstroVim provides a `polish_plugins` function in the user settings that can be used to override the packer
+configuration for all plugins, user plugins as well as plugins configured by AstroVim.
+
+E.g. this code in your `settings.lua` will globally disable the lazy loading that is used by AstroVim by default:
+
+```lua
+  polish_plugins = function(plugins)
+    local result = {}
+    for _, plugin in pairs(plugins) do
+      plugin["cmd"] = nil
+      plugin["event"] = nil
+      table.insert(result, plugin)
+    end
+    return result
+  end
+```
+
 ### Adding sources to `nvim-cmp`
 
 To add new completion sources to `nvim-cmp` you can add the plugin (see above) providing that source like this:

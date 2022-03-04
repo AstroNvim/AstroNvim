@@ -53,6 +53,13 @@ local config = {
   -- This function takes no input and AstroVim does not expect it to
   -- return anything either.
   polish = function() end,
+
+  -- A function called during plugin setup. It takes the entire list of plugins
+  -- and provides a user with an opportunity to modify the entire list before
+  -- loading plugins.
+  polish_plugins = function(plugins)
+    return plugins
+  end,
 }
 
 return config
