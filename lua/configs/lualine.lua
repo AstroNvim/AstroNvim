@@ -40,10 +40,6 @@ function M.config()
       disabled_filetypes = { "NvimTree", "neo-tree", "dashboard", "Outline" },
       component_separators = "",
       section_separators = "",
-      theme = {
-        normal = { c = { fg = colors.white, bg = colors.grey } },
-        inactive = { c = { fg = colors.white, bg = colors.grey } },
-      },
     },
     sections = {
       lualine_a = {},
@@ -215,7 +211,7 @@ function M.config()
 
   ins_right {
     "progress",
-    color = { fg = colors.fg, gui = "none" },
+    color = { gui = "none" },
     padding = { left = 0, right = 0 },
   }
 
@@ -229,7 +225,7 @@ function M.config()
       return chars[index]
     end,
     padding = { left = 1, right = 1 },
-    color = { fg = colors.yellow, bg = colors.grey },
+    color = { fg = colors.yellow },
     cond = nil,
   }
 
