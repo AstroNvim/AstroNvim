@@ -189,6 +189,28 @@ To add new completion sources to `nvim-cmp` you can add the plugin (see above) p
 
 Use the options provided by `nvim-cmp` to change the order, etc. as you see fit.
 
+### Add Custom LSP Server Settings
+
+You might want to override the default LSP settings for some servers to enable advanced features. This can be achieved by making a `server-settings` folder inside of your user config and creating `lua` files named for the LSP server. Examples of this can be found in [`/lua/configs/lsp/server-settings`](https://github.com/kabinspace/AstroVim/tree/main/lua/configs/lsp/server-settings).
+
+For example, if you want to add schemas to the `yamlls` LSP server, you can create the file `yamlls.lua` inside of a `server-settings/` folder in `/lua/user/` with the contents (`/lua/user/server-settings/yamlls.lua`):
+
+```lua
+local opts = {
+  settings = {
+    yaml = {
+      schemas = {
+        ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
+        ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+        ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+      },
+    },
+  },
+}
+
+return opts
+```
+
 ### Compley LSP server setup
 
 Some plugins need to do special magic to the LSP configuration to enable advanced features. One example for this is the `rust-tools.nvim` plugin.
