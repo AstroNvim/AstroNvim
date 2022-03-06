@@ -21,21 +21,28 @@ AstroVim is an aesthetic and feature-rich neovim config that is extensible and e
 </p>
 
 ## 🌟 Preview
+
 ![Preview1](./utils/media/preview1.png)
 ![Preview2](./utils/media/preview2.png)
 ![Preview33](./utils/media/preview3.png)
 
 ## ⚡ Requirements
-* [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
-* [Neovim 0.6+](https://github.com/neovim/neovim/releases/tag/v0.6.1)
+
+- [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
+- [Neovim 0.6+](https://github.com/neovim/neovim/releases/tag/v0.6.1)
 
 ## 🛠️ Installation
+
 ### Linux
+
 #### Make a backup of your current nvim folder
+
 ```
 mv ~/.config/nvim ~/.config/nvimbackup
 ```
+
 #### Clone the repository
+
 ```
 git clone https://github.com/kabinspace/AstroVim ~/.config/nvim
 nvim +PackerSync
@@ -92,7 +99,7 @@ plugins = {
       require("lsp_signature").setup()
     end,
   },
-},
+}
 
 -- Overrides
 overrides = {
@@ -149,7 +156,15 @@ Just copy the `packer` configuration without the `use` and with a `,` after the 
 
 See the example above.
 
-### Change Configfuration of default Plugins
+### Change Default Plugin Configurations
+
+AstroVim allows you to easily override the setup of any pre-configured plugins.
+Simply add a table to the `overrides` table with a key the same name as the
+plugin package and return a table with the new options or overrides that you
+want. For an example see the included `overrides` entry for `treesitter` which
+lets you extend the default treesitter configuration.
+
+### Change Default Packer Configuration
 
 AstroVim provides a `polish_plugins` function in the user settings that can be used to override the packer
 configuration for all plugins, user plugins as well as plugins configured by AstroVim.
