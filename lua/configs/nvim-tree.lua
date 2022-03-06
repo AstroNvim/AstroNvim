@@ -32,7 +32,7 @@ function M.config()
     },
   }
 
-  nvimtree.setup {
+  nvimtree.setup(require("core.utils").user_plugin_opts("nvim-tree", {
     filters = {
       dotfiles = false,
       custom = {
@@ -91,7 +91,7 @@ function M.config()
       folder_arrows = 0,
       tree_width = 30,
     },
-  }
+  }))
 end
 
 return M

@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  neoscroll.setup {
+  neoscroll.setup(require("core.utils").user_plugin_opts("neoscroll", {
     -- All these keys will be mapped to their corresponding default scrolling animation
     mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
     hide_cursor = true, -- Hide cursor while scrolling
@@ -17,7 +17,7 @@ function M.config()
     easing_function = nil, -- Default easing function
     pre_hook = nil, -- Function to run before the scrolling animation starts
     post_hook = nil, -- Function to run after the scrolling animation ends
-  }
+  }))
 end
 
 return M

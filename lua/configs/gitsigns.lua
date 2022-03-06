@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  gitsigns.setup {
+  gitsigns.setup(require("core.utils").user_plugin_opts("gitsigns", {
     signs = {
       add = { hl = "GitSignsAdd", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
       change = { hl = "GitSignsChange", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
@@ -57,7 +57,7 @@ function M.config()
     yadm = {
       enable = false,
     },
-  }
+  }))
 end
 
 return M

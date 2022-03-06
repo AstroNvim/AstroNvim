@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  lspsaga.setup {
+  lspsaga.setup(require("core.utils").user_plugin_opts("lspsaga", {
     debug = false,
     use_saga_diagnostic_sign = false,
     -- Diagnostics
@@ -47,7 +47,7 @@ function M.config()
     rename_prompt_prefix = "➤ ",
     server_filetype_map = {},
     diagnostic_prefix_format = "%d. ",
-  }
+  }))
 end
 
 return M

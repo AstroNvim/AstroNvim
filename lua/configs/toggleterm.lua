@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  toggleterm.setup {
+  toggleterm.setup(require("core.utils").user_plugin_opts("toggleterm", {
     size = 10,
     open_mapping = [[<c-\>]],
     hide_numbers = true,
@@ -27,7 +27,7 @@ function M.config()
         background = "Normal",
       },
     },
-  }
+  }))
 
   function _G.set_terminal_keymaps()
     local opts = { noremap = true }

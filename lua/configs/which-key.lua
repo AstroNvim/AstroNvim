@@ -1,7 +1,5 @@
 local M = {}
 
-local user_settings = require("core.utils").user_settings()
-
 function M.config()
   local status_ok, which_key = pcall(require, "which-key")
   if not status_ok then
@@ -136,7 +134,7 @@ function M.config()
     },
   }
 
-  which_key.setup(vim.tbl_deep_extend("force", {}, default_setup, user_settings.overrides.which_key))
+  which_key.setup(require("core.utils").user_plugin_opts("which-key", default_setup))
   which_key.register(mappings, opts)
 end
 

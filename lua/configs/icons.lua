@@ -37,7 +37,7 @@ function M.config()
     jpg = "#c882e7",
   }
 
-  icons.set_icon {
+  icons.set_icon(require("core.utils").user_plugin_opts("nvim-web-devicons", {
     c = {
       icon = "",
       color = colors.c,
@@ -183,7 +183,7 @@ function M.config()
       color = colors.jpeg,
       name = "jpeg",
     },
-  }
+  }))
 end
 
 return M

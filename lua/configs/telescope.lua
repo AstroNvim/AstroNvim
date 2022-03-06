@@ -9,7 +9,7 @@ function M.config()
   local actions = require "telescope.actions"
   telescope.load_extension "fzf"
 
-  telescope.setup {
+  telescope.setup(require("core.utils").user_plugin_opts("telescope", {
     defaults = {
 
       prompt_prefix = " ",
@@ -103,7 +103,7 @@ function M.config()
         case_mode = "smart_case",
       },
     },
-  }
+  }))
 end
 
 return M

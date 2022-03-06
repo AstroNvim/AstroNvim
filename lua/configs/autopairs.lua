@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  npairs.setup {
+  npairs.setup(require("core.utils").user_plugin_opts("nvim-autopairs", {
     check_ts = true,
     ts_config = {
       lua = { "string", "source" },
@@ -25,7 +25,7 @@ function M.config()
       highlight = "PmenuSel",
       highlight_grey = "LineNr",
     },
-  }
+  }))
 
   local cmp_autopairs = require "nvim-autopairs.completion.cmp"
   local cmp_status_ok, cmp = pcall(require, "cmp")

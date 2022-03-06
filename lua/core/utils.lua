@@ -47,6 +47,14 @@ function M.user_settings()
   return _user_settings
 end
 
+function M.user_plugin_opts(plugin, default)
+  local overrides = _user_settings.overrides[plugin]
+  if overrides ~= nil then
+    default = vim.tbl_deep_extend("force", default, overrides)
+  end
+  return default
+end
+
 function M.impatient()
   local impatient_ok, _ = pcall(require, "impatient")
   if impatient_ok then
