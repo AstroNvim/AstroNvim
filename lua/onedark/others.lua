@@ -170,8 +170,8 @@ local others = {
 
   -- SymbolsOutline
   FocusedSymbol = { fg = C.yellow, bg = C.none },
-  
-   -- Beacon
+
+  -- Beacon
   Beacon = { bg = C.blue },
 }
 
