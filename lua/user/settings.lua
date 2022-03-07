@@ -1,7 +1,3 @@
-local opts = { noremap = true, silent = true }
-local map = vim.api.nvim_set_keymap
-local set = vim.opt
-
 local config = {
 
   -- Set colorscheme
@@ -48,20 +44,25 @@ local config = {
   },
 
   packer_file = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
+
+  polish = function()
+    local opts = { noremap = true, silent = true }
+    local map = vim.api.nvim_set_keymap
+    local set = vim.opt
+    -- Set options
+    set.relativenumber = true
+
+    -- Set key bindings
+    map("n", "<C-s>", ":w!<CR>", opts)
+
+    -- Set autocommands
+    vim.cmd [[
+      augroup packer_conf
+        autocmd!
+        autocmd bufwritepost plugins.lua source <afile> | PackerSync
+      augroup end
+    ]]
+  end,
 }
-
--- Set options
-set.relativenumber = true
-
--- Set key bindings
-map("n", "<C-s>", ":w!<CR>", opts)
-
--- Set autocommands
-vim.cmd [[
-  augroup packer_conf
-    autocmd!
-    autocmd bufwritepost plugins.lua source <afile> | PackerSync
-  augroup end
-]]
 
 return config
