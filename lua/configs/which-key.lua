@@ -135,7 +135,7 @@ function M.config()
   }
 
   which_key.setup(require("core.utils").user_plugin_opts("which-key", default_setup))
-  which_key.register(mappings, opts)
+  which_key.register(require("core.utils").user_plugin_opts("which-key-mappings", mappings), opts)
 end
 
 return M
