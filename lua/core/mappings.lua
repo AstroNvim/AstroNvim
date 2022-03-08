@@ -35,7 +35,7 @@ map("n", "<A-k>", "<Esc><cmd>m .-2<CR>==gi", opts)
 map("n", "<leader>w", "<cmd>w<CR>", opts)
 map("n", "<leader>q", "<cmd>q<CR>", opts)
 map("n", "<leader>c", "<cmd>Bdelete!<CR>", opts)
-map("n", "<leader>h", "<cmd>noholsearch<CR>", opts)
+map("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
 -- Packer
 map("n", "<leader>pc", "<cmd>PackerCompile<cr>", opts)
