@@ -350,7 +350,7 @@ local astro_plugins = {
 
 packer.startup {
   function(use)
-    local plugins = require("core.utils").user_plugin_opts("plugins", astro_plugins)
+    local plugins = astro_plugins
 
     -- Append user defined plugins
     if config.plugins and not vim.tbl_isempty(config.plugins) then
@@ -360,7 +360,7 @@ packer.startup {
     end
 
     -- Load plugins!
-    for _, plugin in pairs(config.polish_plugins(plugins)) do
+    for _, plugin in pairs(require("core.utils").user_plugin_opts("plugins", plugins)) do
       use(plugin)
     end
   end,
