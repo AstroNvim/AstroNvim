@@ -84,6 +84,12 @@ M.on_attach = function(client, bufnr)
   if client.name == "sumneko_lua" then
     client.resolved_capabilities.document_formatting = false
   end
+
+  local on_attach_override = require("core.utils").user_settings().overrides.lsp_installer.on_attach_override
+  if on_attach_override ~= nil then
+    on_attach_override(client, bufnr)
+  end
+
   lsp_keymaps(bufnr)
   lsp_highlight_document(client)
 end
