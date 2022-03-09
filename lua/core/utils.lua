@@ -2,16 +2,24 @@ local M = {}
 
 local g = vim.g
 
-local function load_user_settings()
-  local default = require "core.defaults"
-  local user_status_ok, user_settings = pcall(require, "user.settings")
-  if user_status_ok then
-    default = vim.tbl_deep_extend("force", default, user_settings)
+local function func_or_extend(overrides, default)
+  if type(overrides) == "table" then
+    default = vim.tbl_deep_extend("force", default, overrides)
+  else
+    default = overrides(default)
   end
   return default
 end
 
-local _user_settings = load_user_settings()
+local function load_user_settings(module, default)
+  local overrides_status_ok, overrides = pcall(require, "user." .. module)
+  if overrides_status_ok then
+    default = func_or_extend(overrides, default)
+  end
+  return default
+end
+
+local _user_settings = load_user_settings("settings", require "core.defaults")
 
 function M.bootstrap()
   local fn = vim.fn
@@ -50,7 +58,9 @@ end
 function M.user_plugin_opts(plugin, default)
   local overrides = _user_settings.overrides[plugin]
   if overrides ~= nil then
-    default = vim.tbl_deep_extend("force", default, overrides)
+    default = func_or_extend(overrides, default)
+  else
+    default = load_user_settings(plugin, default)
   end
   return default
 end
