@@ -166,13 +166,14 @@ lets you extend the default treesitter configuration.
 
 ### Change Default Packer Configuration
 
-AstroVim provides a `polish_plugins` function in the user settings that can be used to override the packer
-configuration for all plugins, user plugins as well as plugins configured by AstroVim.
+The `overrides` table extensibility includes the packer configuration for all
+plugins, user plugins as well as plugins configured by AstroVim.
 
-E.g. this code in your `settings.lua` will globally disable the lazy loading that is used by AstroVim by default:
+E.g. this code in your `settings.lua` `overrides` table will globally disable the lazy loading that is used by AstroVim by default:
 
 ```lua
-  polish_plugins = function(plugins)
+overrides = {
+  plugins = function(plugins)
     local result = {}
     for _, plugin in pairs(plugins) do
       plugin["cmd"] = nil
@@ -180,7 +181,8 @@ E.g. this code in your `settings.lua` will globally disable the lazy loading tha
       table.insert(result, plugin)
     end
     return result
-  end
+  end,
+}
 ```
 
 ### Adding sources to `nvim-cmp`
