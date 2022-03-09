@@ -271,6 +271,25 @@ and then wired up with:
   },
 ```
 
+### Extending the LSP on_attach Function
+
+Some users may want to have more control over the `on_attach` function of their LSP servers to enable or disable capabilities. This can be extended with `overrides.lsp_installer.on_attach_override`
+
+For example if you want to disable document formatting for `intelephense`:
+
+```lua
+overrides = {
+  lsp_installer = {
+    on_attach_override = function(client, bufnr)
+      if client.name == "intelephense" then
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+      end
+    end,
+  },
+}
+```
+
 ## 🗒️ Note
 
 [Guide](https://github.com/kabinspace/AstroVim/blob/main/utils/userguide.md) is given for basic usage<br>
