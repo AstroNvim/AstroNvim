@@ -32,7 +32,7 @@ function M.setup()
     },
   }
 
-  vim.diagnostic.config(config)
+  vim.diagnostic.config(require("core.utils").user_plugin_opts("diagnostics", config))
 
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = "rounded",
