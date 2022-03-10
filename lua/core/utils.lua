@@ -59,10 +59,8 @@ function M.user_plugin_opts(plugin, default)
   local overrides = _user_settings.overrides[plugin]
   if overrides ~= nil then
     default = func_or_extend(overrides, default)
-  else
-    default = load_user_settings(plugin, default)
   end
-  return default
+  return load_user_settings(plugin, default)
 end
 
 function M.impatient()
