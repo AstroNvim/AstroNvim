@@ -364,7 +364,7 @@ packer.startup {
       use(plugin)
     end
   end,
-  config = {
+  config = require("core.utils").user_plugin_opts("packer", {
     compile_path = config.packer_file,
     display = {
       open_fn = function()
@@ -380,7 +380,7 @@ packer.startup {
     },
     auto_clean = true,
     compile_on_sync = true,
-  },
+  }),
 }
 
 return M
