@@ -15,7 +15,7 @@ function M.setup()
   end
 
   local config = {
-    virtual_text = default.virtual_text,
+    virtual_text = default.diagnostics.enable,
     signs = {
       active = signs,
     },
