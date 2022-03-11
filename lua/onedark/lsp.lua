@@ -1,8 +1,10 @@
+local default = require("core.utils").user_settings()
+
 local lsp = {
-  DiagnosticError = { fg = C.red_1 },
-  DiagnosticWarn = { fg = C.orange_1 },
-  DiagnosticInfo = { fg = C.white_2 },
-  DiagnosticHint = { fg = C.yellow_1 },
+  DiagnosticError = { fg = C.red_1, style = default.diagnostics.text },
+  DiagnosticWarn = { fg = C.orange_1, style = default.diagnostics.text },
+  DiagnosticInfo = { fg = C.white_2, style = default.diagnostics.text },
+  DiagnosticHint = { fg = C.yellow_1, style = default.diagnostics.text },
   DiagnosticUnderlineError = { style = "undercurl", sp = C.red_2 },
   DiagnosticUnderlineWarn = { style = "undercurl", sp = C.red_2 },
   DiagnosticUnderlineInfo = { style = "undercurl", sp = C.red_2 },

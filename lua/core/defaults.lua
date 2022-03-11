@@ -25,7 +25,10 @@ local config = {
     which_key = {},
   },
 
-  virtual_text = true,
+  diagnostics = {
+    enable = true,
+    text = "none",
+  },
 
   enabled = {
     bufferline = true,

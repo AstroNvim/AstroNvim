@@ -21,8 +21,11 @@ local config = {
     },
   },
 
-  -- On/off virtual diagnostics text
-  virtual_text = true,
+  -- Diagnostics option
+  diagnostics = {
+    enable = true,
+    text = "none",
+  },
 
   -- Disable default plugins
   enabled = {
