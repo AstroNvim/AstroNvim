@@ -83,7 +83,13 @@ Run `:AstroUpdate` to get the latest updates from the repository<br>
 
 ## ⚙️ Configuration
 
-[User](https://github.com/kabinspace/AstroVim/blob/main/lua/user) directory is given for custom configuration
+To begin making custom user configurations you must create a `user/` folder. The provided example can be created with (please note the trailing slashes after the directory names)
+
+```sh
+cp -r ~/.config/nvim/lua/user_example/ ~/.config/nvim/lua/user/
+```
+
+The provided example [User](https://github.com/kabinspace/AstroVim/blob/main/lua/user_example) directory is given for custom configuration:
 
 ```lua
 -- Set colorscheme
