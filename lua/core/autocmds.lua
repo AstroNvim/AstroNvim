@@ -31,15 +31,6 @@ if config.enabled.dashboard and config.enabled.bufferline then
   ]]
 end
 
-vim.cmd(string.format(
-  [[
-    augroup colorscheme
-      autocmd!
-      autocmd VimEnter * colorscheme %s
-    augroup end]],
-  colorscheme
-))
-
 vim.cmd [[
   command! AstroUpdate lua require('core.utils').update()
 ]]
