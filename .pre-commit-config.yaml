@@ -21,6 +21,6 @@ repos:
     hooks:
     -   id: luacheck
 -   repo: https://github.com/JohnnyMorganz/StyLua.git
-    rev: v0.12.4
+    rev: v0.12.5
     hooks:
     -   id: stylua
