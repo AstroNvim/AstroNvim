@@ -3,28 +3,35 @@ local config = {
   -- Set colorscheme
   colorscheme = "onedark",
 
-  -- Add plugins
+  -- Configure Plugins
   plugins = {
-    -- { "andweeb/presence.nvim" },
-    -- {
-    -- "ray-x/lsp_signature.nvim",
-    -- event = "BufRead",
-    -- config = function()
-    -- require("lsp_signature").setup()
-    -- end,
-    -- },
-  },
-
-  overrides = {
+    -- Add plugins
+    init = {
+      -- { "andweeb/presence.nvim" },
+      -- {
+      --   "ray-x/lsp_signature.nvim",
+      --   event = "BufRead",
+      --   config = function()
+      --     require("lsp_signature").setup()
+      --   end,
+      -- },
+    },
     treesitter = {
       ensure_installed = { "lua" },
     },
+    packer = {
+      compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
+    },
   },
 
-  -- Diagnostics option
+  -- Diagnostics configuration
   diagnostics = {
-    enable = true,
-    text = "none",
+    virtual_text = true,
+  },
+
+  -- One Dark configuration
+  one_dark = {
+    diagnostics_style = "none",
   },
 
   -- Disable default plugins
@@ -45,8 +52,6 @@ local config = {
     ts_rainbow = true,
     ts_autotag = true,
   },
-
-  packer_file = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
 
   polish = function()
     local opts = { noremap = true, silent = true }

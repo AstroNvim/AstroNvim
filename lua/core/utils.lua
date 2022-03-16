@@ -85,7 +85,7 @@ function M.impatient()
 end
 
 function M.compiled()
-  local run_me, _ = loadfile(_user_settings.packer_file)
+  local run_me, _ = loadfile(_user_settings.plugins.packer.compile_path)
   if run_me then
     run_me()
   else

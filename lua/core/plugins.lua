@@ -132,9 +132,9 @@ local astro_plugins = {
   ["L3MON4D3/LuaSnip"] = {
     "L3MON4D3/LuaSnip",
     config = function()
-      local settings = require("core.utils").user_settings()
+      local paths = require("core.utils").user_plugin_opts("luasnip.vscode_snippet_paths", {})
       local loader = require "luasnip/loaders/from_vscode"
-      loader.lazy_load { paths = settings.overrides.luasnip.vscode_snippets_paths }
+      loader.lazy_load { paths = paths }
       loader.lazy_load()
     end,
     requires = {
