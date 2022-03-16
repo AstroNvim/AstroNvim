@@ -216,7 +216,7 @@ Use the options provided by `nvim-cmp` to change the order, etc. as you see fit.
 
 You might want to override the default LSP settings for some servers to enable advanced features. This can be achieved by making a `server-settings` folder inside of your user config and creating `lua` files named for the LSP server. Examples of this can be found in [`/lua/configs/lsp/server-settings`](https://github.com/kabinspace/AstroVim/tree/main/lua/configs/lsp/server-settings).
 
-For example, if you want to add schemas to the `yamlls` LSP server, you can create the file `yamlls.lua` inside of a `server-settings/` folder in `/lua/user/` with the contents (`/lua/user/server-settings/yamlls.lua`):
+For example, if you want to add schemas to the `yamlls` LSP server, you can create the file `yamlls.lua` inside of a `lsp/server-settings/` folder in `/lua/user/` with the contents (`/lua/user/lsp/server-settings/yamlls.lua`):
 
 ```lua
 local opts = {
@@ -238,7 +238,7 @@ return opts
 
 Some plugins need to do special magic to the LSP configuration to enable advanced features. One example for this is the `rust-tools.nvim` plugin.
 
-Those can override `overrides.lsp_installer.server_registration_override`.
+Those can override `overrides.lsp.server_registration`.
 
 For example the `rust-tools.nvim` plugin can be set up like this:
 
@@ -255,8 +255,8 @@ and then wired up with:
 
 ```lua
   overrides = {
-    lsp_installer = {
-      server_registration_override = function(server, server_opts)
+    lsp = {
+      server_registration = function(server, server_opts)
         -- Special code for rust.tools.nvim!
         if server.name == "rust_analyzer" then
           local extension_path = vim.fn.stdpath "data" .. "/dapinstall/codelldb/extension/"
@@ -277,16 +277,38 @@ and then wired up with:
   },
 ```
 
+_Note:_ This function can also be placed in a separate file from the `user/settings.lua` file at `user/lsp/server_registration.lua` with the contents:
+
+```lua
+return function(server, server_opts)
+  -- Special code for rust.tools.nvim!
+  if server.name == "rust_analyzer" then
+    local extension_path = vim.fn.stdpath "data" .. "/dapinstall/codelldb/extension/"
+    local codelldb_path = extension_path .. "adapter/codelldb"
+    local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+
+    require("rust-tools").setup {
+      server = server_opts,
+      dap = {
+        adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+      },
+    }
+  else
+    server:setup(server_opts)
+  end
+end
+```
+
 ### Extending the LSP on_attach Function
 
-Some users may want to have more control over the `on_attach` function of their LSP servers to enable or disable capabilities. This can be extended with `overrides.lsp_installer.on_attach_override`
+Some users may want to have more control over the `on_attach` function of their LSP servers to enable or disable capabilities. This can be extended with `overrides.lsp.on_attach`
 
 For example if you want to disable document formatting for `intelephense`:
 
 ```lua
 overrides = {
-  lsp_installer = {
-    on_attach_override = function(client, bufnr)
+  lsp = {
+    on_attach = function(client, bufnr)
       if client.name == "intelephense" then
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.document_range_formatting = false
@@ -294,6 +316,17 @@ overrides = {
     end,
   },
 }
+```
+
+_Note:_ This function can also be placed in a separate file from the `user/settings.lua` file at `user/lsp/on_attach.lua` with the contents:
+
+```lua
+return function(client, bufnr)
+  if client.name == "intelephense" then
+    client.resolved_capabilities.document_formatting = false
+    client.resolved_capabilities.document_range_formatting = false
+  end
+end
 ```
 
 ## 🗒️ Note

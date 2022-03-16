@@ -85,7 +85,7 @@ M.on_attach = function(client, bufnr)
     client.resolved_capabilities.document_formatting = false
   end
 
-  local on_attach_override = require("core.utils").user_plugin_opts "lsp_installer.on_attach_override"
+  local on_attach_override = require("core.utils").user_plugin_opts "lsp.on_attach"
   if on_attach_override ~= nil then
     on_attach_override(client, bufnr)
   end
