@@ -14,7 +14,11 @@ end
 local function load_user_settings(module, default)
   local overrides_status_ok, overrides = pcall(require, "user." .. module)
   if overrides_status_ok then
-    default = func_or_extend(overrides, default)
+    if default ~= nil then
+      default = func_or_extend(overrides, default)
+    else
+      default = overrides
+    end
   end
   return default
 end
@@ -56,9 +60,19 @@ function M.user_settings()
 end
 
 function M.user_plugin_opts(plugin, default)
-  local overrides = _user_settings.overrides[plugin]
+  local overrides = _user_settings.overrides
+  for tbl in string.gmatch(plugin, "([^%.]+)") do
+    overrides = overrides[tbl]
+    if overrides == nil then
+      break
+    end
+  end
   if overrides ~= nil then
-    default = func_or_extend(overrides, default)
+    if default ~= nil then
+      default = func_or_extend(overrides, default)
+    else
+      return overrides
+    end
   end
   return load_user_settings(plugin, default)
 end
