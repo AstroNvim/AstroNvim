@@ -118,13 +118,12 @@ function M.update()
       on_start = function()
         print "Updating..."
       end,
-      on_exit = function()
-        if vim.tbl_isempty(errors) then
+      on_exit = function(_, return_val)
+        if return_val == 0 then
           print "Updated!"
         else
-          table.insert(errors, 1, "Something went wrong! Please pull changes manually.")
-          table.insert(errors, 2, "")
-          print("Update failed!", { timeout = 30000 })
+          table.insert(errors, 1, "Update failed! Please try pulling manually.")
+          print(vim.inspect(errors))
         end
       end,
       on_stderr = function(_, err)
