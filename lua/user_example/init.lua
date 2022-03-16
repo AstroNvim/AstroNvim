@@ -30,7 +30,7 @@ local config = {
   },
 
   -- One Dark configuration
-  one_dark = {
+  onedark = {
     diagnostics_style = "none",
   },
 

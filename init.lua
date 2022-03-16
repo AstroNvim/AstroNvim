@@ -20,10 +20,10 @@ for _, source in ipairs(sources) do
   end
 end
 
-local config = utils.user_settings()
+local polish = utils.user_plugin_opts "polish"
 
-if type(config.polish) == "function" then
-  config.polish()
+if type(polish) == "function" then
+  polish()
 else
   error "The polish value in your user configuration must be a function"
 end
