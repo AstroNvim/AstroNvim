@@ -338,7 +338,7 @@ local astro_plugins = {
     "max397574/better-escape.nvim",
     event = { "InsertEnter" },
     config = function()
-      require("better_escape").setup(utils.user_plugin_opts("better_escape", {
+      require("better_escape").setup(require("core.utils").user_plugin_opts("better_escape", {
         mapping = { "ii", "jj", "jk", "kj" },
         timeout = vim.o.timeoutlen,
         keys = "<ESC>",
