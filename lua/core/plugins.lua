@@ -225,9 +225,9 @@ local astro_plugins = {
     "jose-elias-alvarez/null-ls.nvim",
     event = "BufRead",
     config = function()
-      local status_ok, null_ls = pcall(require, "user.null-ls")
-      if status_ok then
-        null_ls.config()
+      local null_ls = require("core.utils").user_plugin_opts "null-ls"
+      if type(null_ls) == "function" then
+        null_ls()
       end
     end,
   },
