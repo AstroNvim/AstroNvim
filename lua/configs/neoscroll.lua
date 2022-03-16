@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  neoscroll.setup(require("core.utils").user_plugin_opts("neoscroll", {
+  neoscroll.setup(require("core.utils").user_plugin_opts("plugins.neoscroll", {
     -- All these keys will be mapped to their corresponding default scrolling animation
     mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
     hide_cursor = true, -- Hide cursor while scrolling

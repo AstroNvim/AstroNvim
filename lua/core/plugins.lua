@@ -348,21 +348,12 @@ local astro_plugins = {
 
 packer.startup {
   function(use)
-    local plugins = astro_plugins
-
-    -- Append user defined plugins
-    if config.plugins and not vim.tbl_isempty(config.plugins) then
-      for _, plugin in pairs(config.plugins) do
-        table.insert(plugins, plugin)
-      end
-    end
-
     -- Load plugins!
-    for _, plugin in pairs(require("core.utils").user_plugin_opts("plugins", plugins)) do
+    for _, plugin in pairs(require("core.utils").user_plugin_opts("plugins.init", astro_plugins)) do
       use(plugin)
     end
   end,
-  config = require("core.utils").user_plugin_opts("packer", {
+  config = require("core.utils").user_plugin_opts("plugins.packer", {
     compile_path = config.packer_file,
     display = {
       open_fn = function()

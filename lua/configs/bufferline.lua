@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  bufferline.setup(require("core.utils").user_plugin_opts("bufferline", {
+  bufferline.setup(require("core.utils").user_plugin_opts("plugins.bufferline", {
     options = {
       offsets = {
         { filetype = "NvimTree", text = "", padding = 1 },

@@ -8,7 +8,7 @@ function M.config()
     return
   end
 
-  local colorizer_opts = user_plugin_opts("colorizer", {
+  local colorizer_opts = user_plugin_opts("plugins.colorizer", {
     { "*" },
     {
       RGB = true, -- #RGB hex codes

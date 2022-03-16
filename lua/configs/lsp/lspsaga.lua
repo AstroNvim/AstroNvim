@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  lspsaga.setup(require("core.utils").user_plugin_opts("lspsaga", {
+  lspsaga.setup(require("core.utils").user_plugin_opts("plugins.lspsaga", {
     debug = false,
     use_saga_diagnostic_sign = false,
     -- Diagnostics

@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  comment.setup(require("core.utils").user_plugin_opts("Comment", {
+  comment.setup(require("core.utils").user_plugin_opts("plugins.Comment", {
     pre_hook = function(ctx)
       local U = require "Comment.utils"
 

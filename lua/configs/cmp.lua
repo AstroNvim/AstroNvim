@@ -39,7 +39,7 @@ function M.config()
     TypeParameter = "",
   }
 
-  cmp.setup(require("core.utils").user_plugin_opts("cmp", {
+  cmp.setup(require("core.utils").user_plugin_opts("plugins.cmp", {
     preselect = cmp.PreselectMode.None,
     formatting = {
       fields = { "kind", "abbr", "menu" },

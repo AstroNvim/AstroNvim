@@ -9,7 +9,7 @@ function M.config()
   local actions = require "telescope.actions"
   telescope.load_extension "fzf"
 
-  telescope.setup(require("core.utils").user_plugin_opts("telescope", {
+  telescope.setup(require("core.utils").user_plugin_opts("plugins.telescope", {
     defaults = {
 
       prompt_prefix = " ",

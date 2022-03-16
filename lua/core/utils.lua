@@ -60,7 +60,7 @@ function M.user_settings()
 end
 
 function M.user_plugin_opts(plugin, default)
-  local overrides = _user_settings.overrides
+  local overrides = _user_settings
   for tbl in string.gmatch(plugin, "([^%.]+)") do
     overrides = overrides[tbl]
     if overrides == nil then
