@@ -23,7 +23,7 @@ local function load_user_settings(module, default)
   return default
 end
 
-local _user_settings = load_user_settings("settings", require "core.defaults")
+local _user_settings = load_user_settings("init", require "core.defaults")
 
 function M.bootstrap()
   local fn = vim.fn
