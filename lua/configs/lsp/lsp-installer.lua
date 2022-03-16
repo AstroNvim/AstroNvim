@@ -3,6 +3,8 @@ if not status_ok then
   return
 end
 
+local user_plugin_opts = require("core.utils").user_plugin_opts
+
 lsp_installer.on_server_ready(function(server)
   local opts = server:get_default_options()
   opts.on_attach = require("configs.lsp.handlers").on_attach
@@ -14,10 +16,12 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", av_overrides, opts)
   end
 
-  local user, user_overrides = pcall(require, "user.server-settings." .. server.name)
-  if user then
-    opts = vim.tbl_deep_extend("force", user_overrides, opts)
-  end
+  opts = user_plugin_opts("server-settings." .. server.name, opts)
 
-  require("core.utils").user_settings().overrides.lsp_installer.server_registration_override(server, opts)
+  local user_override = user_plugin_opts "lsp_installer.server_registration_override"
+  if user_override ~= nil then
+    user_override(server, opts)
+  else
+    server:setup(opts)
+  end
 end)
