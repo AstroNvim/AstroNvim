@@ -1,8 +1,6 @@
 local M = {}
 
 function M.setup()
-  local default = require("core.utils").user_settings()
-
   local signs = {
     { name = "DiagnosticSignError", text = "" },
     { name = "DiagnosticSignWarn", text = "" },
@@ -15,7 +13,7 @@ function M.setup()
   end
 
   local config = {
-    virtual_text = default.diagnostics.enable,
+    virtual_text = true,
     signs = {
       active = signs,
     },
