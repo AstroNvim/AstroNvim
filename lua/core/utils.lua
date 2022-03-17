@@ -126,6 +126,14 @@ function M.list_registered_linters(filetype)
   return registered_providers[formatter_method] or {}
 end
 
+function M.label_plugins(plugins)
+  local labelled = {}
+  for _, plugin in ipairs(plugins) do
+    labelled[plugin[1]] = plugin
+  end
+  return labelled
+end
+
 function M.update()
   local Job = require "plenary.job"
   local errors = {}
