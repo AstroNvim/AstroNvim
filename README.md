@@ -89,66 +89,11 @@ To begin making custom user configurations you must create a `user/` folder. The
 cp -r ~/.config/nvim/lua/user_example/ ~/.config/nvim/lua/user/
 ```
 
-The provided example [User](https://github.com/kabinspace/AstroVim/blob/main/lua/user_example) directory is given for custom configuration:
-
-```lua
--- Set colorscheme
-colorscheme = "default_theme",
-
--- Add plugins
-plugins = {
-  { "andweeb/presence.nvim" },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "BufRead",
-    config = function()
-      require("lsp_signature").setup()
-    end,
-  },
-}
-
--- Overrides
-overrides = {
-  treesitter = {
-    ensure_installed = { "lua" },
-  },
-},
-
--- On/off virtual diagnostics text
-virtual_text = true,
-
--- Set options
-set.relativenumber = true
-
--- Set key bindings
-map("n", "<C-s>", ":w!<CR>", opts)
-
--- Set autocommands
-vim.cmd [[
-  augroup packer_conf
-    autocmd!
-    autocmd bufwritepost plugins.lua source <afile> | PackerSync
-  augroup end
-]]
-
--- Add formatters and linters
--- https://github.com/jose-elias-alvarez/null-ls.nvim
-null_ls.setup {
-  debug = false,
-  sources = {
-    -- Set a formatter
-    formatting.rufo,
-    -- Set a linter
-    diagnostics.rubocop,
-  },
-  -- NOTE: You can remove this on attach function to disable format on save
-  on_attach = function(client)
-    if client.resolved_capabilities.document_formatting then
-      vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()"
-    end
-  end,
-}
-```
+The provided example
+[user_example](https://github.com/kabinspace/AstroVim/blob/main/lua/user_example)
+contains an `init.lua` file which can be used for all user configuration. After
+running the `cp` command above this file can be found in
+`~/.config/nvim/lua/user/init.lua`.
 
 ## Extending AstroVim
 
@@ -158,35 +103,51 @@ Please get in contact when you run into some setup issue where that is not the c
 
 ### Add more Plugins
 
-Just copy the `packer` configuration without the `use` and with a `,` after the last closing `}` into the `plugins` key of your `user/settings.lua` file.
+Just copy the `packer` configuration without the `use` and with a `,` after the last closing `}` into the `plugins`, `init` key of your `user/init.lua` file.
 
-See the example above.
+See the example in the [user_example](https://github.com/kabinspace/AstroVim/blob/main/lua/user_example) directory.
 
 ### Change Default Plugin Configurations
 
 AstroVim allows you to easily override the setup of any pre-configured plugins.
-Simply add a table to the `overrides` table with a key the same name as the
+Simply add a table to the `plugins` table with a key the same name as the
 plugin package and return a table with the new options or overrides that you
-want. For an example see the included `overrides` entry for `treesitter` which
-lets you extend the default treesitter configuration.
+want. For an example see the included `plugins` entry for `treesitter` in the
+`user_example` folder which lets you extend the default treesitter
+configuration.
 
 ### Change Default Packer Configuration
 
-The `overrides` table extensibility includes the packer configuration for all
+The `plugins` table extensibility includes the packer configuration for all
 plugins, user plugins as well as plugins configured by AstroVim.
 
-E.g. this code in your `settings.lua` `overrides` table will globally disable the lazy loading that is used by AstroVim by default:
+E.g. this code in your `init.lua` `plugins` table remove `dashboard-nvim` and disable lazy loading of `toggleterm`:
 
 ```lua
-overrides = {
-  plugins = function(plugins)
-    local result = {}
-    for _, plugin in pairs(plugins) do
-      plugin["cmd"] = nil
-      plugin["event"] = nil
-      table.insert(result, plugin)
-    end
-    return result
+plugins = {
+  -- if the plugins init table can be a function on the default plugin table
+  -- instead of a table to be extended. This lets you modify the details of the default plugins
+  init = function(plugins)
+    -- add your new plugins to this table
+    local my_plugins = {
+      -- { "andweeb/presence.nvim" },
+      -- {
+      --   "ray-x/lsp_signature.nvim",
+      --   event = "BufRead",
+      --   config = function()
+      --     require("lsp_signature").setup()
+      --   end,
+      -- },
+    }
+
+    -- Remove a default plugins all-together
+    plugins["glepnir/dashboard-nvim"] = nil
+
+    -- Modify default plugin packer configuration
+    plugins["akinsho/nvim-toggleterm.lua"]["cmd"] = nil
+
+    -- add the my_plugins table to the plugin table
+    return vim.tbl_deep_extend("force", plugins, my_plugins)
   end,
 }
 ```
