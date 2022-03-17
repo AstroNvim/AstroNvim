@@ -1,10 +1,10 @@
-local default = require("core.utils").user_settings()
+local user_settings = require("core.utils").user_plugin_opts("onedark", {})
 
 local lsp = {
-  DiagnosticError = { fg = C.red_1, style = default.onedark.diagnostics_style },
-  DiagnosticWarn = { fg = C.orange_1, style = default.onedark.diagnostics_style },
-  DiagnosticInfo = { fg = C.white_2, style = default.onedark.diagnostics_style },
-  DiagnosticHint = { fg = C.yellow_1, style = default.onedark.diagnostics_style },
+  DiagnosticError = { fg = C.red_1, style = user_settings.diagnostics_style },
+  DiagnosticWarn = { fg = C.orange_1, style = user_settings.diagnostics_style },
+  DiagnosticInfo = { fg = C.white_2, style = user_settings.diagnostics_style },
+  DiagnosticHint = { fg = C.yellow_1, style = user_settings.diagnostics_style },
   DiagnosticUnderlineError = { style = "undercurl", sp = C.red_2 },
   DiagnosticUnderlineWarn = { style = "undercurl", sp = C.red_2 },
   DiagnosticUnderlineInfo = { style = "undercurl", sp = C.red_2 },
