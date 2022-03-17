@@ -1,4 +1,4 @@
-local user_settings = require("core.utils").user_plugin_opts("onedark", {})
+local user_settings = require("core.utils").user_plugin_opts("default_theme", {})
 
 local lsp = {
   DiagnosticError = { fg = C.red_1, style = user_settings.diagnostics_style },

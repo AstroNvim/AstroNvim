@@ -1,7 +1,7 @@
 local config = {
 
   -- Set colorscheme
-  colorscheme = "onedark",
+  colorscheme = "default_theme",
 
   -- Configure Plugins
   plugins = {
@@ -63,8 +63,8 @@ local config = {
     }
   end,
 
-  -- One Dark configuration
-  onedark = {
+  -- Default theme configuration
+  default_theme = {
     diagnostics_style = "none",
   },
 

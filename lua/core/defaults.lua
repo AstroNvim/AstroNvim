@@ -1,6 +1,6 @@
 local config = {
 
-  colorscheme = "onedark",
+  colorscheme = "default_theme",
 
   plugins = {
     packer = {
@@ -12,7 +12,7 @@ local config = {
     virtual_text = true,
   },
 
-  onedark = {
+  default_theme = {
     diagnostics_style = "none",
   },
 

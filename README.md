@@ -93,7 +93,7 @@ The provided example [User](https://github.com/kabinspace/AstroVim/blob/main/lua
 
 ```lua
 -- Set colorscheme
-colorscheme = "onedark",
+colorscheme = "default_theme",
 
 -- Add plugins
 plugins = {
