@@ -83,6 +83,26 @@ local astro_plugins = {
     disable = not config.enabled.lualine,
   },
 
+  -- Parenthesis highlighting
+  {
+    "p00f/nvim-ts-rainbow",
+    after = "nvim-treesitter",
+    disable = not config.enabled.ts_rainbow,
+  },
+
+  -- Autoclose tags
+  {
+    "windwp/nvim-ts-autotag",
+    after = "nvim-treesitter",
+    disable = not config.enabled.ts_autotag,
+  },
+
+  -- Context based commenting
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    after = "nvim-treesitter",
+  },
+
   -- Syntax highlighting
   {
     "nvim-treesitter/nvim-treesitter",
@@ -101,25 +121,6 @@ local astro_plugins = {
     config = function()
       require("configs.treesitter").config()
     end,
-    requires = {
-      {
-        -- Parenthesis highlighting
-        "p00f/nvim-ts-rainbow",
-        after = "nvim-treesitter",
-        disable = not config.enabled.ts_rainbow,
-      },
-      {
-        -- Autoclose tags
-        "windwp/nvim-ts-autotag",
-        after = "nvim-treesitter",
-        disable = not config.enabled.ts_autotag,
-      },
-      {
-        -- Context based commenting
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        after = "nvim-treesitter",
-      },
-    },
   },
 
   -- Snippet collection
