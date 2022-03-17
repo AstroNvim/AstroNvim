@@ -1,10 +1,13 @@
+local impatient_ok, impatient = pcall(require, "impatient")
+if impatient_ok then
+  impatient.enable_profile()
+end
+
 local utils = require "core.utils"
 
 utils.disabled_builtins()
 
 utils.bootstrap()
-
-utils.impatient()
 
 local sources = {
   "core.options",
