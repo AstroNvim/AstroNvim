@@ -24,8 +24,6 @@ local polish = utils.user_plugin_opts "polish"
 
 if type(polish) == "function" then
   polish()
-else
-  error "The polish value in your user configuration must be a function"
 end
 
 -- keep this last:
