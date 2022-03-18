@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  vim.g.symbols_outline = require("core.utils").user_plugin_opts("symbols_outline", {
+  vim.g.symbols_outline = require("core.utils").user_plugin_opts("plugins.symbols_outline", {
     highlight_hovered_item = true,
     show_guides = true,
     auto_preview = true,

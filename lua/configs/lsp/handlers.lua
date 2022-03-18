@@ -1,8 +1,6 @@
 local M = {}
 
 function M.setup()
-  local default = require("core.utils").user_settings()
-
   local signs = {
     { name = "DiagnosticSignError", text = "" },
     { name = "DiagnosticSignWarn", text = "" },
@@ -15,7 +13,7 @@ function M.setup()
   end
 
   local config = {
-    virtual_text = default.diagnostics.enable,
+    virtual_text = true,
     signs = {
       active = signs,
     },
@@ -74,18 +72,15 @@ end
 M.on_attach = function(client, bufnr)
   if client.name == "tsserver" then
     client.resolved_capabilities.document_formatting = false
-  end
-  if client.name == "jsonls" then
+  elseif client.name == "jsonls" then
     client.resolved_capabilities.document_formatting = false
-  end
-  if client.name == "html" then
+  elseif client.name == "html" then
     client.resolved_capabilities.document_formatting = false
-  end
-  if client.name == "sumneko_lua" then
+  elseif client.name == "sumneko_lua" then
     client.resolved_capabilities.document_formatting = false
   end
 
-  local on_attach_override = require("core.utils").user_plugin_opts "lsp_installer.on_attach_override"
+  local on_attach_override = require("core.utils").user_plugin_opts "lsp.on_attach"
   if on_attach_override ~= nil then
     on_attach_override(client, bufnr)
   end

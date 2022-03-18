@@ -169,7 +169,7 @@ function M.config()
     padding = { left = 1, right = 0 },
   }
 
-  lualine.setup(require("core.utils").user_plugin_opts("lualine", config))
+  lualine.setup(require("core.utils").user_plugin_opts("plugins.lualine", config))
 end
 
 return M

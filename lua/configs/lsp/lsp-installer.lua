@@ -16,9 +16,9 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", av_overrides, opts)
   end
 
-  opts = user_plugin_opts("server-settings." .. server.name, opts)
+  opts = user_plugin_opts("lsp.server-settings." .. server.name, opts)
 
-  local user_override = user_plugin_opts "lsp_installer.server_registration_override"
+  local user_override = user_plugin_opts "lsp.server_registration"
   if user_override ~= nil then
     user_override(server, opts)
   else

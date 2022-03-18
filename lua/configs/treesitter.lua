@@ -38,7 +38,7 @@ function M.config()
     },
   }
 
-  treesitter.setup(require("core.utils").user_plugin_opts("treesitter", default_opts))
+  treesitter.setup(require("core.utils").user_plugin_opts("plugins.treesitter", default_opts))
 end
 
 return M

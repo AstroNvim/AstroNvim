@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  gitsigns.setup(require("core.utils").user_plugin_opts("gitsigns", {
+  gitsigns.setup(require("core.utils").user_plugin_opts("plugins.gitsigns", {
     signs = {
       add = { hl = "GitSignsAdd", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
       change = { hl = "GitSignsChange", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },

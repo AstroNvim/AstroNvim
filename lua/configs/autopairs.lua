@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  npairs.setup(require("core.utils").user_plugin_opts("nvim-autopairs", {
+  npairs.setup(require("core.utils").user_plugin_opts("plugins.nvim-autopairs", {
     check_ts = true,
     ts_config = {
       lua = { "string", "source" },

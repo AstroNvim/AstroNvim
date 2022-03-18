@@ -8,9 +8,9 @@ function M.config()
     return
   end
 
-  colorizer.setup(
-    user_plugin_opts("colorizer.filetype_opts", { "*" }), -- Highlight all files, but customize some others
-    user_plugin_opts("colorizer.default_opts", {
+  local colorizer_opts = user_plugin_opts("plugins.colorizer", {
+    { "*" },
+    {
       RGB = true, -- #RGB hex codes
       RRGGBB = true, -- #RRGGBB hex codes
       names = false, -- "Name" codes like Blue
@@ -20,8 +20,9 @@ function M.config()
       css = false, -- Enable all css features: rgb_fn, hsl_fn, names, RGB, RRGGBB
       css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
       mode = "background", -- Set the display mode
-    })
-  )
+    },
+  })
+  colorizer.setup(colorizer_opts[1], colorizer_opts[2])
 end
 
 return M

@@ -1,10 +1,13 @@
+local impatient_ok, impatient = pcall(require, "impatient")
+if impatient_ok then
+  impatient.enable_profile()
+end
+
 local utils = require "core.utils"
 
 utils.disabled_builtins()
 
 utils.bootstrap()
-
-utils.impatient()
 
 local sources = {
   "core.options",
@@ -20,12 +23,10 @@ for _, source in ipairs(sources) do
   end
 end
 
-local config = utils.user_settings()
+local polish = utils.user_plugin_opts "polish"
 
-if type(config.polish) == "function" then
-  config.polish()
-else
-  error "The polish value in your user configuration must be a function"
+if type(polish) == "function" then
+  polish()
 end
 
 -- keep this last:

@@ -10,27 +10,21 @@ local config = utils.user_settings()
 
 local astro_plugins = {
   -- Plugin manager
-  ["wbthomason/packer.nvim"] = {
+  {
     "wbthomason/packer.nvim",
   },
 
   -- Optimiser
-  ["lewis6991/impatient.nvim"] = {
-    "lewis6991/impatient.nvim",
-  },
+  { "lewis6991/impatient.nvim" },
 
   -- Lua functions
-  ["nvim-lua/plenary.nvim"] = {
-    "nvim-lua/plenary.nvim",
-  },
+  { "nvim-lua/plenary.nvim" },
 
   -- Popup API
-  ["nvim-lua/popup.nvim"] = {
-    "nvim-lua/popup.nvim",
-  },
+  { "nvim-lua/popup.nvim" },
 
   -- Boost startup time
-  ["nathom/filetype.nvim"] = {
+  {
     "nathom/filetype.nvim",
     config = function()
       vim.g.did_load_filetypes = 1
@@ -38,7 +32,7 @@ local astro_plugins = {
   },
 
   -- Cursorhold fix
-  ["antoinemadec/FixCursorHold.nvim"] = {
+  {
     "antoinemadec/FixCursorHold.nvim",
     event = "BufRead",
     config = function()
@@ -47,7 +41,7 @@ local astro_plugins = {
   },
 
   -- Icons
-  ["kyazdani42/nvim-web-devicons"] = {
+  {
     "kyazdani42/nvim-web-devicons",
     config = function()
       require("configs.icons").config()
@@ -55,7 +49,7 @@ local astro_plugins = {
   },
 
   -- Bufferline
-  ["akinsho/bufferline.nvim"] = {
+  {
     "akinsho/bufferline.nvim",
     after = "nvim-web-devicons",
     config = function()
@@ -65,12 +59,12 @@ local astro_plugins = {
   },
 
   -- Better buffer closing
-  ["moll/vim-bbye"] = {
+  {
     "moll/vim-bbye",
   },
 
   -- File explorer
-  ["kyazdani42/nvim-tree.lua"] = {
+  {
     "kyazdani42/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     config = function()
@@ -80,7 +74,7 @@ local astro_plugins = {
   },
 
   -- Statusline
-  ["nvim-lualine/lualine.nvim"] = {
+  {
     "nvim-lualine/lualine.nvim",
     commit = "6a3d367",
     config = function()
@@ -89,8 +83,28 @@ local astro_plugins = {
     disable = not config.enabled.lualine,
   },
 
+  -- Parenthesis highlighting
+  {
+    "p00f/nvim-ts-rainbow",
+    after = "nvim-treesitter",
+    disable = not config.enabled.ts_rainbow,
+  },
+
+  -- Autoclose tags
+  {
+    "windwp/nvim-ts-autotag",
+    after = "nvim-treesitter",
+    disable = not config.enabled.ts_autotag,
+  },
+
+  -- Context based commenting
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    after = "nvim-treesitter",
+  },
+
   -- Syntax highlighting
-  ["nvim-treesitter/nvim-treesitter"] = {
+  {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
     event = "BufRead",
@@ -107,44 +121,29 @@ local astro_plugins = {
     config = function()
       require("configs.treesitter").config()
     end,
-    requires = {
-      {
-        -- Parenthesis highlighting
-        "p00f/nvim-ts-rainbow",
-        after = "nvim-treesitter",
-        disable = not config.enabled.ts_rainbow,
-      },
-      {
-        -- Autoclose tags
-        "windwp/nvim-ts-autotag",
-        after = "nvim-treesitter",
-        disable = not config.enabled.ts_autotag,
-      },
-      {
-        -- Context based commenting
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        after = "nvim-treesitter",
-      },
-    },
+  },
+
+  -- Snippet collection
+  {
+    "rafamadriz/friendly-snippets",
+    module = "cmp_nvim_lsp",
+    event = "InsertEnter",
   },
 
   -- Snippet engine
-  ["L3MON4D3/LuaSnip"] = {
+  {
     "L3MON4D3/LuaSnip",
     config = function()
-      local settings = require("core.utils").user_settings()
+      local paths = require("core.utils").user_plugin_opts("luasnip.vscode_snippet_paths", {})
       local loader = require "luasnip/loaders/from_vscode"
-      loader.lazy_load { paths = settings.overrides.luasnip.vscode_snippets_paths }
+      loader.lazy_load { paths = paths }
       loader.lazy_load()
     end,
-    requires = {
-      -- Snippet collections
-      "rafamadriz/friendly-snippets",
-    },
+    wants = "friendly-snippets",
   },
 
   -- Completion engine
-  ["hrsh7th/nvim-cmp"] = {
+  {
     "hrsh7th/nvim-cmp",
     event = "BufRead",
     config = function()
@@ -153,30 +152,39 @@ local astro_plugins = {
   },
 
   -- Snippet completion source
-  ["saadparwaiz1/cmp_luasnip"] = {
+  {
     "saadparwaiz1/cmp_luasnip",
     after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "luasnip"
+    end,
   },
 
   -- Buffer completion source
-  ["hrsh7th/cmp-buffer"] = {
+  {
     "hrsh7th/cmp-buffer",
     after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "buffer"
+    end,
   },
 
   -- Path completion source
-  ["hrsh7th/cmp-path"] = {
+  {
     "hrsh7th/cmp-path",
     after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "path"
+    end,
   },
 
   -- LSP completion source
-  ["hrsh7th/cmp-nvim-lsp"] = {
+  {
     "hrsh7th/cmp-nvim-lsp",
   },
 
   -- LSP manager
-  ["williamboman/nvim-lsp-installer"] = {
+  {
     "williamboman/nvim-lsp-installer",
     event = "BufRead",
     cmd = {
@@ -192,7 +200,7 @@ local astro_plugins = {
   },
 
   -- Built-in LSP
-  ["neovim/nvim-lspconfig"] = {
+  {
     "neovim/nvim-lspconfig",
     event = "BufRead",
     config = function()
@@ -201,7 +209,7 @@ local astro_plugins = {
   },
 
   -- LSP enhancer
-  ["tami5/lspsaga.nvim"] = {
+  {
     "tami5/lspsaga.nvim",
     event = "BufRead",
     config = function()
@@ -211,7 +219,7 @@ local astro_plugins = {
   },
 
   -- LSP symbols
-  ["simrat39/symbols-outline.nvim"] = {
+  {
     "simrat39/symbols-outline.nvim",
     cmd = "SymbolsOutline",
     setup = function()
@@ -221,19 +229,19 @@ local astro_plugins = {
   },
 
   -- Formatting and linting
-  ["jose-elias-alvarez/null-ls.nvim"] = {
+  {
     "jose-elias-alvarez/null-ls.nvim",
     event = "BufRead",
     config = function()
-      local status_ok, null_ls = pcall(require, "user.null-ls")
-      if status_ok then
-        null_ls.config()
+      local null_ls = require("core.utils").user_plugin_opts "null-ls"
+      if type(null_ls) == "function" then
+        null_ls()
       end
     end,
   },
 
   -- Fuzzy finder
-  ["nvim-telescope/telescope.nvim"] = {
+  {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     config = function()
@@ -242,13 +250,13 @@ local astro_plugins = {
   },
 
   -- Fuzzy finder syntax support
-  ["nvim-telescope/telescope-fzf-native.nvim"] = {
+  {
     "nvim-telescope/telescope-fzf-native.nvim",
     run = "make",
   },
 
   -- Git integration
-  ["lewis6991/gitsigns.nvim"] = {
+  {
     "lewis6991/gitsigns.nvim",
     event = "BufRead",
     config = function()
@@ -258,7 +266,7 @@ local astro_plugins = {
   },
 
   -- Start screen
-  ["glepnir/dashboard-nvim"] = {
+  {
     "glepnir/dashboard-nvim",
     config = function()
       require("configs.dashboard").config()
@@ -267,7 +275,7 @@ local astro_plugins = {
   },
 
   -- Color highlighting
-  ["norcalli/nvim-colorizer.lua"] = {
+  {
     "norcalli/nvim-colorizer.lua",
     event = "BufRead",
     config = function()
@@ -277,7 +285,7 @@ local astro_plugins = {
   },
 
   -- Autopairs
-  ["windwp/nvim-autopairs"] = {
+  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = function()
@@ -286,7 +294,7 @@ local astro_plugins = {
   },
 
   -- Terminal
-  ["akinsho/nvim-toggleterm.lua"] = {
+  {
     "akinsho/nvim-toggleterm.lua",
     cmd = "ToggleTerm",
     config = function()
@@ -296,7 +304,7 @@ local astro_plugins = {
   },
 
   -- Commenting
-  ["numToStr/Comment.nvim"] = {
+  {
     "numToStr/Comment.nvim",
     event = "BufRead",
     config = function()
@@ -306,7 +314,7 @@ local astro_plugins = {
   },
 
   -- Indentation
-  ["lukas-reineke/indent-blankline.nvim"] = {
+  {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
       require("configs.indent-line").config()
@@ -315,7 +323,7 @@ local astro_plugins = {
   },
 
   -- Keymaps popup
-  ["folke/which-key.nvim"] = {
+  {
     "folke/which-key.nvim",
     config = function()
       require("configs.which-key").config()
@@ -324,7 +332,7 @@ local astro_plugins = {
   },
 
   -- Smooth scrolling
-  ["karb94/neoscroll.nvim"] = {
+  {
     "karb94/neoscroll.nvim",
     event = "BufRead",
     config = function()
@@ -334,7 +342,7 @@ local astro_plugins = {
   },
 
   -- Smooth escaping
-  ["max397574/better-escape.nvim"] = {
+  {
     "max397574/better-escape.nvim",
     event = { "InsertEnter" },
     config = function()
@@ -343,27 +351,20 @@ local astro_plugins = {
   },
 
   -- Get extra JSON schemas
-  ["b0o/SchemaStore.nvim"] = { "b0o/SchemaStore.nvim" },
+  { "b0o/SchemaStore.nvim" },
 }
 
 packer.startup {
   function(use)
-    local plugins = astro_plugins
-
-    -- Append user defined plugins
-    if config.plugins and not vim.tbl_isempty(config.plugins) then
-      for _, plugin in pairs(config.plugins) do
-        table.insert(plugins, plugin)
-      end
-    end
-
     -- Load plugins!
-    for _, plugin in pairs(require("core.utils").user_plugin_opts("plugins", plugins)) do
+    for _, plugin in
+      pairs(require("core.utils").user_plugin_opts("plugins.init", require("core.utils").label_plugins(astro_plugins)))
+    do
       use(plugin)
     end
   end,
-  config = require("core.utils").user_plugin_opts("packer", {
-    compile_path = config.packer_file,
+  config = require("core.utils").user_plugin_opts("plugins.packer", {
+    compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
     display = {
       open_fn = function()
         return require("packer.util").float { border = "rounded" }

@@ -39,7 +39,7 @@ function M.config()
     TypeParameter = "",
   }
 
-  cmp.setup(require("core.utils").user_plugin_opts("cmp", {
+  cmp.setup(require("core.utils").user_plugin_opts("plugins.cmp", {
     preselect = cmp.PreselectMode.None,
     formatting = {
       fields = { "kind", "abbr", "menu" },
@@ -76,9 +76,6 @@ function M.config()
     },
     sources = {
       { name = "nvim_lsp" },
-      { name = "luasnip" },
-      { name = "buffer" },
-      { name = "path" },
     },
     mapping = {
       ["<C-k>"] = cmp.mapping.select_prev_item(),
