@@ -102,7 +102,7 @@ contains an `init.lua` file which can be used for all user configuration. After
 running the `cp` command above this file can be found in
 `~/.config/nvim/lua/user/init.lua`.
 
-**Advanced Configuration Options** are described in the `lua/user_example` folder's [README](https://github.com/kabinspace/AstroVim/tree/main/lua/user_example)
+**Advanced Configuration Options** are described in the [`AstroVim wiki`](https://github.com/kabinspace/AstroVim/wiki/Advanced-Configuration)
 
 ## Extending AstroVim
 
@@ -271,7 +271,7 @@ lsp = {
 
 ### More Configuration Options
 
-More detailed explanations of the possible configuration options are described in the `lua/user_example` folder's [README](https://github.com/kabinspace/AstroVim/tree/main/lua/user_example)
+More detailed explanations of the possible configuration options are described in the [AstroVim wiki](https://github.com/kabinspace/AstroVim/wiki/Advanced-Configuration)
 
 ## 🗒️ Note
 
