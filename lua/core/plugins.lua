@@ -155,18 +155,27 @@ local astro_plugins = {
   {
     "saadparwaiz1/cmp_luasnip",
     after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "luasnip"
+    end,
   },
 
   -- Buffer completion source
   {
     "hrsh7th/cmp-buffer",
     after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "buffer"
+    end,
   },
 
   -- Path completion source
   {
     "hrsh7th/cmp-path",
     after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "path"
+    end,
   },
 
   -- LSP completion source

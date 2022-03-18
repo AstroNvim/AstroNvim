@@ -76,9 +76,6 @@ function M.config()
     },
     sources = {
       { name = "nvim_lsp" },
-      { name = "luasnip" },
-      { name = "buffer" },
-      { name = "path" },
     },
     mapping = {
       ["<C-k>"] = cmp.mapping.select_prev_item(),

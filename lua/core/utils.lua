@@ -126,6 +126,15 @@ function M.list_registered_linters(filetype)
   return registered_providers[formatter_method] or {}
 end
 
+function M.add_cmp_source(source)
+  local cmp_ok, cmp = pcall(require, "cmp")
+  if cmp_ok then
+    local config = cmp.get_config()
+    table.insert(config.sources, { name = source })
+    cmp.setup(config)
+  end
+end
+
 function M.label_plugins(plugins)
   local labelled = {}
   for _, plugin in ipairs(plugins) do
