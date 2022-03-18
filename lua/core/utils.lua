@@ -5,7 +5,7 @@ local g = vim.g
 local function load_user_settings()
   local status_ok, user_settings = pcall(require, "user")
   local defaults = require "core.defaults"
-  if status_ok then
+  if status_ok and type(user_settings) == "table" then
     defaults = vim.tbl_deep_extend("force", defaults, user_settings)
   end
   return defaults
