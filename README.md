@@ -103,7 +103,7 @@ Please get in contact when you run into some setup issue where that is not the c
 
 ### Add more Plugins
 
-Just copy the `packer` configuration without the `use` and with a `,` after the last closing `}` into the `plugins`, `init` key of your `user/init.lua` file.
+Just copy the `packer` configuration without the `use` and with a `,` after the last closing `}` into the `plugins.init` entry of your `user/init.lua` file.
 
 See the example in the [user_example](https://github.com/kabinspace/AstroVim/blob/main/lua/user_example) directory.
 
@@ -121,7 +121,8 @@ configuration.
 The `plugins` table extensibility includes the packer configuration for all
 plugins, user plugins as well as plugins configured by AstroVim.
 
-E.g. this code in your `init.lua` `plugins` table remove `dashboard-nvim` and disable lazy loading of `toggleterm`:
+E.g. this code in your `init.lua` `plugins.init` table entry to remove
+`dashboard-nvim` and disable lazy loading of `toggleterm`:
 
 ```lua
 plugins = {
@@ -149,7 +150,7 @@ plugins = {
     -- add the my_plugins table to the plugin table
     return vim.tbl_deep_extend("force", plugins, my_plugins)
   end,
-}
+},
 ```
 
 ### Adding sources to `nvim-cmp`
@@ -157,6 +158,8 @@ plugins = {
 To add new completion sources to `nvim-cmp` you can add the plugin (see above) providing that source like this:
 
 ```lua
+plugins = {
+  init = {
     {
       "Saecki/crates.nvim",
       after = "nvim-cmp",
@@ -169,125 +172,92 @@ To add new completion sources to `nvim-cmp` you can add the plugin (see above) p
         cmp.setup(config)
       end,
     },
+  },
+},
 ```
 
 Use the options provided by `nvim-cmp` to change the order, etc. as you see fit.
 
 ### Add Custom LSP Server Settings
 
-You might want to override the default LSP settings for some servers to enable advanced features. This can be achieved by making a `server-settings` folder inside of your user config and creating `lua` files named for the LSP server. Examples of this can be found in [`/lua/configs/lsp/server-settings`](https://github.com/kabinspace/AstroVim/tree/main/lua/configs/lsp/server-settings).
+You might want to override the default LSP settings for some servers to enable advanced features. This can be achieved with the `lsp.server-settings` table inside of your `user/init.lua` config and creating entries where the keys are equal to the LSP server. Examples of these table entries can be found in [`/lua/configs/lsp/server-settings`](https://github.com/kabinspace/AstroVim/tree/main/lua/configs/lsp/server-settings).
 
-For example, if you want to add schemas to the `yamlls` LSP server, you can create the file `yamlls.lua` inside of a `lsp/server-settings/` folder in `/lua/user/` with the contents (`/lua/user/lsp/server-settings/yamlls.lua`):
+For example, if you want to add schemas to the `yamlls` LSP server, you can add the following to the `user/init.lua` file:
 
 ```lua
-local opts = {
-  settings = {
-    yaml = {
-      schemas = {
-        ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
-        ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-        ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+lsp = {
+  ["server-settings"] = {
+    yamlls = {
+      settings = {
+        yaml = {
+          schemas = {
+            ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
+            ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+            ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+          },
+        },
       },
     },
   },
-}
-
-return opts
+},
 ```
 
 ### Compley LSP server setup
 
 Some plugins need to do special magic to the LSP configuration to enable advanced features. One example for this is the `rust-tools.nvim` plugin.
 
-Those can override `overrides.lsp.server_registration`.
+Those can override `lsp.server_registration`.
 
-For example the `rust-tools.nvim` plugin can be set up like this:
+For example the `rust-tools.nvim` plugin can be set up in the `user/init.lua` file as follows:
 
 ```lua
+plugins = {
+  init = {
     -- Plugin definition:
     {
       "simrat39/rust-tools.nvim",
       requires = { "nvim-lspconfig", "nvim-lsp-installer", "nvim-dap", "Comment.nvim" },
       -- Is configured via the server_registration_override installed below!
     },
-```
-
-and then wired up with:
-
-```lua
-  overrides = {
-    lsp = {
-      server_registration = function(server, server_opts)
-        -- Special code for rust.tools.nvim!
-        if server.name == "rust_analyzer" then
-          local extension_path = vim.fn.stdpath "data" .. "/dapinstall/codelldb/extension/"
-          local codelldb_path = extension_path .. "adapter/codelldb"
-          local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
-
-          require("rust-tools").setup {
-            server = server_opts,
-            dap = {
-              adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
-            },
-          }
-        else
-          server:setup(server_opts)
-        end
-      end,
-    },
   },
-```
+},
 
-_Note:_ This function can also be placed in a separate file from the `user/settings.lua` file at `user/lsp/server_registration.lua` with the contents:
+lsp = {
+  server_registration = function(server, server_opts)
+    -- Special code for rust.tools.nvim!
+    if server.name == "rust_analyzer" then
+      local extension_path = vim.fn.stdpath "data" .. "/dapinstall/codelldb/extension/"
+      local codelldb_path = extension_path .. "adapter/codelldb"
+      local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 
-```lua
-return function(server, server_opts)
-  -- Special code for rust.tools.nvim!
-  if server.name == "rust_analyzer" then
-    local extension_path = vim.fn.stdpath "data" .. "/dapinstall/codelldb/extension/"
-    local codelldb_path = extension_path .. "adapter/codelldb"
-    local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
-
-    require("rust-tools").setup {
-      server = server_opts,
-      dap = {
-        adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
-      },
-    }
-  else
-    server:setup(server_opts)
-  end
-end
+      require("rust-tools").setup {
+        server = server_opts,
+        dap = {
+          adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+        },
+      }
+    else
+      server:setup(server_opts)
+    end
+  end,
+},
 ```
 
 ### Extending the LSP on_attach Function
 
-Some users may want to have more control over the `on_attach` function of their LSP servers to enable or disable capabilities. This can be extended with `overrides.lsp.on_attach`
+Some users may want to have more control over the `on_attach` function of their LSP servers to enable or disable capabilities. This can be extended with `lsp.on_attach` in the `user/init.lua` file.
 
-For example if you want to disable document formatting for `intelephense`:
-
-```lua
-overrides = {
-  lsp = {
-    on_attach = function(client, bufnr)
-      if client.name == "intelephense" then
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
-      end
-    end,
-  },
-}
-```
-
-_Note:_ This function can also be placed in a separate file from the `user/settings.lua` file at `user/lsp/on_attach.lua` with the contents:
+For example if you want to disable document formatting for `intelephense` in `user/init.lua`:
 
 ```lua
-return function(client, bufnr)
-  if client.name == "intelephense" then
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
-  end
-end
+lsp = {
+  on_attach = function(client, bufnr)
+    if client.name == "intelephense" then
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+    end
+  end,
+},
 ```
 
 ## 🗒️ Note
