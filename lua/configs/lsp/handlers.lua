@@ -72,14 +72,11 @@ end
 M.on_attach = function(client, bufnr)
   if client.name == "tsserver" then
     client.resolved_capabilities.document_formatting = false
-  end
-  if client.name == "jsonls" then
+  elseif client.name == "jsonls" then
     client.resolved_capabilities.document_formatting = false
-  end
-  if client.name == "html" then
+  elseif client.name == "html" then
     client.resolved_capabilities.document_formatting = false
-  end
-  if client.name == "sumneko_lua" then
+  elseif client.name == "sumneko_lua" then
     client.resolved_capabilities.document_formatting = false
   end
 
