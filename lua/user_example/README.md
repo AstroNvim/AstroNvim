@@ -30,8 +30,8 @@ For basic usage check out the main [README](https://github.com/kabinspace/AstroV
 | `plugins.toggleterm`           | `table` or `function(table)...end` | Modify the `toggleterm.setup()` options                                             |
 | `plugins.treesitter`           | `table` or `function(table)...end` | Modify the `treesitter.setup()` options                                             |
 | `plugins.which-key`            | `table` or `function(table)...end` | Modify the `which-key.setup()` options                                              |
-| `lsp.on_attach`                | function(client, bufnr)...end`     | Modify the lsp `on_attach` function                                                 |
-| `lsp.server_registration`      | function(server, opts)...end`      | Modify the `lsp-installer` `server_registration` function                           |
+| `lsp.on_attach`                | `function(client, bufnr)...end`    | Modify the lsp `on_attach` function                                                 |
+| `lsp.server_registration`      | `function(server, opts)...end`     | Modify the `lsp-installer` `server_registration` function                           |
 | `lsp.server-settings.<lsp>`    | `table` or `function(table)...end` | Modify the LSP server settings, replace `<lsp>` with server name                    |
 | `which-key.register_n_leader`  | `table` or `function(table)...end` | Modify the default which-key normal mode bindings with `<leader>` prefix            |
 | `luasnip.vscode_snippet_paths` | `table` or `function(table)...end` | Add paths with extra VS Code style snippets to be included in `luasnip`             |
@@ -115,6 +115,11 @@ plugins = {
   end,
 },
 ```
+
+_Note_: These functions are called when they are needed are are lazy-loaded, so
+for example if you are using `plugins.cmp` with a function
+(`function(table)...end`), this will be run after `cmp` is loaded and you will
+be able to do `cmp = require("cmp")` within the function.
 
 ## Splitting Up Configuration to Multiple Files
 
