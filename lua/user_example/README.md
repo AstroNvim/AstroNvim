@@ -4,15 +4,37 @@ For basic usage check out the main [README](https://github.com/kabinspace/AstroV
 
 ## Available User Configuration Tables
 
-| `init.lua` table key | Expected Format                    | Use Case                                                    |
-| -------------------- | ---------------------------------- | ----------------------------------------------------------- |
-| `colorscheme`        | `string`                           | The colorscheme to be set                                   |
-| `default_theme`      | `table` or `function(table)...end` | Set available options for the default theme                 |
-| `enabled`            | `table` or `function(table)...end` | Easily enable or disable default plugins                    |
-| `plugins.init`       | `table` or `function(table)...end` | Modify the default plugins table such as adding new plugins |
-| `plugins.autopairs`  | `table` or `function(table)...end` | Modify the `autopairs.setup()` options                      |
-
-**TODO FINISH THIS TABLE...**
+| `init.lua` table key           | Expected Format                    | Use Case                                                                            |
+| ------------------------------ | ---------------------------------- | ----------------------------------------------------------------------------------- |
+| `colorscheme`                  | `string`                           | The colorscheme to be set                                                           |
+| `default_theme`                | `table` or `function(table)...end` | Set available options for the default theme                                         |
+| `diagnostics`                  | `table` or `function(table)...end` | Modify the default vim diagnostics options                                          |
+| `enabled`                      | `table` or `function(table)...end` | Easily enable or disable default plugins                                            |
+| `polish`                       | `function()...end`                 | Lua function to be run last. Good place for setting vim options and adding mappings |
+| `plugins.init`                 | `table` or `function(table)...end` | Modify the default plugins table such as adding new plugins                         |
+| `plugins.autopairs`            | `table` or `function(table)...end` | Modify the `autopairs.setup()` options                                              |
+| `plugins.better_escape`        | `table` or `function(table)...end` | Modify the `better_escape.setup()` options                                          |
+| `plugins.bufferline`           | `table` or `function(table)...end` | Modify the `bufferline.setup()` options                                             |
+| `plugins.cmp`                  | `table` or `function(table)...end` | Modify the `cmp.setup()` options                                                    |
+| `plugins.colorizer`            | `table` or `function(table)...end` | Modify the `colorizer.setup()` options                                              |
+| `plugins.Comment`              | `table` or `function(table)...end` | Modify the `Comment.setup()` options                                                |
+| `plugins.gitsigns`             | `table` or `function(table)...end` | Modify the `gitsigns.setup()` options                                               |
+| `plugins.nvim-web-devicons`    | `table` or `function(table)...end` | Modify the `nvim-web-devicons.setup()` options                                      |
+| `plugins.indent_blankline`     | `table` or `function(table)...end` | Modify the `indent_blankline.setup()` options                                       |
+| `plugins.lualine`              | `table` or `function(table)...end` | Modify the `lualine.setup()` options                                                |
+| `plugins.lspsaga`              | `table` or `function(table)...end` | Modify the `lspsaga.setup()` options                                                |
+| `plugins.neoscroll`            | `table` or `function(table)...end` | Modify the `neoscroll.setup()` options                                              |
+| `plugins.nvim-tree`            | `table` or `function(table)...end` | Modify the `nvim-tree.setup()` options                                              |
+| `plugins.symbols_outline`      | `table` or `function(table)...end` | Modify the `symbols_outline.setup()` options                                        |
+| `plugins.telescope`            | `table` or `function(table)...end` | Modify the `telescope.setup()` options                                              |
+| `plugins.toggleterm`           | `table` or `function(table)...end` | Modify the `toggleterm.setup()` options                                             |
+| `plugins.treesitter`           | `table` or `function(table)...end` | Modify the `treesitter.setup()` options                                             |
+| `plugins.which-key`            | `table` or `function(table)...end` | Modify the `which-key.setup()` options                                              |
+| `lsp.on_attach`                | function(client, bufnr)...end`     | Modify the lsp `on_attach` function                                                 |
+| `lsp.server_registration`      | function(server, opts)...end`      | Modify the `lsp-installer` `server_registration` function                           |
+| `lsp.server-settings.<lsp>`    | `table` or `function(table)...end` | Modify the LSP server settings, replace `<lsp>` with server name                    |
+| `which-key.register_n_leader`  | `table` or `function(table)...end` | Modify the default which-key normal mode bindings with `<leader>` prefix            |
+| `luasnip.vscode_snippet_paths` | `table` or `function(table)...end` | Add paths with extra VS Code style snippets to be included in `luasnip`             |
 
 ## Supported init.lua Override Formats
 
