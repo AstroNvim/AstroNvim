@@ -252,7 +252,7 @@ local astro_plugins = {
   -- Fuzzy finder syntax support
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    after = "nvim-telescope/telescope.nvim",
+    after = "telescope.nvim",
     run = "make",
     config = function()
       require("telescope").load_extension "fzf"
