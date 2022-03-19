@@ -22,7 +22,7 @@ AstroVim is an aesthetic and feature-rich neovim config that is extensible and e
 
 **BREAKING RELEASE NOTICE:** If you were using AstroVim before the official
 release, please see the updated user configuration in the [`lua/user_example`
-folder](https://github.com/kabinspace/AstroVim/tree/lsp_config_cleanup/lua/user_example)
+folder](https://github.com/kabinspace/AstroVim/tree/main/lua/user_example)
 as well as the updated configuration details below and in the `user_example`
 README. The official release came with a lot of restructuring changes to make
 things easier and more "future-proof".
