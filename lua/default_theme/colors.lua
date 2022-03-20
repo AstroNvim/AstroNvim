@@ -40,4 +40,4 @@ local colors = {
   purple = "#c678dd",
 }
 
-return colors
+return require("core.utils").user_plugin_opts("default_theme.colors", colors)
