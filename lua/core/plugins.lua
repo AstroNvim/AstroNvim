@@ -137,7 +137,7 @@ local astro_plugins = {
       loader.lazy_load { paths = paths }
       loader.lazy_load()
     end,
-    wants = "friendly-snippets",
+    after = "friendly-snippets",
   },
 
   -- Completion engine
