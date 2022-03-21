@@ -126,6 +126,7 @@ local astro_plugins = {
   -- Snippet collection
   {
     "rafamadriz/friendly-snippets",
+    event = "InsertEnter",
   },
 
   -- Snippet engine
@@ -138,6 +139,8 @@ local astro_plugins = {
       loader.lazy_load()
     end,
     wants = "friendly-snippets",
+    module = "luasnip",
+    event = "InsertEnter",
   },
 
   -- Completion engine
