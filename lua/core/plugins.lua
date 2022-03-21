@@ -126,18 +126,16 @@ local astro_plugins = {
   -- Snippet collection
   {
     "rafamadriz/friendly-snippets",
+    event = "InsertEnter",
   },
 
   -- Snippet engine
   {
     "L3MON4D3/LuaSnip",
-    config = function()
-      local paths = require("core.utils").user_plugin_opts("luasnip.vscode_snippet_paths", {})
-      local loader = require "luasnip/loaders/from_vscode"
-      loader.lazy_load { paths = paths }
-      loader.lazy_load()
-    end,
     after = "friendly-snippets",
+    config = function()
+      require("configs.luasnip").config()
+    end,
   },
 
   -- Completion engine
