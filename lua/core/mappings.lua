@@ -94,6 +94,7 @@ map("n", "<leader>sr", "<cmd>Telescope registers<CR>", opts)
 map("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", opts)
 map("n", "<leader>sc", "<cmd>Telescope commands<CR>", opts)
 map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", opts)
+map("n", "<leader>lR", "<cmd>Telescope lsp_references<CR>", opts)
 map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", opts)
 
 -- Lspsaga
@@ -139,7 +140,7 @@ end
 
 -- SymbolsOutline
 if config.enabled.symbols_outline then
-  map("n", "<leader>s", "<cmd>SymbolsOutline<CR>", opts)
+  map("n", "<leader>lS", "<cmd>SymbolsOutline<CR>", opts)
 end
 
 -- Visual --

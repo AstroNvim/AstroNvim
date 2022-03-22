@@ -110,7 +110,9 @@ function M.config()
       i = { "Info" },
       I = { "Installer Info" },
       r = { "Rename" },
+      R = { "References" },
       s = { "Document Symbols" },
+      S = { "Symbols Outline" },
     },
 
     s = {
