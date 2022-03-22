@@ -177,6 +177,10 @@ local astro_plugins = {
   -- LSP completion source
   {
     "hrsh7th/cmp-nvim-lsp",
+    after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "nvim_lsp"
+    end,
   },
 
   -- LSP manager
