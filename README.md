@@ -37,9 +37,9 @@ things easier and more "future-proof".
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
 - [Neovim 0.6+](https://github.com/neovim/neovim/releases/tag/v0.6.1)
-- Terminal with true color support
+- Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 
-> Note for MacOS the default terminal does not have true color support. You wil need to use [iTerm2](https://iterm2.com/) or another [terminal emulator](https://gist.github.com/XVilka/8346728#terminal-emulators) that has true color support.
+> Note when using default theme: For MacOS, the default terminal does not have true color support. You wil need to use [iTerm2](https://iterm2.com/) or another [terminal emulator](https://gist.github.com/XVilka/8346728#terminal-emulators) that has true color support.
 
 ## 🛠️ Installation
 
