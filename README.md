@@ -29,9 +29,9 @@ things easier and more "future-proof".
 
 ## 🌟 Preview
 
-![Preview1](./utils/media/preview1.png)
-![Preview2](./utils/media/preview2.png)
-![Preview33](./utils/media/preview3.png)
+![Preview1](./screenshots/preview1.png)
+![Preview2](./screenshots/preview2.png)
+![Preview33](./screenshots/preview3.png)
 
 ## ⚡ Requirements
 
@@ -269,21 +269,22 @@ lsp = {
 },
 ```
 
-### More Configuration Options
+## 🗒️ Links
 
-More detailed explanations of the possible configuration options are described in the [AstroVim wiki](https://github.com/kabinspace/AstroVim/wiki/Advanced-Configuration)
+[AstroVim Wiki](https://github.com/kabinspace/AstroVim/wiki)
 
-## 🗒️ Note
+- [Basic Usage](https://github.com/kabinspace/AstroVim/wiki/Default-Plugins) is given for basic usage
+- [Default Mappings](https://github.com/kabinspace/AstroVim/wiki/Default-Mappings) more about the default key bindings
+- [Default Plugins](https://github.com/kabinspace/AstroVim/wiki/Default-Plugins) more about the default plugins
+- [Advanced Configuration](https://github.com/kabinspace/AstroVim/wiki/Advanced-Configuration) more about advanced configuration
 
-[Guide](https://github.com/kabinspace/AstroVim/blob/main/utils/userguide.md) is given for basic usage<br>
-[Learn](https://github.com/kabinspace/AstroVim/blob/main/utils/mappings.txt) more about the default key bindings<br>
 [Watch](https://www.youtube.com/watch?v=JQLZ7NJRTEo&t=4s&ab_channel=JohnCodes) a review video to know about the out of the box experience
 
 ## ⭐ Credits
 
 Sincere appreciation to the following repositories, plugin authors and the entire neovim community out there that made the development of AstroVim possible.
 
-- [Plugins](https://github.com/kabinspace/AstroVim/blob/main/utils/plugins.txt)
+- [Plugins](https://github.com/kabinspace/AstroVim/wiki/Default-Plugins)
 - [NvChad](https://github.com/NvChad/NvChad)
 - [LunarVim](https://github.com/LunarVim)
 - [CosmicVim](https://github.com/CosmicNvim/CosmicNvim)
