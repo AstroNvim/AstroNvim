@@ -94,6 +94,7 @@ map("n", "<leader>sr", "<cmd>Telescope registers<CR>", opts)
 map("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", opts)
 map("n", "<leader>sc", "<cmd>Telescope commands<CR>", opts)
 map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", opts)
+map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", opts)
 
 -- Lspsaga
 if config.enabled.lspsaga then
@@ -107,6 +108,7 @@ if config.enabled.lspsaga then
   map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>", opts)
   map("n", "<leader>la", "<cmd>Lspsaga code_action<CR>", opts)
   map("n", "<leader>lr", "<cmd>Lspsaga rename<CR>", opts)
+  map("n", "<leader>ld", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
 end
 
 -- Comment
