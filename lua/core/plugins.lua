@@ -31,6 +31,16 @@ local astro_plugins = {
     end,
   },
 
+  -- Neovim UI Enhancer
+  {
+    "stevearc/dressing.nvim",
+    event = "BufWinEnter",
+    config = function()
+      require("configs.dressing").config()
+    end,
+    disable = not config.enabled.dressing,
+  },
+
   -- Cursorhold fix
   {
     "antoinemadec/FixCursorHold.nvim",
@@ -206,16 +216,6 @@ local astro_plugins = {
     config = function()
       require "configs.lsp"
     end,
-  },
-
-  -- LSP enhancer
-  {
-    "tami5/lspsaga.nvim",
-    event = "BufRead",
-    config = function()
-      require("configs.lsp.lspsaga").config()
-    end,
-    disable = not config.enabled.lspsaga,
   },
 
   -- LSP symbols

@@ -104,19 +104,15 @@ map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", opts)
 map("n", "<leader>lR", "<cmd>Telescope lsp_references<CR>", opts)
 map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", opts)
 
--- Lspsaga
-if config.enabled.lspsaga then
-  map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
-  map("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
-  map("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts)
-  map("n", "gj", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
-  map("n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
-  map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>", opts)
-  map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>", opts)
-  map("n", "<leader>la", "<cmd>Lspsaga code_action<CR>", opts)
-  map("n", "<leader>lr", "<cmd>Lspsaga rename<CR>", opts)
-  map("n", "<leader>ld", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
-end
+-- LSP
+map("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+map("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<cr>", opts)
+map("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<cr>", opts)
+map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+map("n", "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 
 -- Comment
 if config.enabled.comment then
