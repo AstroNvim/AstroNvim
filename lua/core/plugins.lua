@@ -202,7 +202,7 @@ local astro_plugins = {
   -- Built-in LSP
   {
     "neovim/nvim-lspconfig",
-    event = "BufRead",
+    after = "cmp-nvim-lsp",
     config = function()
       require "configs.lsp"
     end,
