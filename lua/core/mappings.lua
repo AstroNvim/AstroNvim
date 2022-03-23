@@ -107,7 +107,6 @@ map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", opts)
 -- Lspsaga
 if config.enabled.lspsaga then
   map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
-  map("n", "ca", "<cmd>Lspsaga code_action<CR>", opts)
   map("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
   map("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts)
   map("n", "gj", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
