@@ -49,6 +49,12 @@ local astro_plugins = {
     end,
   },
 
+  -- Smarter Splits
+  {
+    "mrjones2014/smart-splits.nvim",
+    module = "smart-splits",
+  },
+
   -- Icons
   {
     "kyazdani42/nvim-web-devicons",

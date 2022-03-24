@@ -12,16 +12,16 @@ vim.g.maplocalleader = " "
 
 -- Normal --
 -- Better window navigation
-map("n", "<C-h>", "<C-w>h", opts)
-map("n", "<C-j>", "<C-w>j", opts)
-map("n", "<C-k>", "<C-w>k", opts)
-map("n", "<C-l>", "<C-w>l", opts)
+map("n", "<C-h>", "<cmd>lua require'smart-splits'.move_cursor_left()<cr>", opts)
+map("n", "<C-j>", "<cmd>lua require'smart-splits'.move_cursor_down()<cr>", opts)
+map("n", "<C-k>", "<cmd>lua require'smart-splits'.move_cursor_up()<cr>", opts)
+map("n", "<C-l>", "<cmd>lua require'smart-splits'.move_cursor_right()<cr>", opts)
 
 -- Resize with arrows
-map("n", "<C-Up>", "<cmd>resize -2<CR>", opts)
-map("n", "<C-Down>", "<cmd>resize +2<CR>", opts)
-map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", opts)
-map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", opts)
+map("n", "<C-Up>", "<cmd>lua require'smart-splits'.resize_up(2)<cr>", opts)
+map("n", "<C-Down>", "<cmd>lua require'smart-splits'.resize_down(2)<cr>", opts)
+map("n", "<C-Left>", "<cmd>lua require'smart-splits'.resize_left(2)<cr>", opts)
+map("n", "<C-Right>", "<cmd>lua require'smart-splits'.resize_right(2)<cr>", opts)
 
 -- Navigate buffers
 if config.enabled.bufferline then
