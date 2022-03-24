@@ -31,6 +31,14 @@ local astro_plugins = {
     end,
   },
 
+  -- Notification Enhancer
+  {
+    "rcarriga/nvim-notify",
+    config = function()
+      require("configs.notify").config()
+    end,
+  },
+
   -- Neovim UI Enhancer
   {
     "stevearc/dressing.nvim",

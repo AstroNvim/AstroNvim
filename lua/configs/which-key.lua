@@ -120,6 +120,7 @@ function M.config()
       b = { "Checkout branch" },
       h = { "Find Help" },
       m = { "Man Pages" },
+      n = { "Notifications" },
       r = { "Registers" },
       k = { "Keymaps" },
       c = { "Commands" },

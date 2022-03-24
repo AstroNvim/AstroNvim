@@ -8,6 +8,11 @@ function M.config()
 
   local actions = require "telescope.actions"
 
+  local notify_present, _ = pcall(require, "notify")
+  if notify_present then
+    telescope.load_extension "notify"
+  end
+
   telescope.setup(require("core.utils").user_plugin_opts("plugins.telescope", {
     defaults = {
 
