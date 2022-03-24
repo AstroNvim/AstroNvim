@@ -46,6 +46,8 @@ local function load_options(module, default)
   return default
 end
 
+M.base_notification = { title = "AstroVim" }
+
 function M.bootstrap()
   local fn = vim.fn
   local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
@@ -145,26 +147,18 @@ end
 
 function M.update()
   local Job = require "plenary.job"
-  local errors = {}
 
   Job
     :new({
       command = "git",
       args = { "pull", "--ff-only" },
       cwd = vim.fn.stdpath "config",
-      on_start = function()
-        print "Updating..."
-      end,
       on_exit = function(_, return_val)
         if return_val == 0 then
-          print "Updated!"
+          vim.notify("Updated!", "info", M.base_notification)
         else
-          table.insert(errors, 1, "Update failed! Please try pulling manually.")
-          print(vim.inspect(errors))
+          vim.notify("Update failed! Please try pulling manually.", "error", M.base_notification)
         end
-      end,
-      on_stderr = function(_, err)
-        table.insert(errors, err)
       end,
     })
     :sync()
