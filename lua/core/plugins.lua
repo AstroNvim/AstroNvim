@@ -38,7 +38,6 @@ local astro_plugins = {
     config = function()
       require("configs.dressing").config()
     end,
-    disable = not config.enabled.dressing,
   },
 
   -- Cursorhold fix
