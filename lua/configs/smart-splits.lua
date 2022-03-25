@@ -11,11 +11,11 @@ function M.config()
     ignored_filetypes = {
       "nofile",
       "quickfix",
+      "qf",
       "prompt",
-      "Outline",
     },
     -- Ignored buffer types (only while resizing)
-    ignored_buftypes = { "NvimTree" },
+    ignored_buftypes = { "nofile" },
     -- when moving cursor between splits left or right,
     -- place the cursor on the same row of the *screen*
     -- regardless of line numbers.
