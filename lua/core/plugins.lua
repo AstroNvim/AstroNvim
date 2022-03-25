@@ -61,6 +61,9 @@ local astro_plugins = {
   {
     "mrjones2014/smart-splits.nvim",
     module = "smart-splits",
+    config = function()
+      require("configs.smart-splits").config()
+    end,
   },
 
   -- Icons
