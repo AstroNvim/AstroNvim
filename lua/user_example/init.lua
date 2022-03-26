@@ -5,7 +5,7 @@ local config = {
 
   -- Default theme configuration
   default_theme = {
-    diagnostics_style = "none",
+    diagnostics_style = { italic = true },
     -- Modify the color table
     colors = {
       fg = "#abb2bf",
@@ -155,7 +155,11 @@ local config = {
       -- NOTE: You can remove this on attach function to disable format on save
       on_attach = function(client)
         if client.resolved_capabilities.document_formatting then
-          vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()"
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            desc = "Auto format before save",
+            pattern = "<buffer>",
+            callback = vim.lsp.buf.formatting_sync,
+          })
         end
       end,
     }
@@ -164,22 +168,22 @@ local config = {
   -- This function is run last
   -- good place to configure mappings and vim options
   polish = function()
-    local opts = { noremap = true, silent = true }
-    local map = vim.api.nvim_set_keymap
+    local map = vim.keymap.set
     local set = vim.opt
     -- Set options
     set.relativenumber = true
 
     -- Set key bindings
-    map("n", "<C-s>", ":w!<CR>", opts)
+    map("n", "<C-s>", ":w!<CR>")
 
     -- Set autocommands
-    vim.cmd [[
-      augroup packer_conf
-        autocmd!
-        autocmd bufwritepost plugins.lua source <afile> | PackerSync
-      augroup end
-    ]]
+    vim.api.nvim_create_augroup "packer_conf"
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      desc = "Sync packer after modifying plugins.lua",
+      group = "packer_conf",
+      pattern = "plugins.lua",
+      command = "source <afile> | PackerSync",
+    })
   end,
 }
 

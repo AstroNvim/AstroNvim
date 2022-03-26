@@ -48,6 +48,7 @@ function M.config()
       disabled_filetypes = { "NvimTree", "neo-tree", "dashboard", "Outline" },
       component_separators = "",
       section_separators = "",
+      globalstatus = true,
     },
     sections = {
       lualine_a = { spacer },

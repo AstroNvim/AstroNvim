@@ -8,7 +8,7 @@
       <img src="https://img.shields.io/github/license/kabinspace/AstroVim?label=License&logo=GNU&style=flat-square"/>
 	</a>
     <a href="https://neovim.io/">
-      <img src="https://img.shields.io/badge/Neovim-0.6+-blueviolet.svg?style=flat-square&logo=Neovim&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Neovim-0.7+-blueviolet.svg?style=flat-square&logo=Neovim&logoColor=white"/>
     </a>
     <a href="https://discord.gg/UcZutyeaFW">
       <img src="https://img.shields.io/badge/discord-Join-7289da?color=%235865F2%20&label=Discord&logo=discord&logoColor=%23ffffff&style=flat-square"/>
@@ -33,7 +33,7 @@ AstroVim is an aesthetic and feature-rich neovim config that is extensible and e
 ## ⚡ Requirements
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
-- [Neovim 0.6+](https://github.com/neovim/neovim/releases/tag/v0.6.1)
+- [Neovim 0.7+](https://github.com/neovim/neovim/releases/tag/v0.7.0)
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 - Optional Requirements:
   - [fzf](https://github.com/junegunn/fzf) - live grep telescope search (`<leader>fw`)
@@ -44,6 +44,8 @@ AstroVim is an aesthetic and feature-rich neovim config that is extensible and e
   - [Node](https://nodejs.org/en/) - node repl toggle terminal (`<leader>tn`)
 
 > Note when using default theme: For MacOS, the default terminal does not have true color support. You wil need to use [iTerm2](https://iterm2.com/) or another [terminal emulator](https://gist.github.com/XVilka/8346728#terminal-emulators) that has true color support.
+
+> Note if you are still on Neovim v0.6: You can still install the previous version of AstroVim that supported. After cloning the repository run `git checkout nvim-0.6` to check out this version. This will no longer be receiving updates.
 
 ## 🛠️ Installation
 
