@@ -13,7 +13,7 @@ local config = {
   },
 
   default_theme = {
-    diagnostics_style = "none",
+    diagnostics_style = {},
   },
 
   enabled = {

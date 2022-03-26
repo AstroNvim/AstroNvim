@@ -4,7 +4,7 @@ local others = {
   BufferLineFill = { fg = C.grey_9, bg = C.grey_4 },
   BufferLineBackground = { fg = C.grey_9, bg = C.grey_4 },
   BufferLineBufferVisible = { fg = C.fg, bg = C.bg },
-  BufferLineBufferSelected = { fg = C.fg, bg = C.bg, style = C.none },
+  BufferLineBufferSelected = { fg = C.fg, bg = C.bg },
   BufferLineTab = { fg = C.fg, bg = C.bg },
   BufferLineTabSelected = { fg = C.bg, bg = C.bg },
   BufferLineTabClose = { fg = C.bg, bg = C.bg },
@@ -123,7 +123,7 @@ local others = {
 
   -- Neo-Tree
   NeoTreeDirectoryIcon = { fg = C.blue },
-  NeoTreeRootName = { fg = C.fg, style = "bold" },
+  NeoTreeRootName = { fg = C.fg, bold = true },
   NeoTreeFileName = { fg = C.fg },
   NeoTreeFileIcon = { fg = C.fg },
   NeoTreeFileNameOpened = { fg = C.green },
@@ -143,26 +143,26 @@ local others = {
   VimwikiList = { fg = C.orange, bg = C.orange },
   VimwikiTag = { fg = C.orange, bg = C.orange },
   VimwikiMarkers = { fg = C.grey, bg = C.none },
-  VimwikiHeader1 = { fg = C.orange, bg = C.none, style = "bold" },
-  VimwikiHeader2 = { fg = C.green, bg = C.none, style = "bold" },
-  VimwikiHeader3 = { fg = C.blue, bg = C.none, style = "bold" },
-  VimwikiHeader4 = { fg = C.cyan, bg = C.none, style = "bold" },
-  VimwikiHeader5 = { fg = C.yellow, bg = C.none, style = "bold" },
-  VimwikiHeader6 = { fg = C.purple, bg = C.none, style = "bold" },
+  VimwikiHeader1 = { fg = C.orange, bg = C.none, bold = true },
+  VimwikiHeader2 = { fg = C.green, bg = C.none, bold = true },
+  VimwikiHeader3 = { fg = C.blue, bg = C.none, bold = true },
+  VimwikiHeader4 = { fg = C.cyan, bg = C.none, bold = true },
+  VimwikiHeader5 = { fg = C.yellow, bg = C.none, bold = true },
+  VimwikiHeader6 = { fg = C.purple, bg = C.none, bold = true },
 
   -- IndentBlankLine
-  IndentBlanklineSpaceChar = { fg = C.grey_6, style = "nocombine" },
-  IndentBlanklineChar = { fg = C.grey_6, style = "nocombine" },
-  IndentBlanklineContextStart = { fg = C.grey_7, style = "underline" },
-  IndentBlanklineContextChar = { fg = C.grey_7, style = "nocombine" },
-  IndentBlanklineSpaceCharBlankline = { fg = C.grey_6, style = "nocombine" },
+  IndentBlanklineSpaceChar = { fg = C.grey_6, nocombine = true },
+  IndentBlanklineChar = { fg = C.grey_6, nocombine = true },
+  IndentBlanklineContextStart = { fg = C.grey_7, underline = true },
+  IndentBlanklineContextChar = { fg = C.grey_7, nocombine = true },
+  IndentBlanklineSpaceCharBlankline = { fg = C.grey_6, nocombine = true },
 
   -- GitSigns
   GitSignsAdd = { fg = C.green, bg = C.none },
   GitSignsChange = { fg = C.orange_1, bg = C.none },
   GitSignsDelete = { fg = C.red_1, bg = C.none },
-  MoreMsg = { fg = C.green, style = "bold" },
-  ModeMsg = { fg = C.grey, style = "bold" },
+  MoreMsg = { fg = C.green, bold = true },
+  ModeMsg = { fg = C.grey, bold = true },
 
   -- Dashboard
   DashboardHeader = { fg = C.cyan },
@@ -171,23 +171,23 @@ local others = {
   DashboardCenter = { fg = C.blue },
 
   -- Hop
-  HopNextKey = { fg = C.red, style = "bold" },
-  HopNextKey1 = { fg = C.cyan, style = "bold" },
+  HopNextKey = { fg = C.red, bold = true },
+  HopNextKey1 = { fg = C.cyan, bold = true },
   HopNextKey2 = { fg = C.blue },
   HopUnmatched = { fg = C.grey },
 
   -- Lightspeed
-  LightspeedLabel = { fg = C.red_3, style = "underline" },
-  LightspeedLabelOverlapped = { fg = C.blue, style = "underline" },
-  LightspeedLabelDistant = { fg = C.red_1, style = "underline" },
-  LightspeedLabelDistantOverlapped = { fg = C.blue_1, style = "underline" },
-  LightspeedShortcut = { fg = C.black, bg = C.red_3, style = "bold,underline" },
-  LightspeedShortcutOverlapped = { fg = C.black, bg = C.blue, style = "bold,underline" },
+  LightspeedLabel = { fg = C.red_3, underline = true },
+  LightspeedLabelOverlapped = { fg = C.blue, underline = true },
+  LightspeedLabelDistant = { fg = C.red_1, underline = true },
+  LightspeedLabelDistantOverlapped = { fg = C.blue_1, underline = true },
+  LightspeedShortcut = { fg = C.black, bg = C.red_3, bold = true, underline = true },
+  LightspeedShortcutOverlapped = { fg = C.black, bg = C.blue, bold = true, underline = true },
   LightspeedMaskedChar = { fg = C.green_1 },
   LightspeedGreyWash = { fg = C.grey_2, bg = C.none },
-  LightspeedUnlabeledMatch = { fg = C.white, style = "bold" },
-  LightspeedOneCharMatch = { fg = C.green, bg = C.red_3, style = "bold" },
-  LightspeedUniqueChar = { fg = C.white, style = "bold" },
+  LightspeedUnlabeledMatch = { fg = C.white, bold = true },
+  LightspeedOneCharMatch = { fg = C.green, bg = C.red_3, bold = true },
+  LightspeedUniqueChar = { fg = C.white, bold = true },
   LightspeedPendingOpArea = { fg = C.yellow },
 
   -- WhichKey
