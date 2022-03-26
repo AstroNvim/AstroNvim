@@ -31,12 +31,38 @@ local astro_plugins = {
     end,
   },
 
+  -- Notification Enhancer
+  {
+    "rcarriga/nvim-notify",
+    config = function()
+      require("configs.notify").config()
+    end,
+  },
+
+  -- Neovim UI Enhancer
+  {
+    "stevearc/dressing.nvim",
+    event = "BufWinEnter",
+    config = function()
+      require("configs.dressing").config()
+    end,
+  },
+
   -- Cursorhold fix
   {
     "antoinemadec/FixCursorHold.nvim",
     event = "BufRead",
     config = function()
       vim.g.cursorhold_updatetime = 100
+    end,
+  },
+
+  -- Smarter Splits
+  {
+    "mrjones2014/smart-splits.nvim",
+    module = "smart-splits",
+    config = function()
+      require("configs.smart-splits").config()
     end,
   },
 
@@ -126,20 +152,16 @@ local astro_plugins = {
   -- Snippet collection
   {
     "rafamadriz/friendly-snippets",
-    module = "cmp_nvim_lsp",
     event = "InsertEnter",
   },
 
   -- Snippet engine
   {
     "L3MON4D3/LuaSnip",
+    after = "friendly-snippets",
     config = function()
-      local paths = require("core.utils").user_plugin_opts("luasnip.vscode_snippet_paths", {})
-      local loader = require "luasnip/loaders/from_vscode"
-      loader.lazy_load { paths = paths }
-      loader.lazy_load()
+      require("configs.luasnip").config()
     end,
-    wants = "friendly-snippets",
   },
 
   -- Completion engine
@@ -181,6 +203,10 @@ local astro_plugins = {
   -- LSP completion source
   {
     "hrsh7th/cmp-nvim-lsp",
+    after = "nvim-cmp",
+    config = function()
+      require("core.utils").add_cmp_source "nvim_lsp"
+    end,
   },
 
   -- LSP manager
@@ -202,20 +228,10 @@ local astro_plugins = {
   -- Built-in LSP
   {
     "neovim/nvim-lspconfig",
-    event = "BufRead",
+    after = "cmp-nvim-lsp",
     config = function()
       require "configs.lsp"
     end,
-  },
-
-  -- LSP enhancer
-  {
-    "tami5/lspsaga.nvim",
-    event = "BufRead",
-    config = function()
-      require("configs.lsp.lspsaga").config()
-    end,
-    disable = not config.enabled.lspsaga,
   },
 
   -- LSP symbols
@@ -244,6 +260,7 @@ local astro_plugins = {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
+    module = "telescope",
     config = function()
       require("configs.telescope").config()
     end,
@@ -252,7 +269,11 @@ local astro_plugins = {
   -- Fuzzy finder syntax support
   {
     "nvim-telescope/telescope-fzf-native.nvim",
+    after = "telescope.nvim",
     run = "make",
+    config = function()
+      require("telescope").load_extension "fzf"
+    end,
   },
 
   -- Git integration

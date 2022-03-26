@@ -7,7 +7,7 @@ function M.setup()
     auto_preview = true,
     position = "right",
     relative_width = true,
-    width = 45,
+    width = 17,
     auto_close = false,
     show_numbers = false,
     show_relative_numbers = false,

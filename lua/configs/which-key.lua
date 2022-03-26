@@ -104,11 +104,15 @@ function M.config()
     l = {
       name = "LSP",
       a = { "Code Action" },
+      d = { "Hover Diagnostic" },
+      D = { "All Diagnostics" },
       f = { "Format" },
       i = { "Info" },
       I = { "Installer Info" },
       r = { "Rename" },
+      R = { "References" },
       s = { "Document Symbols" },
+      S = { "Symbols Outline" },
     },
 
     s = {
@@ -116,6 +120,7 @@ function M.config()
       b = { "Checkout branch" },
       h = { "Find Help" },
       m = { "Man Pages" },
+      n = { "Notifications" },
       r = { "Registers" },
       k = { "Keymaps" },
       c = { "Commands" },

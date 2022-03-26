@@ -7,7 +7,11 @@ function M.config()
   end
 
   local actions = require "telescope.actions"
-  telescope.load_extension "fzf"
+
+  local notify_present, _ = pcall(require, "notify")
+  if notify_present then
+    telescope.load_extension "notify"
+  end
 
   telescope.setup(require("core.utils").user_plugin_opts("plugins.telescope", {
     defaults = {
@@ -95,14 +99,7 @@ function M.config()
       },
     },
     pickers = {},
-    extensions = {
-      fzf = {
-        fuzzy = true,
-        override_generic_sorter = true,
-        override_file_sorter = true,
-        case_mode = "smart_case",
-      },
-    },
+    extensions = {},
   }))
 end
 

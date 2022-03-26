@@ -20,7 +20,6 @@ local config = {
     bufferline = true,
     nvim_tree = true,
     lualine = true,
-    lspsaga = true,
     gitsigns = true,
     colorizer = true,
     toggle_term = true,

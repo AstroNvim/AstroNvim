@@ -12,20 +12,27 @@ vim.g.maplocalleader = " "
 
 -- Normal --
 -- Better window navigation
-map("n", "<C-h>", "<C-w>h", opts)
-map("n", "<C-j>", "<C-w>j", opts)
-map("n", "<C-k>", "<C-w>k", opts)
-map("n", "<C-l>", "<C-w>l", opts)
+map("n", "<C-h>", "<cmd>lua require'smart-splits'.move_cursor_left()<cr>", opts)
+map("n", "<C-j>", "<cmd>lua require'smart-splits'.move_cursor_down()<cr>", opts)
+map("n", "<C-k>", "<cmd>lua require'smart-splits'.move_cursor_up()<cr>", opts)
+map("n", "<C-l>", "<cmd>lua require'smart-splits'.move_cursor_right()<cr>", opts)
 
 -- Resize with arrows
-map("n", "<C-Up>", "<cmd>resize -2<CR>", opts)
-map("n", "<C-Down>", "<cmd>resize +2<CR>", opts)
-map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", opts)
-map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", opts)
+map("n", "<C-Up>", "<cmd>lua require'smart-splits'.resize_up(2)<cr>", opts)
+map("n", "<C-Down>", "<cmd>lua require'smart-splits'.resize_down(2)<cr>", opts)
+map("n", "<C-Left>", "<cmd>lua require'smart-splits'.resize_left(2)<cr>", opts)
+map("n", "<C-Right>", "<cmd>lua require'smart-splits'.resize_right(2)<cr>", opts)
 
 -- Navigate buffers
-map("n", "<S-l>", "<cmd>bnext<CR>", opts)
-map("n", "<S-h>", "<cmd>bprevious<CR>", opts)
+if config.enabled.bufferline then
+  map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", opts)
+  map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", opts)
+  map("n", "}", "<cmd>BufferLineMoveNext<cr>", opts)
+  map("n", "{", "<cmd>BufferLineMovePrev<cr>", opts)
+else
+  map("n", "<S-l>", "<cmd>bnext<CR>", opts)
+  map("n", "<S-h>", "<cmd>bprevious<CR>", opts)
+end
 
 -- Move text up and down
 map("n", "<A-j>", "<Esc><cmd>m .+1<CR>==gi", opts)
@@ -90,24 +97,30 @@ map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", opts)
 map("n", "<leader>sb", "<cmd>Telescope git_branches<CR>", opts)
 map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", opts)
 map("n", "<leader>sm", "<cmd>Telescope man_pages<CR>", opts)
+map("n", "<leader>sn", "<cmd>Telescope notify<CR>", opts)
 map("n", "<leader>sr", "<cmd>Telescope registers<CR>", opts)
 map("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", opts)
 map("n", "<leader>sc", "<cmd>Telescope commands<CR>", opts)
 map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", opts)
+map("n", "<leader>lR", "<cmd>Telescope lsp_references<CR>", opts)
+map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", opts)
 
--- Lspsaga
-if config.enabled.lspsaga then
-  map("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
-  map("n", "ca", "<cmd>Lspsaga code_action<CR>", opts)
-  map("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
-  map("n", "rn", "<cmd>Lspsaga rename<CR>", opts)
-  map("n", "gj", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
-  map("n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
-  map("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<cr>", opts)
-  map("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<cr>", opts)
-  map("n", "<leader>la", "<cmd>Lspsaga code_action<CR>", opts)
-  map("n", "<leader>lr", "<cmd>Lspsaga rename<CR>", opts)
-end
+-- LSP
+map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+map("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+map("n", "go", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+map("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>", opts)
+map("n", "]d", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>", opts)
+map("n", "gj", "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<cr>", opts)
+map("n", "gk", "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<cr>", opts)
+map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+map("n", "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 
 -- Comment
 if config.enabled.comment then
@@ -116,7 +129,7 @@ if config.enabled.comment then
 end
 
 -- ForceWrite
-map("n", "<C-w>", "<cmd>w!<CR>", opts)
+map("n", "<C-s>", "<cmd>w!<CR>", opts)
 
 -- ForceQuit
 map("n", "<C-q>", "<cmd>q!<CR>", opts)
@@ -137,7 +150,7 @@ end
 
 -- SymbolsOutline
 if config.enabled.symbols_outline then
-  map("n", "<leader>s", "<cmd>SymbolsOutline<CR>", opts)
+  map("n", "<leader>lS", "<cmd>SymbolsOutline<CR>", opts)
 end
 
 -- Visual --

@@ -1,8 +1,7 @@
 local M = {}
 
 local utils = require "core.utils"
-local config = utils.user_settings()
-local colorscheme = config.colorscheme
+local colorscheme = utils.user_plugin_opts "colorscheme"
 
 local set = vim.opt
 
