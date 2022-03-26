@@ -64,7 +64,7 @@ cmd("WinEnter", {
   command = "set cursorline",
 })
 
-add_command("AstroUpdate", "lua require('core.utils').update()", {})
+add_command("AstroUpdate", require("core.utils").update, {})
 
 -- if config.enabled.dashboard and config.enabled.bufferline then
 --     augroup("_dashboard_settings")
