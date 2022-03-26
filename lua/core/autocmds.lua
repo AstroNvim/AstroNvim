@@ -44,6 +44,7 @@ local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local add_command = vim.api.nvim_add_user_command
 
+augroup("_buffer", {})
 cmd("BufWritePost", {
   desc = "Auto Compile plugins.lua file",
   group = "_buffer",
@@ -63,7 +64,7 @@ cmd("WinEnter", {
   command = "set cursorline",
 })
 
-add_command("AstroUpdate", [[:lua require("core.utils").update()]])
+add_command("AstroUpdate", "lua require('core.utils').update()", {})
 
 -- if config.enabled.dashboard and config.enabled.bufferline then
 --     augroup("_dashboard_settings")
