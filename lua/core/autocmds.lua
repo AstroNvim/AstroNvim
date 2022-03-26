@@ -37,34 +37,29 @@
 
 local M = {}
 
-local utils = require "core.utils"
-local config = utils.user_settings()
-
 local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local add_command = vim.api.nvim_add_user_command
 
-augroup("_buffer", {})
+augroup("packer_user_config", {})
 cmd("BufWritePost", {
   desc = "Auto Compile plugins.lua file",
-  group = "_buffer",
+  group = "packer_user_config",
   command = "PackerCompile",
   pattern = "plugins.lua",
 })
 
-augroup("_cursor_off", {})
+augroup("cursor_off", {})
 cmd("WinLeave", {
   desc = "No cursorline",
-  group = "_cursor_off",
+  group = "cursor_off",
   command = "set nocursorline",
 })
 cmd("WinEnter", {
   desc = "No cursorline",
-  group = "_cursor_off",
+  group = "cursor_off",
   command = "set cursorline",
 })
-
-add_command("AstroUpdate", require("core.utils").update, {})
 
 -- if config.enabled.dashboard and config.enabled.bufferline then
 --     augroup("_dashboard_settings")
@@ -74,5 +69,7 @@ add_command("AstroUpdate", require("core.utils").update, {})
 --         command = "set showtabline=0"
 --     })
 -- end
+
+add_command("AstroUpdate", require("core.utils").update, {})
 
 return M
