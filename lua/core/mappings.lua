@@ -11,32 +11,16 @@ vim.g.maplocalleader = " "
 
 -- Normal --
 -- Better window navigation
-map("n", "<C-h>", function()
-  return require("smart-splits").move_cursor_left()
-end)
-map("n", "<C-j>", function()
-  return require("smart-splits").move_cursor_down()
-end)
-map("n", "<C-j>", function()
-  return require("smart-splits").move_cursor_up()
-end)
-map("n", "<C-l>", function()
-  return require("smart-splits").move_cursor_right()
-end)
+map("n", "<C-h>", require("smart-splits").move_cursor_left)
+map("n", "<C-j>", require("smart-splits").move_cursor_down)
+map("n", "<C-j>", require("smart-splits").move_cursor_up)
+map("n", "<C-l>", require("smart-splits").move_cursor_right)
 
 -- Resize with arrows
-map("n", "<C-Up>", function()
-  return require("smart-splits").resize_up(2)
-end)
-map("n", "<C-Down>", function()
-  return require("smart-splits").resize_down(2)
-end)
-map("n", "<C-Left>", function()
-  return require("smart-splits").resize_left(2)
-end)
-map("n", "<C-Right>", function()
-  return require("smart-splits").resize_right(2)
-end)
+map("n", "<C-Up>", require("smart-splits").resize_up)
+map("n", "<C-Down>", require("smart-splits").resize_down)
+map("n", "<C-Left>", require("smart-splits").resize_left)
+map("n", "<C-Right>", require("smart-splits").resize_right)
 
 -- Navigate buffers
 if config.enabled.bufferline then
@@ -89,30 +73,14 @@ end
 
 -- GitSigns
 if config.enabled.gitsigns then
-  map("n", "<leader>gj", function()
-    return require("gitsigns").next_hunk()
-  end)
-  map("n", "<leader>gk", function()
-    return require("gitsigns").prev_hunk()
-  end)
-  map("n", "<leader>gl", function()
-    return require("gitsigns").blame_line()
-  end)
-  map("n", "<leader>gp", function()
-    return require("gitsigns").preview_hunk()
-  end)
-  map("n", "<leader>gh", function()
-    return require("gitsigns").reset_hunk()
-  end)
-  map("n", "<leader>gr", function()
-    return require("gitsigns").reset_buffer()
-  end)
-  map("n", "<leader>gs", function()
-    return require("gitsigns").stage_hunk()
-  end)
-  map("n", "<ledaer>gu", function()
-    return require("gitsigns").undo_stage_hunk()
-  end)
+  map("n", "<leader>gj", require("gitsigns").next_hunk)
+  map("n", "<leader>gk", require("gitsigns").prev_hunk)
+  map("n", "<leader>gl", require("gitsigns").blame_line)
+  map("n", "<leader>gp", require("gitsigns").preview_hunk)
+  map("n", "<leader>gh", require("gitsigns").reset_hunk)
+  map("n", "<leader>gr", require("gitsigns").reset_buffer)
+  map("n", "<leader>gs", require("gitsigns").stage_hunk)
+  map("n", "<ledaer>gu", require("gitsigns").undo_stage_hunk)
   map("n", "<leader>gd", "<cmd>Gitsigns diffthis HEAD<cr>")
 end
 
@@ -143,18 +111,10 @@ map("n", "gI", vim.lsp.buf.implementation)
 map("n", "gr", vim.lsp.buf.references)
 map("n", "go", vim.diagnostic.open_float)
 map("n", "gl", vim.diagnostic.open_float)
-map("n", "[d", function()
-  vim.diagnostic.goto_prev { border = "rounded" }
-end)
-map("n", "gk", function()
-  vim.diagnostic.goto_prev { border = "rounded" }
-end)
-map("n", "]d", function()
-  vim.diagnostic.goto_next { border = "rounded" }
-end)
-map("n", "gj", function()
-  vim.diagnostic.goto_next { border = "rounded" }
-end)
+map("n", "[d", vim.diagnostic.goto_prev)
+map("n", "gk", vim.diagnostic.goto_prev)
+map("n", "]d", vim.diagnostic.goto_next)
+map("n", "gj", vim.diagnostic.goto_next)
 map("n", "K", vim.lsp.buf.hover)
 map("n", "<leader>rn", vim.lsp.buf.rename)
 map("n", "<leader>la", vim.lsp.buf.code_action)
@@ -163,9 +123,7 @@ map("n", "<leader>ld", vim.diagnostic.open_float)
 
 -- Comment
 if config.enabled.comment then
-  map("n", "<leader>/", function()
-    return require("Comment.api").toggle_current_linewise()
-  end)
+  map("n", "<leader>/", require("Comment.api").toggle_current_linewise)
   map("v", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 end
 
