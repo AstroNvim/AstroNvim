@@ -11,9 +11,9 @@ utils.bootstrap()
 
 local sources = {
   "core.options",
-  "core.autocmds",
+  (vim.fn.has "nvim-0.7" == 1 and "nightly." or "") .. "core.autocmds",
   "core.plugins",
-  "core.mappings",
+  (vim.fn.has "nvim-0.7" == 1 and "nightly." or "") .. "core.mappings",
 }
 
 for _, source in ipairs(sources) do
