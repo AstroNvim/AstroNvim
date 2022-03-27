@@ -179,7 +179,7 @@ map("n", "<C-q>", "<cmd>q!<CR>")
 if config.enabled.toggle_term then
   map("n", "<C-\\>", "<cmd>ToggleTerm<CR>")
   map("n", "<leader>gg", function()
-    return _lazygit_toggle()
+    return _LAZYGIT_TOGGLE()
   end)
   map("n", "<leader>tn", function()
     return _NODE_TOGGLE()
