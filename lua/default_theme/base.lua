@@ -56,7 +56,7 @@ local base = {
   Question = { fg = C.purple, bg = C.none },
   QuickFixLine = { fg = C.grey_3, bg = C.yellow },
   Search = { fg = C.grey_3, bg = C.yellow },
-  SignColumn = { fg = C.bg, bg = C.bg },
+  SignColumn = { fg = C.none, bg = C.none },
   SpecialKey = { fg = C.grey_1, bg = C.none },
   SpellBad = { fg = C.red, bg = C.none },
   SpellCap = { fg = C.yellow, bg = C.none },
