@@ -19,8 +19,8 @@ function M.config()
       width = nil,
       max_width = { 140, 0.9 },
       min_width = { 20, 0.2 },
-      winblend = 10,
-      winhighlight = "",
+      winblend = 0,
+      winhighlight = "Normal:Normal,NormalNC:NormalNC",
       override = function(conf)
         return conf
       end,
