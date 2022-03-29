@@ -124,13 +124,13 @@ local others = {
   -- Neo-Tree
   NeoTreeDirectoryIcon = { fg = C.blue },
   NeoTreeFileNameOpened = { fg = C.green },
+  NeoTreeIndentMarker = { fg = C.grey_6 },
   NeoTreeGitAdded = { fg = C.green },
   NeoTreeGitConflict = { fg = C.red },
   NeoTreeGitModified = { fg = C.orange },
   NeoTreeGitUntracked = { fg = C.yellow },
   NeoTreeNormal = { bg = C.blue_2 },
   NeoTreeNormalNC = { bg = C.blue_2 },
-  NeoTreeRootName = { fg = C.bg },
   NeoTreeSymbolicLinkTarget = { fg = C.cyan },
 
   -- VimWiki
