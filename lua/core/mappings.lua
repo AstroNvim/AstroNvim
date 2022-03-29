@@ -56,10 +56,10 @@ map("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting_sync()<cr>", opts)
 map("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
 map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", opts)
 
--- NvimTree
-if config.enabled.nvim_tree then
-  map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", opts)
-  map("n", "<leader>o", "<cmd>NvimTreeFocus<CR>", opts)
+-- NeoTree
+if config.enabled.neo_tree then
+  map("n", "<leader>e", "<cmd>Neotree toggle<CR>", opts)
+  map("n", "<leader>o", "<cmd>Neotree focus<CR>", opts)
 end
 
 -- Dashboard
