@@ -20,7 +20,7 @@ function M.config()
     default_component_configs = {
       indent = {
         indent_size = 2,
-        padding = 1,
+        padding = 0,
         with_markers = true,
         indent_marker = "│",
         last_indent_marker = "└",
