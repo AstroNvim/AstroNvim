@@ -91,12 +91,14 @@ local astro_plugins = {
 
   -- File explorer
   {
-    "kyazdani42/nvim-tree.lua",
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    "nvim-neo-tree/neo-tree.nvim",
+    module = "neo-tree",
+    cmd = "Neotree",
+    requires = "MunifTanjim/nui.nvim",
     config = function()
-      require("configs.nvim-tree").config()
+      require("configs.neo-tree").config()
     end,
-    disable = not config.enabled.nvim_tree,
+    disable = not config.enabled.neo_tree,
   },
 
   -- Statusline
