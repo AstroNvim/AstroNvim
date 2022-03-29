@@ -373,6 +373,27 @@ local astro_plugins = {
 
   -- Get extra JSON schemas
   { "b0o/SchemaStore.nvim" },
+
+  -- DAP:
+  {
+    "mfussenegger/nvim-dap",
+    disable = not config.enabled.dap_support,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    requires = { "nvim-dap", "rust-tools.nvim" },
+    config = function()
+      require("configs.dap").ui_config()
+    end,
+    disable = not config.enabled.dap_support,
+  },
+  {
+    "Pocco81/DAPInstall.nvim",
+    config = function()
+      require("configs.dap").install_config()
+    end,
+    disable = not config.enabled.dap_support,
+  },
 }
 
 packer.startup {

@@ -173,6 +173,20 @@ map("x", "<A-k>", "<cmd>move '<-2<CR>gv-gv", opts)
 -- disable Ex mode:
 map("n", "Q", "<Nop>", opts)
 
+-- DAP
+if config.enabled.dap_support then
+  map("n", "<F5>", ":lua require('dap').continue()<cr>", opts)
+  map("n", "<F10>", ":lua require('dap').step_over()<cr>", opts)
+  map("n", "<F11>", ":lua require('dap').step_into()<cr>", opts)
+  map("n", "<F12>", ":lua require('dap').step_out()<cr>", opts)
+  map("n", "<leader>bp", ":lua require('dap').toggle_breakpoint()<cr>", opts)
+  map("n", "<leader>Bp", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", opts)
+  map("n", "<leader>lp", ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Logpoint message: '))<cr>", opts)
+  map("n", "<leader>rp", ":lua require('dap').repl.open()<cr>", opts)
+  map("n", "<leader>RR", ":lua require('dap').run_last()<cr>", opts)
+  map("n", "<leader>XX", ":lua require('dap').terminate()<cr>", opts)
+end
+
 function _G.set_terminal_keymaps()
   vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
   vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)

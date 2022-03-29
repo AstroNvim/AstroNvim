@@ -31,6 +31,7 @@ local config = {
     neoscroll = true,
     ts_rainbow = true,
     ts_autotag = true,
+    dap_support = false,
   },
 }
 
