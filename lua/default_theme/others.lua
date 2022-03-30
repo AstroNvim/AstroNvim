@@ -123,8 +123,11 @@ local others = {
 
   -- Neo-Tree
   NeoTreeDirectoryIcon = { fg = C.blue },
+  NeoTreeRootName = { fg = C.fg, style = "bold" },
+  NeoTreeFileName = { fg = C.fg },
+  NeoTreeFileIcon = { fg = C.fg },
   NeoTreeFileNameOpened = { fg = C.green },
-  NeoTreeIndentMarker = { fg = C.grey_6 },
+  NeoTreeIndentMarker = { fg = C.blue_3 },
   NeoTreeGitAdded = { fg = C.green },
   NeoTreeGitConflict = { fg = C.red },
   NeoTreeGitModified = { fg = C.orange },
