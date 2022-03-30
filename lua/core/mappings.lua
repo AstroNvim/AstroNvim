@@ -161,7 +161,6 @@ map("v", ">", ">gv", opts)
 -- Move text up and down
 map("v", "<A-j>", "<cmd>m .+1<CR>==", opts)
 map("v", "<A-k>", "<cmd>m .-2<CR>==", opts)
-map("v", "p", '"_dP', opts)
 
 -- Visual Block --
 -- Move text up and down
