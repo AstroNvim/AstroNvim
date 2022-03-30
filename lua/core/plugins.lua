@@ -51,7 +51,7 @@ local astro_plugins = {
   -- Cursorhold fix
   {
     "antoinemadec/FixCursorHold.nvim",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       vim.g.cursorhold_updatetime = 100
     end,
@@ -135,7 +135,7 @@ local astro_plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     cmd = {
       "TSInstall",
       "TSInstallInfo",
@@ -169,7 +169,7 @@ local astro_plugins = {
   -- Completion engine
   {
     "hrsh7th/nvim-cmp",
-    event = "BufRead",
+    event = "BufWinEnter",
     config = function()
       require("configs.cmp").config()
     end,
@@ -202,7 +202,7 @@ local astro_plugins = {
   -- LSP manager
   {
     "williamboman/nvim-lsp-installer",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     cmd = {
       "LspInstall",
       "LspInstallInfo",
@@ -237,7 +237,7 @@ local astro_plugins = {
   -- Formatting and linting
   {
     "jose-elias-alvarez/null-ls.nvim",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       local null_ls = require("core.utils").user_plugin_opts "null-ls"
       if type(null_ls) == "function" then
@@ -269,7 +269,7 @@ local astro_plugins = {
   -- Git integration
   {
     "lewis6991/gitsigns.nvim",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("configs.gitsigns").config()
     end,
@@ -288,7 +288,7 @@ local astro_plugins = {
   -- Color highlighting
   {
     "norcalli/nvim-colorizer.lua",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("configs.colorizer").config()
     end,
@@ -317,7 +317,7 @@ local astro_plugins = {
   -- Commenting
   {
     "numToStr/Comment.nvim",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("configs.comment").config()
     end,
@@ -345,7 +345,7 @@ local astro_plugins = {
   -- Smooth scrolling
   {
     "karb94/neoscroll.nvim",
-    event = "BufRead",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("configs.neoscroll").config()
     end,
