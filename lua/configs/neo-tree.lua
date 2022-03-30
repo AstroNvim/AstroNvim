@@ -85,8 +85,8 @@ function M.config()
     nesting_rules = {},
     filesystem = {
       filtered_items = {
-        visible = false,
-        hide_dotfiles = false,
+        visible = true,
+        hide_dotfiles = true,
         hide_gitignored = false,
         hide_by_name = {
           ".DS_Store",
