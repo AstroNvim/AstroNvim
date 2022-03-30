@@ -13,6 +13,7 @@ local colors = {
   blue = "#61afef",
   blue_1 = "#40d9ff",
   blue_2 = "#1b1f27",
+  blue_3 = "#8094B4",
   orange = "#d19a66",
   orange_1 = "#ff9640",
   orange_2 = "#ff8800",
