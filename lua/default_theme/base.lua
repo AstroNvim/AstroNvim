@@ -10,7 +10,7 @@ local base = {
   Identifier = { fg = C.blue, bg = C.none },
   Function = { fg = C.yellow, bg = C.none },
   Statement = { fg = C.purple, bg = C.none },
-  Conditional = { fg = C.purple, bg = C.none },
+  Conditional = { fg = C.purple_1, bg = C.none },
   Repeat = { fg = C.purple, bg = C.none },
   Label = { fg = C.blue, bg = C.none },
   Operator = { fg = C.purple, bg = C.none },

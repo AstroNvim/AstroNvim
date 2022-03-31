@@ -104,7 +104,6 @@ local astro_plugins = {
   -- Statusline
   {
     "nvim-lualine/lualine.nvim",
-    commit = "016a207",
     config = function()
       require("configs.lualine").config()
     end,
