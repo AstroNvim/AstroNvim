@@ -27,6 +27,8 @@ end
 
 local _user_settings = load_user_settings()
 
+local _user_terminals = {}
+
 local function func_or_extend(overrides, default)
   if default == nil then
     default = overrides
@@ -140,6 +142,13 @@ function M.list_registered_linters(filetype)
   local formatter_method = null_ls_methods.internal["DIAGNOSTICS"]
   local registered_providers = M.list_registered_providers_names(filetype)
   return registered_providers[formatter_method] or {}
+end
+
+function M.toggle_term_cmd(cmd)
+  if _user_terminals[cmd] == nil then
+    _user_terminals[cmd] = require("toggleterm.terminal").Terminal:new { cmd = cmd, hidden = true }
+  end
+  _user_terminals[cmd]:toggle()
 end
 
 function M.label_plugins(plugins)
