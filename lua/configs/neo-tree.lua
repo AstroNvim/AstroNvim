@@ -86,7 +86,7 @@ function M.config()
     filesystem = {
       filtered_items = {
         visible = false,
-        hide_dotfiles = false,
+        hide_dotfiles = true,
         hide_gitignored = false,
         hide_by_name = {
           ".DS_Store",
