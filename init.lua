@@ -23,11 +23,9 @@ for _, source in ipairs(sources) do
   end
 end
 
-local polish = utils.user_plugin_opts "polish"
+utils.compiled()
 
+local polish = utils.user_plugin_opts "polish"
 if type(polish) == "function" then
   polish()
 end
-
--- keep this last:
-utils.compiled()

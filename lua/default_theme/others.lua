@@ -123,14 +123,17 @@ local others = {
 
   -- Neo-Tree
   NeoTreeDirectoryIcon = { fg = C.blue },
+  NeoTreeRootName = { fg = C.fg, style = "bold" },
+  NeoTreeFileName = { fg = C.fg },
+  NeoTreeFileIcon = { fg = C.fg },
   NeoTreeFileNameOpened = { fg = C.green },
+  NeoTreeIndentMarker = { fg = C.blue_3 },
   NeoTreeGitAdded = { fg = C.green },
   NeoTreeGitConflict = { fg = C.red },
   NeoTreeGitModified = { fg = C.orange },
   NeoTreeGitUntracked = { fg = C.yellow },
   NeoTreeNormal = { bg = C.blue_2 },
   NeoTreeNormalNC = { bg = C.blue_2 },
-  NeoTreeRootName = { fg = C.bg },
   NeoTreeSymbolicLinkTarget = { fg = C.cyan },
 
   -- VimWiki
