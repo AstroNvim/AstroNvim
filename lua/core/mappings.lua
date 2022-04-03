@@ -56,10 +56,10 @@ map("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting_sync()<cr>", opts)
 map("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
 map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", opts)
 
--- NvimTree
-if config.enabled.nvim_tree then
-  map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", opts)
-  map("n", "<leader>o", "<cmd>NvimTreeFocus<CR>", opts)
+-- NeoTree
+if config.enabled.neo_tree then
+  map("n", "<leader>e", "<cmd>Neotree toggle<CR>", opts)
+  map("n", "<leader>o", "<cmd>Neotree focus<CR>", opts)
 end
 
 -- Dashboard
@@ -137,12 +137,12 @@ map("n", "<C-q>", "<cmd>q!<CR>", opts)
 -- Terminal
 if config.enabled.toggle_term then
   map("n", "<C-\\>", "<cmd>ToggleTerm<CR>", opts)
-  map("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
-  map("n", "<leader>tn", "<cmd>lua _NODE_TOGGLE()<CR>", opts)
-  map("n", "<leader>tu", "<cmd>lua _NCDU_TOGGLE()<CR>", opts)
-  map("n", "<leader>tt", "<cmd>lua _HTOP_TOGGLE()<CR>", opts)
-  map("n", "<leader>tp", "<cmd>lua _PYTHON_TOGGLE()<CR>", opts)
-  map("n", "<leader>tl", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
+  map("n", "<leader>gg", "<cmd>lua require('core.utils').toggle_term_cmd('lazygit')<CR>", opts)
+  map("n", "<leader>tn", "<cmd>lua require('core.utils').toggle_term_cmd('node')<CR>", opts)
+  map("n", "<leader>tu", "<cmd>lua require('core.utils').toggle_term_cmd('ncdu')<CR>", opts)
+  map("n", "<leader>tt", "<cmd>lua require('core.utils').toggle_term_cmd('htop')<CR>", opts)
+  map("n", "<leader>tp", "<cmd>lua require('core.utils').toggle_term_cmd('python')<CR>", opts)
+  map("n", "<leader>tl", "<cmd>lua require('core.utils').toggle_term_cmd('lazygit')<CR>", opts)
   map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", opts)
   map("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", opts)
   map("n", "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", opts)
@@ -161,7 +161,6 @@ map("v", ">", ">gv", opts)
 -- Move text up and down
 map("v", "<A-j>", "<cmd>m .+1<CR>==", opts)
 map("v", "<A-k>", "<cmd>m .-2<CR>==", opts)
-map("v", "p", '"_dP', opts)
 
 -- Visual Block --
 -- Move text up and down
