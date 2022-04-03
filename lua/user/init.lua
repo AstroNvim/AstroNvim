@@ -118,13 +118,14 @@ local config = {
   -- This function is run last
   -- good place to configure mappings and vim options
   polish = function()
-    local opts = { noremap = true, silent = true }
-    local map = vim.api.nvim_set_keymap
-    local set = vim.opt
+
     -- Set options
+    local set = vim.opt
     set.relativenumber = true
 
     -- Set key bindings
+    local opts = { noremap = true, silent = true }
+    local map = vim.api.nvim_set_keymap
     map("n", "<C-s>", ":w!<CR>", opts)
 
     -- Set autocommands
