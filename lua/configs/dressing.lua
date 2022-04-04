@@ -20,7 +20,7 @@ function M.config()
       max_width = { 140, 0.9 },
       min_width = { 20, 0.2 },
       winblend = 0,
-      winhighlight = "Normal:Normal,NormalNC:NormalNC",
+      winhighlight = "Normal:Normal,NormalNC:Normal",
       override = function(conf)
         return conf
       end,
@@ -35,7 +35,7 @@ function M.config()
         border = "rounded",
         relative = "editor",
         winblend = 10,
-        winhighlight = "",
+        winhighlight = "Normal:Normal,NormalNC:Normal",
         width = nil,
         max_width = { 140, 0.8 },
         min_width = { 40, 0.2 },
