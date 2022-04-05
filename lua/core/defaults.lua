@@ -32,6 +32,11 @@ local config = {
     ts_rainbow = true,
     ts_autotag = true,
   },
+
+  ui = {
+    nui_input = true,
+    telescope_select = true,
+  },
 }
 
 return config
