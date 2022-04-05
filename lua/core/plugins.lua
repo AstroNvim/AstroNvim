@@ -41,11 +41,8 @@ local astro_plugins = {
 
   -- Neovim UI Enhancer
   {
-    "stevearc/dressing.nvim",
-    event = "BufWinEnter",
-    config = function()
-      require("configs.dressing").config()
-    end,
+    "MunifTanjim/nui.nvim",
+    module = "nui",
   },
 
   -- Cursorhold fix

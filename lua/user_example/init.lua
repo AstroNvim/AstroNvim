@@ -37,6 +37,12 @@ local config = {
     ts_autotag = true,
   },
 
+  -- Disable AstroVim ui features
+  ui = {
+    nui_input = true,
+    telescope_select = true,
+  },
+
   -- Configure plugins
   plugins = {
     -- Add plugins, the packer syntax without the "use"
