@@ -81,7 +81,7 @@ Run `:AstroUpdate` to get the latest updates from the repository<br>
 
 ## ✨ Features
 
-- File explorer with [Nvimtree](https://github.com/kyazdani42/nvim-tree.lua)
+- File explorer with [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim)
 - Autocompletion with [Cmp](https://github.com/hrsh7th/nvim-cmp)
 - Git integration with [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
 - Statusline with [Lualine](https://github.com/nvim-lualine/lualine.nvim)
