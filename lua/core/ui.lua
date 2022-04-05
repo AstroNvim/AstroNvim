@@ -82,6 +82,15 @@ function M.telescope_select()
     local finders = require "telescope.finders"
     local conf = require("telescope.config").values
 
+    if opts.format_item then
+      local format_item = opts.format_item
+      opts.format_item = function(item)
+        return tostring(format_item(item))
+      end
+    else
+      opts.format_item = tostring
+    end
+
     local entry_maker = function(item)
       local formatted = opts.format_item(item)
       return {
