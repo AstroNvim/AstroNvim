@@ -153,7 +153,7 @@ local astro_plugins = {
   -- Snippet collection
   {
     "rafamadriz/friendly-snippets",
-    event = "InsertEnter",
+    after = "nvim-cmp",
   },
 
   -- Snippet engine
@@ -168,7 +168,7 @@ local astro_plugins = {
   -- Completion engine
   {
     "hrsh7th/nvim-cmp",
-    event = "BufWinEnter",
+    event = "InsertEnter",
     config = function()
       require("configs.cmp").config()
     end,
@@ -217,7 +217,7 @@ local astro_plugins = {
   -- Built-in LSP
   {
     "neovim/nvim-lspconfig",
-    after = "cmp-nvim-lsp",
+    event = "BufWinEnter",
     config = function()
       require "configs.lsp"
     end,
