@@ -2,7 +2,7 @@ local M = {}
 
 local supported_configs = {
   vim.fn.stdpath "config",
-  vim.fn.stdpath "config" .. "/../astrovim",
+  vim.fn.stdpath "config" .. "/../astronvim",
 }
 
 local g = vim.g
@@ -76,7 +76,7 @@ local function load_options(module, default)
   return default
 end
 
-M.base_notification = { title = "AstroVim" }
+M.base_notification = { title = "AstroNvim" }
 
 function M.bootstrap()
   local fn = vim.fn
@@ -90,7 +90,7 @@ function M.bootstrap()
       "https://github.com/wbthomason/packer.nvim",
       install_path,
     }
-    print "Cloning packer...\nSetup AstroVim"
+    print "Cloning packer...\nSetup AstroNvim"
     vim.cmd "packadd packer.nvim"
   end
 end

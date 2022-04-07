@@ -37,7 +37,7 @@ local config = {
     ts_autotag = true,
   },
 
-  -- Disable AstroVim ui features
+  -- Disable AstroNvim ui features
   ui = {
     nui_input = true,
     telescope_select = true,
