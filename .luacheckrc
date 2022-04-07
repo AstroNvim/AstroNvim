@@ -8,6 +8,7 @@ globals = {
   "_HTOP_TOGGLE",
   "vim",
   "C",
+  "packer_plugins",
 }
 
 -- Rerun tests only if their modification time changed

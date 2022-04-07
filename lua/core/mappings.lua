@@ -1,6 +1,6 @@
 local M = {}
 
-local config = require("core.utils").user_settings()
+local utils = require "core.utils"
 
 local opts = { noremap = true, silent = true }
 local map = vim.api.nvim_set_keymap
@@ -24,7 +24,7 @@ map("n", "<C-Left>", "<cmd>lua require'smart-splits'.resize_left(2)<cr>", opts)
 map("n", "<C-Right>", "<cmd>lua require'smart-splits'.resize_right(2)<cr>", opts)
 
 -- Navigate buffers
-if config.enabled.bufferline then
+if utils.is_available "bufferline.nvim" then
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", opts)
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", opts)
   map("n", "}", "<cmd>BufferLineMoveNext<cr>", opts)
@@ -57,13 +57,13 @@ map("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
 map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", opts)
 
 -- NeoTree
-if config.enabled.neo_tree then
+if utils.is_available "neo-tree.nvim" then
   map("n", "<leader>e", "<cmd>Neotree toggle<CR>", opts)
   map("n", "<leader>o", "<cmd>Neotree focus<CR>", opts)
 end
 
 -- Dashboard
-if config.enabled.dashboard then
+if utils.is_available "dashboard-nvim" then
   map("n", "<leader>d", "<cmd>Dashboard<CR>", opts)
   map("n", "<leader>fn", "<cmd>DashboardNewFile<CR>", opts)
   map("n", "<leader>db", "<cmd>Dashboard<CR>", opts)
@@ -73,7 +73,7 @@ if config.enabled.dashboard then
 end
 
 -- GitSigns
-if config.enabled.gitsigns then
+if utils.is_available "gitsigns.nvim" then
   map("n", "<leader>gj", "<cmd>lua require 'gitsigns'.next_hunk()<cr>", opts)
   map("n", "<leader>gk", "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", opts)
   map("n", "<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<cr>", opts)
@@ -123,7 +123,7 @@ map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 map("n", "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 
 -- Comment
-if config.enabled.comment then
+if utils.is_available "Comment.nvim" then
   map("n", "<leader>/", "<cmd>lua require('Comment.api').toggle_current_linewise()<cr>", opts)
   map("v", "<leader>/", "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>", opts)
 end
@@ -135,7 +135,7 @@ map("n", "<C-s>", "<cmd>w!<CR>", opts)
 map("n", "<C-q>", "<cmd>q!<CR>", opts)
 
 -- Terminal
-if config.enabled.toggle_term then
+if utils.is_available "nvim-toggleterm.lua" then
   map("n", "<C-\\>", "<cmd>ToggleTerm<CR>", opts)
   map("n", "<leader>gg", "<cmd>lua require('core.utils').toggle_term_cmd('lazygit')<CR>", opts)
   map("n", "<leader>tn", "<cmd>lua require('core.utils').toggle_term_cmd('node')<CR>", opts)
@@ -149,7 +149,7 @@ if config.enabled.toggle_term then
 end
 
 -- SymbolsOutline
-if config.enabled.symbols_outline then
+if utils.is_available "symbols-outline.nvim" then
   map("n", "<leader>lS", "<cmd>SymbolsOutline<CR>", opts)
 end
 

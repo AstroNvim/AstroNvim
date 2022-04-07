@@ -1,7 +1,6 @@
 local M = {}
 
 local utils = require "core.utils"
-local config = utils.user_settings()
 
 vim.cmd [[
   augroup packer_user_config
@@ -18,7 +17,7 @@ vim.cmd [[
   augroup end
 ]]
 
-if config.enabled.dashboard and config.enabled.bufferline then
+if utils.is_available "dashboard-nvim" and utils.is_available "bufferline.nvim" then
   vim.cmd [[
     augroup dashboard_settings
       autocmd!

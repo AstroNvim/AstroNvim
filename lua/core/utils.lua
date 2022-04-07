@@ -159,6 +159,10 @@ function M.label_plugins(plugins)
   return labelled
 end
 
+function M.is_available(plugin)
+  return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
+end
+
 function M.update()
   local Job = require "plenary.job"
 
