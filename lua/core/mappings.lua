@@ -71,8 +71,8 @@ end
 if utils.is_available "dashboard-nvim" then
   map("n", "<leader>d", "<cmd>Dashboard<CR>", opts)
   map("n", "<leader>fn", "<cmd>DashboardNewFile<CR>", opts)
-  map("n", "<leader>sl", "<cmd>SessionLoad<CR>", opts)
-  map("n", "<leader>ss", "<cmd>SessionSave<CR>", opts)
+  map("n", "<leader>Sl", "<cmd>SessionLoad<CR>", opts)
+  map("n", "<leader>Ss", "<cmd>SessionSave<CR>", opts)
 end
 
 -- GitSigns
