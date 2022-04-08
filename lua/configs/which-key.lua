@@ -84,6 +84,15 @@ function M.config()
       u = { "Update" },
     },
 
+    f = {
+      name = "Find",
+      b = { "Buffers" },
+      f = { "Files" },
+      h = { "Help Tags" },
+      o = { "Old Files" },
+      w = { "Grep Words" },
+    },
+
     g = {
       name = "Git",
       g = { "Lazygit" },
