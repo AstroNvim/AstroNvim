@@ -20,12 +20,9 @@
 AstroVim is an aesthetic and feature-rich neovim config that is extensible and easy to use with a great set of plugins
 </p>
 
-**BREAKING RELEASE NOTICE:** If you were using AstroVim before the official
-release, please see the updated user configuration in the [`lua/user_example`
-folder](https://github.com/kabinspace/AstroVim/tree/main/lua/user_example)
-as well as the updated configuration details below and in the `user_example`
-README. The official release came with a lot of restructuring changes to make
-things easier and more "future-proof".
+> **Rebranding Announcement:** With AstroVim growing and the Neovim v0.7 release coming up we have decided to do a rebranding to **AstroNvim** as well as migrating the repository to a dedicated GitHub organization. GitHub will automatically forward the original repository URL to the new location so this should not cause any hiccups on the user facing side. In the mean time feel free to checkout the upcoming new [AstroNvim Documentation](https://astronvim.github.io/) (_Note:_ This documentation is built for after the migration so the information on it is not entirely accurate to how the repo stands now). This update is expected to come sometime in the next couple weeks as we will wait until Neovim v0.7 stable is available across all popular package managers, this progress can be monitored in [PR #248](https://github.com/kabinspace/AstroVim/pull/248)
+
+> **Pre-v1.0 Notice:** If you were using AstroVim before the v1.0 release, please see the updated documentation because there were breaking changes.
 
 ## 🌟 Preview
 
