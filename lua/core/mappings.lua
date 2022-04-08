@@ -11,17 +11,19 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Normal --
--- Better window navigation
-map("n", "<C-h>", "<cmd>lua require'smart-splits'.move_cursor_left()<cr>", opts)
-map("n", "<C-j>", "<cmd>lua require'smart-splits'.move_cursor_down()<cr>", opts)
-map("n", "<C-k>", "<cmd>lua require'smart-splits'.move_cursor_up()<cr>", opts)
-map("n", "<C-l>", "<cmd>lua require'smart-splits'.move_cursor_right()<cr>", opts)
+if utils.is_available "smart-splits.nvim" then
+  -- Better window navigation
+  map("n", "<C-h>", "<cmd>lua require'smart-splits'.move_cursor_left()<cr>", opts)
+  map("n", "<C-j>", "<cmd>lua require'smart-splits'.move_cursor_down()<cr>", opts)
+  map("n", "<C-k>", "<cmd>lua require'smart-splits'.move_cursor_up()<cr>", opts)
+  map("n", "<C-l>", "<cmd>lua require'smart-splits'.move_cursor_right()<cr>", opts)
 
--- Resize with arrows
-map("n", "<C-Up>", "<cmd>lua require'smart-splits'.resize_up(2)<cr>", opts)
-map("n", "<C-Down>", "<cmd>lua require'smart-splits'.resize_down(2)<cr>", opts)
-map("n", "<C-Left>", "<cmd>lua require'smart-splits'.resize_left(2)<cr>", opts)
-map("n", "<C-Right>", "<cmd>lua require'smart-splits'.resize_right(2)<cr>", opts)
+  -- Resize with arrows
+  map("n", "<C-Up>", "<cmd>lua require'smart-splits'.resize_up(2)<cr>", opts)
+  map("n", "<C-Down>", "<cmd>lua require'smart-splits'.resize_down(2)<cr>", opts)
+  map("n", "<C-Left>", "<cmd>lua require'smart-splits'.resize_left(2)<cr>", opts)
+  map("n", "<C-Right>", "<cmd>lua require'smart-splits'.resize_right(2)<cr>", opts)
+end
 
 -- Navigate buffers
 if utils.is_available "bufferline.nvim" then
@@ -41,8 +43,11 @@ map("n", "<A-k>", "<Esc><cmd>m .-2<CR>==gi", opts)
 -- Standard Operations
 map("n", "<leader>w", "<cmd>w<CR>", opts)
 map("n", "<leader>q", "<cmd>q<CR>", opts)
-map("n", "<leader>c", "<cmd>Bdelete!<CR>", opts)
 map("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
+
+if utils.is_available "vim-bbye" then
+  map("n", "<leader>c", "<cmd>Bdelete!<CR>", opts)
+end
 
 -- Packer
 map("n", "<leader>pc", "<cmd>PackerCompile<cr>", opts)
@@ -66,8 +71,6 @@ end
 if utils.is_available "dashboard-nvim" then
   map("n", "<leader>d", "<cmd>Dashboard<CR>", opts)
   map("n", "<leader>fn", "<cmd>DashboardNewFile<CR>", opts)
-  map("n", "<leader>db", "<cmd>Dashboard<CR>", opts)
-  map("n", "<leader>bm", "<cmd>DashboardJumpMarks<CR>", opts)
   map("n", "<leader>sl", "<cmd>SessionLoad<CR>", opts)
   map("n", "<leader>ss", "<cmd>SessionSave<CR>", opts)
 end
@@ -86,24 +89,27 @@ if utils.is_available "gitsigns.nvim" then
 end
 
 -- Telescope
-map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", opts)
-map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", opts)
-map("n", "<leader>gb", "<cmd>Telescope git_branches<CR>", opts)
-map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", opts)
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", opts)
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", opts)
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", opts)
-map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", opts)
-map("n", "<leader>sb", "<cmd>Telescope git_branches<CR>", opts)
-map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", opts)
-map("n", "<leader>sm", "<cmd>Telescope man_pages<CR>", opts)
-map("n", "<leader>sn", "<cmd>Telescope notify<CR>", opts)
-map("n", "<leader>sr", "<cmd>Telescope registers<CR>", opts)
-map("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", opts)
-map("n", "<leader>sc", "<cmd>Telescope commands<CR>", opts)
-map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", opts)
-map("n", "<leader>lR", "<cmd>Telescope lsp_references<CR>", opts)
-map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", opts)
+if utils.is_available "telescope.nvim" then
+  map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", opts)
+  map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", opts)
+  map("n", "<leader>gb", "<cmd>Telescope git_branches<CR>", opts)
+  map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", opts)
+  map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", opts)
+  map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", opts)
+  map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", opts)
+  map("n", "<leader>fm", "<cmd>Telescope marks<CR>", opts)
+  map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", opts)
+  map("n", "<leader>sb", "<cmd>Telescope git_branches<CR>", opts)
+  map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", opts)
+  map("n", "<leader>sm", "<cmd>Telescope man_pages<CR>", opts)
+  map("n", "<leader>sn", "<cmd>Telescope notify<CR>", opts)
+  map("n", "<leader>sr", "<cmd>Telescope registers<CR>", opts)
+  map("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", opts)
+  map("n", "<leader>sc", "<cmd>Telescope commands<CR>", opts)
+  map("n", "<leader>ls", "<cmd>Telescope lsp_document_symbols<CR>", opts)
+  map("n", "<leader>lR", "<cmd>Telescope lsp_references<CR>", opts)
+  map("n", "<leader>lD", "<cmd>Telescope diagnostics<CR>", opts)
+end
 
 -- LSP
 map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
