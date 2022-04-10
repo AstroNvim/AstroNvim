@@ -7,10 +7,6 @@ function M.config()
   end
 
   vim.g.neo_tree_legacy_commands = 1
-  vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "DiagnosticSignError" })
-  vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })
-  vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo" })
-  vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
 
   neotree.setup(require("core.utils").user_plugin_opts("plugins.neo-tree", {
     close_if_last_window = true,
