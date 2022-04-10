@@ -1,7 +1,7 @@
 local M = {}
 
 function M.config()
-  local present, better_escape = pcall(require, "filetype")
+  local present, filetype = pcall(require, "filetype")
   if not present then
     return
   end
@@ -10,7 +10,7 @@ function M.config()
     vim.g.did_load_filetypes = 1
   end
 
-  better_escape.setup(require("core.utils").user_plugin_opts("plugins.filetype", {}))
+  filetype.setup(require("core.utils").user_plugin_opts("plugins.filetype", {}))
 end
 
 return M
