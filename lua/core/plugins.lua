@@ -173,7 +173,7 @@ local astro_plugins = {
   -- Completion engine
   {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("configs.cmp").config()
     end,
@@ -206,7 +206,6 @@ local astro_plugins = {
   -- LSP manager
   {
     "williamboman/nvim-lsp-installer",
-    event = { "BufRead", "BufNewFile" },
     cmd = {
       "LspInstall",
       "LspInstallInfo",
@@ -222,7 +221,7 @@ local astro_plugins = {
   -- Built-in LSP
   {
     "neovim/nvim-lspconfig",
-    event = "BufWinEnter",
+    after = "cmp-nvim-lsp",
     config = function()
       require "configs.lsp"
     end,
