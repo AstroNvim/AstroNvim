@@ -119,7 +119,7 @@ if utils.is_available "symbols-outline.nvim" then
   mappings.l.S = { "Symbols Outline" }
 end
 
-if utils.is_available "nvim-telescope/telescope.nvim" then
+if utils.is_available "telescope.nvim" then
   init_table "s"
   mappings.s.b = { "Checkout branch" }
   mappings.s.h = { "Find Help" }
