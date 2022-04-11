@@ -77,10 +77,20 @@ M.on_attach = function(client, bufnr)
 end
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if status_ok then
-  M.capabilities = cmp_nvim_lsp.update_capabilities(M.capabilities)
-end
+M.capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
+M.capabilities.textDocument.completion.completionItem.snippetSupport = true
+M.capabilities.textDocument.completion.completionItem.preselectSupport = true
+M.capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+M.capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+M.capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+M.capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+M.capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+M.capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    "documentation",
+    "detail",
+    "additionalTextEdits",
+  },
+}
 
 return M
