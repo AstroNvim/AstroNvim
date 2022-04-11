@@ -1,19 +1,33 @@
 local M = {}
 
+local supported_configs = {
+  vim.fn.stdpath "config",
+  vim.fn.stdpath "config" .. "/../astrovim",
+}
+
 local g = vim.g
 
+local function file_not_empty(path)
+  return vim.fn.empty(vim.fn.glob(path)) == 0
+end
+
 local function load_module_file(module)
-  local module_path = vim.fn.stdpath "config" .. "/lua/" .. module:gsub("%.", "/") .. ".lua"
-  local out = nil
-  if vim.fn.empty(vim.fn.glob(module_path)) == 0 then
-    local status_ok, loaded_module = pcall(require, module)
-    if status_ok then
-      out = loaded_module
-    else
-      vim.notify("Error loading " .. module_path, "error", M.base_notification)
+  local found_module = nil
+  for _, config_path in ipairs(supported_configs) do
+    local module_path = config_path .. "/lua/" .. module:gsub("%.", "/") .. ".lua"
+    if file_not_empty(module_path) then
+      found_module = module_path
     end
   end
-  return out
+  if found_module then
+    local status_ok, loaded_module = pcall(require, module)
+    if status_ok then
+      found_module = loaded_module
+    else
+      vim.notify("Error loading " .. found_module, "error", M.base_notification)
+    end
+  end
+  return found_module
 end
 
 local function load_user_settings()
