@@ -6,7 +6,7 @@ function M.config()
     return
   end
 
-  vim.g.neo_tree_legacy_commands = 1
+  vim.g.neo_tree_remove_legacy_commands = true
 
   neotree.setup(require("core.utils").user_plugin_opts("plugins.neo-tree", {
     close_if_last_window = true,
