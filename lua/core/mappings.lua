@@ -8,7 +8,6 @@ local map = vim.api.nvim_set_keymap
 -- Remap space as leader key
 map("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 -- Normal --
 if utils.is_available "smart-splits.nvim" then
@@ -202,10 +201,10 @@ function _G.set_terminal_keymaps()
   vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
 end
 
-vim.cmd [[
-  augroup TermMappings
-    autocmd! TermOpen term://* lua set_terminal_keymaps()
-  augroup END
+vim.cmd [[
+  augroup TermMappings
+    autocmd! TermOpen term://* lua set_terminal_keymaps()
+  augroup END
 ]]
 
 return M
