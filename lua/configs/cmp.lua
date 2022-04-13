@@ -64,8 +64,10 @@ function M.config()
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
     },
-    documentation = {
-      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    window = {
+      documentation = {
+        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      },
     },
     experimental = {
       ghost_text = false,
@@ -81,6 +83,10 @@ function M.config()
       { name = "path" },
     },
     mapping = {
+      ["<Up>"] = cmp.mapping.select_prev_item(),
+      ["<Down>"] = cmp.mapping.select_next_item(),
+      ["<C-p>"] = cmp.mapping.select_prev_item(),
+      ["<C-n>"] = cmp.mapping.select_next_item(),
       ["<C-k>"] = cmp.mapping.select_prev_item(),
       ["<C-j>"] = cmp.mapping.select_next_item(),
       ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
