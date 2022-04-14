@@ -273,7 +273,7 @@ lsp = {
 
 [AstroVim Wiki](https://github.com/kabinspace/AstroVim/wiki)
 
-- [Basic Usage](https://github.com/kabinspace/AstroVim/wiki/Default-Plugins) is given for basic usage
+- [Basic Usage](https://github.com/kabinspace/AstroVim/wiki/Basic-Usage) is given for basic usage
 - [Default Mappings](https://github.com/kabinspace/AstroVim/wiki/Default-Mappings) more about the default key bindings
 - [Default Plugins](https://github.com/kabinspace/AstroVim/wiki/Default-Plugins) more about the default plugins
 - [Advanced Configuration](https://github.com/kabinspace/AstroVim/wiki/Advanced-Configuration) more about advanced configuration
