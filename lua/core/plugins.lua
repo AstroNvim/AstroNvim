@@ -393,7 +393,7 @@ packer.startup {
     git = {
       clone_timeout = 300,
       subcommands = {
-        update = "pull --ff-only --progress --rebase=true",
+        update = "pull --ff-only --progress --rebase",
       },
     },
     auto_clean = true,
