@@ -76,12 +76,6 @@ function M.config()
     completion = {
       keyword_length = 1,
     },
-    sources = {
-      { name = "nvim_lsp" },
-      { name = "luasnip" },
-      { name = "buffer" },
-      { name = "path" },
-    },
     mapping = {
       ["<Up>"] = cmp.mapping.select_prev_item(),
       ["<Down>"] = cmp.mapping.select_next_item(),

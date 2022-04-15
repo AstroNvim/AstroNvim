@@ -165,6 +165,25 @@ function M.toggle_term_cmd(cmd)
   _user_terminals[cmd]:toggle()
 end
 
+function M.add_cmp_source(source, priority)
+  if type(priority) ~= "number" then
+    priority = 1000
+  end
+  local cmp_avail, cmp = pcall(require, "cmp")
+  if cmp_avail then
+    local config = cmp.get_config()
+    table.insert(config.sources, { name = source, priority = priority })
+    cmp.setup(config)
+  end
+end
+
+function M.add_user_cmp_source(source)
+  local priority = M.user_plugin_opts("cmp.source_priority", _user_settings.cmp.source_priority)[source]
+  if priority then
+    M.add_cmp_source(source, priority)
+  end
+end
+
 function M.label_plugins(plugins)
   local labelled = {}
   for _, plugin in ipairs(plugins) do
