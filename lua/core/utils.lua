@@ -41,7 +41,7 @@ end
 
 local _user_settings = load_user_settings()
 
-local _user_terminals = {}
+M.user_terminals = {}
 
 local function func_or_extend(overrides, default)
   if default == nil then
@@ -158,11 +158,17 @@ function M.list_registered_linters(filetype)
   return registered_providers[formatter_method] or {}
 end
 
-function M.toggle_term_cmd(cmd)
-  if _user_terminals[cmd] == nil then
-    _user_terminals[cmd] = require("toggleterm.terminal").Terminal:new { cmd = cmd, hidden = true }
+-- term_details can be either a string for just a command or
+-- a complete table to provide full access to configuration when calling Terminal:new()
+function M.toggle_term_cmd(term_details)
+  if type(term_details) == "string" then
+    term_details = { cmd = term_details, hidden = true }
   end
-  _user_terminals[cmd]:toggle()
+  local cmd = term_details.cmd
+  if M.user_terminals[cmd] == nil then
+    M.user_terminals[cmd] = require("toggleterm.terminal").Terminal:new(term_details)
+  end
+  M.user_terminals[cmd]:toggle()
 end
 
 function M.add_cmp_source(source, priority)
