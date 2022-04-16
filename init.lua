@@ -41,3 +41,5 @@ local polish = utils.user_plugin_opts "polish"
 if type(polish) == "function" then
   polish()
 end
+
+require("user.loadings")
