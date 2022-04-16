@@ -15,25 +15,6 @@ end
 
 local config = {
 
-  -- Set colorscheme
-  colorscheme = "default_theme",  -- "onehalflight",  -- 
-
-  -- Default theme configuration
-  default_theme = {
-    diagnostics_style = "none",
-    -- Modify the color table
-    colors = {
-      fg = "#abb2bf",
-    },
-    -- Modify the highlight groups
-    highlights = function(highlights)
-      local C = require "default_theme.colors"
-
-      highlights.Normal = { fg = C.fg, bg = C.bg }
-      return highlights
-    end,
-  },
-
   -- Disable default plugins
   enabled = {
     bufferline = true,
@@ -60,10 +41,6 @@ local config = {
 
   -- Configure plugins
   plugins = {
-    -- Add plugins, the packer syntax without the "use"
-    init = {
-      -- { "andweeb/presence.nvim" },
-    },
     -- All other entries override the setup() call for default plugins
     treesitter = {
       ensure_installed = { "lua" },
@@ -77,14 +54,6 @@ local config = {
   luasnip = {
     vscode_snippet_paths = {},
   },
-
-  -- -- Modify which-key registration
-  -- ["which-key"] = {
-  --   -- Add bindings to the normal mode <leader> mappings
-  --   register_n_leader = {
-  --     -- ["N"] = { "<cmd>tabnew<cr>", "New Buffer" },
-  --   },
-  -- },
 
   -- Extend LSP configuration
   -- lsp = {
