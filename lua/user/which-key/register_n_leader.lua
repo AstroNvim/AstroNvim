@@ -3,6 +3,7 @@ local keybindings = {
 
   ["N"] = { "<cmd>tabnew<cr>", "New Buffer" },
   ["sg"] = {'<cmd>Telescope live_grep<CR>', "Live grep"},
+  ["w"] = {},
 
 -- -------------------------------------------------------
 -- -- LSP --
