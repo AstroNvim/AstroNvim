@@ -16,7 +16,7 @@ vim.opt.redrawtime=2000  --- Time in milliseconds for stopping display redraw
 
 -- colors:
 -------------------------------------------------------
-local colorscheme = 'onehalflight'
+local colorscheme =  'onehalflight' -- 'default_theme' --'onehalflight' , 'onehalfdark'
 vim.cmd(string.format("colorscheme %s", colorscheme))
 -- vim.o.background = 'light'
 

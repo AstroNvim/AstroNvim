@@ -1,3 +1,4 @@
+local opts = { noremap = true, silent = true }
 
 local keybindings = {
 
@@ -5,8 +6,19 @@ local keybindings = {
   ["sg"] = {'<cmd>Telescope live_grep<CR>', "Live grep"},
   ["w"] = {},
   t  = {
-    p = {"<cmd>lua require('core.utils').toggle_term_cmd('ipython')<CR>", "Python" },
+    -- p = {"<cmd>lua require('core.utils').toggle_term_cmd({cmd='ipython', count=9})<CR>", "Python" },
+    -- p = {[[<cmd>exe v:count1 . "lua require('core.utils').toggle_term_cmd({cmd='ipython', count=vim.v.count})"<CR>]], "iPython" },
+    -- p = {[[<cmd>exe v:count1 . "lua require('core.utils').toggle_term_cmd({cmd='ipython', count=" . <v:count> . "})"<CR>]], "iPython" },
+    -- p = {[[<cmd>lua vim.v.count=1 require('core.utils').toggle_term_cmd({cmd='ipython', count=<vim.v.count>})<CR>]], "iPython" },
+    p = {[[<cmd>lua require('core.utils').toggle_term_cmd({cmd='ipython'})<CR>]], "iPython" },
+
   },
+
+-- exe v:count1 . "lua requ 
+
+  --     map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", opts)
+
+  -- command! -count=1 TermGitPush  lua require'toggleterm'.exec("git push",    <count>, 12)
 
 
 -- -------------------------------------------------------

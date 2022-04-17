@@ -1,5 +1,9 @@
 
--- local plugins = {
+-- Jupyter-Notebooks:
+-- https://richban.tech/python-jupyter-notebooks-development-in-neo-vim
+-- https://www.maxwellrules.com/misc/nvim_jupyter.html
+-- https://pythonawesome.com/a-neovim-plugin-for-running-code-interactively-with-jupyter/
+-- https://github.com/jupyter-vim/jupyter-vim
 
 return {
   ------------------------------------------------------------------
@@ -32,6 +36,18 @@ return {
     event = "BufRead",
     config = function()
       require("user/plugins/nvim-scroll")
+    end,
+  },
+
+
+  ------------------------------------------------------------------
+  -- Telescope
+  ------------------------------------------------------------------
+
+  {
+    'tknightz/telescope-termfinder.nvim',
+    config = function()
+     require('telescope').load_extension("termfinder")
     end,
   },
 

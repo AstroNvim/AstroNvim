@@ -16,13 +16,6 @@ M.unmapKeys = function ()
   keymap('', '>', '<Nop>', opts)
 end
 
-M.terminal = function()
-  vim.api.nvim_set_keymap('', '<M-7>', '<Cmd>execute v:count . "ToggleTerm"<CR>', {noremap=false})
-  vim.api.nvim_set_keymap('', '<M-/>', '<Cmd>execute v:count . "ToggleTerm"<CR>', {noremap=false})
-  vim.api.nvim_set_keymap('', '<F2>', '<Cmd>execute v:count . "ToggleTerm"<CR>', {noremap=false})
-end
-
-
 ------------------------------------------------------------------
 -- General Keys
 ------------------------------------------------------------------

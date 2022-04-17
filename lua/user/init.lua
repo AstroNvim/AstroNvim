@@ -86,7 +86,7 @@ local config = {
   -- Diagnostics configuration (for vim.diagnostics.config({}))
   diagnostics = {
     virtual_text = true,
-    underline = true,
+    underline = false,
   },
 
   -- null-ls configuration
