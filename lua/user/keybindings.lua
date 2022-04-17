@@ -122,9 +122,17 @@ end
 -- Telescope
 ------------------------------------------------------------------
 
-M.telescope = function()
-  -- close telescope with q
-  vim.cmd('au! Filetype TelescopePrompt nmap q <esc>')
+M.floating_win = function()
+  vim.api.nvim_set_keymap('', '<M-7>', '<Cmd>execute v:count . "ToggleTerm"<CR>', {noremap=false})
+  vim.api.nvim_set_keymap('', '<M-/>', '<Cmd>execute v:count . "ToggleTerm"<CR>', {noremap=false})
+  vim.api.nvim_set_keymap('', '<F2>', '<Cmd>execute v:count . "ToggleTerm"<CR>', {noremap=false})
+
+  -- close telescope and toggleterm with q
+  vim.cmd([[
+    au! Filetype TelescopePrompt nmap q <esc>'
+    au! Filetype toggleterm nmap q <esc>'
+    ]]
+  )
 end
 
 ------------------------------------------------------------------
