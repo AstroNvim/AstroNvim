@@ -164,11 +164,15 @@ function M.toggle_term_cmd(term_details)
   if type(term_details) == "string" then
     term_details = { cmd = term_details, hidden = true }
   end
-  local cmd = term_details.cmd
-  if M.user_terminals[cmd] == nil then
-    M.user_terminals[cmd] = require("toggleterm.terminal").Terminal:new(term_details)
+  local term_key = term_details.cmd
+  if vim.v.count > 0 and term_details.count == nil then
+    term_details.count = vim.v.count
+    term_key = term_key .. vim.v.count
   end
-  M.user_terminals[cmd]:toggle()
+  if M.user_terminals[term_key] == nil then
+    M.user_terminals[term_key] = require("toggleterm.terminal").Terminal:new(term_details)
+  end
+  M.user_terminals[term_key]:toggle()
 end
 
 function M.add_cmp_source(source, priority)
