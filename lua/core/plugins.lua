@@ -23,13 +23,6 @@ local astro_plugins = {
   -- Popup API
   { "nvim-lua/popup.nvim" },
 
-  -- Boost startup time
-  {
-    "nathom/filetype.nvim",
-    config = function()
-      require("configs.filetype").config()
-    end,
-  },
   -- Indent detection
   {
     "Darazaki/indent-o-matic",
