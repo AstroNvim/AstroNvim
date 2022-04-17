@@ -26,20 +26,22 @@ cmd("WinEnter", {
   command = "set cursorline",
 })
 
-if utils.is_available "dashboard-nvim" and utils.is_available "bufferline.nvim" then
-  augroup("dashboard_settings", {})
-  cmd("FileType", {
-    desc = "Disable tabline for dashboard",
-    group = "dashboard_settings",
-    pattern = "dashboard",
-    command = "set showtabline=0",
-  })
-  cmd("BufWinLeave", {
-    desc = "Reenable tabline when leaving dashboard",
-    group = "dashboard_settings",
-    pattern = "<buffer>",
-    command = "set showtabline=2",
-  })
+if utils.is_available "dashboard-nvim" then
+  if utils.is_available "bufferline.nvim" then
+    augroup("dashboard_settings", {})
+    cmd("FileType", {
+      desc = "Disable tabline for dashboard",
+      group = "dashboard_settings",
+      pattern = "dashboard",
+      command = "set showtabline=0",
+    })
+    cmd("BufWinLeave", {
+      desc = "Reenable tabline when leaving dashboard",
+      group = "dashboard_settings",
+      pattern = "<buffer>",
+      command = "set showtabline=2",
+    })
+  end
   cmd("FileType", {
     desc = "Disable statusline for dashboard",
     group = "dashboard_settings",
