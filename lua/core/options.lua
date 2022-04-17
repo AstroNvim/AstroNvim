@@ -4,6 +4,7 @@ local utils = require "core.utils"
 local colorscheme = utils.user_plugin_opts "colorscheme"
 
 local set = vim.opt
+local g = vim.g
 
 vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 
@@ -45,5 +46,8 @@ set.history = 100 -- Number of commands to remember in a history table
 set.timeoutlen = 300 -- Length of time to wait for a mapped sequence
 set.updatetime = 300 -- Length of time to wait before triggering the plugin
 set.fillchars = { eob = " " } -- Disable `~` on nonexistent lines
+
+g.do_filetype_lua = 1 -- use filetype.lua
+g.did_load_filetypes = 0 -- don't use filetype.vim
 
 return M
