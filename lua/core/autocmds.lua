@@ -40,6 +40,18 @@ if utils.is_available "dashboard-nvim" and utils.is_available "bufferline.nvim" 
     pattern = "<buffer>",
     command = "set showtabline=2",
   })
+  cmd("FileType", {
+    desc = "Disable statusline for dashboard",
+    group = "dashboard_settings",
+    pattern = "dashboard",
+    command = "set laststatus=0",
+  })
+  cmd("BufWinLeave", {
+    desc = "Reenable statusline when leaving dashboard",
+    group = "dashboard_settings",
+    pattern = "<buffer>",
+    command = "set laststatus=3",
+  })
   cmd("BufEnter", {
     desc = "No cursorline on dashboard",
     group = "dashboard_settings",
