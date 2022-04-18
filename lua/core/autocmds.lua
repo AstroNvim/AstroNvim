@@ -27,8 +27,8 @@ cmd("WinEnter", {
 })
 
 if utils.is_available "dashboard-nvim" then
+  augroup("dashboard_settings", {})
   if utils.is_available "bufferline.nvim" then
-    augroup("dashboard_settings", {})
     cmd("FileType", {
       desc = "Disable tabline for dashboard",
       group = "dashboard_settings",
