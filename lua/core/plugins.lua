@@ -227,6 +227,7 @@ local astro_plugins = {
   -- Built-in LSP
   {
     "neovim/nvim-lspconfig",
+    tag = "v0.1.3",
     event = "BufWinEnter",
     config = function()
       require "configs.lsp"
