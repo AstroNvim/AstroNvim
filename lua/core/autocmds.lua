@@ -62,6 +62,6 @@ if utils.is_available "dashboard-nvim" then
   })
 end
 
-create_command("AstroUpdate", require("core.utils").update, {})
+create_command("AstroUpdate", require("core.utils").update, { desc = "Update AstroNvim" })
 
 return M

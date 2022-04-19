@@ -72,7 +72,7 @@ M.on_attach = function(client, bufnr)
     on_attach_override(client, bufnr)
   end
 
-  vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
+  vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, { desc = "Format file with LSP" })
   lsp_highlight_document(client)
 end
 
