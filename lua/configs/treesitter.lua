@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, treesitter = pcall(require, "nvim-treesitter.configs")
   if status_ok then
-    local default_opts = {
+    treesitter.setup(require("core.utils").user_plugin_opts("plugins.treesitter", {
       ensure_installed = {},
       sync_install = false,
       ignore_install = {},
@@ -33,9 +33,7 @@ function M.config()
       autotag = {
         enable = true,
       },
-    }
-
-    treesitter.setup(require("core.utils").user_plugin_opts("plugins.treesitter", default_opts))
+    }))
   end
 end
 
