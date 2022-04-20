@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, which_key = pcall(require, "which-key")
   if status_ok then
-    local default_setup = {
+    which_key.setup(require("core.utils").user_plugin_opts("plugins.which-key", {
       plugins = {
         marks = true,
         registers = true,
@@ -21,7 +21,6 @@ function M.config()
           g = true,
         },
       },
-      key_labels = {},
       icons = {
         breadcrumb = "»",
         separator = "➜",
@@ -52,9 +51,7 @@ function M.config()
         i = { "j", "k" },
         v = { "j", "k" },
       },
-    }
-
-    which_key.setup(require("core.utils").user_plugin_opts("plugins.which-key", default_setup))
+    }))
   end
 end
 
