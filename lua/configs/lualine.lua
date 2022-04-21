@@ -64,7 +64,7 @@ function M.config()
           },
           {
             "diff",
-            symbols = { added = " ", modified = "柳", removed = " " },
+            symbols = { added = " ", modified = "柳 ", removed = " " },
             cond = conditions.hide_in_width,
             padding = { left = 2, right = 1 },
           },
