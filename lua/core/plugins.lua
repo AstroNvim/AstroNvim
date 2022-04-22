@@ -265,11 +265,11 @@ if packer_status_ok then
 
     -- Fuzzy finder syntax support
     {
-      "nvim-telescope/telescope-fzf-native.nvim",
+      ("nvim-telescope/telescope-%s-native.nvim"):format(vim.fn.has "win32" == 1 and "fzy" or "fzf"),
       after = "telescope.nvim",
       run = "make",
       config = function()
-        require("telescope").load_extension "fzf"
+        require("telescope").load_extension(vim.fn.has "win32" == 1 and "fzy_native" or "fzf")
       end,
     },
 
