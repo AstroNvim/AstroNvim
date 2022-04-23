@@ -65,8 +65,8 @@ if status_ok then
     mappings.f.n = { "<cmd>DashboardNewFile<CR>", "New File" }
 
     init_table "S"
-    mappings.S.s = { "<cmd>SessionLoad<CR>", "Save Session" }
-    mappings.S.l = { "<cmd>SessionSave<CR>", "Load Session" }
+    mappings.S.s = { "<cmd>SessionSave<CR>", "Save Session" }
+    mappings.S.l = { "<cmd>SessionLoad<CR>", "Load Session" }
   end
 
   if utils.is_available "Comment.nvim" then
