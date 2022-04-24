@@ -113,12 +113,10 @@ function M.telescope_select()
       attach_mappings = function(prompt_bufnr)
         actions.select_default:replace(function()
           local selection = state.get_selected_entry()
-          local callback = on_choice
-          on_choice = function() end
           actions.close(prompt_bufnr)
           if not selection then
             -- User did not select anything.
-            callback(nil, nil)
+            on_choice(nil, nil)
             return
           end
           local idx = nil
@@ -128,14 +126,10 @@ function M.telescope_select()
               break
             end
           end
-          callback(selection.value, idx)
+          on_choice(selection.value, idx)
         end)
 
-        actions.close:enhance {
-          post = function()
-            on_choice(nil, nil)
-          end,
-        }
+        actions.close:enhance { post = function() end }
 
         return true
       end,
