@@ -128,7 +128,7 @@ function M.telescope_select()
               break
             end
           end
-          on_choice(selection.value, idx)
+          callback(selection.value, idx)
         end)
 
         actions.close:enhance {
