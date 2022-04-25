@@ -57,16 +57,6 @@ map("n", "<A-j>", "<Esc><cmd>m .+1<CR>==gi", { desc = "Move text down" })
 map("n", "<A-k>", "<Esc><cmd>m .-2<CR>==gi", { desc = "Move text up" })
 
 -- LSP
-map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration of current symbol" })
-map("n", "gd", vim.lsp.buf.definition, { desc = "Show the definition of current symbol" })
-map("n", "gI", vim.lsp.buf.implementation, { desc = "Go to implementation of current symbol" })
-map("n", "gr", vim.lsp.buf.references, { desc = "References of current symbol" })
-map("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-map("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 map("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details" })
 -- <leader>rn: legacy binding here for backwards compatibility but not in which-key (see <leader>lr)
 map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename current symbol" })
@@ -110,6 +100,16 @@ if not utils.is_available "which-key.nvim" then
   map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code action" })
   map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename current symbol" })
   map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
+  map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration of current symbol" })
+  map("n", "gd", vim.lsp.buf.definition, { desc = "Show the definition of current symbol" })
+  map("n", "gI", vim.lsp.buf.implementation, { desc = "Go to implementation of current symbol" })
+  map("n", "gr", vim.lsp.buf.references, { desc = "References of current symbol" })
+  map("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
+  map("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
+  map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+  map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+  map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+  map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 
   -- NeoTree
   if utils.is_available "neo-tree.nvim" then
