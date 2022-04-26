@@ -11,6 +11,8 @@ assignees: ''
 Please confirm you have run the following commands and restarted Neovim and are encountering the issue with the current latest version of AstroNvim
 - [ ] `:PackerSync`
 - [ ] `:AstroUpdate`
+- [ ] restarted AstroNvim
+- [ ] Neovim version >= 0.7.0
 
 **Describe the bug**
 A clear and concise description of what the bug is.
