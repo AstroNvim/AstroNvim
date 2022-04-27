@@ -6,14 +6,6 @@ local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
 
-augroup("packer_user_config", {})
-cmd("BufWritePost", {
-  desc = "Auto Compile plugins.lua file",
-  group = "packer_user_config",
-  command = "source <afile> | PackerCompile",
-  pattern = "plugins.lua",
-})
-
 augroup("cursor_off", {})
 cmd("WinLeave", {
   desc = "No cursorline",
