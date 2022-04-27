@@ -158,6 +158,18 @@ function M.list_registered_linters(filetype)
   return registered_providers[formatter_method] or {}
 end
 
+function M.url_opener_cmd()
+  local cmd = function()
+    vim.notify("gx is not supported on this OS!", "error", M.base_notification)
+  end
+  if vim.fn.has "mac" == 1 then
+    cmd = '<Cmd>call jobstart(["open", expand("<cfile>")], {"detach": v:true})<CR>'
+  elseif vim.fn.has "unix" == 1 then
+    cmd = '<Cmd>call jobstart(["xdg-open", expand("<cfile>")], {"detach": v:true})<CR>'
+  end
+  return cmd
+end
+
 -- term_details can be either a string for just a command or
 -- a complete table to provide full access to configuration when calling Terminal:new()
 function M.toggle_term_cmd(term_details)

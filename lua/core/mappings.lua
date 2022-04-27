@@ -110,6 +110,7 @@ if not utils.is_available "which-key.nvim" then
   map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
   map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
   map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+  map("n", "gx", utils.url_opener_cmd(), { desc = "Open the file under cursor with system app" })
 
   -- NeoTree
   if utils.is_available "neo-tree.nvim" then

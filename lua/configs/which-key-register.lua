@@ -39,6 +39,7 @@ if status_ok then
         l = { vim.diagnostic.open_float, "Hover diagnostic" },
         k = { vim.diagnostic.goto_prev, "Go to previous diagnostic" },
         j = { vim.diagnostic.goto_next, "Go to next diagnostic" },
+        x = { utils.url_opener_cmd(), "Open the file under cursor with system app" },
       },
       ["["] = {
         d = { vim.diagnostic.goto_prev, "Go to previous diagnostic" },
