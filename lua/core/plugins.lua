@@ -327,7 +327,7 @@ if packer_status_ok then
       "numToStr/Comment.nvim",
       event = { "BufRead", "BufNewFile" },
       config = function()
-        require("configs.comment").config()
+        require("configs.Comment").config()
       end,
       disable = not config.enabled.comment,
     },
