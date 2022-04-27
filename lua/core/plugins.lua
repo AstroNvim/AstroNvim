@@ -52,6 +52,14 @@ if packer_status_ok then
       end,
     },
 
+    -- Highlight URLs
+    {
+      "itchyny/vim-highlighturl",
+      config = function()
+        require("configs.highlighturl").config()
+      end,
+    },
+
     -- Smarter Splits
     {
       "mrjones2014/smart-splits.nvim",
