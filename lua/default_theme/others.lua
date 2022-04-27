@@ -231,6 +231,9 @@ local others = {
 
   -- Beacon
   Beacon = { bg = C.blue },
+
+  -- HightlightURL
+  HighlightURL = { underline = true },
 }
 
 return others
