@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, comment = pcall(require, "Comment")
   if status_ok then
-    comment.setup(require("core.utils").user_plugin_opts("plugins.Comment", {
+    comment.setup(require("core.utils").user_plugin_opts("plugins.comment", {
       pre_hook = function(ctx)
         local U = require "Comment.utils"
 
