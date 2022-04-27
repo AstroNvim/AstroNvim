@@ -156,9 +156,9 @@ if status_ok then
     init_table("n", "<leader>", "g")
     mappings.n["<leader>"].g.g = {
       function()
-        require("core.utils").toggle_term_cmd "lazygit"
+        require("core.utils").toggle_term_cmd "gitui"
       end,
-      "Lazygit",
+      "GitUI",
     }
 
     init_table("n", "<leader>", "t")
@@ -186,11 +186,11 @@ if status_ok then
       end,
       "Python",
     }
-    mappings.n["<leader>"].t.l = {
+    mappings.n["<leader>"].t.g = {
       function()
-        require("core.utils").toggle_term_cmd "lazygit"
+        require("core.utils").toggle_term_cmd "gitui"
       end,
-      "Lazygit",
+      "GitUI",
     }
     mappings.n["<leader>"].t.f = { "<cmd>ToggleTerm direction=float<cr>", "Float" }
     mappings.n["<leader>"].t.h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" }

@@ -57,7 +57,7 @@ git -C ~/.config/nvim remote set-url origin https://github.com/AstroNvim/AstroNv
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 - Optional Requirements:
   - [ripgrep](https://github.com/BurntSushi/ripgrep) - live grep telescope search (`<leader>fw`)
-  - [lazygit](https://github.com/jesseduffield/lazygit) - git ui toggle terminal (`<leader>tl` or `<leader>gg`)
+  - [gitui](https://github.com/extrawurst/gitui) - git ui toggle terminal (`<leader>tg` or `<leader>gg`)
   - [NCDU](https://dev.yorhel.nl/ncdu) - disk usage toggle terminal (`<leader>tu`)
   - [Htop](https://htop.dev/) - process viewer toggle terminal (`<leader>tt`)
   - [Python](https://www.python.org/) - python repl toggle terminal (`<leader>tp`)

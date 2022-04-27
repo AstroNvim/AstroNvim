@@ -228,8 +228,8 @@ if not utils.is_available "which-key.nvim" then
   -- Terminal
   if utils.is_available "nvim-toggleterm.lua" then
     map("n", "<leader>gg", function()
-      utils.toggle_term_cmd "lazygit"
-    end, { desc = "ToggleTerm lazygit" })
+      utils.toggle_term_cmd "gitui"
+    end, { desc = "ToggleTerm gitui" })
     map("n", "<leader>tn", function()
       utils.toggle_term_cmd "node"
     end, { desc = "ToggleTerm node" })
@@ -242,9 +242,9 @@ if not utils.is_available "which-key.nvim" then
     map("n", "<leader>tp", function()
       utils.toggle_term_cmd "python"
     end, { desc = "ToggleTerm python" })
-    map("n", "<leader>tl", function()
-      utils.toggle_term_cmd "lazygit"
-    end, { desc = "ToggleTerm lazygit" })
+    map("n", "<leader>tg", function()
+      utils.toggle_term_cmd "gitui"
+    end, { desc = "ToggleTerm gitui" })
     map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "ToggleTerm float" })
     map("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", { desc = "ToggleTerm horizontal split" })
     map("n", "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", { desc = "ToggleTerm vertical split" })
