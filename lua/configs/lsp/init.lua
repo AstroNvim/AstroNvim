@@ -13,7 +13,16 @@ if status_ok then
     end
   end
   for _, server in ipairs(servers) do
-    local opts = { on_attach = handlers.on_attach, capabilities = handlers.capabilities }
+    local old_on_attach = lspconfig[server].on_attach
+    local opts = {
+      on_attach = function(client, bufnr)
+        if old_on_attach then
+          old_on_attach(client, bufnr)
+        end
+        handlers.on_attach(client, bufnr)
+      end,
+      capabilities = vim.tbl_deep_extend("force", handlers.capabilities, lspconfig[server].capabilities or {}),
+    }
     local present, av_overrides = pcall(require, "configs.lsp.server-settings." .. server)
     if present then
       opts = vim.tbl_deep_extend("force", av_overrides, opts)

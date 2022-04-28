@@ -62,7 +62,7 @@ M.on_attach = function(client, bufnr)
   end
 
   local on_attach_override = require("core.utils").user_plugin_opts "lsp.on_attach"
-  if on_attach_override ~= nil then
+  if type(on_attach_override) == "function" then
     on_attach_override(client, bufnr)
   end
 
