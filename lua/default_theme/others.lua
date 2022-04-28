@@ -195,6 +195,13 @@ local others = {
   MoreMsg = { fg = C.green, bold = true },
   ModeMsg = { fg = C.grey, bold = true },
 
+  -- Markdown
+  markdownTSNone = { fg = C.fg },
+  markdownTSTitle = { fg = C.red },
+  markdownTSLiteral = { fg = C.green },
+  markdownTSPunctSpecial = { fg = C.red },
+  markdownTSPunctDelimiter = { fg = C.fg },
+
   -- Dashboard
   DashboardHeader = { fg = C.cyan },
   DashboardShortcut = { fg = C.yellow },
