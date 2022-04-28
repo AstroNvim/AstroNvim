@@ -20,6 +20,9 @@ if packer_status_ok then
     -- Popup API
     { "nvim-lua/popup.nvim" },
 
+    -- Highlight URLs
+    { "itchyny/vim-highlighturl" },
+
     -- Indent detection
     {
       "Darazaki/indent-o-matic",
@@ -49,14 +52,6 @@ if packer_status_ok then
       event = { "BufRead", "BufNewFile" },
       config = function()
         vim.g.cursorhold_updatetime = 100
-      end,
-    },
-
-    -- Highlight URLs
-    {
-      "itchyny/vim-highlighturl",
-      config = function()
-        require("configs.highlighturl").config()
       end,
     },
 
