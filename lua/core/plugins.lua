@@ -208,17 +208,7 @@ if packer_status_ok then
     -- LSP manager
     {
       "williamboman/nvim-lsp-installer",
-      module = "nvim-lsp-installer",
-      cmd = {
-        "LspInstall",
-        "LspInstallInfo",
-        "LspPrintInstalled",
-        "LspRestart",
-        "LspStart",
-        "LspStop",
-        "LspUninstall",
-        "LspUninstallAll",
-      },
+      event = "BufWinEnter",
       config = function()
         require("configs.nvim-lsp-installer").config()
       end,
@@ -227,8 +217,8 @@ if packer_status_ok then
     -- Built-in LSP
     {
       "neovim/nvim-lspconfig",
+      after = "nvim-lsp-installer",
       tag = "v0.1.3",
-      event = "BufWinEnter",
       config = function()
         require "configs.lsp"
       end,
