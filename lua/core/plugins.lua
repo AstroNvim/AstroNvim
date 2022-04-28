@@ -219,6 +219,9 @@ if packer_status_ok then
         "LspUninstall",
         "LspUninstallAll",
       },
+      config = function()
+        require("configs.nvim-lsp-installer").config()
+      end,
     },
 
     -- Built-in LSP

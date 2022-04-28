@@ -1,5 +1,6 @@
-local status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
-if status_ok then
+local installer_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+local config_ok, lspconfig = pcall(require, "lspconfig")
+if installer_ok and config_ok then
   local user_plugin_opts = require("core.utils").user_plugin_opts
 
   lsp_installer.on_server_ready(function(server)
@@ -7,7 +8,6 @@ if status_ok then
     opts.on_attach = require("configs.lsp.handlers").on_attach
     opts.capabilities = require("configs.lsp.handlers").capabilities
 
-    -- Apply AstroNvim server settings (if available)
     local present, av_overrides = pcall(require, "configs.lsp.server-settings." .. server.name)
     if present then
       opts = vim.tbl_deep_extend("force", av_overrides, opts)
@@ -19,7 +19,7 @@ if status_ok then
     if user_override ~= nil then
       user_override(server, opts)
     else
-      server:setup(opts)
+      lspconfig[server.name].setup(opts)
     end
   end)
 end
