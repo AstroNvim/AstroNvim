@@ -81,6 +81,7 @@ if not utils.is_available "which-key.nvim" then
   map("n", "<leader>w", "<cmd>w<CR>", { desc = "Write" })
   map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quite" })
   map("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Disable search highlight" })
+  map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
 
   if utils.is_available "vim-bbye" then
     map("n", "<leader>c", "<cmd>Bdelete!<CR>", { desc = "Delete buffer" })

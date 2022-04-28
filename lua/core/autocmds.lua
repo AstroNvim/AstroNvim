@@ -18,6 +18,14 @@ cmd("WinEnter", {
   command = "set cursorline",
 })
 
+augroup("highlighturl", {})
+cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
+  desc = "URL Highlighting",
+  group = "highlighturl",
+  pattern = "*",
+  callback = require("core.utils").set_url_match,
+})
+
 if utils.is_available "dashboard-nvim" then
   augroup("dashboard_settings", {})
   if utils.is_available "bufferline.nvim" then
@@ -55,5 +63,7 @@ if utils.is_available "dashboard-nvim" then
 end
 
 create_command("AstroUpdate", require("core.utils").update, { desc = "Update AstroNvim" })
+
+create_command("ToggleHighlightURL", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
 
 return M
