@@ -57,13 +57,7 @@ local function lsp_highlight_document(client)
 end
 
 M.on_attach = function(client, bufnr)
-  if client.name == "tsserver" then
-    client.resolved_capabilities.document_formatting = false
-  elseif client.name == "jsonls" then
-    client.resolved_capabilities.document_formatting = false
-  elseif client.name == "html" then
-    client.resolved_capabilities.document_formatting = false
-  elseif client.name == "sumneko_lua" then
+  if client.name == "tsserver" or client.name == "jsonls" or client.name == "html" or client.name == "sumneko_lua" then
     client.resolved_capabilities.document_formatting = false
   end
 
