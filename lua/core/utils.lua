@@ -218,6 +218,30 @@ function M.is_available(plugin)
   return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
 end
 
+function M.delete_url_match()
+  for _, match in ipairs(vim.fn.getmatches()) do
+    if match.group == "HighlightURL" then
+      vim.fn.matchdelete(match.id)
+    end
+  end
+end
+
+function M.set_url_match()
+  M.delete_url_match()
+  if vim.g.highlighturl_enabled then
+    vim.fn.matchadd(
+      "HighlightURL",
+      "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+",
+      15
+    )
+  end
+end
+
+function M.toggle_url_match()
+  vim.g.highlighturl_enabled = not vim.g.highlighturl_enabled
+  M.set_url_match()
+end
+
 function M.update()
   local Job = require "plenary.job"
 

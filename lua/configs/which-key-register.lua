@@ -10,6 +10,7 @@ if status_ok then
         ["w"] = { "<cmd>w<CR>", "Save" },
         ["q"] = { "<cmd>q<CR>", "Quit" },
         ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+        ["u"] = { require("core.utils").toggle_url_match, "Toggle URL Highlights" },
 
         p = {
           name = "Packer",

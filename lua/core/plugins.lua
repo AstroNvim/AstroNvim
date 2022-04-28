@@ -20,9 +20,6 @@ if packer_status_ok then
     -- Popup API
     { "nvim-lua/popup.nvim" },
 
-    -- Highlight URLs
-    { "itchyny/vim-highlighturl" },
-
     -- Indent detection
     {
       "Darazaki/indent-o-matic",

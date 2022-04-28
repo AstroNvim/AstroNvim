@@ -49,5 +49,6 @@ set.fillchars = { eob = " " } -- Disable `~` on nonexistent lines
 
 g.do_filetype_lua = 1 -- use filetype.lua
 g.did_load_filetypes = 0 -- don't use filetype.vim
+g.highlighturl_enabled = true -- highlight URLs by default
 
 return M
