@@ -241,6 +241,23 @@ local others = {
 
   -- HightlightURL
   HighlightURL = { underline = true },
+
+  -- Aerial
+  AerialLine = { fg = C.yellow, bg = C.none },
+  AerialGuide = { fg = C.blue_3 },
+  AerialBooleanIcon = { link = "TSBoolean" },
+  AerialConstantIcon = { link = "TSConstant" },
+  AerialConstructorIcon = { link = "TSConstructor" },
+  AerialFieldIcon = { link = "TSField" },
+  AerialFunctionIcon = { link = "TSFunction" },
+  AerialMethodIcon = { link = "TSMethod" },
+  AerialNamespaceIcon = { link = "TSNamespace" },
+  AerialNumberIcon = { link = "TSNumber" },
+  AerialOperatorIcon = { link = "TSOperator" },
+  AerialTypeParameterIcon = { link = "TSParameter" },
+  AerialPropertyIcon = { link = "TSProperty" },
+  AerialStringIcon = { link = "TSString" },
+  AerialVariableIcon = { link = "TSVariable" },
 }
 
 return others

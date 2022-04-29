@@ -229,12 +229,14 @@ if packer_status_ok then
 
     -- LSP symbols
     {
-      "simrat39/symbols-outline.nvim",
-      cmd = "SymbolsOutline",
+      "stevearc/aerial.nvim",
+      opt = true,
       setup = function()
-        require("configs.symbols-outline").setup()
+        require("core.utils").defer_plugin "aerial.nvim"
       end,
-      disable = not config.enabled.symbols_outline,
+      config = function()
+        require("configs.aerial").config()
+      end,
     },
 
     -- Formatting and linting

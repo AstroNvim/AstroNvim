@@ -251,8 +251,8 @@ if not utils.is_available "which-key.nvim" then
   end
 
   -- SymbolsOutline
-  if utils.is_available "symbols-outline.nvim" then
-    map("n", "<leader>lS", "<cmd>SymbolsOutline<CR>", { desc = "Symbols outline" })
+  if utils.is_available "aerial.nvim" then
+    map("n", "<leader>lS", "<cmd>AerialToggle<CR>", { desc = "Symbols outline" })
   end
 end
 

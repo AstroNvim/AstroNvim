@@ -198,9 +198,9 @@ if status_ok then
     mappings.n["<leader>"].t.v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" }
   end
 
-  if utils.is_available "symbols-outline.nvim" then
+  if utils.is_available "aerial.nvim" then
     init_table("n", "<leader>", "l")
-    mappings.n["<leader>"].l.S = { "<cmd>SymbolsOutline<CR>", "Symbols Outline" }
+    mappings.n["<leader>"].l.S = { "<cmd>AerialToggle<CR>", "Symbols Outline" }
   end
 
   if utils.is_available "telescope.nvim" then
