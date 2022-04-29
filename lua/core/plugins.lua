@@ -64,10 +64,6 @@ if packer_status_ok then
     -- Icons
     {
       "kyazdani42/nvim-web-devicons",
-      opt = true,
-      setup = function()
-        require("core.utils").defer_plugin "nvim-web-devicons"
-      end,
       config = function()
         require("configs.icons").config()
       end,
@@ -218,9 +214,6 @@ if packer_status_ok then
       opt = true,
       setup = function()
         require("core.utils").defer_plugin "nvim-lsp-installer"
-        vim.defer_fn(function()
-          vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
-        end, 0)
       end,
       config = function()
         require("configs.nvim-lsp-installer").config()
