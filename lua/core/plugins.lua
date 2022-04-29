@@ -64,6 +64,10 @@ if packer_status_ok then
     -- Icons
     {
       "kyazdani42/nvim-web-devicons",
+      opt = true,
+      setup = function()
+        require("core.utils").defer_plugin "nvim-web-devicons"
+      end,
       config = function()
         require("configs.icons").config()
       end,
@@ -82,6 +86,7 @@ if packer_status_ok then
     -- Better buffer closing
     {
       "moll/vim-bbye",
+      cmd = { "Bdelete", "Bwipeout" },
     },
 
     -- File explorer
@@ -209,7 +214,14 @@ if packer_status_ok then
     -- LSP manager
     {
       "williamboman/nvim-lsp-installer",
-      event = "BufWinEnter",
+      module = "lspconfig",
+      opt = true,
+      setup = function()
+        require("core.utils").defer_plugin "nvim-lsp-installer"
+        vim.defer_fn(function()
+          vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
+        end, 0)
+      end,
       config = function()
         require("configs.nvim-lsp-installer").config()
       end,
@@ -270,7 +282,10 @@ if packer_status_ok then
     -- Git integration
     {
       "lewis6991/gitsigns.nvim",
-      event = { "BufRead", "BufNewFile" },
+      opt = true,
+      setup = function()
+        require("core.utils").defer_plugin "gitsigns.nvim"
+      end,
       config = function()
         require("configs.gitsigns").config()
       end,
@@ -338,6 +353,10 @@ if packer_status_ok then
     -- Keymaps popup
     {
       "folke/which-key.nvim",
+      opt = true,
+      setup = function()
+        require("core.utils").defer_plugin "which-key.nvim"
+      end,
       config = function()
         require("configs.which-key").config()
       end,

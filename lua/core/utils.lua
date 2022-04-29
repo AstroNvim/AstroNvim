@@ -96,11 +96,13 @@ function M.bootstrap()
 end
 
 function M.disabled_builtins()
+  g.load_black = false
   g.loaded_2html_plugin = false
   g.loaded_getscript = false
   g.loaded_getscriptPlugin = false
   g.loaded_gzip = false
   g.loaded_logipat = false
+  g.loaded_matchit = true
   g.loaded_netrwFileHandlers = false
   g.loaded_netrwPlugin = false
   g.loaded_netrwSettngs = false
@@ -212,6 +214,12 @@ function M.label_plugins(plugins)
     labelled[plugin[1]] = plugin
   end
   return labelled
+end
+
+function M.defer_plugin(plugin, timeout)
+  vim.defer_fn(function()
+    require("packer").loader(plugin)
+  end, timeout or 0)
 end
 
 function M.is_available(plugin)
