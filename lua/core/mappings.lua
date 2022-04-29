@@ -52,10 +52,6 @@ else
   map("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 end
 
--- Move text up and down
-map("n", "<A-j>", "<Esc><cmd>m .+1<CR>==gi", { desc = "Move text down" })
-map("n", "<A-k>", "<Esc><cmd>m .-2<CR>==gi", { desc = "Move text up" })
-
 -- LSP
 map("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details" })
 -- <leader>rn: legacy binding here for backwards compatibility but not in which-key (see <leader>lr)
@@ -71,6 +67,9 @@ map("n", "<C-q>", "<cmd>q!<CR>", { desc = "Force quit" })
 if utils.is_available "nvim-toggleterm.lua" then
   map("n", "<C-\\>", "<cmd>ToggleTerm<CR>", { desc = "Toggle terminal" })
 end
+
+-- disable Ex mode:
+map("n", "Q", "<Nop>")
 
 -- Normal Leader Mappings --
 -- NOTICE: if changed, update configs/which-key-register.lua
@@ -275,16 +274,6 @@ if utils.is_available "Comment.nvim" then
     { desc = "Toggle comment line" }
   )
 end
-
--- Visual Block --
--- Move text up and down
-map("x", "J", "<cmd>move '>+1<CR>gv-gv", { desc = "Move text down" })
-map("x", "K", "<cmd>move '<-2<CR>gv-gv", { desc = "Move text up" })
-map("x", "<A-j>", "<cmd>move '>+1<CR>gv-gv", { desc = "Move text down" })
-map("x", "<A-k>", "<cmd>move '<-2<CR>gv-gv", { desc = "Move text up" })
-
--- disable Ex mode:
-map("n", "Q", "<Nop>")
 
 function _G.set_terminal_keymaps()
   vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], { desc = "Terminal normal mode" })
