@@ -207,25 +207,23 @@ if packer_status_ok then
       end,
     },
 
-    -- LSP manager
-    {
-      "williamboman/nvim-lsp-installer",
-      module = "lspconfig",
-      opt = true,
-      setup = function()
-        require("core.utils").defer_plugin "nvim-lsp-installer"
-      end,
-      config = function()
-        require("configs.nvim-lsp-installer").config()
-      end,
-    },
-
     -- Built-in LSP
     {
       "neovim/nvim-lspconfig",
-      after = "nvim-lsp-installer",
+      module = "lspconfig",
+      opt = true,
+      setup = function()
+        require("core.utils").defer_plugin "nvim-lspconfig"
+      end,
       tag = "v0.1.3",
+    },
+
+    -- LSP manager
+    {
+      "williamboman/nvim-lsp-installer",
+      after = "nvim-lspconfig",
       config = function()
+        require("configs.nvim-lsp-installer").config()
         require "configs.lsp"
       end,
     },
