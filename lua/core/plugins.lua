@@ -286,11 +286,10 @@ if packer_status_ok then
 
     -- Start screen
     {
-      "glepnir/dashboard-nvim",
+      "goolord/alpha-nvim",
       config = function()
-        require("configs.dashboard").config()
+        require("configs.alpha").config()
       end,
-      disable = not config.enabled.dashboard,
     },
 
     -- Color highlighting
