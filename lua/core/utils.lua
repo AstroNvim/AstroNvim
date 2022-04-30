@@ -208,6 +208,28 @@ function M.add_user_cmp_source(source)
   end
 end
 
+function M.alpha_button(sc, txt)
+  local sc_ = sc:gsub("%s", ""):gsub("SPC", "<leader>")
+  return {
+    type = "button",
+    val = txt,
+    on_press = function()
+      local key = vim.api.nvim_replace_termcodes(sc_, true, false, true)
+      vim.api.nvim_feedkeys(key, "normal", false)
+    end,
+    opts = {
+      position = "center",
+      text = txt,
+      shortcut = sc,
+      cursor = 5,
+      width = 36,
+      align_shortcut = "right",
+      hl = "DashboardCenter",
+      hl_shortcut = "DashboardShortcut",
+    },
+  }
+end
+
 function M.label_plugins(plugins)
   local labelled = {}
   for _, plugin in ipairs(plugins) do

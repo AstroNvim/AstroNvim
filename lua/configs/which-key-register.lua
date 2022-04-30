@@ -12,6 +12,10 @@ if status_ok then
         ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
         ["u"] = { require("core.utils").toggle_url_match, "Toggle URL Highlights" },
 
+        f = {
+          name = "File",
+          n = { "<cmd>enew<cr>", "New File" },
+        },
         p = {
           name = "Packer",
           c = { "<cmd>PackerCompile<cr>", "Compile" },
@@ -20,7 +24,6 @@ if status_ok then
           S = { "<cmd>PackerStatus<cr>", "Status" },
           u = { "<cmd>PackerUpdate<cr>", "Update" },
         },
-
         l = {
           name = "LSP",
           a = { vim.lsp.buf.code_action, "Code Action" },
@@ -71,15 +74,8 @@ if status_ok then
     mappings.n["<leader>"].o = { "<cmd>Neotree focus<CR>", "Focus Explorer" }
   end
 
-  if utils.is_available "dashboard-nvim" then
-    mappings.n["<leader>"].d = { "<cmd>Dashboard<CR>", "Dashboard" }
-
-    init_table("n", "<leader>", "f")
-    mappings.n["<leader>"].f.n = { "<cmd>DashboardNewFile<CR>", "New File" }
-
-    init_table("n", "<leader>", "S")
-    mappings.n["<leader>"].S.s = { "<cmd>SessionSave<CR>", "Save Session" }
-    mappings.n["<leader>"].S.l = { "<cmd>SessionLoad<CR>", "Load Session" }
+  if utils.is_available "alpha-nvim" then
+    mappings.n["<leader>"].d = { "<cmd>Alpha<CR>", "Alpha Dashboard" }
   end
 
   if utils.is_available "Comment.nvim" then
