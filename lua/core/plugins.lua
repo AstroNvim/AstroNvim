@@ -344,10 +344,6 @@ if packer_status_ok then
     -- Keymaps popup
     {
       "folke/which-key.nvim",
-      opt = true,
-      setup = function()
-        require("core.utils").defer_plugin "which-key.nvim"
-      end,
       config = function()
         require("configs.which-key").config()
       end,
