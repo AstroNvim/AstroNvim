@@ -81,6 +81,7 @@ if not utils.is_available "which-key.nvim" then
   map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quite" })
   map("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Disable search highlight" })
   map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
+  map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
   if utils.is_available "vim-bbye" then
     map("n", "<leader>c", "<cmd>Bdelete!<CR>", { desc = "Delete buffer" })
@@ -119,11 +120,8 @@ if not utils.is_available "which-key.nvim" then
   end
 
   -- Dashboard
-  if utils.is_available "dashboard-nvim" then
-    map("n", "<leader>d", "<cmd>Dashboard<CR>", { desc = "Dashboard" })
-    map("n", "<leader>fn", "<cmd>DashboardNewFile<CR>", { desc = "New File" })
-    map("n", "<leader>Sl", "<cmd>SessionLoad<CR>", { desc = "Load session" })
-    map("n", "<leader>Ss", "<cmd>SessionSave<CR>", { desc = "Save session" })
+  if utils.is_available "alpha-nvim" then
+    map("n", "<leader>d", "<cmd>Alpha<CR>", { desc = "Alpha Dashboard" })
   end
 
   -- GitSigns
