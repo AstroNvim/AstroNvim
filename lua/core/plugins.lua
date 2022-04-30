@@ -215,7 +215,6 @@ if packer_status_ok then
       setup = function()
         require("core.utils").defer_plugin "nvim-lspconfig"
       end,
-      tag = "v0.1.3",
     },
 
     -- LSP manager
