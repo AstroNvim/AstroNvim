@@ -388,7 +388,6 @@ if packer_status_ok then
       event = "BufWritePost",
       config = function()
         require("configs.persisted").config()
-        vim.o.sessionoptions = "buffers,curdir,folds,winpos,winsize"
       end,
     },
   }
