@@ -371,6 +371,16 @@ if packer_status_ok then
 
     -- Get extra JSON schemas
     { "b0o/SchemaStore.nvim" },
+
+    -- Session manager
+    {
+      "olimorris/persisted.nvim",
+      module = { "persisted", "telescope._extensions.persisted" }, -- For lazy loading
+      config = function()
+        require("configs.persisted").config()
+        vim.o.sessionoptions = "buffers,curdir,folds,winpos,winsize"
+      end,
+    },
   }
 
   packer.startup {

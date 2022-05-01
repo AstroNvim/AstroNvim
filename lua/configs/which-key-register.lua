@@ -76,6 +76,15 @@ if status_ok then
 
   if utils.is_available "alpha-nvim" then
     mappings.n["<leader>"].d = { "<cmd>Alpha<CR>", "Alpha Dashboard" }
+    if utils.is_available "persisted.nvim" then
+      init_table("n", "<leader>", "s")
+      mappings.n["<leader>"].s.l = {
+        function()
+          require("persisted").load()
+        end,
+        "Load session",
+      }
+    end
   end
 
   if utils.is_available "Comment.nvim" then
@@ -265,6 +274,15 @@ if status_ok then
     }
 
     init_table("n", "<leader>", "f")
+    if utils.is_available "persisted.nvim" then
+      mappings.n["<leader>"].f.s = {
+        function()
+          require("telescope").extensions.persisted.persisted {}
+        end,
+        "Sessions Picker",
+      }
+    end
+
     mappings.n["<leader>"].f.b = {
       function()
         require("telescope.builtin").buffers()
