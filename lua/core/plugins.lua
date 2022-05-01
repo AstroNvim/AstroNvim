@@ -376,6 +376,16 @@ if packer_status_ok then
     {
       "olimorris/persisted.nvim",
       module = { "persisted", "telescope._extensions.persisted" }, -- For lazy loading
+      cmd = {
+        "SessionSave",
+        "SessionStart",
+        "SessionLoad",
+        "SessionStart",
+        "SessionStop",
+        "SessionToggle",
+        "SessionLoadLast",
+      },
+      event = "BufWritePost",
       config = function()
         require("configs.persisted").config()
         vim.o.sessionoptions = "buffers,curdir,folds,winpos,winsize"

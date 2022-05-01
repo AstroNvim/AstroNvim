@@ -79,10 +79,8 @@ if status_ok then
     if utils.is_available "persisted.nvim" then
       init_table("n", "<leader>", "s")
       mappings.n["<leader>"].s.l = {
-        function()
-          require("persisted").load()
-        end,
-        "Load session",
+        "<cmd>SessionLoadLast<CR>",
+        "Last Session",
       }
     end
   end
