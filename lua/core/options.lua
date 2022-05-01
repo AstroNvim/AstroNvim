@@ -46,11 +46,10 @@ set.history = 100 -- Number of commands to remember in a history table
 set.timeoutlen = 300 -- Length of time to wait for a mapped sequence
 set.updatetime = 300 -- Length of time to wait before triggering the plugin
 set.fillchars = { eob = " " } -- Disable `~` on nonexistent lines
+set.sessionoptions = "buffers,curdir,folds,winpos,winsize"
 
 g.do_filetype_lua = 1 -- use filetype.lua
 g.did_load_filetypes = 0 -- don't use filetype.vim
 g.highlighturl_enabled = true -- highlight URLs by default
-
-vim.o.sessionoptions = "buffers,curdir,folds,winpos,winsize"
 
 return M

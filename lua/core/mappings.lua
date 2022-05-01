@@ -251,7 +251,16 @@ if not utils.is_available "which-key.nvim" then
   -- SymbolsOutline
   if utils.is_available "aerial.nvim" then
     map("n", "<leader>lS", "<cmd>AerialToggle<CR>", { desc = "Symbols outline" })
+  end
+  if utils.is_available "persisted.nvim" then
     map("n", "<leader>Sl", "<cmd>SessionLoadLast<CR>", { desc = "load last session" })
+    map("n", "<leader>Ss", "<cmd>SessionSave<CR>", { desc = "Save this session" })
+    map("n", "<leader>SS", "<cmd>SessionStart<CR>", { desc = "Start recording session" })
+    map("n", "<leader>Sx", "<cmd>SessionStop<CR>", { desc = "Stop recording session" })
+    map("n", "<leader>St", "<cmd>SessionToggle<CR>", { desc = "Toggle recording session" })
+    map("n", "<leader>fs", function()
+      require("telescope").extensions.persisted.persisted {}
+    end, { desc = "Search Session" })
   end
 end
 
