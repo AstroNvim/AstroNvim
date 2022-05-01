@@ -9,6 +9,10 @@ function M.config()
     if notify_present then
       telescope.load_extension "notify"
     end
+    local aerial_present, _ = pcall(require, "aerial")
+    if aerial_present then
+      telescope.load_extension "aerial"
+    end
 
     telescope.setup(require("core.utils").user_plugin_opts("plugins.telescope", {
       defaults = {
