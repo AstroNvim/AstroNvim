@@ -208,7 +208,12 @@ if not utils.is_available "which-key.nvim" then
       require("telescope.builtin").commands()
     end, { desc = "Telescope search commands" })
     map("n", "<leader>ls", function()
-      require("telescope.builtin").lsp_document_symbols()
+      local aerial_avail, _ = pcall(require, "aerial")
+      if aerial_avail then
+        require("telescope").extensions.aerial.aerial()
+      else
+        require("telescope.builtin").lsp_document_symbols()
+      end
     end, { desc = "Telescope search symbols" })
     map("n", "<leader>lR", function()
       require("telescope.builtin").lsp_references()
