@@ -48,8 +48,8 @@ if utils.is_available "bufferline.nvim" then
   map("n", "}", "<cmd>BufferLineMoveNext<cr>", { desc = "Move buffer tab right" })
   map("n", "{", "<cmd>BufferLineMovePrev<cr>", { desc = "Move buffer tab left" })
 else
-  map("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Next buffer" })
-  map("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+  map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+  map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
 end
 
 -- LSP
@@ -58,14 +58,14 @@ map("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details" })
 map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename current symbol" })
 
 -- ForceWrite
-map("n", "<C-s>", "<cmd>w!<CR>", { desc = "Force write" })
+map("n", "<C-s>", "<cmd>w!<cr>", { desc = "Force write" })
 
 -- ForceQuit
-map("n", "<C-q>", "<cmd>q!<CR>", { desc = "Force quit" })
+map("n", "<C-q>", "<cmd>q!<cr>", { desc = "Force quit" })
 
 -- Terminal
 if utils.is_available "nvim-toggleterm.lua" then
-  map("n", "<C-\\>", "<cmd>ToggleTerm<CR>", { desc = "Toggle terminal" })
+  map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
 end
 
 -- disable Ex mode:
@@ -77,14 +77,14 @@ map("n", "Q", "<Nop>")
 -- But allows bindings to work for users without which-key
 if not utils.is_available "which-key.nvim" then
   -- Standard Operations
-  map("n", "<leader>w", "<cmd>w<CR>", { desc = "Write" })
-  map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quite" })
-  map("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Disable search highlight" })
+  map("n", "<leader>w", "<cmd>w<cr>", { desc = "Write" })
+  map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quite" })
+  map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Disable search highlight" })
   map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
   map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
   if utils.is_available "vim-bbye" then
-    map("n", "<leader>c", "<cmd>Bdelete!<CR>", { desc = "Delete buffer" })
+    map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Delete buffer" })
   end
 
   -- Packer
@@ -115,13 +115,13 @@ if not utils.is_available "which-key.nvim" then
 
   -- NeoTree
   if utils.is_available "neo-tree.nvim" then
-    map("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Toggle Neo-Tree" })
-    map("n", "<leader>o", "<cmd>Neotree focus<CR>", { desc = "Focus Neo-Tree" })
+    map("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle Neo-Tree" })
+    map("n", "<leader>o", "<cmd>Neotree focus<cr>", { desc = "Focus Neo-Tree" })
   end
 
   -- Dashboard
   if utils.is_available "alpha-nvim" then
-    map("n", "<leader>d", "<cmd>Alpha<CR>", { desc = "Alpha Dashboard" })
+    map("n", "<leader>d", "<cmd>Alpha<cr>", { desc = "Alpha Dashboard" })
   end
 
   -- GitSigns
@@ -255,7 +255,21 @@ if not utils.is_available "which-key.nvim" then
 
   -- SymbolsOutline
   if utils.is_available "aerial.nvim" then
-    map("n", "<leader>lS", "<cmd>AerialToggle<CR>", { desc = "Symbols outline" })
+    map("n", "<leader>lS", "<cmd>AerialToggle<cr>", { desc = "Symbols outline" })
+  end
+
+  -- Session Manager
+  if utils.is_available "neovim-session-manager" then
+    map("n", "<leader>Sl", "<cmd>SessionManager! load_last_session<cr>", { desc = "Load last session" })
+    map("n", "<leader>Ss", "<cmd>SessionManager! save_current_session<cr>", { desc = "Save this session" })
+    map("n", "<leader>Sd", "<cmd>SessionManager! delete_session<cr>", { desc = "Delete session" })
+    map("n", "<leader>Sf", "<cmd>SessionManager! load_session<cr>", { desc = "Search sessions" })
+    map(
+      "n",
+      "<leader>S.",
+      "<cmd>SessionManager! load_current_dir_session<cr>",
+      { desc = "Load current directory session" }
+    )
   end
 end
 
@@ -265,15 +279,15 @@ map("v", "<", "<gv", { desc = "unindent line" })
 map("v", ">", ">gv", { desc = "indent line" })
 
 -- Move text up and down
-map("v", "<A-j>", "<cmd>m .+1<CR>==", { desc = "move text down" })
-map("v", "<A-k>", "<cmd>m .-2<CR>==", { desc = "move text up" })
+map("v", "<A-j>", "<cmd>m .+1<cr>==", { desc = "move text down" })
+map("v", "<A-k>", "<cmd>m .-2<cr>==", { desc = "move text up" })
 
 -- Comment
 if utils.is_available "Comment.nvim" then
   map(
     "v",
     "<leader>/",
-    "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>",
+    "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<cr>",
     { desc = "Toggle comment line" }
   )
 end

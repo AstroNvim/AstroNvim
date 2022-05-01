@@ -371,6 +371,17 @@ if packer_status_ok then
 
     -- Get extra JSON schemas
     { "b0o/SchemaStore.nvim" },
+
+    -- Session manager
+    {
+      "Shatur/neovim-session-manager",
+      module = "session_manager",
+      cmd = "SessionManager",
+      event = "BufWritePost",
+      config = function()
+        require("configs.session_manager").config()
+      end,
+    },
   }
 
   packer.startup {
