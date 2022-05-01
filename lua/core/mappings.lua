@@ -252,6 +252,8 @@ if not utils.is_available "which-key.nvim" then
   if utils.is_available "aerial.nvim" then
     map("n", "<leader>lS", "<cmd>AerialToggle<CR>", { desc = "Symbols outline" })
   end
+
+  -- Session Manager
   if utils.is_available "persisted.nvim" then
     map("n", "<leader>Sl", "<cmd>SessionLoadLast<CR>", { desc = "load last session" })
     map("n", "<leader>Ss", "<cmd>SessionSave<CR>", { desc = "Save this session" })
