@@ -5,7 +5,7 @@ function M.config()
   if status_ok then
     persisted.setup(require("core.utils").user_plugin_opts("plugins.notify", {
       dir = vim.fn.expand(vim.fn.stdpath "data" .. "/sessions/"), -- directory where session files are saved
-      use_git_branch = false, -- create session files based on the branch of the git enabled repository
+      use_git_branch = true, -- create session files based on the branch of the git enabled repository
       autosave = true, -- automatically save session files when exiting Neovim
       autoload = false, -- automatically load the session for the cwd on Neovim startup
       allowed_dirs = nil, -- table of dirs that the plugin will auto-save and auto-load from

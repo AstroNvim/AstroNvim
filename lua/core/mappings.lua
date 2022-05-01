@@ -251,7 +251,7 @@ if not utils.is_available "which-key.nvim" then
   -- SymbolsOutline
   if utils.is_available "aerial.nvim" then
     map("n", "<leader>lS", "<cmd>AerialToggle<CR>", { desc = "Symbols outline" })
-    map("n", "<leader>sl", "<cmd>SessionLoadLast<CR>", { desc = "load last session" })
+    map("n", "<leader>Sl", "<cmd>SessionLoadLast<CR>", { desc = "load last session" })
   end
 end
 

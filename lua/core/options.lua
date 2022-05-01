@@ -51,4 +51,6 @@ g.do_filetype_lua = 1 -- use filetype.lua
 g.did_load_filetypes = 0 -- don't use filetype.vim
 g.highlighturl_enabled = true -- highlight URLs by default
 
+vim.o.sessionoptions = "buffers,curdir,folds,winpos,winsize"
+
 return M

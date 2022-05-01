@@ -76,13 +76,30 @@ if status_ok then
 
   if utils.is_available "alpha-nvim" then
     mappings.n["<leader>"].d = { "<cmd>Alpha<CR>", "Alpha Dashboard" }
-    if utils.is_available "persisted.nvim" then
-      init_table("n", "<leader>", "s")
-      mappings.n["<leader>"].s.l = {
-        "<cmd>SessionLoadLast<CR>",
-        "Last Session",
-      }
-    end
+  end
+
+  if utils.is_available "persisted.nvim" then
+    init_table("n", "<leader>", "S")
+    mappings.n["<leader>"].S.l = {
+      "<cmd>SessionLoadLast<cr>",
+      "Last Session",
+    }
+    mappings.n["<leader>"].S.s = {
+      "<cmd>SessionSave<cr>",
+      "Save Session",
+    }
+    mappings.n["<leader>"].S.S = {
+      "<cmd>SessionStart<cr>",
+      "Start Session",
+    }
+    mappings.n["<leader>"].S.x = {
+      "<cmd>SessionStop<cr>",
+      "Stop Session",
+    }
+    mappings.n["<leader>"].S.t = {
+      "<cmd>SessionToggle<cr>",
+      "Toggle Session",
+    }
   end
 
   if utils.is_available "Comment.nvim" then
