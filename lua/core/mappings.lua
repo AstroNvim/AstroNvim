@@ -214,6 +214,11 @@ if not utils.is_available "which-key.nvim" then
     map("n", "<leader>lD", function()
       require("telescope.builtin").diagnostics()
     end, { desc = "Telescope search diagnostics" })
+    if utils.is_available "persisted.nvim" then
+      map("n", "<leader>fs", function()
+        require("telescope").extensions.persisted.persisted {}
+      end, { desc = "Search Session" })
+    end
   end
 
   -- Comment
@@ -260,9 +265,6 @@ if not utils.is_available "which-key.nvim" then
     map("n", "<leader>SS", "<cmd>SessionStart<CR>", { desc = "Start recording session" })
     map("n", "<leader>Sx", "<cmd>SessionStop<CR>", { desc = "Stop recording session" })
     map("n", "<leader>St", "<cmd>SessionToggle<CR>", { desc = "Toggle recording session" })
-    map("n", "<leader>fs", function()
-      require("telescope").extensions.persisted.persisted {}
-    end, { desc = "Search Session" })
   end
 end
 
