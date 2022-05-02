@@ -309,7 +309,12 @@ if status_ok then
     init_table("n", "<leader>", "l")
     mappings.n["<leader>"].l.s = {
       function()
-        require("telescope.builtin").lsp_document_symbols()
+        local aerial_avail, _ = pcall(require, "aerial")
+        if aerial_avail then
+          require("telescope").extensions.aerial.aerial()
+        else
+          require("telescope.builtin").lsp_document_symbols()
+        end
       end,
       "Document Symbols",
     }
