@@ -19,7 +19,6 @@ set.colorcolumn = "99999" -- Fix for the indentline problem
 set.backup = false -- Disable making a backup file
 set.expandtab = true -- Enable the use of space in tab
 set.hidden = true -- Ignore unsaved buffers
-set.hlsearch = true -- Highlight all the matches of search pattern
 set.ignorecase = true -- Case insensitive searching
 set.smartcase = true -- Case sensitivie searching
 set.spell = false -- Disable spelling checking and highlighting
