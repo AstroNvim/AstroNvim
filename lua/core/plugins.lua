@@ -353,11 +353,10 @@ if packer_status_ok then
     -- Smooth scrolling
     {
       "karb94/neoscroll.nvim",
-      event = { "BufRead", "BufNewFile" },
+      module = "neoscroll",
       config = function()
         require("configs.neoscroll").config()
       end,
-      disable = not config.enabled.neoscroll,
     },
 
     -- Smooth escaping

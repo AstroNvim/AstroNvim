@@ -271,6 +271,18 @@ if not utils.is_available "which-key.nvim" then
       { desc = "Load current directory session" }
     )
   end
+
+  if utils.is_available "neoscroll.nvim" then
+    map("n", "zz", function()
+      require("neoscroll").zz(250)
+    end)
+    map("n", "zt", function()
+      require("neoscroll").zt(250)
+    end)
+    map("n", "zb", function()
+      require("neoscroll").zb(250)
+    end)
+  end
 end
 
 -- Visual --
@@ -290,6 +302,27 @@ if utils.is_available "Comment.nvim" then
     "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<cr>",
     { desc = "Toggle comment line" }
   )
+end
+
+if utils.is_available "neoscroll.nvim" then
+  map("n", "<C-d>", function()
+    require("neoscroll").scroll(vim.wo.scroll, true, 250)
+  end)
+  map("n", "<C-u>", function()
+    require("neoscroll").scroll(-vim.wo.scroll, true, 250)
+  end)
+  map("n", "<C-b>", function()
+    require("neoscroll").scroll(-vim.api.nvim_win_get_height(0), true, 450)
+  end)
+  map("n", "<C-e>", function()
+    require("neoscroll").scroll(0.10, true, 100)
+  end)
+  map("n", "<C-y>", function()
+    require("neoscroll").scroll(-0.10, true, 100)
+  end)
+  map("n", "<C-f>", function()
+    require("neoscroll").scroll(vim.api.nvim_win_get_height(0), true, 450)
+  end)
 end
 
 function _G.set_terminal_keymaps()

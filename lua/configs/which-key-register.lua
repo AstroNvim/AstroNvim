@@ -51,6 +51,7 @@ if status_ok then
       ["]"] = {
         d = { vim.diagnostic.goto_next, "Go to next diagnostic" },
       },
+      z = {},
     },
   }
 
@@ -349,6 +350,29 @@ if status_ok then
         require("telescope.builtin").diagnostics()
       end,
       "All Diagnostics",
+    }
+  end
+
+  if utils.is_available "neoscroll.nvim" then
+    mappings.n.z = {
+      z = {
+        function()
+          require("neoscroll").zz(250)
+        end,
+        "Center this line",
+      },
+      t = {
+        function()
+          require("neoscroll").zt(250)
+        end,
+        "Top this line",
+      },
+      b = {
+        function()
+          require("neoscroll").zb(250)
+        end,
+        "Bottom this line",
+      },
     }
   end
 
