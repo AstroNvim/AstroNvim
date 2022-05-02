@@ -13,16 +13,16 @@ vim.g.mapleader = " "
 -- Normal --
 if utils.is_available "smart-splits.nvim" then
   -- Better window navigation
-  map("n", "<C-h>", function()
+  map("n", "<A-h>", function()
     require("smart-splits").move_cursor_left()
   end, { desc = "Move to left split" })
-  map("n", "<C-j>", function()
+  map("n", "<A-j>", function()
     require("smart-splits").move_cursor_down()
   end, { desc = "Move to below split" })
-  map("n", "<C-k>", function()
+  map("n", "<A-k>", function()
     require("smart-splits").move_cursor_up()
   end, { desc = "Move to above split" })
-  map("n", "<C-l>", function()
+  map("n", "<A-l>", function()
     require("smart-splits").move_cursor_right()
   end, { desc = "Move to right split" })
 
@@ -278,10 +278,10 @@ end
 function _G.set_terminal_keymaps()
   vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], { desc = "Terminal normal mode" })
   vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], { desc = "Terminal normal mode" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], { desc = "Terminal left window navigation" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], { desc = "Terminal down window navigation" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], { desc = "Terminal up window navigation" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], { desc = "Terminal right window naviation" })
+  vim.api.nvim_buf_set_keymap(0, "t", "<A-h>", [[<C-\><C-n><C-W>h]], { desc = "Terminal left window navigation" })
+  vim.api.nvim_buf_set_keymap(0, "t", "<A-j>", [[<C-\><C-n><C-W>j]], { desc = "Terminal down window navigation" })
+  vim.api.nvim_buf_set_keymap(0, "t", "<A-k>", [[<C-\><C-n><C-W>k]], { desc = "Terminal up window navigation" })
+  vim.api.nvim_buf_set_keymap(0, "t", "<A-l>", [[<C-\><C-n><C-W>l]], { desc = "Terminal right window naviation" })
 end
 
 augroup("TermMappings", {})
