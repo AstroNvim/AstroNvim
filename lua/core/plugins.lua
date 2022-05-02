@@ -237,6 +237,7 @@ if packer_status_ok then
       config = function()
         require("configs.aerial").config()
       end,
+      disable = not config.enabled.aerial,
     },
 
     -- Formatting and linting
