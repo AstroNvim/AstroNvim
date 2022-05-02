@@ -8,17 +8,13 @@ local g = vim.g
 
 vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 
-set.backup = false -- Disable making a backup file
 set.clipboard = "unnamedplus" -- Connection to the system clipboard
-set.colorcolumn = "99999" -- Fix for the indentline problem
 set.completeopt = { "menuone", "noselect" } -- Options for insert mode completion
-set.conceallevel = 0 -- Show text normally
 set.copyindent = true -- Copy the previous indentation on autoindenting
 set.cursorline = true -- Highlight the text line of the cursor
 set.expandtab = true -- Enable the use of space in tab
 set.fileencoding = "utf-8" -- File content encoding for the buffer
 set.fillchars = { eob = " " } -- Disable `~` on nonexistent lines
-set.foldmethod = "manual" -- Create folds manually
 set.history = 100 -- Number of commands to remember in a history table
 set.ignorecase = true -- Case insensitive searching
 set.mouse = "a" -- Enable mouse support
@@ -32,8 +28,6 @@ set.showmode = false -- Disable showing modes in command line
 set.sidescrolloff = 8 -- Number of columns to keep at the sides of the cursor
 set.signcolumn = "yes" -- Always show the sign column
 set.smartcase = true -- Case sensitivie searching
-set.spell = false -- Disable spelling checking and highlighting
-set.spelllang = "en" -- Support US english
 set.splitbelow = true -- Splitting a new window below the current one
 set.splitright = true -- Splitting a new window at the right of the current one
 set.swapfile = false -- Disable use of swapfile for the buffer
