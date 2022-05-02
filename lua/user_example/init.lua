@@ -19,22 +19,6 @@ local config = {
     end,
   },
 
-  -- Disable default plugins
-  enabled = {
-    bufferline = true,
-    neo_tree = true,
-    lualine = true,
-    gitsigns = true,
-    colorizer = true,
-    toggle_term = true,
-    comment = true,
-    indent_blankline = true,
-    which_key = true,
-    neoscroll = true,
-    ts_rainbow = true,
-    ts_autotag = true,
-  },
-
   -- Disable AstroNvim ui features
   ui = {
     nui_input = true,
@@ -45,6 +29,10 @@ local config = {
   plugins = {
     -- Add plugins, the packer syntax without the "use"
     init = {
+      -- You can disable default plugins as follows:
+      -- ["goolord/alpha-nvim"] = { disable = true },
+
+      -- You can also add new plugins here as well:
       -- { "andweeb/presence.nvim" },
       -- {
       --   "ray-x/lsp_signature.nvim",

@@ -209,7 +209,7 @@ function M.add_user_cmp_source(source)
 end
 
 function M.alpha_button(sc, txt)
-  local sc_ = sc:gsub("%s", ""):gsub("SPC", "<leader>")
+  local sc_ = sc:gsub("%s", ""):gsub("LDR", "<leader>")
   return {
     type = "button",
     val = txt,

@@ -20,12 +20,12 @@ function M.config()
         {
           type = "group",
           val = {
-            utils.alpha_button("SPC f f", "  Find File  "),
-            utils.alpha_button("SPC f o", "  Recents  "),
-            utils.alpha_button("SPC f w", "  Find Word  "),
-            utils.alpha_button("SPC f n", "  New File  "),
-            utils.alpha_button("SPC f m", "  Bookmarks  "),
-            utils.alpha_button("SPC S l", "  Last Session  "),
+            utils.alpha_button("LDR f f", "  Find File  "),
+            utils.alpha_button("LDR f o", "  Recents  "),
+            utils.alpha_button("LDR f w", "  Find Word  "),
+            utils.alpha_button("LDR f n", "  New File  "),
+            utils.alpha_button("LDR f m", "  Bookmarks  "),
+            utils.alpha_button("LDR S l", "  Last Session  "),
           },
           opts = {
             spacing = 1,
