@@ -22,7 +22,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
       n = {
         ["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
         ["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
-        ["<leader>lf"] = { function() vim.lsp.buf.formatting_sync() end, desc = "Format code" },
+        ["<leader>lf"] = { function() vim.lsp.buf.format() end, desc = "Format code" },
         ["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help" },
         ["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" },
         ["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol" },
@@ -54,11 +54,11 @@ astronvim.lsp.on_attach = function(client, bufnr)
   vim.api.nvim_buf_create_user_command(
     bufnr,
     "Format",
-    function() vim.lsp.buf.formatting() end,
+    function() vim.lsp.buf.format { async = true } end,
     { desc = "Format file with LSP" }
   )
 
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.documentHighlightProvider then
     vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
     vim.api.nvim_create_autocmd("CursorHold", {
       group = "lsp_document_highlight",
@@ -113,8 +113,8 @@ function astronvim.lsp.server_settings(server_name)
 end
 
 function astronvim.lsp.disable_formatting(client)
-  client.resolved_capabilities.document_formatting = false
-  client.resolved_capabilities.document_range_formatting = false
+  client.server_capabilities.documentFormattingProvider = false
+  client.server_capabilities.documentRangeFormattingProvider = false
 end
 
 return astronvim.lsp
