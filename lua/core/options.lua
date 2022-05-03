@@ -46,6 +46,24 @@ local options = user_plugin_opts("options", {
     did_load_filetypes = 0, -- don't use filetype.vim
     highlighturl_enabled = true, -- highlight URLs by default
     mapleader = " ", -- set leader key
+    load_black = false, -- disable black
+    loaded_2html_plugin = false, -- disable 2html
+    loaded_getscript = false, -- disable getscript
+    loaded_getscriptPlugin = false, -- disable getscript
+    loaded_gzip = false, -- disable gzip
+    loaded_logipat = false, -- disable logipat
+    loaded_matchit = true, -- disable matchit
+    loaded_netrwFileHandlers = false, -- disable netrw
+    loaded_netrwPlugin = false, -- disable netrw
+    loaded_netrwSettngs = false, -- disable netrw
+    loaded_remote_plugins = false, -- disable remote plugins
+    loaded_tar = false, -- disable tar
+    loaded_tarPlugin = false, -- disable tar
+    loaded_zip = false, -- disable zip
+    loaded_zipPlugin = false, -- disable zip
+    loaded_vimball = false, -- disable vimball
+    loaded_vimballPlugin = false, -- disable vimball
+    zipPlugin = false, -- disable zip
   },
 })
 
