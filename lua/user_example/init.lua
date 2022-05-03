@@ -103,11 +103,13 @@ local config = {
       -- set up null-ls's on_attach function
       config.on_attach = function(client)
         -- NOTE: You can remove this on attach function to disable format on save
-        if client.resolved_capabilities.document_formatting then
+        if client.server_capabilities.documentFormattingProvider then
           vim.api.nvim_create_autocmd("BufWritePre", {
             desc = "Auto format before save",
             pattern = "<buffer>",
-            callback = vim.lsp.buf.formatting_sync,
+            callback = function()
+              vim.lsp.buf.format()
+            end,
           })
         end
       end
