@@ -91,7 +91,7 @@ if not utils.is_available "which-key.nvim" then
   map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
   map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
-  if utils.is_available "vim-bbye" then
+  if utils.is_available "bufdelete.nvim" then
     map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Close buffer" })
   else
     map("n", "<leader>c", "<cmd>bdelete!<cr>", { desc = "Close buffer" })
