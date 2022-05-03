@@ -59,9 +59,6 @@ end
 
 M.on_attach = function(client, bufnr)
   if client.name == "tsserver" or client.name == "jsonls" or client.name == "html" or client.name == "sumneko_lua" then
-    if vim.fn.has "nvim-0.7" then -- needed for formatting checker in <0.8
-      client.resolved_capabilities.document_formatting = false
-    end
     client.server_capabilities.documentFormattingProvider = false
   end
 
