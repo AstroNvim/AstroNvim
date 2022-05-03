@@ -3,6 +3,16 @@ local config = {
   -- Set colorscheme
   colorscheme = "default_theme",
 
+  -- set vim options here (vim.<first_key>.<second_key> =  value)
+  options = {
+    opt = {
+      relativenumber = true, -- sets vim.opt.relativenumber
+    },
+    g = {
+      mapleader = " ", -- sets vim.g.mapleader
+    },
+  },
+
   -- Default theme configuration
   default_theme = {
     diagnostics_style = { italic = true },
@@ -173,13 +183,8 @@ local config = {
   -- This function is run last
   -- good place to configure mappings and vim options
   polish = function()
-    local map = vim.keymap.set
-    local set = vim.opt
-    -- Set options
-    set.relativenumber = true
-
     -- Set key bindings
-    map("n", "<C-s>", ":w!<CR>")
+    vim.keymap.set("n", "<C-s>", ":w!<CR>")
 
     -- Set autocommands
     vim.api.nvim_create_augroup("packer_conf", {})

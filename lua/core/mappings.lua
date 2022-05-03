@@ -8,7 +8,6 @@ local augroup = vim.api.nvim_create_augroup
 
 -- Remap space as leader key
 map("", "<Space>", "<Nop>")
-vim.g.mapleader = " "
 
 -- Normal --
 if utils.is_available "smart-splits.nvim" then
