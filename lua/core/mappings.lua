@@ -92,7 +92,9 @@ if not utils.is_available "which-key.nvim" then
   map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
   if utils.is_available "vim-bbye" then
-    map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Delete buffer" })
+    map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Close buffer" })
+  else
+    map("n", "<leader>c", "<cmd>bdelete!<cr>", { desc = "Close buffer" })
   end
 
   -- Packer

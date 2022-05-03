@@ -113,6 +113,8 @@ if status_ok then
 
   if utils.is_available "vim-bbye" then
     mappings.n["<leader>"].c = { "<cmd>Bdelete!<cr>", "Close Buffer" }
+  else
+    mappings.n["<leader>"].c = { "<cmd>bdelete!<cr>", "Close Buffer" }
   end
 
   if utils.is_available "gitsigns.nvim" then
