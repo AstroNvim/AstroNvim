@@ -111,7 +111,7 @@ if status_ok then
     }
   end
 
-  if utils.is_available "vim-bbye" then
+  if utils.is_available "bufdelete.nvim" then
     mappings.n["<leader>"].c = { "<cmd>Bdelete!<cr>", "Close Buffer" }
   else
     mappings.n["<leader>"].c = { "<cmd>bdelete!<cr>", "Close Buffer" }

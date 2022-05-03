@@ -81,7 +81,7 @@ if packer_status_ok then
 
     -- Better buffer closing
     {
-      "moll/vim-bbye",
+      "famiu/bufdelete.nvim",
       cmd = { "Bdelete", "Bwipeout" },
     },
 
