@@ -210,6 +210,9 @@ end
 
 function M.alpha_button(sc, txt)
   local sc_ = sc:gsub("%s", ""):gsub("LDR", "<leader>")
+  if vim.g.mapleader then
+    sc = sc:gsub("LDR", vim.g.mapleader == " " and "SPC" or vim.g.mapleader)
+  end
   return {
     type = "button",
     val = txt,
