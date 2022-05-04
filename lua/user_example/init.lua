@@ -170,8 +170,10 @@ local config = {
       -- NOTE: You can remove this on attach function to disable format on save
       on_attach = function(client)
         if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_augroup("lsp_format", { clear = true })
           vim.api.nvim_create_autocmd("BufWritePre", {
             desc = "Auto format before save",
+            group = "lsp_format",
             pattern = "<buffer>",
             callback = vim.lsp.buf.formatting_sync,
           })
@@ -187,7 +189,7 @@ local config = {
     vim.keymap.set("n", "<C-s>", ":w!<CR>")
 
     -- Set autocommands
-    vim.api.nvim_create_augroup("packer_conf", {})
+    vim.api.nvim_create_augroup("packer_conf", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePost", {
       desc = "Sync packer after modifying plugins.lua",
       group = "packer_conf",
