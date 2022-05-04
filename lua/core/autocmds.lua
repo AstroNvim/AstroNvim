@@ -7,15 +7,21 @@ local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
 
 augroup("cursor_off", { clear = true })
-cmd("WinLeave", {
+cmd("BufLeave", {
   desc = "No cursorline",
   group = "cursor_off",
-  command = "set nocursorline",
+  callback = function()
+    vim.opt.cursorline = false
+  end,
 })
-cmd("WinEnter", {
+cmd("BufEnter", {
   desc = "No cursorline",
   group = "cursor_off",
-  command = "set cursorline",
+  callback = function()
+    if not vim.tbl_contains({ "alpha", "TelescopePrompt" }, vim.bo.filetype) then
+      vim.opt.cursorline = true
+    end
+  end,
 })
 
 augroup("highlighturl", { clear = true })
@@ -41,12 +47,6 @@ if utils.is_available "alpha-nvim" then
     group = "alpha_settings",
     pattern = "alpha",
     command = "set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3",
-  })
-  cmd("BufEnter", {
-    desc = "No cursorline on alpha",
-    group = "alpha_settings",
-    pattern = "*",
-    command = "if &ft is 'alpha' | set nocursorline | endif",
   })
 end
 
