@@ -75,13 +75,6 @@ local base = {
   WarningMsg = { fg = C.yellow, bg = C.none },
   WildMenu = { fg = C.grey_3, bg = C.blue },
   EndOfBuffer = { fg = C.bg, bg = C.none },
-  CmpItemAbbrDefault = { fg = C.fg },
-  CmpItemAbbrDeprecatedDefault = { fg = C.grey_2 },
-  CmpItemAbbrMatchDefault = { fg = C.white },
-  CmpItemAbbrMatchFuzzyDefault = { fg = C.white },
-  CmpItemKind = { fg = C.yellow },
-  CmpItemAbbr = { fg = C.fg },
-  CmpItemMenuDefault = { fg = C.fg },
   FloatBorder = { bg = C.none },
   MatchParen = { fg = C.none, bg = C.grey_5 },
 }
