@@ -6,7 +6,7 @@ local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
 
-augroup("cursor_off", {})
+augroup("cursor_off", { clear = true })
 cmd("WinLeave", {
   desc = "No cursorline",
   group = "cursor_off",
@@ -18,7 +18,7 @@ cmd("WinEnter", {
   command = "set cursorline",
 })
 
-augroup("highlighturl", {})
+augroup("highlighturl", { clear = true })
 cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
   group = "highlighturl",
@@ -27,7 +27,7 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
 })
 
 if utils.is_available "alpha-nvim" then
-  augroup("alpha_settings", {})
+  augroup("alpha_settings", { clear = true })
   if utils.is_available "bufferline.nvim" then
     cmd("FileType", {
       desc = "Disable tabline for alpha",
