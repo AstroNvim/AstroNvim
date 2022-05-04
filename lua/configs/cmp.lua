@@ -64,7 +64,6 @@ function M.config()
       },
       experimental = {
         ghost_text = false,
-        native_menu = false,
       },
       mapping = {
         ["<Up>"] = cmp.mapping.select_prev_item(),
