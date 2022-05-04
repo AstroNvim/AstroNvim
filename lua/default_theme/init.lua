@@ -14,6 +14,7 @@ local modules = {
   "treesitter",
   "lsp",
   "others",
+  "cmp"
 }
 
 local highlights = {}
