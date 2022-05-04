@@ -311,7 +311,7 @@ function _G.set_terminal_keymaps()
   vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], { desc = "Terminal right window naviation" })
 end
 
-augroup("TermMappings", {})
+augroup("TermMappings", { clear = true })
 cmd("TermOpen", {
   desc = "Set terminal keymaps",
   group = "TermMappings",
