@@ -50,6 +50,16 @@ if utils.is_available "alpha-nvim" then
   })
 end
 
+if utils.is_available "telescope.nvim" then
+  augroup("telescope_prompt", {})
+  cmd("FileType", {
+    group = "telescope_prompt",
+    desc = "Disable cursorline in telescope prompt",
+    pattern = "TelescopePrompt",
+    command = "set nocursorline",
+  })
+end
+
 create_command("AstroUpdate", require("core.utils").update, { desc = "Update AstroNvim" })
 
 create_command("ToggleHighlightURL", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
