@@ -14,13 +14,11 @@ cmd("BufLeave", {
     vim.opt.cursorline = false
   end,
 })
-cmd("BufEnter", {
+cmd({ "BufEnter", "FileType" }, {
   desc = "No cursorline",
   group = "cursor_off",
   callback = function()
-    if not vim.tbl_contains({ "alpha", "TelescopePrompt" }, vim.bo.filetype) then
-      vim.opt.cursorline = true
-    end
+    vim.opt.cursorline = not vim.tbl_contains({ "alpha", "TelescopePrompt" }, vim.bo.filetype)
   end,
 })
 
