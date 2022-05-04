@@ -3,43 +3,13 @@ local M = {}
 function M.config()
   local cmp_status_ok, cmp = pcall(require, "cmp")
   local snip_status_ok, luasnip = pcall(require, "luasnip")
+  local utils = require "core.utils"
   if cmp_status_ok and snip_status_ok then
-    local kind_icons = {
-      Text = "",
-      Method = "",
-      Function = "",
-      Constructor = "",
-      Field = "ﰠ",
-      Variable = "",
-      Class = "",
-      Interface = "",
-      Module = "",
-      Property = "",
-      Unit = "",
-      Value = "",
-      Enum = "",
-      Keyword = "",
-      Snippet = "",
-      Color = "",
-      File = "",
-      Reference = "",
-      Folder = "",
-      EnumMember = "",
-      Constant = "",
-      Struct = "פּ",
-      Event = "",
-      Operator = "",
-      TypeParameter = "",
-    }
-
-    cmp.setup(require("core.utils").user_plugin_opts("plugins.cmp", {
+    cmp.setup(utils.user_plugin_opts("plugins.cmp", {
       preselect = cmp.PreselectMode.None,
       formatting = {
-        fields = { "kind", "abbr", "menu" },
-        format = function(_, vim_item)
-          vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-          return vim_item
-        end,
+        fields = utils.change_cmp_formatting().swap,
+        format = utils.change_cmp_formatting().format,
       },
       snippet = {
         expand = function(args)
@@ -59,12 +29,11 @@ function M.config()
       },
       window = {
         documentation = {
-          border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+          border = utils.change_cmp_border(),
         },
       },
       experimental = {
         ghost_text = false,
-        native_menu = false,
       },
       mapping = {
         ["<Up>"] = cmp.mapping.select_prev_item(),

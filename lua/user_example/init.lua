@@ -89,18 +89,33 @@ local config = {
     },
   },
 
-  -- CMP Source Priorities
-  -- modify here the priorities of default cmp sources
-  -- higher value == higher priority
-  -- The value can also be set to a boolean for disabling default sources:
-  -- false == disabled
-  -- true == 1000
+  -- Cmp Options
   cmp = {
     source_priority = {
       nvim_lsp = 1000,
       luasnip = 750,
       buffer = 500,
       path = 250,
+    },
+    options = {
+      border = "sharp",
+      display_sources = {
+        buffer = "Buffer",
+        nvim_lsp = "LSP",
+        luasnip = "LuaSnip",
+        nvim_lua = "Lua",
+        path = "Path",
+      },
+      format = {
+        source_name = false, -- enable to show the source name you define above in nvim-cmp
+        item_name = false, -- enable to show the icon title
+        swap_abbr_icon = false, -- enable to reorder, the abbreviation stand before icon
+      },
+    },
+    icons = {
+      -- You can define your own icons here but with the same name, see this:
+      -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations
+      -- look at the kind_icons
     },
   },
 

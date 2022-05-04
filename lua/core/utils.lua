@@ -185,6 +185,83 @@ function M.add_user_cmp_source(source)
   end
 end
 
+function M.change_cmp_border()
+  local rounded = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+  local sharp = { "┌", "─", "┐", "│", "┘", "─", "└", "│" }
+  local user_border = M.user_plugin_opts("cmp.options").border
+  if user_border == "sharp" then
+    return sharp
+  else
+    return rounded
+  end
+end
+
+function M.change_cmp_formatting()
+  local user_opts = M.user_plugin_opts "cmp.options"
+  local swap = user_opts.format.swap_abbr_icon
+  local icon = M.user_plugin_opts("cmp.icons", {
+    Text = "",
+    Method = "",
+    Function = "",
+    Constructor = "",
+    Field = "ﰠ",
+    Variable = "",
+    Class = "",
+    Interface = "",
+    Module = "",
+    Property = "",
+    Unit = "",
+    Value = "",
+    Enum = "",
+    Keyword = "",
+    Snippet = "",
+    Color = "",
+    File = "",
+    Reference = "",
+    Folder = "",
+    EnumMember = "",
+    Constant = "",
+    Struct = "פּ",
+    Event = "",
+    Operator = "",
+    TypeParameter = "",
+  })
+  local opts = {}
+  if user_opts.format.source_name then
+    if user_opts.format.item_name then
+      opts.format = function(entry, vim_item)
+        vim_item.kind = string.format("%s %s", icon[vim_item.kind], vim_item.kind)
+        vim_item.menu = (user_opts.display_sources)[entry.source.name]
+        return vim_item
+      end
+    else
+      opts.format = function(entry, vim_item)
+        vim_item.kind = string.format("%s", vim_item.kind)
+        vim_item.menu = (user_opts.display_sources)[entry.source.name]
+        return vim_item
+      end
+    end
+  else
+    if user_opts.format.item_name then
+      opts.format = function(_, vim_item)
+        vim_item.kind = string.format("%s %s", icon[vim_item.kind], vim_item.kind)
+        return vim_item
+      end
+    else
+      opts.format = function(_, vim_item)
+        vim_item.kind = string.format("%s", icon[vim_item.kind])
+        return vim_item
+      end
+    end
+  end
+  if swap then
+    opts.swap = { "abbr", "kind", "menu" }
+  else
+    opts.swap = { "kind", "abbr", "menu" }
+  end
+  return opts
+end
+
 function M.alpha_button(sc, txt)
   local sc_ = sc:gsub("%s", ""):gsub("LDR", "<leader>")
   if vim.g.mapleader then
