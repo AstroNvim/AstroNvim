@@ -277,18 +277,11 @@ map("v", "<", "<gv", { desc = "unindent line" })
 map("v", ">", ">gv", { desc = "indent line" })
 
 -- Improved Terminal Mappings
-vim.api.nvim_create_augroup("TermMappings", { clear = true })
-vim.api.nvim_create_autocmd("TermOpen", {
-  desc = "Set terminal keymaps",
-  group = "TermMappings",
-  callback = function()
-    vim.keymap.set(0, "t", "<esc>", [[<C-\><C-n>]], { desc = "Terminal normal mode", buffer = 0 })
-    vim.keymap.set(0, "t", "jk", [[<C-\><C-n>]], { desc = "Terminal normal mode", buffer = 0 })
-    vim.keymap.set(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], { desc = "Terminal left window navigation", buffer = 0 })
-    vim.keymap.set(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], { desc = "Terminal down window navigation", buffer = 0 })
-    vim.keymap.set(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], { desc = "Terminal up window navigation", buffer = 0 })
-    vim.keymap.set(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], { desc = "Terminal right window naviation", buffer = 0 })
-  end,
-})
+map("t", "<esc>", "<C-\\><C-n>", { desc = "Terminal normal mode" })
+map("t", "jk", "<C-\\><C-n>", { desc = "Terminal normal mode" })
+map("t", "<C-h>", "<c-\\><c-n><c-w>h", { desc = "Terminal left window navigation" })
+map("t", "<C-j>", "<c-\\><c-n><c-w>j", { desc = "Terminal down window navigation" })
+map("t", "<C-k>", "<c-\\><c-n><c-w>k", { desc = "Terminal up window navigation" })
+map("t", "<C-l>", "<c-\\><c-n><c-w>l", { desc = "Terminal right window naviation" })
 
 return M
