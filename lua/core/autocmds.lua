@@ -6,22 +6,6 @@ local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
 
-augroup("cursor_off", { clear = true })
-cmd("BufLeave", {
-  desc = "No cursorline",
-  group = "cursor_off",
-  callback = function()
-    vim.opt.cursorline = false
-  end,
-})
-cmd({ "BufEnter", "FileType" }, {
-  desc = "No cursorline",
-  group = "cursor_off",
-  callback = function()
-    vim.opt.cursorline = not vim.tbl_contains({ "alpha", "TelescopePrompt" }, vim.bo.filetype)
-  end,
-})
-
 augroup("highlighturl", { clear = true })
 cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
