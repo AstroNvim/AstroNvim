@@ -1,15 +1,142 @@
 local M = {}
 
 local utils = require "core.utils"
-
 local map = vim.keymap.set
-local cmd = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
 
--- Remap space as leader key
-map("", "<Space>", "<Nop>")
+map("", "<Space>", "<Nop>") -- disable space because leader
 
 -- Normal --
+-- Standard Operations
+map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
+map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "No Highlight" })
+map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
+map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
+map("n", "<C-s>", "<cmd>w!<cr>", { desc = "Force write" })
+map("n", "<C-q>", "<cmd>q!<cr>", { desc = "Force quit" })
+map("n", "Q", "<Nop>")
+
+-- Terminal
+if utils.is_available "nvim-toggleterm.lua" then
+  map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
+end
+
+-- LSP
+map("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details" })
+map("n", "<leader>lf", vim.lsp.buf.formatting_sync, { desc = "Format code" })
+map("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP information" })
+map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", { desc = "LSP installer" })
+map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code action" })
+map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename current symbol" })
+map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
+map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename current symbol" }) -- (DEPRECATED)
+map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration of current symbol" })
+map("n", "gd", vim.lsp.buf.definition, { desc = "Show the definition of current symbol" })
+map("n", "gI", vim.lsp.buf.implementation, { desc = "Go to implementation of current symbol" })
+map("n", "gr", vim.lsp.buf.references, { desc = "References of current symbol" })
+map("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
+map("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
+map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+map("n", "gx", utils.url_opener_cmd(), { desc = "Open the file under cursor with system app" })
+
+-- Packer
+map("n", "<leader>pc", "<cmd>PackerCompile<cr>", { desc = "Packer Compile" })
+map("n", "<leader>pi", "<cmd>PackerInstall<cr>", { desc = "Packer Install" })
+map("n", "<leader>ps", "<cmd>PackerSync<cr>", { desc = "Packer Sync" })
+map("n", "<leader>pS", "<cmd>PackerStatus<cr>", { desc = "Packer Status" })
+map("n", "<leader>pu", "<cmd>PackerUpdate<cr>", { desc = "Packer Update" })
+
+-- Alpha
+if utils.is_available "alpha-nvim" then
+  map("n", "<leader>d", "<cmd>Alpha<cr>", { desc = "Alpha Dashboard" })
+end
+
+-- Bufdelete
+if utils.is_available "bufdelete.nvim" then
+  map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Close buffer" })
+else
+  map("n", "<leader>c", "<cmd>bdelete!<cr>", { desc = "Close buffer" })
+end
+
+-- Navigate buffers
+if utils.is_available "bufferline.nvim" then
+  map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer tab" })
+  map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer tab" })
+  map("n", ">b", "<cmd>BufferLineMoveNext<cr>", { desc = "Move buffer tab right" })
+  map("n", "<b", "<cmd>BufferLineMovePrev<cr>", { desc = "Move buffer tab left" })
+else
+  map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+  map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+end
+
+-- Comment
+if utils.is_available "Comment.nvim" then
+  map("n", "<leader>/", function()
+    require("Comment.api").toggle_current_linewise()
+  end, { desc = "Comment line" })
+  map(
+    "v",
+    "<leader>/",
+    "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<cr>",
+    { desc = "Toggle comment line" }
+  )
+end
+
+-- GitSigns
+if utils.is_available "gitsigns.nvim" then
+  map("n", "<leader>gj", function()
+    require("gitsigns").next_hunk()
+  end, { desc = "Next git hunk" })
+  map("n", "<leader>gk", function()
+    require("gitsigns").prev_hunk()
+  end, { desc = "Previous git hunk" })
+  map("n", "<leader>gl", function()
+    require("gitsigns").blame_line()
+  end, { desc = "View git blame" })
+  map("n", "<leader>gp", function()
+    require("gitsigns").preview_hunk()
+  end, { desc = "Preview git hunk" })
+  map("n", "<leader>gh", function()
+    require("gitsigns").reset_hunk()
+  end, { desc = "Reset git hunk" })
+  map("n", "<leader>gr", function()
+    require("gitsigns").reset_buffer()
+  end, { desc = "Reset git buffer" })
+  map("n", "<leader>gs", function()
+    require("gitsigns").stage_hunk()
+  end, { desc = "Stage git hunk" })
+  map("n", "<leader>gu", function()
+    require("gitsigns").undo_stage_hunk()
+  end, { desc = "Unstage git hunk" })
+  map("n", "<leader>gd", function()
+    require("gitsigns").diffthis()
+  end, { desc = "View git diff" })
+end
+
+-- NeoTree
+if utils.is_available "neo-tree.nvim" then
+  map("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle Explorer" })
+  map("n", "<leader>o", "<cmd>Neotree focus<cr>", { desc = "Focus Explorer" })
+end
+
+-- Session Manager
+if utils.is_available "neovim-session-manager" then
+  map("n", "<leader>Sl", "<cmd>SessionManager! load_last_session<cr>", { desc = "Load last session" })
+  map("n", "<leader>Ss", "<cmd>SessionManager! save_current_session<cr>", { desc = "Save this session" })
+  map("n", "<leader>Sd", "<cmd>SessionManager! delete_session<cr>", { desc = "Delete session" })
+  map("n", "<leader>Sf", "<cmd>SessionManager! load_session<cr>", { desc = "Search sessions" })
+  map(
+    "n",
+    "<leader>S.",
+    "<cmd>SessionManager! load_current_dir_session<cr>",
+    { desc = "Load current directory session" }
+  )
+end
+
+-- Smart Splits
 if utils.is_available "smart-splits.nvim" then
   -- Better window navigation
   map("n", "<C-h>", function()
@@ -49,273 +176,119 @@ else
   map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Resize split right" })
 end
 
--- Navigate buffers
-if utils.is_available "bufferline.nvim" then
-  map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer tab" })
-  map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer tab" })
-  map("n", ">b", "<cmd>BufferLineMoveNext<cr>", { desc = "Move buffer tab right" })
-  map("n", "<b", "<cmd>BufferLineMovePrev<cr>", { desc = "Move buffer tab left" })
-else
-  map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-  map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+-- SymbolsOutline
+if utils.is_available "aerial.nvim" then
+  map("n", "<leader>lS", "<cmd>AerialToggle<cr>", { desc = "Symbols outline" })
 end
 
--- LSP
-map("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details" })
--- <leader>rn: legacy binding here for backwards compatibility but not in which-key (see <leader>lr)
-map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename current symbol" })
-
--- ForceWrite
-map("n", "<C-s>", "<cmd>w!<cr>", { desc = "Force write" })
-
--- ForceQuit
-map("n", "<C-q>", "<cmd>q!<cr>", { desc = "Force quit" })
+-- Telescope
+if utils.is_available "telescope.nvim" then
+  map("n", "<leader>fw", function()
+    require("telescope.builtin").live_grep()
+  end, { desc = "Search words" })
+  map("n", "<leader>gt", function()
+    require("telescope.builtin").git_status()
+  end, { desc = "Git status" })
+  map("n", "<leader>gb", function()
+    require("telescope.builtin").git_branches()
+  end, { desc = "Git branchs" })
+  map("n", "<leader>gc", function()
+    require("telescope.builtin").git_commits()
+  end, { desc = "Git commits" })
+  map("n", "<leader>ff", function()
+    require("telescope.builtin").find_files()
+  end, { desc = "Search files" })
+  map("n", "<leader>fb", function()
+    require("telescope.builtin").buffers()
+  end, { desc = "Search buffers" })
+  map("n", "<leader>fh", function()
+    require("telescope.builtin").help_tags()
+  end, { desc = "Search help" })
+  map("n", "<leader>fm", function()
+    require("telescope.builtin").marks()
+  end, { desc = "Search marks" })
+  map("n", "<leader>fo", function()
+    require("telescope.builtin").oldfiles()
+  end, { desc = "Search history" })
+  map("n", "<leader>sb", function()
+    require("telescope.builtin").git_branches()
+  end, { desc = "Git branchs" })
+  map("n", "<leader>sh", function()
+    require("telescope.builtin").help_tags()
+  end, { desc = "Search help" })
+  map("n", "<leader>sm", function()
+    require("telescope.builtin").man_pages()
+  end, { desc = "Search man" })
+  map("n", "<leader>sn", function()
+    require("telescope").extensions.notify.notify()
+  end, { desc = "Search notifications" })
+  map("n", "<leader>sr", function()
+    require("telescope.builtin").registers()
+  end, { desc = "Search registers" })
+  map("n", "<leader>sk", function()
+    require("telescope.builtin").keymaps()
+  end, { desc = "Search keymaps" })
+  map("n", "<leader>sc", function()
+    require("telescope.builtin").commands()
+  end, { desc = "Search commands" })
+  map("n", "<leader>ls", function()
+    local aerial_avail, _ = pcall(require, "aerial")
+    if aerial_avail then
+      require("telescope").extensions.aerial.aerial()
+    else
+      require("telescope.builtin").lsp_document_symbols()
+    end
+  end, { desc = "Search symbols" })
+  map("n", "<leader>lR", function()
+    require("telescope.builtin").lsp_references()
+  end, { desc = "Search references" })
+  map("n", "<leader>lD", function()
+    require("telescope.builtin").diagnostics()
+  end, { desc = "Search diagnostics" })
+end
 
 -- Terminal
 if utils.is_available "nvim-toggleterm.lua" then
-  map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
+  map("n", "<leader>gg", function()
+    utils.toggle_term_cmd "lazygit"
+  end, { desc = "ToggleTerm lazygit" })
+  map("n", "<leader>tn", function()
+    utils.toggle_term_cmd "node"
+  end, { desc = "ToggleTerm node" })
+  map("n", "<leader>tu", function()
+    utils.toggle_term_cmd "ncdu"
+  end, { desc = "ToggleTerm NCDU" })
+  map("n", "<leader>tt", function()
+    utils.toggle_term_cmd "htop"
+  end, { desc = "ToggleTerm htop" })
+  map("n", "<leader>tp", function()
+    utils.toggle_term_cmd "python"
+  end, { desc = "ToggleTerm python" })
+  map("n", "<leader>tl", function()
+    utils.toggle_term_cmd "lazygit"
+  end, { desc = "ToggleTerm lazygit" })
+  map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "ToggleTerm float" })
+  map("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", { desc = "ToggleTerm horizontal split" })
+  map("n", "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", { desc = "ToggleTerm vertical split" })
 end
 
--- disable Ex mode:
-map("n", "Q", "<Nop>")
-
--- Normal Leader Mappings --
--- NOTICE: if changed, update configs/which-key-register.lua
--- Allows easy user modifications when just overriding which-key
--- But allows bindings to work for users without which-key
-if not utils.is_available "which-key.nvim" then
-  -- Standard Operations
-  map("n", "<leader>w", "<cmd>w<cr>", { desc = "Write" })
-  map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quite" })
-  map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Disable search highlight" })
-  map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
-  map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
-
-  if utils.is_available "bufdelete.nvim" then
-    map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Close buffer" })
-  else
-    map("n", "<leader>c", "<cmd>bdelete!<cr>", { desc = "Close buffer" })
-  end
-
-  -- Packer
-  map("n", "<leader>pc", "<cmd>PackerCompile<cr>", { desc = "Packer compile" })
-  map("n", "<leader>pi", "<cmd>PackerInstall<cr>", { desc = "Packer install" })
-  map("n", "<leader>ps", "<cmd>PackerSync<cr>", { desc = "Packer sync" })
-  map("n", "<leader>pS", "<cmd>PackerStatus<cr>", { desc = "Packer status" })
-  map("n", "<leader>pu", "<cmd>PackerUpdate<cr>", { desc = "Packer update" })
-
-  -- LSP
-  map("n", "<leader>lf", vim.lsp.buf.formatting_sync, { desc = "Format code" })
-  map("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP information" })
-  map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", { desc = "LSP installer" })
-  map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code action" })
-  map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename current symbol" })
-  map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-  map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration of current symbol" })
-  map("n", "gd", vim.lsp.buf.definition, { desc = "Show the definition of current symbol" })
-  map("n", "gI", vim.lsp.buf.implementation, { desc = "Go to implementation of current symbol" })
-  map("n", "gr", vim.lsp.buf.references, { desc = "References of current symbol" })
-  map("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-  map("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-  map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-  map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-  map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-  map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-  map("n", "gx", utils.url_opener_cmd(), { desc = "Open the file under cursor with system app" })
-
-  -- NeoTree
-  if utils.is_available "neo-tree.nvim" then
-    map("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle Neo-Tree" })
-    map("n", "<leader>o", "<cmd>Neotree focus<cr>", { desc = "Focus Neo-Tree" })
-  end
-
-  -- Dashboard
-  if utils.is_available "alpha-nvim" then
-    map("n", "<leader>d", "<cmd>Alpha<cr>", { desc = "Alpha Dashboard" })
-  end
-
-  -- GitSigns
-  if utils.is_available "gitsigns.nvim" then
-    map("n", "<leader>gj", function()
-      require("gitsigns").next_hunk()
-    end, { desc = "Next git hunk" })
-    map("n", "<leader>gk", function()
-      require("gitsigns").prev_hunk()
-    end, { desc = "Previous git hunk" })
-    map("n", "<leader>gl", function()
-      require("gitsigns").blame_line()
-    end, { desc = "View git blame" })
-    map("n", "<leader>gp", function()
-      require("gitsigns").preview_hunk()
-    end, { desc = "Preview git hunk" })
-    map("n", "<leader>gh", function()
-      require("gitsigns").reset_hunk()
-    end, { desc = "Reset git hunk" })
-    map("n", "<leader>gr", function()
-      require("gitsigns").reset_buffer()
-    end, { desc = "Reset git buffer" })
-    map("n", "<leader>gs", function()
-      require("gitsigns").stage_hunk()
-    end, { desc = "Stage git hunk" })
-    map("n", "<leader>gu", function()
-      require("gitsigns").undo_stage_hunk()
-    end, { desc = "Unstage git hunk" })
-    map("n", "<leader>gd", function()
-      require("gitsigns").diffthis()
-    end, { desc = "View git diff" })
-  end
-
-  -- Telescope
-  if utils.is_available "telescope.nvim" then
-    map("n", "<leader>fw", function()
-      require("telescope.builtin").live_grep()
-    end, { desc = "Telescope search words" })
-    map("n", "<leader>gt", function()
-      require("telescope.builtin").git_status()
-    end, { desc = "Telescope git status" })
-    map("n", "<leader>gb", function()
-      require("telescope.builtin").git_branches()
-    end, { desc = "Telescope git branchs" })
-    map("n", "<leader>gc", function()
-      require("telescope.builtin").git_commits()
-    end, { desc = "Telescope git commits" })
-    map("n", "<leader>ff", function()
-      require("telescope.builtin").find_files()
-    end, { desc = "Telescope search files" })
-    map("n", "<leader>fb", function()
-      require("telescope.builtin").buffers()
-    end, { desc = "Telescope search buffers" })
-    map("n", "<leader>fh", function()
-      require("telescope.builtin").help_tags()
-    end, { desc = "Telescope search help" })
-    map("n", "<leader>fm", function()
-      require("telescope.builtin").marks()
-    end, { desc = "Telescope search marks" })
-    map("n", "<leader>fo", function()
-      require("telescope.builtin").oldfiles()
-    end, { desc = "Telescope search history" })
-    map("n", "<leader>sb", function()
-      require("telescope.builtin").git_branches()
-    end, { desc = "Telescope git branchs" })
-    map("n", "<leader>sh", function()
-      require("telescope.builtin").help_tags()
-    end, { desc = "Telescope search help" })
-    map("n", "<leader>sm", function()
-      require("telescope.builtin").man_pages()
-    end, { desc = "Telescope search man" })
-    map("n", "<leader>sn", function()
-      require("telescope").extensions.notify.notify()
-    end, { desc = "Telescope search notifications" })
-    map("n", "<leader>sr", function()
-      require("telescope.builtin").registers()
-    end, { desc = "Telescope search registers" })
-    map("n", "<leader>sk", function()
-      require("telescope.builtin").keymaps()
-    end, { desc = "Telescope search keymaps" })
-    map("n", "<leader>sc", function()
-      require("telescope.builtin").commands()
-    end, { desc = "Telescope search commands" })
-    map("n", "<leader>ls", function()
-      local aerial_avail, _ = pcall(require, "aerial")
-      if aerial_avail then
-        require("telescope").extensions.aerial.aerial()
-      else
-        require("telescope.builtin").lsp_document_symbols()
-      end
-    end, { desc = "Telescope search symbols" })
-    map("n", "<leader>lR", function()
-      require("telescope.builtin").lsp_references()
-    end, { desc = "Telescope search references" })
-    map("n", "<leader>lD", function()
-      require("telescope.builtin").diagnostics()
-    end, { desc = "Telescope search diagnostics" })
-  end
-
-  -- Comment
-  if utils.is_available "Comment.nvim" then
-    map("n", "<leader>/", function()
-      require("Comment.api").toggle_current_linewise()
-    end, { desc = "Toggle comment line" })
-  end
-
-  -- Terminal
-  if utils.is_available "nvim-toggleterm.lua" then
-    map("n", "<leader>gg", function()
-      utils.toggle_term_cmd "lazygit"
-    end, { desc = "ToggleTerm lazygit" })
-    map("n", "<leader>tn", function()
-      utils.toggle_term_cmd "node"
-    end, { desc = "ToggleTerm node" })
-    map("n", "<leader>tu", function()
-      utils.toggle_term_cmd "ncdu"
-    end, { desc = "ToggleTerm NCDU" })
-    map("n", "<leader>tt", function()
-      utils.toggle_term_cmd "htop"
-    end, { desc = "ToggleTerm htop" })
-    map("n", "<leader>tp", function()
-      utils.toggle_term_cmd "python"
-    end, { desc = "ToggleTerm python" })
-    map("n", "<leader>tl", function()
-      utils.toggle_term_cmd "lazygit"
-    end, { desc = "ToggleTerm lazygit" })
-    map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "ToggleTerm float" })
-    map("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", { desc = "ToggleTerm horizontal split" })
-    map("n", "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", { desc = "ToggleTerm vertical split" })
-  end
-
-  -- SymbolsOutline
-  if utils.is_available "aerial.nvim" then
-    map("n", "<leader>lS", "<cmd>AerialToggle<cr>", { desc = "Symbols outline" })
-  end
-
-  -- Session Manager
-  if utils.is_available "neovim-session-manager" then
-    map("n", "<leader>Sl", "<cmd>SessionManager! load_last_session<cr>", { desc = "Load last session" })
-    map("n", "<leader>Ss", "<cmd>SessionManager! save_current_session<cr>", { desc = "Save this session" })
-    map("n", "<leader>Sd", "<cmd>SessionManager! delete_session<cr>", { desc = "Delete session" })
-    map("n", "<leader>Sf", "<cmd>SessionManager! load_session<cr>", { desc = "Search sessions" })
-    map(
-      "n",
-      "<leader>S.",
-      "<cmd>SessionManager! load_current_dir_session<cr>",
-      { desc = "Load current directory session" }
-    )
-  end
-end
-
--- Visual --
 -- Stay in indent mode
 map("v", "<", "<gv", { desc = "unindent line" })
 map("v", ">", ">gv", { desc = "indent line" })
 
--- Move text up and down
-map("v", "<A-j>", "<cmd>m .+1<cr>==", { desc = "move text down" })
-map("v", "<A-k>", "<cmd>m .-2<cr>==", { desc = "move text up" })
-
--- Comment
-if utils.is_available "Comment.nvim" then
-  map(
-    "v",
-    "<leader>/",
-    "<esc><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<cr>",
-    { desc = "Toggle comment line" }
-  )
-end
-
-function _G.set_terminal_keymaps()
-  vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], { desc = "Terminal normal mode" })
-  vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], { desc = "Terminal normal mode" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], { desc = "Terminal left window navigation" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], { desc = "Terminal down window navigation" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], { desc = "Terminal up window navigation" })
-  vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], { desc = "Terminal right window naviation" })
-end
-
-augroup("TermMappings", { clear = true })
-cmd("TermOpen", {
+-- Improved Terminal Mappings
+vim.api.nvim_create_augroup("TermMappings", { clear = true })
+vim.api.nvim_create_autocmd("TermOpen", {
   desc = "Set terminal keymaps",
   group = "TermMappings",
-  callback = _G.set_terminal_keymaps,
+  callback = function()
+    vim.keymap.set(0, "t", "<esc>", [[<C-\><C-n>]], { desc = "Terminal normal mode", buffer = 0 })
+    vim.keymap.set(0, "t", "jk", [[<C-\><C-n>]], { desc = "Terminal normal mode", buffer = 0 })
+    vim.keymap.set(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], { desc = "Terminal left window navigation", buffer = 0 })
+    vim.keymap.set(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], { desc = "Terminal down window navigation", buffer = 0 })
+    vim.keymap.set(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], { desc = "Terminal up window navigation", buffer = 0 })
+    vim.keymap.set(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], { desc = "Terminal right window naviation", buffer = 0 })
+  end,
 })
 
 return M
