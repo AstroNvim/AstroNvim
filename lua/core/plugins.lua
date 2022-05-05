@@ -351,12 +351,11 @@ if packer_status_ok then
 
     -- Smooth scrolling
     {
-      "karb94/neoscroll.nvim",
+      "declancm/cinnamon.nvim",
       event = { "BufRead", "BufNewFile" },
       config = function()
-        require("configs.neoscroll").config()
+        require("configs.cinnamon").config()
       end,
-      disable = not config.enabled.neoscroll,
     },
 
     -- Smooth escaping
