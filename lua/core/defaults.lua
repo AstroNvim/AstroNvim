@@ -48,7 +48,6 @@ local config = {
     comment = true,
     indent_blankline = true,
     which_key = true,
-    neoscroll = true,
     ts_rainbow = true,
     ts_autotag = true,
   },
