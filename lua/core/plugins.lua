@@ -342,6 +342,7 @@ if packer_status_ok then
     -- Keymaps popup
     {
       "folke/which-key.nvim",
+      module = { "which-key" },
       config = function()
         require("configs.which-key").config()
       end,
