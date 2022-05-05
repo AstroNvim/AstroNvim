@@ -12,35 +12,22 @@ map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "No Highlight" })
 map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
+map("n", "gx", utils.url_opener_cmd(), { desc = "Open the file under cursor with system app" })
 map("n", "<C-s>", "<cmd>w!<cr>", { desc = "Force write" })
 map("n", "<C-q>", "<cmd>q!<cr>", { desc = "Force quit" })
 map("n", "Q", "<Nop>")
 
--- Terminal
-if utils.is_available "nvim-toggleterm.lua" then
-  map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
-end
-
--- LSP
-map("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details" })
-map("n", "<leader>lf", vim.lsp.buf.formatting_sync, { desc = "Format code" })
-map("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP information" })
-map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", { desc = "LSP installer" })
-map("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code action" })
-map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename current symbol" })
-map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename current symbol" }) -- (DEPRECATED)
-map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to declaration of current symbol" })
-map("n", "gd", vim.lsp.buf.definition, { desc = "Show the definition of current symbol" })
-map("n", "gI", vim.lsp.buf.implementation, { desc = "Go to implementation of current symbol" })
-map("n", "gr", vim.lsp.buf.references, { desc = "References of current symbol" })
 map("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
 map("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-map("n", "gx", utils.url_opener_cmd(), { desc = "Open the file under cursor with system app" })
+
+-- Terminal
+if utils.is_available "nvim-toggleterm.lua" then
+  map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
+end
 
 -- Packer
 map("n", "<leader>pc", "<cmd>PackerCompile<cr>", { desc = "Packer Compile" })
