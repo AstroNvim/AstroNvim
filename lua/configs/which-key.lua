@@ -43,7 +43,7 @@ function M.config()
         spacing = 3,
         align = "left",
       },
-      ignore_missing = true,
+      ignore_missing = false,
       hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " },
       show_help = true,
       triggers = "auto",
