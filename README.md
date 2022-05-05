@@ -34,9 +34,9 @@ git -C ~/.config/nvim remote set-url origin https://github.com/AstroNvim/AstroNv
 
 ## 🌟 Preview
 
-![Preview1](./screenshots/preview1.png)
-![Preview2](./screenshots/preview2.png)
-![Preview33](./screenshots/preview3.png)
+![Preview1](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dashboard.png)
+![Preview2](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/overview.png)
+![Preview33](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/lsp_hover.png)
 
 ## ✨ Features
 
