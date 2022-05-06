@@ -28,6 +28,30 @@ if utils.is_available "alpha-nvim" then
     pattern = "alpha",
     command = "set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3",
   })
+  cmd("VimEnter", {
+    desc = "Start Alpha when vim is opened with no arguments",
+    group = "alpha_settings",
+    callback = function()
+      -- optimized start check from https://github.com/goolord/alpha-nvim
+      local should_skip = false
+      if vim.fn.argc() > 0 or vim.fn.line2byte "$" ~= -1 or not vim.o.modifiable then
+        should_skip = true
+      else
+        for _, arg in pairs(vim.v.argv) do
+          if arg == "-b" or arg == "-c" or vim.startswith(arg, "+") or arg == "-S" then
+            should_skip = true
+            break
+          end
+        end
+      end
+      if not should_skip then
+        local alpha_avail, alpha = pcall(require, "alpha")
+        if alpha_avail then
+          alpha.start(false)
+        end
+      end
+    end,
+  })
 end
 
 create_command("AstroUpdate", require("core.utils").update, { desc = "Update AstroNvim" })
