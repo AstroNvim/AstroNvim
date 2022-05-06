@@ -2,9 +2,7 @@ local packer_status_ok, packer = pcall(require, "packer")
 if packer_status_ok then
   local astro_plugins = {
     -- Plugin manager
-    {
-      "wbthomason/packer.nvim",
-    },
+    { "wbthomason/packer.nvim" },
 
     -- Optimiser
     { "lewis6991/impatient.nvim" },
@@ -40,7 +38,7 @@ if packer_status_ok then
     {
       "antoinemadec/FixCursorHold.nvim",
       event = { "BufRead", "BufNewFile" },
-      config = function()
+      setup = function()
         vim.g.cursorhold_updatetime = 100
       end,
     },
@@ -89,9 +87,9 @@ if packer_status_ok then
 
     -- Statusline
     {
-      "nvim-lualine/lualine.nvim",
+      "feline-nvim/feline.nvim",
       config = function()
-        require("configs.lualine").config()
+        require("configs.feline").config()
       end,
     },
 
@@ -353,7 +351,6 @@ if packer_status_ok then
 
   packer.startup {
     function(use)
-      -- Load plugins!
       for _, plugin in
         pairs(
           require("core.utils").user_plugin_opts("plugins.init", require("core.utils").label_plugins(astro_plugins))
