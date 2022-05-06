@@ -274,6 +274,8 @@ if packer_status_ok then
     -- Start screen
     {
       "goolord/alpha-nvim",
+      cmd = "Alpha",
+      module = "alpha",
       config = function()
         require("configs.alpha").config()
       end,
