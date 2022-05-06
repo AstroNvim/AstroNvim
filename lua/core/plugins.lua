@@ -2,9 +2,6 @@ local M = {}
 
 local packer_status_ok, packer = pcall(require, "packer")
 if packer_status_ok then
-  local utils = require "core.utils"
-  local config = utils.user_settings()
-
   local astro_plugins = {
     -- Plugin manager
     {
@@ -76,7 +73,6 @@ if packer_status_ok then
       config = function()
         require("configs.bufferline").config()
       end,
-      disable = not config.enabled.bufferline,
     },
 
     -- Better buffer closing
@@ -95,7 +91,6 @@ if packer_status_ok then
       config = function()
         require("configs.neo-tree").config()
       end,
-      disable = not config.enabled.neo_tree,
     },
 
     -- Statusline
@@ -104,21 +99,18 @@ if packer_status_ok then
       config = function()
         require("configs.lualine").config()
       end,
-      disable = not config.enabled.lualine,
     },
 
     -- Parenthesis highlighting
     {
       "p00f/nvim-ts-rainbow",
       after = "nvim-treesitter",
-      disable = not config.enabled.ts_rainbow,
     },
 
     -- Autoclose tags
     {
       "windwp/nvim-ts-autotag",
       after = "nvim-treesitter",
-      disable = not config.enabled.ts_autotag,
     },
 
     -- Context based commenting
@@ -279,7 +271,6 @@ if packer_status_ok then
       config = function()
         require("configs.gitsigns").config()
       end,
-      disable = not config.enabled.gitsigns,
     },
 
     -- Start screen
@@ -297,7 +288,6 @@ if packer_status_ok then
       config = function()
         require("configs.colorizer").config()
       end,
-      disable = not config.enabled.colorizer,
     },
 
     -- Autopairs
@@ -317,7 +307,6 @@ if packer_status_ok then
       config = function()
         require("configs.toggleterm").config()
       end,
-      disable = not config.enabled.toggle_term,
     },
 
     -- Commenting
@@ -327,7 +316,6 @@ if packer_status_ok then
       config = function()
         require("configs.Comment").config()
       end,
-      disable = not config.enabled.comment,
     },
 
     -- Indentation
@@ -336,7 +324,6 @@ if packer_status_ok then
       config = function()
         require("configs.indent-line").config()
       end,
-      disable = not config.enabled.indent_blankline,
     },
 
     -- Keymaps popup
@@ -346,7 +333,6 @@ if packer_status_ok then
       config = function()
         require("configs.which-key").config()
       end,
-      disable = not config.enabled.which_key,
     },
 
     -- Smooth scrolling
