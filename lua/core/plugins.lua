@@ -1,5 +1,3 @@
-local M = {}
-
 local packer_status_ok, packer = pcall(require, "packer")
 if packer_status_ok then
   local astro_plugins = {
@@ -234,7 +232,7 @@ if packer_status_ok then
       "jose-elias-alvarez/null-ls.nvim",
       event = { "BufRead", "BufNewFile" },
       config = function()
-        local null_ls = require("core.utils").user_plugin_opts "null-ls"
+        local null_ls = require("core.utils").user_plugin_opts("null-ls", nil, false)
         if type(null_ls) == "function" then
           null_ls()
         end
@@ -380,7 +378,7 @@ if packer_status_ok then
       end
     end,
     config = require("core.utils").user_plugin_opts("plugins.packer", {
-      compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
+      compile_path = require("core.utils").default_compile_path,
       display = {
         open_fn = function()
           return require("packer.util").float { border = "rounded" }
@@ -401,5 +399,3 @@ if packer_status_ok then
     }),
   }
 end
-
-return M

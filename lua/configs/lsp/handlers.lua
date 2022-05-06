@@ -12,11 +12,9 @@ function M.setup()
     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
   end
 
-  local config = {
+  vim.diagnostic.config(require("core.utils").user_plugin_opts("diagnostics", {
     virtual_text = true,
-    signs = {
-      active = signs,
-    },
+    signs = { active = signs },
     update_in_insert = true,
     underline = true,
     severity_sort = true,
@@ -28,17 +26,11 @@ function M.setup()
       header = "",
       prefix = "",
     },
-  }
+  }))
 
-  vim.diagnostic.config(require("core.utils").user_plugin_opts("diagnostics", config))
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-  })
-
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "rounded",
-  })
+  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 end
 
 local function lsp_highlight_document(client)
@@ -76,7 +68,7 @@ M.on_attach = function(client, bufnr)
     client.resolved_capabilities.document_formatting = false
   end
 
-  local on_attach_override = require("core.utils").user_plugin_opts "lsp.on_attach"
+  local on_attach_override = require("core.utils").user_plugin_opts("lsp.on_attach", nil, false)
   if type(on_attach_override) == "function" then
     on_attach_override(client, bufnr)
   end

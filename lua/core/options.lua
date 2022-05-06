@@ -1,10 +1,9 @@
-local M = {}
-
 local user_plugin_opts = require("core.utils").user_plugin_opts
 
-local colorscheme = user_plugin_opts "colorscheme"
+local default = "default_theme"
+local colorscheme = user_plugin_opts("colorscheme", default, false)
 if not vim.tbl_contains(vim.fn.getcompletion("", "color"), colorscheme) then
-  colorscheme = require("core.defaults").colorscheme
+  colorscheme = default
 end
 vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 
@@ -72,5 +71,3 @@ for scope, table in pairs(options) do
     vim[scope][setting] = value
   end
 end
-
-return M

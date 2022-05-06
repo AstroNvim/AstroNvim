@@ -28,32 +28,26 @@ local function load_module_file(module)
   return found_module
 end
 
-local function load_user_settings()
-  local user_settings = load_module_file "user.init"
-  local defaults = require "core.defaults"
-  if user_settings ~= nil and type(user_settings) == "table" then
-    defaults = vim.tbl_deep_extend("force", defaults, user_settings)
-  end
-  return defaults
-end
-
-local _user_settings = load_user_settings()
-
+M.user_settings = load_module_file "user.init"
+M.default_compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua"
+M.base_notification = { title = "AstroNvim" }
 M.user_terminals = {}
 
-local function func_or_extend(overrides, default)
-  if default == nil then
+local function func_or_extend(overrides, default, extend)
+  if extend then
+    if type(overrides) == "table" then
+      default = vim.tbl_deep_extend("force", default, overrides)
+    elseif type(overrides) == "function" then
+      default = overrides(default)
+    end
+  elseif overrides ~= nil then
     default = overrides
-  elseif type(overrides) == "table" then
-    default = vim.tbl_deep_extend("force", default, overrides)
-  elseif type(overrides) == "function" then
-    default = overrides(default)
   end
   return default
 end
 
 local function user_setting_table(module)
-  local settings = _user_settings
+  local settings = M.user_settings or {}
   for tbl in string.gmatch(module, "([^%.]+)") do
     settings = settings[tbl]
     if settings == nil then
@@ -62,19 +56,6 @@ local function user_setting_table(module)
   end
   return settings
 end
-
-local function load_options(module, default)
-  local user_settings = load_module_file("user." .. module)
-  if user_settings == nil then
-    user_settings = user_setting_table(module)
-  end
-  if user_settings ~= nil then
-    default = func_or_extend(user_settings, default)
-  end
-  return default
-end
-
-M.base_notification = { title = "AstroNvim" }
 
 function M.bootstrap()
   local fn = vim.fn
@@ -93,16 +74,24 @@ function M.bootstrap()
   end
 end
 
-function M.user_settings()
-  return _user_settings
-end
-
-function M.user_plugin_opts(plugin, default)
-  return load_options(plugin, default)
+function M.user_plugin_opts(module, default, extend)
+  if extend == nil then
+    extend = true
+  end
+  local user_settings = load_module_file("user." .. module)
+  if user_settings == nil then
+    user_settings = user_setting_table(module)
+  end
+  if user_settings ~= nil then
+    default = func_or_extend(user_settings, default, extend)
+  end
+  return default
 end
 
 function M.compiled()
-  local run_me, _ = loadfile(M.user_plugin_opts("plugins.packer", {}).compile_path)
+  local run_me, _ = loadfile(
+    M.user_plugin_opts("plugins.packer", { compile_path = M.default_compile_path }).compile_path
+  )
   if run_me then
     run_me()
   else
@@ -179,7 +168,12 @@ function M.add_cmp_source(source, priority)
 end
 
 function M.add_user_cmp_source(source)
-  local priority = M.user_plugin_opts("cmp.source_priority", _user_settings.cmp.source_priority)[source]
+  local priority = M.user_plugin_opts("cmp.source_priority", {
+    nvim_lsp = 1000,
+    luasnip = 750,
+    buffer = 500,
+    path = 250,
+  })[source]
   if priority then
     M.add_cmp_source(source, priority)
   end
@@ -253,9 +247,7 @@ function M.toggle_url_match()
 end
 
 function M.update()
-  local Job = require "plenary.job"
-
-  Job
+  (require "plenary.job")
     :new({
       command = "git",
       args = { "pull", "--ff-only" },
