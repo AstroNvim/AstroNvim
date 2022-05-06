@@ -89,9 +89,9 @@ if packer_status_ok then
 
     -- Statusline
     {
-      "nvim-lualine/lualine.nvim",
+      "feline-nvim/feline.nvim",
       config = function()
-        require("configs.lualine").config()
+        require("configs.feline").config()
       end,
     },
 

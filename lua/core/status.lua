@@ -1,73 +1,100 @@
-local M = {}
+local M = { hl = {}, provider = {}, conditional = {} }
+local C = require "default_theme.colors"
 
-function M.lsp_progress(_)
+local function hl_by_name(name)
+  return string.format("#%06x", vim.api.nvim_get_hl_by_name(name.group, true)[name.prop])
+end
+
+local function hl_prop(group, prop)
+  local status_ok, color = pcall(hl_by_name, { group = group, prop = prop })
+  return status_ok and color or nil
+end
+
+M.modes = { -- mode text, hlgroup suffix, default color
+  ["n"] = { "NORMAL", "Normal", C.blue },
+  ["no"] = { "N-PENDING", "Normal", C.blue },
+  ["i"] = { "INSERT", "Insert", C.green },
+  ["ic"] = { "INSERT", "Insert", C.green },
+  ["t"] = { "TERMINAL", "Insert", C.green },
+  ["v"] = { "VISUAL", "Visual", C.purple },
+  ["V"] = { "V-LINE", "Visual", C.purple },
+  [""] = { "V-BLOCK", "Visual", C.purple },
+  ["R"] = { "REPLACE", "Replace", C.red_1 },
+  ["Rv"] = { "V-REPLACE", "Replace", C.red_1 },
+  ["s"] = { "SELECT", "Select", C.orange_1 },
+  ["S"] = { "S-LINE", "Select", C.orange_1 },
+  [""] = { "S-BLOCK", "Select", C.orange_1 },
+  ["c"] = { "COMMAND", "Command", C.yellow_1 },
+  ["cv"] = { "COMMAND", "Command", C.yellow_1 },
+  ["ce"] = { "COMMAND", "Command", C.yellow_1 },
+  ["r"] = { "PROMPT", "Other", C.grey_7 },
+  ["rm"] = { "MORE", "Other", C.grey_7 },
+  ["r?"] = { "CONFIRM", "Other", C.grey_7 },
+  ["!"] = { "SHELL", "Other", C.grey_7 },
+}
+
+function M.hl.group(hlgroup, base)
+  return vim.tbl_deep_extend(
+    "force",
+    base or {},
+    { fg = hl_prop(hlgroup, "foreground"), bg = hl_prop(hlgroup, "background") }
+  )
+end
+
+function M.hl.fg(hlgroup, base)
+  return vim.tbl_deep_extend("force", base or {}, { fg = hl_prop(hlgroup, "foreground") })
+end
+
+function M.hl.mode(base)
+  return function()
+    return M.hl.group(
+      "Feline" .. M.modes[vim.fn.mode()][2],
+      vim.tbl_deep_extend("force", { fg = C.bg_1, bg = M.modes[vim.fn.mode()][3] }, base or {})
+    )
+  end
+end
+
+function M.provider.lsp_progress()
   local Lsp = vim.lsp.util.get_progress_messages()[1]
-
-  if Lsp then
-    local msg = Lsp.message or ""
-    local percentage = Lsp.percentage or 0
-    local title = Lsp.title or ""
-
-    local spinners = { "", "", "" }
-    local success_icon = { "", "", "" }
-
-    local ms = vim.loop.hrtime() / 1000000
-    local frame = math.floor(ms / 120) % #spinners
-
-    if percentage >= 70 then
-      return string.format(" %%<%s %s %s (%s%%%%) ", success_icon[frame + 1], title, msg, percentage)
-    end
-
-    return string.format(" %%<%s %s %s (%s%%%%) ", spinners[frame + 1], title, msg, percentage)
-  end
-
-  return ""
+  return Lsp
+      and string.format(
+        " %%<%s %s %s (%s%%%%) ",
+        ((Lsp.percentage or 0) >= 70 and { "", "", "" } or { "", "", "" })[math.floor(
+          vim.loop.hrtime() / 12e7
+        ) % 3 + 1],
+        Lsp.title or "",
+        Lsp.message or "",
+        Lsp.percentage or 0
+      )
+    or ""
 end
 
-function M.lsp_name(msg)
-  msg = msg or "Inactive"
-  local buf_clients = vim.lsp.buf_get_clients()
-  if next(buf_clients) == nil then
-    if type(msg) == "boolean" or #msg == 0 then
-      return "Inactive"
-    end
-    return msg
-  end
-  local buf_ft = vim.bo.filetype
-  local buf_client_names = {}
-
-  for _, client in pairs(buf_clients) do
-    if client.name ~= "null-ls" then
-      table.insert(buf_client_names, client.name)
-    end
-  end
-
-  local formatters = require "core.utils"
-  local supported_formatters = formatters.list_registered_formatters(buf_ft)
-  vim.list_extend(buf_client_names, supported_formatters)
-
-  local linters = require "core.utils"
-  local supported_linters = linters.list_registered_linters(buf_ft)
-  vim.list_extend(buf_client_names, supported_linters)
-
-  return table.concat(buf_client_names, ", ")
+function M.provider.treesitter_status()
+  local ts = vim.treesitter.highlighter.active[vim.api.nvim_get_current_buf()]
+  return (ts and next(ts)) and " 綠TS" or ""
 end
 
-function M.treesitter_status()
-  local b = vim.api.nvim_get_current_buf()
-  if next(vim.treesitter.highlighter.active[b]) then
-    return " 綠TS"
-  end
-  return ""
+function M.provider.spacer(n)
+  return string.rep(" ", n or 1)
 end
 
-function M.progress_bar()
-  local current_line = vim.fn.line "."
-  local total_lines = vim.fn.line "$"
-  local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-  local line_ratio = current_line / total_lines
-  local index = math.ceil(line_ratio * #chars)
-  return chars[index]
+function M.conditional.git_available()
+  return vim.b.gitsigns_head ~= nil
+end
+
+function M.conditional.git_changed()
+  local git_status = vim.b.gitsigns_status_dict
+  return git_status and (git_status.added or 0) + (git_status.removed or 0) + (git_status.changed or 0) > 0
+end
+
+function M.conditional.has_filetype()
+  return vim.fn.empty(vim.fn.expand "%:t") ~= 1 and vim.bo.filetype and vim.bo.filetype ~= ""
+end
+
+function M.conditional.bar_width(n)
+  return function()
+    return (vim.opt.laststatus:get() == 3 and vim.opt.columns:get() or vim.fn.winwidth(0)) > (n or 80)
+  end
 end
 
 return M

@@ -72,6 +72,15 @@ if utils.is_available "alpha-nvim" then
   })
 end
 
+if utils.is_available "feline.nvim" then
+  augroup("feline_setup", { clear = true })
+  cmd("ColorScheme", {
+    desc = "Reload feline on colorscheme change",
+    group = "feline_setup",
+    callback = require("configs.feline").config,
+  })
+end
+
 create_command("AstroUpdate", require("core.utils").update, { desc = "Update AstroNvim" })
 
 create_command("ToggleHighlightURL", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
