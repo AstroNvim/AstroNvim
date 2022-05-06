@@ -47,7 +47,7 @@ if utils.is_available "alpha-nvim" then
       if not should_skip then
         local alpha_avail, alpha = pcall(require, "alpha")
         if alpha_avail then
-          alpha.start(false)
+          alpha.start(true)
         end
       end
     end,
