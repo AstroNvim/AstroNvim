@@ -86,6 +86,9 @@ if packer_status_ok then
       module = "neo-tree",
       cmd = "Neotree",
       requires = "MunifTanjim/nui.nvim",
+      setup = function()
+        require("configs.neo-tree").setup()
+      end,
       config = function()
         require("configs.neo-tree").config()
       end,
@@ -321,6 +324,9 @@ if packer_status_ok then
     -- Indentation
     {
       "lukas-reineke/indent-blankline.nvim",
+      setup = function()
+        require("configs.indent-line").setup()
+      end,
       config = function()
         require("configs.indent-line").config()
       end,
