@@ -1,13 +1,13 @@
-local user_plugin_opts = require("core.utils").user_plugin_opts
+local utils = require "core.utils"
 
 local default = "default_theme"
-local colorscheme = user_plugin_opts("colorscheme", default, false)
+local colorscheme = utils.user_plugin_opts("colorscheme", default, false)
 if not vim.tbl_contains(vim.fn.getcompletion("", "color"), colorscheme) then
   colorscheme = default
 end
 vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 
-local options = user_plugin_opts("options", {
+utils.vim_opts(utils.user_plugin_opts("options", {
   opt = {
     clipboard = "unnamedplus", -- Connection to the system clipboard
     completeopt = { "menuone", "noselect" }, -- Options for insert mode completion
@@ -64,10 +64,4 @@ local options = user_plugin_opts("options", {
     loaded_vimball = true, -- disable vimball
     loaded_vimballPlugin = true, -- disable vimball
   },
-})
-
-for scope, table in pairs(options) do
-  for setting, value in pairs(table) do
-    vim[scope][setting] = value
-  end
-end
+}))
