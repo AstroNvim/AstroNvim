@@ -1,7 +1,7 @@
 local status_ok, lspconfig = pcall(require, "lspconfig")
 if status_ok then
   local user_plugin_opts = require("core.utils").user_plugin_opts
-  local user_registration = user_plugin_opts "lsp.server_registration"
+  local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
   local handlers = require "configs.lsp.handlers"
   handlers.setup()
 

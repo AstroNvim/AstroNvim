@@ -1,4 +1,4 @@
-local opts = {
+return {
   settings = {
     ["rust-analyzer"] = {
       cargo = {
@@ -13,5 +13,3 @@ local opts = {
     },
   },
 }
-
-return opts

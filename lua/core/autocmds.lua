@@ -1,5 +1,3 @@
-local M = {}
-
 local utils = require "core.utils"
 
 local cmd = vim.api.nvim_create_autocmd
@@ -35,5 +33,3 @@ end
 create_command("AstroUpdate", require("core.utils").update, { desc = "Update AstroNvim" })
 
 create_command("ToggleHighlightURL", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
-
-return M
