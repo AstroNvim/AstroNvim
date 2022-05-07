@@ -13,6 +13,12 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
 })
 
 if utils.is_available "alpha-nvim" then
+  local alpha_start = function()
+    local alpha_avail, alpha = pcall(require, "alpha")
+    if alpha_avail then
+      alpha.start(true)
+    end
+  end
   augroup("alpha_settings", { clear = true })
   if utils.is_available "bufferline.nvim" then
     cmd("FileType", {
@@ -45,10 +51,18 @@ if utils.is_available "alpha-nvim" then
         end
       end
       if not should_skip then
-        local alpha_avail, alpha = pcall(require, "alpha")
-        if alpha_avail then
-          alpha.start(true)
-        end
+        alpha_start()
+      end
+    end,
+  })
+  cmd("BufDelete", {
+    desc = "Redraw Alpha when delete last buffer",
+    group = "alpha_settings",
+    callback = function()
+      local api = vim.api
+      local bufnr = api.nvim_get_current_buf()
+      if api.nvim_buf_get_name(bufnr) == "" and api.nvim_buf_get_option(bufnr, "ft") == "" then
+        alpha_start()
       end
     end,
   })
