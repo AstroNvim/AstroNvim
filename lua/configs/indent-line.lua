@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require("utils").vim_opts {
+  require("core.utils").vim_opts {
     g = {
       indentLine_enabled = 1,
       indent_blankline_show_trailing_blankline_indent = false,
