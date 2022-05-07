@@ -230,6 +230,14 @@ function M.is_available(plugin)
   return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
 end
 
+function M.alpha_on_bye(cmd)
+  local bufs = vim.fn.getbufinfo { buflisted = true }
+  vim.cmd(cmd)
+  if M.is_available "alpha-nvim" and not bufs[2] then
+    require("alpha").start(true)
+  end
+end
+
 function M.delete_url_match()
   for _, match in ipairs(vim.fn.getmatches()) do
     if match.group == "HighlightURL" then

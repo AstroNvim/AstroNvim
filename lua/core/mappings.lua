@@ -29,9 +29,13 @@ end
 
 -- Bufdelete
 if utils.is_available "bufdelete.nvim" then
-  map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Close buffer" })
+  map("n", "<leader>c", function()
+    utils.alpha_on_bye "Bdelete!"
+  end, { desc = "Close buffer" })
 else
-  map("n", "<leader>c", "<cmd>bdelete!<cr>", { desc = "Close buffer" })
+  map("n", "<leader>c", function()
+    utils.alpha_on_bye "bdelete!"
+  end, { desc = "Close buffer" })
 end
 
 -- Navigate buffers
