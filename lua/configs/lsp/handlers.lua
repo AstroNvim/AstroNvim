@@ -52,8 +52,6 @@ end
 M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details", buffer = 0 })
   vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_sync, { desc = "Format code", buffer = 0 })
-  vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP information", buffer = 0 })
-  vim.keymap.set("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", { desc = "LSP installer", buffer = 0 })
   vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code action", buffer = 0 })
   vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename current symbol", buffer = 0 })
   vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Hover diagnostics", buffer = 0 })

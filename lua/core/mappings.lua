@@ -22,11 +22,6 @@ map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 
--- Terminal
-if utils.is_available "nvim-toggleterm.lua" then
-  map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
-end
-
 -- Packer
 map("n", "<leader>pc", "<cmd>PackerCompile<cr>", { desc = "Packer Compile" })
 map("n", "<leader>pi", "<cmd>PackerInstall<cr>", { desc = "Packer Install" })
@@ -119,6 +114,12 @@ if utils.is_available "neovim-session-manager" then
     "<cmd>SessionManager! load_current_dir_session<cr>",
     { desc = "Load current directory session" }
   )
+end
+
+-- LSP Installer
+if utils.is_available "nvim-lsp-installer" then
+  vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP information" })
+  vim.keymap.set("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", { desc = "LSP installer" })
 end
 
 -- Smart Splits
@@ -234,6 +235,7 @@ end
 
 -- Terminal
 if utils.is_available "nvim-toggleterm.lua" then
+  map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
   map("n", "<leader>gg", function()
     utils.toggle_term_cmd "lazygit"
   end, { desc = "ToggleTerm lazygit" })
