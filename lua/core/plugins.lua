@@ -67,6 +67,7 @@ if packer_status_ok then
     -- Bufferline
     {
       "akinsho/bufferline.nvim",
+      branch = "main",
       after = "nvim-web-devicons",
       config = function()
         require("configs.bufferline").config()
@@ -306,6 +307,7 @@ if packer_status_ok then
     {
       "akinsho/nvim-toggleterm.lua",
       cmd = "ToggleTerm",
+      branch = "main",
       module = { "toggleterm", "toggleterm.terminal" },
       config = function()
         require("configs.toggleterm").config()
