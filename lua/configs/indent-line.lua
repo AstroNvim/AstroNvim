@@ -1,23 +1,19 @@
 local M = {}
 
-function M.setup()
-  require("core.utils").vim_opts {
-    g = {
-      indent_blankline_enabled = true,
-      indent_blankline_show_trailing_blankline_indent = false,
-      indent_blankline_show_first_indent_level = true,
-      indent_blankline_use_treesitter = true,
-      indent_blankline_show_current_context = true,
-      indent_blankline_char = "▏",
-      indent_blankline_buftype_exclude = {
+function M.config()
+  local status_ok, indent_blankline = pcall(require, "indent_blankline")
+  if status_ok then
+    indent_blankline.setup(require("core.utils").user_plugin_opts("plugins.indent_blankline", {
+      buftype_exclude = {
         "nofile",
         "terminal",
         "lsp-installer",
         "lspinfo",
       },
-      indent_blankline_filetype_exclude = {
+      filetype_exclude = {
         "help",
         "startify",
+        "alpha",
         "dashboard",
         "packer",
         "neogitstatus",
@@ -25,7 +21,7 @@ function M.setup()
         "neo-tree",
         "Trouble",
       },
-      indent_blankline_context_patterns = {
+      context_patterns = {
         "class",
         "return",
         "function",
@@ -47,16 +43,10 @@ function M.setup()
         "import_statement",
         "operation_type",
       },
-    },
-  }
-end
-
-function M.config()
-  local status_ok, indent_blankline = pcall(require, "indent_blankline")
-  if status_ok then
-    indent_blankline.setup(require("core.utils").user_plugin_opts("plugins.indent_blankline", {
+      show_trailing_blankline_indent = false,
+      use_treesitter = true,
+      char = "▏",
       show_current_context = true,
-      show_current_context_start = false,
     }))
   end
 end
