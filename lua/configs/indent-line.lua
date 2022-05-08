@@ -3,7 +3,7 @@ local M = {}
 function M.setup()
   require("core.utils").vim_opts {
     g = {
-      indentLine_enabled = 1,
+      indent_blankline_enabled = true,
       indent_blankline_show_trailing_blankline_indent = false,
       indent_blankline_show_first_indent_level = true,
       indent_blankline_use_treesitter = true,
