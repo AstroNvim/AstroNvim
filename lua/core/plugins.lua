@@ -324,9 +324,6 @@ if packer_status_ok then
     -- Indentation
     {
       "lukas-reineke/indent-blankline.nvim",
-      setup = function()
-        require("configs.indent-line").setup()
-      end,
       config = function()
         require("configs.indent-line").config()
       end,
