@@ -13,6 +13,7 @@ function M.config()
       filetype_exclude = {
         "help",
         "startify",
+        "aerial",
         "alpha",
         "dashboard",
         "packer",
