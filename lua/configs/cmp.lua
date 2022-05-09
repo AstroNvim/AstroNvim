@@ -32,6 +32,11 @@ function M.config()
       TypeParameter = "",
     }
 
+    local function has_words_before()
+      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
+    end
+
     cmp.setup(require("core.utils").user_plugin_opts("plugins.cmp", {
       preselect = cmp.PreselectMode.None,
       formatting = {
@@ -85,6 +90,8 @@ function M.config()
             luasnip.expand()
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
+          elseif has_words_before() then
+            cmp.complete()
           else
             fallback()
           end
