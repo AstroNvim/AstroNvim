@@ -143,7 +143,7 @@ if packer_status_ok then
     -- Snippet collection
     {
       "rafamadriz/friendly-snippets",
-      after = "nvim-cmp",
+      event = "InsertEnter",
     },
 
     -- Snippet engine
@@ -158,7 +158,7 @@ if packer_status_ok then
     -- Completion engine
     {
       "hrsh7th/nvim-cmp",
-      event = "InsertEnter",
+      after = "LuaSnip",
       config = function()
         require("configs.cmp").config()
       end,
