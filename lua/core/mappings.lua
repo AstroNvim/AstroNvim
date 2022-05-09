@@ -15,13 +15,6 @@ map("n", "<C-s>", "<cmd>w!<cr>", { desc = "Force write" })
 map("n", "<C-q>", "<cmd>q!<cr>", { desc = "Force quit" })
 map("n", "Q", "<Nop>")
 
-map("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-map("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics" })
-map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-map("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-map("n", "gj", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-
 -- Packer
 map("n", "<leader>pc", "<cmd>PackerCompile<cr>", { desc = "Packer Compile" })
 map("n", "<leader>pi", "<cmd>PackerInstall<cr>", { desc = "Packer Install" })
