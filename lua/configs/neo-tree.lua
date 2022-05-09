@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  require("core.utils").vim_opts { g = { neo_tree_remove_legacy_commands = true } }
+  vim.g.neo_tree_remove_legacy_commands = true
 end
 
 function M.config()

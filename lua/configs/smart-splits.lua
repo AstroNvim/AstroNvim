@@ -11,7 +11,6 @@ function M.config()
         "prompt",
       },
       ignored_buftypes = { "nofile" },
-      move_cursor_same_row = false,
     }))
   end
 end
