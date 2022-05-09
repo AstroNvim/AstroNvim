@@ -19,7 +19,16 @@ if utils.is_available "alpha-nvim" then
       desc = "Disable tabline for alpha",
       group = "alpha_settings",
       pattern = "alpha",
-      command = "set showtabline=0 | autocmd BufUnload <buffer> set showtabline=2",
+      callback = function()
+        local prev_showtabline = vim.opt.showtabline
+        vim.opt.showtabline = 0
+        cmd("BufUnload", {
+          pattern = "<buffer>",
+          callback = function()
+            vim.opt.showtabline = prev_showtabline
+          end,
+        })
+      end,
     })
   end
   cmd("FileType", {
