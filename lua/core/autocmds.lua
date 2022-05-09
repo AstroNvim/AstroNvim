@@ -26,7 +26,16 @@ if utils.is_available "alpha-nvim" then
     desc = "Disable statusline for alpha",
     group = "alpha_settings",
     pattern = "alpha",
-    command = "set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3",
+    callback = function()
+      local prev_status = vim.opt.laststatus
+      vim.opt.laststatus = 0
+      cmd("BufUnload", {
+        pattern = "<buffer>",
+        callback = function()
+          vim.opt.laststatus = prev_status
+        end,
+      })
+    end,
   })
   cmd("VimEnter", {
     desc = "Start Alpha when vim is opened with no arguments",
