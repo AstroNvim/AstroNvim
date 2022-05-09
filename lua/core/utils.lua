@@ -163,14 +163,11 @@ function M.toggle_term_cmd(term_details)
   M.user_terminals[term_key]:toggle()
 end
 
-function M.add_cmp_source(source, priority)
-  if type(priority) ~= "number" then
-    priority = 1000
-  end
+function M.add_cmp_source(source)
   local cmp_avail, cmp = pcall(require, "cmp")
   if cmp_avail then
     local config = cmp.get_config()
-    table.insert(config.sources, type(source) == "table" and source or { name = source, priority = priority })
+    table.insert(config.sources, source)
     cmp.setup(config)
   end
 end
@@ -182,9 +179,11 @@ function M.add_user_cmp_source(source)
     buffer = 500,
     path = 250,
   })[source]
+  source = type(source) == "string" and { name = source } or source
   if priority then
-    M.add_cmp_source(source, priority)
+    source.priority = priority
   end
+  M.add_cmp_source(source)
 end
 
 function M.alpha_button(sc, txt)
