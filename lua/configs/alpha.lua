@@ -4,7 +4,6 @@ function M.config()
   local present, alpha = pcall(require, "alpha")
   if present then
     local utils = require "core.utils"
-    local plugins_count = vim.fn.len(vim.fn.globpath(vim.fn.stdpath "data" .. "/site/pack/packer/start", "*", 0, 1))
     alpha.setup(utils.user_plugin_opts("plugins.alpha", {
       layout = {
         { type = "padding", val = 2 },
@@ -49,19 +48,6 @@ function M.config()
           },
           opts = {
             spacing = 1,
-          },
-        },
-        {
-          type = "text",
-          val = {
-            " ",
-            " ",
-            " ",
-            " AstroNvim loaded " .. plugins_count .. " plugins ",
-          },
-          opts = {
-            position = "center",
-            hl = "DashboardFooter",
           },
         },
       },
