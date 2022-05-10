@@ -357,7 +357,7 @@ if packer_status_ok then
     },
 
     -- Get extra JSON schemas
-    { "b0o/SchemaStore.nvim" },
+    { "b0o/SchemaStore.nvim", module = "schemastore" },
 
     -- Session manager
     {
