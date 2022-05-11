@@ -86,6 +86,7 @@ function M.user_plugin_opts(module, default, extend)
   if extend == nil then
     extend = true
   end
+  default = default or {}
   local user_settings = load_module_file("user." .. module)
   if user_settings == nil then
     user_settings = user_setting_table(module)
