@@ -216,10 +216,7 @@ if packer_status_ok then
       "jose-elias-alvarez/null-ls.nvim",
       event = { "BufRead", "BufNewFile" },
       config = function()
-        local null_ls = require("core.utils").user_plugin_opts("null-ls", nil, false)
-        if type(null_ls) == "function" then
-          null_ls()
-        end
+        require("configs.null-ls").config()
       end,
     },
 

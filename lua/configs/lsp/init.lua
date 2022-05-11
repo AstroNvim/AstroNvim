@@ -5,7 +5,7 @@ if status_ok then
   local handlers = require "configs.lsp.handlers"
   handlers.setup()
 
-  local servers = user_plugin_opts("lsp.servers", {})
+  local servers = user_plugin_opts "lsp.servers"
   local installer_avail, lsp_installer = pcall(require, "nvim-lsp-installer")
   if installer_avail then
     for _, server in ipairs(lsp_installer.get_installed_servers()) do
