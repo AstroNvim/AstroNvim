@@ -1,12 +1,9 @@
 local M = {}
 
-function M.setup()
-  vim.g.neo_tree_remove_legacy_commands = true
-end
-
 function M.config()
   local status_ok, neotree = pcall(require, "neo-tree")
   if status_ok then
+    vim.g.neo_tree_remove_legacy_commands = true
     neotree.setup(require("core.utils").user_plugin_opts("plugins.neo-tree", {
       popup_border_style = "rounded",
       enable_diagnostics = false,

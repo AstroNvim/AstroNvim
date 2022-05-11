@@ -82,9 +82,6 @@ if packer_status_ok then
       module = "neo-tree",
       cmd = "Neotree",
       requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-      setup = function()
-        require("configs.neo-tree").setup()
-      end,
       config = function()
         require("configs.neo-tree").config()
       end,
