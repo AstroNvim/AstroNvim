@@ -10,7 +10,7 @@ if packer_status_ok then
     { "lewis6991/impatient.nvim" },
 
     -- Lua functions
-    { "nvim-lua/plenary.nvim" },
+    { "nvim-lua/plenary.nvim", module = "plenary" },
 
     -- Popup API
     { "nvim-lua/popup.nvim" },
@@ -27,6 +27,7 @@ if packer_status_ok then
     -- Notification Enhancer
     {
       "rcarriga/nvim-notify",
+      event = "VimEnter",
       config = function()
         require("configs.notify").config()
       end,
@@ -59,6 +60,7 @@ if packer_status_ok then
     -- Icons
     {
       "kyazdani42/nvim-web-devicons",
+      event = "VimEnter",
       config = function()
         require("configs.icons").config()
       end,
@@ -68,6 +70,7 @@ if packer_status_ok then
     {
       "akinsho/bufferline.nvim",
       after = "nvim-web-devicons",
+      event = "BufWinEnter",
       config = function()
         require("configs.bufferline").config()
       end,
@@ -76,6 +79,7 @@ if packer_status_ok then
     -- Better buffer closing
     {
       "famiu/bufdelete.nvim",
+      event = "BufReadPost",
       cmd = { "Bdelete", "Bwipeout" },
     },
 
@@ -85,7 +89,10 @@ if packer_status_ok then
       branch = "v2.x",
       module = "neo-tree",
       cmd = "Neotree",
-      requires = "MunifTanjim/nui.nvim",
+      requires = {
+        "MunifTanjim/nui.nvim",
+        "nvim-lua/plenary.nvim",
+      },
       setup = function()
         require("configs.neo-tree").setup()
       end,
@@ -117,6 +124,7 @@ if packer_status_ok then
     -- Context based commenting
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
+      event = "BufReadPost",
       after = "nvim-treesitter",
     },
 
@@ -266,6 +274,7 @@ if packer_status_ok then
     {
       "lewis6991/gitsigns.nvim",
       opt = true,
+      event = "BufRead",
       setup = function()
         require("core.utils").defer_plugin "gitsigns.nvim"
       end,
@@ -307,6 +316,7 @@ if packer_status_ok then
       "akinsho/nvim-toggleterm.lua",
       cmd = "ToggleTerm",
       module = { "toggleterm", "toggleterm.terminal" },
+      event = "BufWinEnter",
       config = function()
         require("configs.toggleterm").config()
       end,
@@ -316,6 +326,8 @@ if packer_status_ok then
     {
       "numToStr/Comment.nvim",
       event = { "BufRead", "BufNewFile" },
+      module = "Comment",
+      keys = { "gc", "gb" },
       config = function()
         require("configs.Comment").config()
       end,
@@ -324,6 +336,7 @@ if packer_status_ok then
     -- Indentation
     {
       "lukas-reineke/indent-blankline.nvim",
+      event = "BufRead",
       config = function()
         require("configs.indent-line").config()
       end,
@@ -333,6 +346,7 @@ if packer_status_ok then
     {
       "folke/which-key.nvim",
       module = { "which-key" },
+      event = "VimEnter",
       config = function()
         require("configs.which-key").config()
       end,
@@ -350,7 +364,7 @@ if packer_status_ok then
     -- Smooth escaping
     {
       "max397574/better-escape.nvim",
-      event = { "InsertEnter" },
+      event = { "InsertCharPre" },
       config = function()
         require("configs.better_escape").config()
       end,
