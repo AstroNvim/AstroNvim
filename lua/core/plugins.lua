@@ -10,7 +10,7 @@ if packer_status_ok then
     { "lewis6991/impatient.nvim" },
 
     -- Lua functions
-    { "nvim-lua/plenary.nvim" },
+    { "nvim-lua/plenary.nvim", module = "plenary" },
 
     -- Popup API
     { "nvim-lua/popup.nvim" },
@@ -27,16 +27,14 @@ if packer_status_ok then
     -- Notification Enhancer
     {
       "rcarriga/nvim-notify",
+      event = "VimEnter",
       config = function()
         require("configs.notify").config()
       end,
     },
 
     -- Neovim UI Enhancer
-    {
-      "MunifTanjim/nui.nvim",
-      module = "nui",
-    },
+    { "MunifTanjim/nui.nvim", module = "nui" },
 
     -- Cursorhold fix
     {
@@ -59,6 +57,7 @@ if packer_status_ok then
     -- Icons
     {
       "kyazdani42/nvim-web-devicons",
+      event = "VimEnter",
       config = function()
         require("configs.icons").config()
       end,
@@ -74,10 +73,7 @@ if packer_status_ok then
     },
 
     -- Better buffer closing
-    {
-      "famiu/bufdelete.nvim",
-      cmd = { "Bdelete", "Bwipeout" },
-    },
+    { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
 
     -- File explorer
     {
@@ -85,7 +81,7 @@ if packer_status_ok then
       branch = "v2.x",
       module = "neo-tree",
       cmd = "Neotree",
-      requires = "MunifTanjim/nui.nvim",
+      requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
       setup = function()
         require("configs.neo-tree").setup()
       end,
@@ -103,22 +99,13 @@ if packer_status_ok then
     },
 
     -- Parenthesis highlighting
-    {
-      "p00f/nvim-ts-rainbow",
-      after = "nvim-treesitter",
-    },
+    { "p00f/nvim-ts-rainbow", after = "nvim-treesitter" },
 
     -- Autoclose tags
-    {
-      "windwp/nvim-ts-autotag",
-      after = "nvim-treesitter",
-    },
+    { "windwp/nvim-ts-autotag", after = "nvim-treesitter" },
 
     -- Context based commenting
-    {
-      "JoosepAlviste/nvim-ts-context-commentstring",
-      after = "nvim-treesitter",
-    },
+    { "JoosepAlviste/nvim-ts-context-commentstring", after = "nvim-treesitter" },
 
     -- Syntax highlighting
     {
@@ -141,10 +128,7 @@ if packer_status_ok then
     },
 
     -- Snippet collection
-    {
-      "rafamadriz/friendly-snippets",
-      event = "InsertEnter",
-    },
+    { "rafamadriz/friendly-snippets", event = "InsertEnter" },
 
     -- Snippet engine
     {
@@ -315,7 +299,7 @@ if packer_status_ok then
     -- Commenting
     {
       "numToStr/Comment.nvim",
-      event = { "BufRead", "BufNewFile" },
+      keys = { "gc", "gb", "g<", "g>" },
       config = function()
         require("configs.Comment").config()
       end,
@@ -324,6 +308,7 @@ if packer_status_ok then
     -- Indentation
     {
       "lukas-reineke/indent-blankline.nvim",
+      event = "BufRead",
       config = function()
         require("configs.indent-line").config()
       end,
@@ -332,7 +317,7 @@ if packer_status_ok then
     -- Keymaps popup
     {
       "folke/which-key.nvim",
-      module = { "which-key" },
+      module = "which-key",
       config = function()
         require("configs.which-key").config()
       end,
@@ -350,7 +335,7 @@ if packer_status_ok then
     -- Smooth escaping
     {
       "max397574/better-escape.nvim",
-      event = { "InsertEnter" },
+      event = "InsertCharPre",
       config = function()
         require("configs.better_escape").config()
       end,
