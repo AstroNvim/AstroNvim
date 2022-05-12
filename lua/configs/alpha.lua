@@ -6,17 +6,10 @@ function M.config()
     local utils = require "core.utils"
     alpha.setup(utils.user_plugin_opts("plugins.alpha", {
       layout = {
-        { type = "padding", val = 2 },
+        { type = "padding", val = vim.fn.max { 2, vim.fn.floor(vim.fn.winheight(0) * 0.2) } },
         {
           type = "text",
           val = utils.user_plugin_opts("header", {
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
-            " ",
             " █████  ███████ ████████ ██████   ██████",
             "██   ██ ██         ██    ██   ██ ██    ██",
             "███████ ███████    ██    ██████  ██    ██",
@@ -28,16 +21,10 @@ function M.config()
             "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
             "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
             "    ██   ████   ████   ██ ██      ██",
-            " ",
-            " ",
-            " ",
           }, false),
-          opts = {
-            position = "center",
-            hl = "DashboardHeader",
-          },
+          opts = { position = "center", hl = "DashboardHeader" },
         },
-        { type = "padding", val = 2 },
+        { type = "padding", val = 5 },
         {
           type = "group",
           val = {
@@ -48,9 +35,7 @@ function M.config()
             utils.alpha_button("LDR f m", "  Bookmarks  "),
             utils.alpha_button("LDR S l", "  Last Session  "),
           },
-          opts = {
-            spacing = 1,
-          },
+          opts = { spacing = 1 },
         },
       },
       opts = {},
