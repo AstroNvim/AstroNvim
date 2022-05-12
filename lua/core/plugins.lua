@@ -296,6 +296,7 @@ if packer_status_ok then
     -- Commenting
     {
       "numToStr/Comment.nvim",
+      module = { "Comment", "Comment.api" },
       keys = { "gc", "gb", "g<", "g>" },
       config = function()
         require("configs.Comment").config()
