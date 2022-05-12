@@ -1,6 +1,6 @@
-vim.cmd "highlight clear"
+vim.cmd { cmd = "highlight", args = { "clear" } }
 if vim.fn.exists "syntax_on" then
-  vim.cmd "syntax reset"
+  vim.cmd { cmd = "syntax", args = { "reset" } }
 end
 vim.o.background = "dark"
 vim.o.termguicolors = true
