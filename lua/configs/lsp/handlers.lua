@@ -67,7 +67,6 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "gk", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic", buffer = 0 })
   vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics", buffer = 0 })
   vim.keymap.set("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics", buffer = 0 })
-  vim.api.nvim_buf_set_option(0, "omnifunc", "v:lua.vim.lsp.omnifunc")
   vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, { desc = "Format file with LSP" })
 
   if client.name == "tsserver" or client.name == "jsonls" or client.name == "html" or client.name == "sumneko_lua" then
