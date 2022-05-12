@@ -69,7 +69,7 @@ function astronvim.initialize_packer()
       packer_path,
     }
     print "Cloning packer...\nSetup AstroNvim"
-    vim.cmd "packadd packer.nvim"
+    vim.cmd { cmd = "packadd", args = { "packer.nvim" } }
     packer_avail, packer = pcall(require, "packer")
     if not packer_avail then
       error("Failed to load packer at:" .. packer_path .. "\n\n" .. packer)
