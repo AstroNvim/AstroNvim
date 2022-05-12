@@ -160,7 +160,7 @@ function astronvim.initialize_packer()
     }
     astronvim.echo { { "Initializing Packer...\n\n" } }
     -- add packer and try loading it
-    vim.cmd "packadd packer.nvim"
+    vim.cmd.packadd "packer.nvim"
     packer_avail, _ = pcall(require, "packer")
     -- if packer didn't load, print error
     if not packer_avail then vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path) end
