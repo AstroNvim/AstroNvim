@@ -1,8 +1,9 @@
 local M = {}
+local stdpath = vim.fn.stdpath
 
 local supported_configs = {
-  vim.fn.stdpath "config",
-  vim.fn.stdpath "config" .. "/../astronvim",
+  stdpath "config",
+  stdpath "config" .. "/../astronvim",
 }
 
 local function file_not_empty(path)
@@ -29,7 +30,7 @@ local function load_module_file(module)
 end
 
 M.user_settings = load_module_file "user.init"
-M.default_compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua"
+M.default_compile_path = stdpath "config" .. "/lua/packer_compiled.lua"
 M.base_notification = { title = "AstroNvim" }
 M.user_terminals = {}
 
@@ -58,16 +59,15 @@ local function user_setting_table(module)
 end
 
 function M.bootstrap()
-  local fn = vim.fn
-  local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-  if fn.empty(fn.glob(install_path)) > 0 then
-    PACKER_BOOTSTRAP = fn.system {
+  local packer_avail, _ = pcall(require, "packer")
+  if not packer_avail then
+    vim.fn.system {
       "git",
       "clone",
       "--depth",
       "1",
       "https://github.com/wbthomason/packer.nvim",
-      install_path,
+      stdpath "data" .. "/site/pack/packer/start/packer.nvim",
     }
     print "Cloning packer...\nSetup AstroNvim"
     vim.cmd "packadd packer.nvim"
@@ -108,43 +108,14 @@ function M.compiled()
   end
 end
 
-function M.list_registered_providers_names(filetype)
-  local s = require "null-ls.sources"
-  local available_sources = s.get_available(filetype)
-  local registered = {}
-  for _, source in ipairs(available_sources) do
-    for method in pairs(source.methods) do
-      registered[method] = registered[method] or {}
-      table.insert(registered[method], source.name)
-    end
-  end
-  return registered
-end
-
-function M.list_registered_formatters(filetype)
-  local null_ls_methods = require "null-ls.methods"
-  local formatter_method = null_ls_methods.internal["FORMATTING"]
-  local registered_providers = M.list_registered_providers_names(filetype)
-  return registered_providers[formatter_method] or {}
-end
-
-function M.list_registered_linters(filetype)
-  local null_ls_methods = require "null-ls.methods"
-  local formatter_method = null_ls_methods.internal["DIAGNOSTICS"]
-  local registered_providers = M.list_registered_providers_names(filetype)
-  return registered_providers[formatter_method] or {}
-end
-
-function M.url_opener_cmd()
-  local cmd = function()
+function M.url_opener()
+  if vim.fn.has "mac" == 1 then
+    vim.fn.jobstart({ "open", vim.fn.expand "<cfile>" }, { detach = true })
+  elseif vim.fn.has "unix" == 1 then
+    vim.fn.jobstart({ "xdg-open", vim.fn.expand "<cfile>" }, { detach = true })
+  else
     vim.notify("gx is not supported on this OS!", "error", M.base_notification)
   end
-  if vim.fn.has "mac" == 1 then
-    cmd = '<Cmd>call jobstart(["open", expand("<cfile>")], {"detach": v:true})<CR>'
-  elseif vim.fn.has "unix" == 1 then
-    cmd = '<Cmd>call jobstart(["xdg-open", expand("<cfile>")], {"detach": v:true})<CR>'
-  end
-  return cmd
 end
 
 -- term_details can be either a string for just a command or
@@ -212,20 +183,6 @@ function M.alpha_button(sc, txt)
   }
 end
 
-function M.label_plugins(plugins)
-  local labelled = {}
-  for _, plugin in ipairs(plugins) do
-    labelled[plugin[1]] = plugin
-  end
-  return labelled
-end
-
-function M.defer_plugin(plugin, timeout)
-  vim.defer_fn(function()
-    require("packer").loader(plugin)
-  end, timeout or 0)
-end
-
 function M.is_available(plugin)
   return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
 end
@@ -259,7 +216,7 @@ function M.update()
     :new({
       command = "git",
       args = { "pull", "--ff-only" },
-      cwd = vim.fn.stdpath "config",
+      cwd = stdpath "config",
       on_exit = function(_, return_val)
         if return_val == 0 then
           vim.notify("Updated!", "info", M.base_notification)

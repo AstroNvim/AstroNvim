@@ -19,6 +19,7 @@ utils.vim_opts(utils.user_plugin_opts("options", {
     history = 100, -- Number of commands to remember in a history table
     ignorecase = true, -- Case insensitive searching
     laststatus = 3, -- globalstatus
+    lazyredraw = true, -- lazily redraw screen
     mouse = "a", -- Enable mouse support
     number = true, -- Show numberline
     preserveindent = true, -- Preserve indent structure as much as possible

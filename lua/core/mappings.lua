@@ -1,4 +1,5 @@
 local utils = require "core.utils"
+local is_available = utils.is_available
 local map = vim.keymap.set
 
 map("", "<Space>", "<Nop>") -- disable space because leader
@@ -8,9 +9,13 @@ map("", "<Space>", "<Nop>") -- disable space because leader
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "No Highlight" })
-map("n", "<leader>u", require("core.utils").toggle_url_match, { desc = "Toggle URL Highlights" })
+map("n", "<leader>u", function()
+  utils.toggle_url_match()
+end, { desc = "Toggle URL Highlights" })
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
-map("n", "gx", utils.url_opener_cmd(), { desc = "Open the file under cursor with system app" })
+map("n", "gx", function()
+  utils.url_opener()
+end, { desc = "Open the file under cursor with system app" })
 map("n", "<C-s>", "<cmd>w!<cr>", { desc = "Force write" })
 map("n", "<C-q>", "<cmd>q!<cr>", { desc = "Force quit" })
 map("n", "Q", "<Nop>")
@@ -23,19 +28,19 @@ map("n", "<leader>pS", "<cmd>PackerStatus<cr>", { desc = "Packer Status" })
 map("n", "<leader>pu", "<cmd>PackerUpdate<cr>", { desc = "Packer Update" })
 
 -- Alpha
-if utils.is_available "alpha-nvim" then
+if is_available "alpha-nvim" then
   map("n", "<leader>d", "<cmd>Alpha<cr>", { desc = "Alpha Dashboard" })
 end
 
 -- Bufdelete
-if utils.is_available "bufdelete.nvim" then
+if is_available "bufdelete.nvim" then
   map("n", "<leader>c", "<cmd>Bdelete!<cr>", { desc = "Close buffer" })
 else
   map("n", "<leader>c", "<cmd>bdelete!<cr>", { desc = "Close buffer" })
 end
 
 -- Navigate buffers
-if utils.is_available "bufferline.nvim" then
+if is_available "bufferline.nvim" then
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer tab" })
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer tab" })
   map("n", ">b", "<cmd>BufferLineMoveNext<cr>", { desc = "Move buffer tab right" })
@@ -46,7 +51,7 @@ else
 end
 
 -- Comment
-if utils.is_available "Comment.nvim" then
+if is_available "Comment.nvim" then
   map("n", "<leader>/", function()
     require("Comment.api").toggle_current_linewise()
   end, { desc = "Comment line" })
@@ -59,7 +64,7 @@ if utils.is_available "Comment.nvim" then
 end
 
 -- GitSigns
-if utils.is_available "gitsigns.nvim" then
+if is_available "gitsigns.nvim" then
   map("n", "<leader>gj", function()
     require("gitsigns").next_hunk()
   end, { desc = "Next git hunk" })
@@ -90,13 +95,13 @@ if utils.is_available "gitsigns.nvim" then
 end
 
 -- NeoTree
-if utils.is_available "neo-tree.nvim" then
+if is_available "neo-tree.nvim" then
   map("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle Explorer" })
   map("n", "<leader>o", "<cmd>Neotree focus<cr>", { desc = "Focus Explorer" })
 end
 
 -- Session Manager
-if utils.is_available "neovim-session-manager" then
+if is_available "neovim-session-manager" then
   map("n", "<leader>Sl", "<cmd>SessionManager! load_last_session<cr>", { desc = "Load last session" })
   map("n", "<leader>Ss", "<cmd>SessionManager! save_current_session<cr>", { desc = "Save this session" })
   map("n", "<leader>Sd", "<cmd>SessionManager! delete_session<cr>", { desc = "Delete session" })
@@ -110,13 +115,13 @@ if utils.is_available "neovim-session-manager" then
 end
 
 -- LSP Installer
-if utils.is_available "nvim-lsp-installer" then
+if is_available "nvim-lsp-installer" then
   vim.keymap.set("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP information" })
   vim.keymap.set("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", { desc = "LSP installer" })
 end
 
 -- Smart Splits
-if utils.is_available "smart-splits.nvim" then
+if is_available "smart-splits.nvim" then
   -- Better window navigation
   map("n", "<C-h>", function()
     require("smart-splits").move_cursor_left()
@@ -156,12 +161,12 @@ else
 end
 
 -- SymbolsOutline
-if utils.is_available "aerial.nvim" then
+if is_available "aerial.nvim" then
   map("n", "<leader>lS", "<cmd>AerialToggle<cr>", { desc = "Symbols outline" })
 end
 
 -- Telescope
-if utils.is_available "telescope.nvim" then
+if is_available "telescope.nvim" then
   map("n", "<leader>fw", function()
     require("telescope.builtin").live_grep()
   end, { desc = "Search words" })
@@ -227,25 +232,26 @@ if utils.is_available "telescope.nvim" then
 end
 
 -- Terminal
-if utils.is_available "nvim-toggleterm.lua" then
+if is_available "nvim-toggleterm.lua" then
+  local toggle_term_cmd = utils.toggle_term_cmd
   map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
   map("n", "<leader>gg", function()
-    utils.toggle_term_cmd "lazygit"
+    toggle_term_cmd "lazygit"
   end, { desc = "ToggleTerm lazygit" })
   map("n", "<leader>tn", function()
-    utils.toggle_term_cmd "node"
+    toggle_term_cmd "node"
   end, { desc = "ToggleTerm node" })
   map("n", "<leader>tu", function()
-    utils.toggle_term_cmd "ncdu"
+    toggle_term_cmd "ncdu"
   end, { desc = "ToggleTerm NCDU" })
   map("n", "<leader>tt", function()
-    utils.toggle_term_cmd "htop"
+    toggle_term_cmd "htop"
   end, { desc = "ToggleTerm htop" })
   map("n", "<leader>tp", function()
-    utils.toggle_term_cmd "python"
+    toggle_term_cmd "python"
   end, { desc = "ToggleTerm python" })
   map("n", "<leader>tl", function()
-    utils.toggle_term_cmd "lazygit"
+    toggle_term_cmd "lazygit"
   end, { desc = "ToggleTerm lazygit" })
   map("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "ToggleTerm float" })
   map("n", "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", { desc = "ToggleTerm horizontal split" })
