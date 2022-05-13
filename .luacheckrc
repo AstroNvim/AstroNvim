@@ -1,6 +1,7 @@
 -- Global objects
 globals = {
   "PACKER_BOOTSTRAP",
+  "astronvim",
   "vim",
   "C",
   "packer_plugins",

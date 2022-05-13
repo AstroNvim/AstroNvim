@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, indent_blankline = pcall(require, "indent_blankline")
   if status_ok then
-    indent_blankline.setup(require("core.utils").user_plugin_opts("plugins.indent_blankline", {
+    indent_blankline.setup(astronvim.user_plugin_opts("plugins.indent_blankline", {
       buftype_exclude = {
         "nofile",
         "terminal",

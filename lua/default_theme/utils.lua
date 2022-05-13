@@ -1,6 +1,6 @@
 local M = {}
 
-local user_settings = require("core.utils").user_plugin_opts "default_theme"
+local user_settings = astronvim.user_plugin_opts "default_theme"
 
 function M.parse_diagnostic_style(default)
   if type(user_settings.diagnostics_style) == "table" then

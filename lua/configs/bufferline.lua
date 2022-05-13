@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, bufferline = pcall(require, "bufferline")
   if status_ok then
-    bufferline.setup(require("core.utils").user_plugin_opts("plugins.bufferline", {
+    bufferline.setup(astronvim.user_plugin_opts("plugins.bufferline", {
       options = {
         offsets = {
           { filetype = "NvimTree", text = "", padding = 1 },

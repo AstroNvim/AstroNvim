@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, icons = pcall(require, "nvim-web-devicons")
   if status_ok then
-    icons.set_icon(require("core.utils").user_plugin_opts("plugins.nvim-web-devicons", {
+    icons.set_icon(astronvim.user_plugin_opts("plugins.nvim-web-devicons", {
       deb = { icon = "", name = "Deb" },
       lock = { icon = "", name = "Lock" },
       mp3 = { icon = "", name = "Mp3" },

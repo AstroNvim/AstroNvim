@@ -1,13 +1,11 @@
-local utils = require "core.utils"
-
 local default = "default_theme"
-local colorscheme = utils.user_plugin_opts("colorscheme", default, false)
+local colorscheme = astronvim.user_plugin_opts("colorscheme", default, false)
 if not vim.tbl_contains(vim.fn.getcompletion("", "color"), colorscheme) then
   colorscheme = default
 end
 vim.api.nvim_command(("colorscheme %s"):format(colorscheme))
 
-utils.vim_opts(utils.user_plugin_opts("options", {
+astronvim.vim_opts(astronvim.user_plugin_opts("options", {
   opt = {
     clipboard = "unnamedplus", -- Connection to the system clipboard
     completeopt = { "menuone", "noselect" }, -- Options for insert mode completion

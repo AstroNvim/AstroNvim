@@ -1,5 +1,4 @@
-local utils = require "core.utils"
-local is_available = utils.is_available
+local is_available = astronvim.is_available
 local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
@@ -10,7 +9,7 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   group = "highlighturl",
   pattern = "*",
   callback = function()
-    utils.set_url_match()
+    astronvim.set_url_match()
   end,
 })
 
@@ -85,5 +84,5 @@ if is_available "feline.nvim" then
   })
 end
 
-create_command("AstroUpdate", utils.update, { desc = "Update AstroNvim" })
-create_command("ToggleHighlightURL", utils.toggle_url_match, { desc = "Toggle URL Highlights" })
+create_command("AstroUpdate", astronvim.update, { desc = "Update AstroNvim" })
+create_command("ToggleHighlightURL", astronvim.toggle_url_match, { desc = "Toggle URL Highlights" })

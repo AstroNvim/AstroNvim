@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, gitsigns = pcall(require, "gitsigns")
   if status_ok then
-    gitsigns.setup(require("core.utils").user_plugin_opts("plugins.gitsigns", {
+    gitsigns.setup(astronvim.user_plugin_opts("plugins.gitsigns", {
       signs = {
         add = { text = "▎" },
         change = { text = "▎" },

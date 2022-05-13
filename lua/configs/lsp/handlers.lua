@@ -1,4 +1,5 @@
 local M = {}
+local user_plugin_opts = astronvim.user_plugin_opts
 
 local sign_define = vim.fn.sign_define
 local map = vim.keymap.set
@@ -15,7 +16,7 @@ function M.setup()
     sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
   end
 
-  vim.diagnostic.config(require("core.utils").user_plugin_opts("diagnostics", {
+  vim.diagnostic.config(user_plugin_opts("diagnostics", {
     virtual_text = true,
     signs = { active = signs },
     update_in_insert = true,
@@ -112,7 +113,7 @@ M.on_attach = function(client, bufnr)
     client.resolved_capabilities.document_formatting = false
   end
 
-  local on_attach_override = require("core.utils").user_plugin_opts("lsp.on_attach", nil, false)
+  local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
   if type(on_attach_override) == "function" then
     on_attach_override(client, bufnr)
   end

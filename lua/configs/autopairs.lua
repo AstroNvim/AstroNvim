@@ -1,9 +1,10 @@
 local M = {}
+local user_plugin_opts = astronvim.user_plugin_opts
 
 function M.config()
   local status_ok, npairs = pcall(require, "nvim-autopairs")
   if status_ok then
-    npairs.setup(require("core.utils").user_plugin_opts("plugins.nvim-autopairs", {
+    npairs.setup(user_plugin_opts("plugins.nvim-autopairs", {
       check_ts = true,
       ts_config = {
         lua = { "string", "source" },
@@ -24,7 +25,7 @@ function M.config()
       },
     }))
 
-    local rules = require("core.utils").user_plugin_opts("nvim-autopairs").add_rules
+    local rules = user_plugin_opts("nvim-autopairs").add_rules
     if vim.tbl_contains({ "function", "table" }, type(rules)) then
       npairs.add_rules(type(rules) == "function" and rules(npairs) or rules)
     end

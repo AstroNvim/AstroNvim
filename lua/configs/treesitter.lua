@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local status_ok, treesitter = pcall(require, "nvim-treesitter.configs")
   if status_ok then
-    treesitter.setup(require("core.utils").user_plugin_opts("plugins.treesitter", {
+    treesitter.setup(astronvim.user_plugin_opts("plugins.treesitter", {
       ensure_installed = {},
       sync_install = false,
       ignore_install = {},
