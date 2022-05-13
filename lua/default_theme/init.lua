@@ -6,7 +6,7 @@ vim.o.background = "dark"
 vim.o.termguicolors = true
 vim.g.colors_name = "default_theme"
 
-local user_plugin_opts = require("core.utils").user_plugin_opts
+local user_plugin_opts = astronvim.user_plugin_opts
 local utils = require "default_theme.utils"
 
 local modules = {

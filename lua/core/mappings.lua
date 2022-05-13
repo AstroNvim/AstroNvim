@@ -1,5 +1,4 @@
-local utils = require "core.utils"
-local is_available = utils.is_available
+local is_available = astronvim.is_available
 local map = vim.keymap.set
 
 map("", "<Space>", "<Nop>") -- disable space because leader
@@ -10,11 +9,11 @@ map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "No Highlight" })
 map("n", "<leader>u", function()
-  utils.toggle_url_match()
+  astronvim.toggle_url_match()
 end, { desc = "Toggle URL Highlights" })
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 map("n", "gx", function()
-  utils.url_opener()
+  astronvim.url_opener()
 end, { desc = "Open the file under cursor with system app" })
 map("n", "<C-s>", "<cmd>w!<cr>", { desc = "Force write" })
 map("n", "<C-q>", "<cmd>q!<cr>", { desc = "Force quit" })
@@ -233,7 +232,7 @@ end
 
 -- Terminal
 if is_available "nvim-toggleterm.lua" then
-  local toggle_term_cmd = utils.toggle_term_cmd
+  local toggle_term_cmd = astronvim.toggle_term_cmd
   map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
   map("n", "<leader>gg", function()
     toggle_term_cmd "lazygit"

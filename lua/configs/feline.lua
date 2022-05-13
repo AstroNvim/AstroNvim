@@ -8,7 +8,7 @@ function M.config()
     local provider = require("core.status").provider
     local conditional = require("core.status").conditional
     -- stylua: ignore
-    feline.setup(require("core.utils").user_plugin_opts("plugins.feline", {
+    feline.setup(astronvim.user_plugin_opts("plugins.feline", {
       disable = { filetypes = { "^NvimTree$", "^neo%-tree$", "^dashboard$", "^Outline$", "^aerial$" } },
       theme = hl.group("StatusLine", { fg = C.fg, bg = C.bg_1 }),
       components = {

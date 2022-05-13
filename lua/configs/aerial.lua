@@ -3,7 +3,7 @@ local M = {}
 function M.config()
   local present, aerial = pcall(require, "aerial")
   if present then
-    aerial.setup(require("core.utils").user_plugin_opts("plugins.aerial", {
+    aerial.setup(astronvim.user_plugin_opts("plugins.aerial", {
       close_behavior = "global",
       backends = { "lsp", "treesitter", "markdown" },
       min_width = 28,

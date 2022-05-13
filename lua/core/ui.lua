@@ -1,5 +1,6 @@
-local M = {}
-function M.nui_input()
+local ui = {}
+
+function ui.nui_input()
   -- Set up NUI for UI Input
   -- From: https://github.com/MunifTanjim/nui.nvim/wiki/vim.ui#vimuiinput
   local input_ui
@@ -71,7 +72,7 @@ function M.nui_input()
   end
 end
 
-function M.telescope_select()
+function ui.telescope_select()
   -- Telescope UI selection
   -- From: https://github.com/stevearc/dressing.nvim/blob/master/lua/dressing/select/telescope.lua
   vim.ui.select = vim.schedule_wrap(function(items, opts, on_choice)
@@ -137,4 +138,8 @@ function M.telescope_select()
   end)
 end
 
-return M
+for ui_addition, enabled in pairs(astronvim.user_plugin_opts("ui", { nui_input = true, telescope_select = true })) do
+  if enabled and type(ui[ui_addition]) == "function" then
+    ui[ui_addition]()
+  end
+end

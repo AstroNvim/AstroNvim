@@ -1,6 +1,6 @@
 local M = {}
 
-local user_plugin_opts = require("core.utils").user_plugin_opts
+local user_plugin_opts = astronvim.user_plugin_opts
 
 function M.config()
   local present, colorizer = pcall(require, "colorizer")

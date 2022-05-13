@@ -2,7 +2,7 @@ local status_ok, lspconfig = pcall(require, "lspconfig")
 if status_ok then
   local insert = table.insert
   local tbl_deep_extend = vim.tbl_deep_extend
-  local user_plugin_opts = require("core.utils").user_plugin_opts
+  local user_plugin_opts = astronvim.user_plugin_opts
   local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
   local handlers = require "configs.lsp.handlers"
   local on_attach = handlers.on_attach

@@ -73,4 +73,4 @@ local colors = {
   zip = "#f9d71c",
 }
 
-return require("core.utils").user_plugin_opts("default_theme.colors", colors)
+return astronvim.user_plugin_opts("default_theme.colors", colors)
