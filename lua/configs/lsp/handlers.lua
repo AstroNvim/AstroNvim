@@ -1,5 +1,8 @@
 local M = {}
 
+local sign_define = vim.fn.sign_define
+local map = vim.keymap.set
+
 function M.setup()
   local signs = {
     { name = "DiagnosticSignError", text = "" },
@@ -9,7 +12,7 @@ function M.setup()
   }
 
   for _, sign in ipairs(signs) do
-    vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
+    sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
   end
 
   vim.diagnostic.config(require("core.utils").user_plugin_opts("diagnostics", {
@@ -50,24 +53,60 @@ local function lsp_highlight_document(client)
 end
 
 M.on_attach = function(client, bufnr)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover symbol details", buffer = bufnr })
-  vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code action", buffer = bufnr })
-  vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_sync, { desc = "Format code", buffer = bufnr })
-  vim.keymap.set("n", "<leader>lh", vim.lsp.buf.signature_help, { desc = "Signature help", buffer = bufnr })
-  vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename current symbol", buffer = bufnr })
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename current symbol", buffer = bufnr }) -- (DEPRECATED)
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Declaration of current symbol", buffer = bufnr })
-  vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { desc = "Implementation of current symbol", buffer = bufnr })
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Show the definition of current symbol", buffer = bufnr })
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "References of current symbol", buffer = bufnr })
-  vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Hover diagnostics", buffer = bufnr })
-  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic", buffer = bufnr })
-  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic", buffer = bufnr })
-  vim.keymap.set("n", "gj", vim.diagnostic.goto_next, { desc = "Next diagnostic", buffer = bufnr })
-  vim.keymap.set("n", "gk", vim.diagnostic.goto_prev, { desc = "Previous diagnostic", buffer = bufnr })
-  vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Hover diagnostics", buffer = bufnr })
-  vim.keymap.set("n", "go", vim.diagnostic.open_float, { desc = "Hover diagnostics", buffer = bufnr })
-  vim.api.nvim_buf_create_user_command(bufnr, "Format", vim.lsp.buf.formatting, { desc = "Format file with LSP" })
+  map("n", "K", function()
+    vim.lsp.buf.hover()
+  end, { desc = "Hover symbol details", buffer = bufnr })
+  map("n", "<leader>la", function()
+    vim.lsp.buf.code_action()
+  end, { desc = "LSP code action", buffer = bufnr })
+  map("n", "<leader>lf", function()
+    vim.lsp.buf.formatting_sync()
+  end, { desc = "Format code", buffer = bufnr })
+  map("n", "<leader>lh", function()
+    vim.lsp.buf.signature_help()
+  end, { desc = "Signature help", buffer = bufnr })
+  map("n", "<leader>lr", function()
+    vim.lsp.buf.rename()
+  end, { desc = "Rename current symbol", buffer = bufnr })
+  map("n", "<leader>rn", function()
+    vim.lsp.buf.rename()
+  end, { desc = "Rename current symbol", buffer = bufnr }) -- (DEPRECATED)
+  map("n", "gD", function()
+    vim.lsp.buf.declaration()
+  end, { desc = "Declaration of current symbol", buffer = bufnr })
+  map("n", "gI", function()
+    vim.lsp.buf.implementation()
+  end, { desc = "Implementation of current symbol", buffer = bufnr })
+  map("n", "gd", function()
+    vim.lsp.buf.definition()
+  end, { desc = "Show the definition of current symbol", buffer = bufnr })
+  map("n", "gr", function()
+    vim.lsp.buf.references()
+  end, { desc = "References of current symbol", buffer = bufnr })
+  map("n", "<leader>ld", function()
+    vim.diagnostic.open_float()
+  end, { desc = "Hover diagnostics", buffer = bufnr })
+  map("n", "[d", function()
+    vim.diagnostic.goto_prev()
+  end, { desc = "Previous diagnostic", buffer = bufnr })
+  map("n", "]d", function()
+    vim.diagnostic.goto_next()
+  end, { desc = "Next diagnostic", buffer = bufnr })
+  map("n", "gj", function()
+    vim.diagnostic.goto_next()
+  end, { desc = "Next diagnostic", buffer = bufnr })
+  map("n", "gk", function()
+    vim.diagnostic.goto_prev()
+  end, { desc = "Previous diagnostic", buffer = bufnr })
+  map("n", "gl", function()
+    vim.diagnostic.open_float()
+  end, { desc = "Hover diagnostics", buffer = bufnr })
+  map("n", "go", function()
+    vim.diagnostic.open_float()
+  end, { desc = "Hover diagnostics", buffer = bufnr })
+  vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
+    vim.lsp.buf.formatting()
+  end, { desc = "Format file with LSP" })
 
   if client.name == "tsserver" or client.name == "jsonls" or client.name == "html" or client.name == "sumneko_lua" then
     client.resolved_capabilities.document_formatting = false
