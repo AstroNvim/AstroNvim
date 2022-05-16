@@ -159,8 +159,8 @@ local config = {
 
     -- override the lsp installer server-registration function
     -- server_registration = function(server, opts)
-    --   require("lspconfig")[server.name].setup(opts)
-    -- end
+    --   require("lspconfig")[server].setup(opts)
+    -- end,
 
     -- Add overrides for LSP server settings, the keys are the name of the server
     ["server-settings"] = {
