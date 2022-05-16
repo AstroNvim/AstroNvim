@@ -10,7 +10,7 @@ local function hl_prop(group, prop)
   return status_ok and color or nil
 end
 
-M.modes = { -- mode text, hlgroup suffix, default color
+M.modes = {
   ["n"] = { "NORMAL", "Normal", C.blue },
   ["no"] = { "N-PENDING", "Normal", C.blue },
   ["i"] = { "INSERT", "Insert", C.green },
@@ -21,16 +21,16 @@ M.modes = { -- mode text, hlgroup suffix, default color
   [""] = { "V-BLOCK", "Visual", C.purple },
   ["R"] = { "REPLACE", "Replace", C.red_1 },
   ["Rv"] = { "V-REPLACE", "Replace", C.red_1 },
-  ["s"] = { "SELECT", "Select", C.orange_1 },
-  ["S"] = { "S-LINE", "Select", C.orange_1 },
-  [""] = { "S-BLOCK", "Select", C.orange_1 },
+  ["s"] = { "SELECT", "Visual", C.orange_1 },
+  ["S"] = { "S-LINE", "Visual", C.orange_1 },
+  [""] = { "S-BLOCK", "Visual", C.orange_1 },
   ["c"] = { "COMMAND", "Command", C.yellow_1 },
   ["cv"] = { "COMMAND", "Command", C.yellow_1 },
   ["ce"] = { "COMMAND", "Command", C.yellow_1 },
-  ["r"] = { "PROMPT", "Other", C.grey_7 },
-  ["rm"] = { "MORE", "Other", C.grey_7 },
-  ["r?"] = { "CONFIRM", "Other", C.grey_7 },
-  ["!"] = { "SHELL", "Other", C.grey_7 },
+  ["r"] = { "PROMPT", "Inactive", C.grey_7 },
+  ["rm"] = { "MORE", "Inactive", C.grey_7 },
+  ["r?"] = { "CONFIRM", "Inactive", C.grey_7 },
+  ["!"] = { "SHELL", "Inactive", C.grey_7 },
 }
 
 function M.hl.group(hlgroup, base)
@@ -46,10 +46,16 @@ function M.hl.fg(hlgroup, base)
 end
 
 function M.hl.mode(base)
+  local lualine_avail, lualine = pcall(require, "lualine.themes." .. vim.g.colors_name)
   return function()
     return M.hl.group(
       "Feline" .. M.modes[vim.fn.mode()][2],
-      vim.tbl_deep_extend("force", { fg = C.bg_1, bg = M.modes[vim.fn.mode()][3] }, base or {})
+      vim.tbl_deep_extend(
+        "force",
+        lualine_avail and lualine[M.modes[vim.fn.mode()][2]:lower()].a
+          or { fg = C.bg_1, bg = M.modes[vim.fn.mode()][3] },
+        base or {}
+      )
     )
   end
 end
