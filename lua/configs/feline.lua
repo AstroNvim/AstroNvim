@@ -31,7 +31,7 @@ function M.config()
           },
           {
             { provider = provider.lsp_progress, enabled = conditional.bar_width() },
-            { provider = "lsp_client_names", enabled = conditional.bar_width(), icon = "   " },
+            { provider = provider.lsp_client_names, enabled = conditional.bar_width(), icon = "   " },
             { provider = provider.spacer(2), enabled = conditional.bar_width() },
             { provider = provider.treesitter_status, enabled = conditional.bar_width(), hl = hl.fg("GitSignsAdd", { fg = C.green }) },
             { provider = provider.spacer(2) },
