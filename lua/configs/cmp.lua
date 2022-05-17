@@ -4,6 +4,7 @@ function M.config()
   local cmp_status_ok, cmp = pcall(require, "cmp")
   local snip_status_ok, luasnip = pcall(require, "luasnip")
   if cmp_status_ok and snip_status_ok then
+    local setup = cmp.setup
     local kind_icons = {
       Text = "",
       Method = "",
@@ -37,7 +38,7 @@ function M.config()
       return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
     end
 
-    cmp.setup(astronvim.user_plugin_opts("plugins.cmp", {
+    setup(astronvim.user_plugin_opts("plugins.cmp", {
       preselect = cmp.PreselectMode.None,
       formatting = {
         fields = { "kind", "abbr", "menu" },
@@ -113,6 +114,11 @@ function M.config()
         }),
       },
     }))
+    for setup_opt, setup_table in pairs(astronvim.user_plugin_opts("cmp.setup", {})) do
+      for pattern, options in pairs(setup_table) do
+        setup[setup_opt](pattern, options)
+      end
+    end
   end
 end
 
