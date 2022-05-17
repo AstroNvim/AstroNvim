@@ -149,13 +149,13 @@ function astronvim.add_cmp_source(source)
 end
 
 function astronvim.add_user_cmp_source(source)
+  source = type(source) == "string" and { name = source } or source
   local priority = astronvim.user_plugin_opts("cmp.source_priority", {
     nvim_lsp = 1000,
     luasnip = 750,
     buffer = 500,
     path = 250,
-  })[source]
-  source = type(source) == "string" and { name = source } or source
+  })[source.name]
   if priority then
     source.priority = priority
   end
