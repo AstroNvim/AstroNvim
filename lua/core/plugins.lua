@@ -205,13 +205,11 @@ local astro_plugins = {
   },
 
   -- Fuzzy finder syntax support
-  ["nvim-telescope/telescope-fzf-native.nvim"] = {
+  [("nvim-telescope/telescope-%s-native.nvim"):format(vim.fn.has "win32" == 1 and "fzy" or "fzf")] = {
     after = "telescope.nvim",
-    run = vim.fn.has "win32" == 1
-        and "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
-      or "make",
+    run = vim.fn.has "win32" ~= 1 and "make" or nil,
     config = function()
-      require("telescope").load_extension "fzf"
+      require("telescope").load_extension(vim.fn.has "win32" == 1 and "fzy_native" or "fzf")
     end,
   },
 
