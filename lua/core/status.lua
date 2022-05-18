@@ -75,17 +75,19 @@ function M.provider.lsp_progress()
     or ""
 end
 
-function M.provider.lsp_client_names()
-  local buf_client_names = {}
-  for _, client in ipairs(vim.lsp.buf_get_clients(0)) do
-    if client.name == "null-ls" then
-      vim.list_extend(buf_client_names, astronvim.null_ls_sources(vim.bo.filetype, "FORMATTING"))
-      vim.list_extend(buf_client_names, astronvim.null_ls_sources(vim.bo.filetype, "DIAGNOSTICS"))
-    else
-      table.insert(buf_client_names, client.name)
+function M.provider.lsp_client_names(expand_null_ls)
+  return function()
+    local buf_client_names = {}
+    for _, client in ipairs(vim.lsp.buf_get_clients(0)) do
+      if client.name == "null-ls" and expand_null_ls then
+        vim.list_extend(buf_client_names, astronvim.null_ls_sources(vim.bo.filetype, "FORMATTING"))
+        vim.list_extend(buf_client_names, astronvim.null_ls_sources(vim.bo.filetype, "DIAGNOSTICS"))
+      else
+        table.insert(buf_client_names, client.name)
+      end
     end
+    return table.concat(buf_client_names, ", ")
   end
-  return table.concat(buf_client_names, ", ")
 end
 
 function M.provider.treesitter_status()
