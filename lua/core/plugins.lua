@@ -82,7 +82,7 @@ local astro_plugins = {
   -- Statusline
   ["feline-nvim/feline.nvim"] = {
     after = "nvim-web-devicons",
-    config = function()
+    setup = function()
       require("configs.feline").config()
     end,
   },
