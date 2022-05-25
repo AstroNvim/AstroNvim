@@ -33,12 +33,18 @@ M.modes = {
   ["!"] = { "SHELL", "Inactive", C.grey_7 },
 }
 
-function M.hl.group(hlgroup, base)
-  return vim.tbl_deep_extend(
-    "force",
-    base or {},
-    { fg = hl_prop(hlgroup, "foreground"), bg = hl_prop(hlgroup, "background") }
-  )
+function M.hl.group_fn(hlgroup, base)
+  return function()
+    return vim.tbl_deep_extend(
+      "force",
+      base or {},
+      { fg = hl_prop(hlgroup, "foreground"), bg = hl_prop(hlgroup, "background") }
+    )
+  end
+end
+
+function M.hl.group(...)
+  return M.hl.group_fn(...)()
 end
 
 function M.hl.fg(hlgroup, base)
@@ -58,6 +64,13 @@ function M.hl.mode(base)
         base or {}
       )
     )
+  end
+end
+
+function M.provider.breadcrumbs(depth, separator, icons)
+  return function()
+    local aerial_avail, aerial = pcall(require, "aerial")
+    return aerial_avail and astronvim.format_symbols(aerial.get_location(true), depth, separator or " > ", icons) or ""
   end
 end
 
@@ -98,6 +111,10 @@ end
 
 function M.provider.spacer(n)
   return string.rep(" ", n or 1)
+end
+
+function M.conditional.aerial_available()
+  return astronvim.is_available "aerial.nvim"
 end
 
 function M.conditional.git_available()

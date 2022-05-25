@@ -1,13 +1,15 @@
-local status_ok, feline = pcall(require, "feline")
-if status_ok then
+local present, feline = pcall(require, "feline")
+if present then
   local C = require "default_theme.colors"
   local hl = require("core.status").hl
   local provider = require("core.status").provider
   local conditional = require("core.status").conditional
+  local default_hl = { fg = C.fg, bg = C.bg_1 }
+  local disabled = { filetypes = { "^NvimTree$", "^neo%-tree$", "^dashboard$", "^Outline$", "^aerial$" } }
   -- stylua: ignore
-  feline.setup(astronvim.user_plugin_opts("plugins.feline", {
-    disable = { filetypes = { "^NvimTree$", "^neo%-tree$", "^dashboard$", "^Outline$", "^aerial$" } },
-    theme = hl.group("StatusLine", { fg = C.fg, bg = C.bg_1 }),
+  feline.setup(astronvim.user_plugin_opts("plugins.feline.statusline", {
+    disable = disabled,
+    theme = hl.group("StatusLine", default_hl),
     components = {
       active = {
         {
@@ -15,7 +17,7 @@ if status_ok then
           { provider = provider.spacer(2) },
           { provider = "git_branch", hl = hl.fg("Conditional", { fg = C.purple_1, style = "bold" }), icon = " " },
           { provider = provider.spacer(3), enabled = conditional.git_available },
-          { provider = { name = "file_type", opts = { filetype_icon = true, case = "lowercase" } }, enabled = conditional.has_filetype },
+          { provider = { name = "file_info", opts = { type = "unique-short" } }, enabled = conditional.has_filetype },
           { provider = provider.spacer(2), enabled = conditional.has_filetype },
           { provider = "git_diff_added", hl = hl.fg("GitSignsAdd", { fg = C.green }), icon = "  " },
           { provider = "git_diff_changed", hl = hl.fg("GitSignsChange", { fg = C.orange_1 }), icon = " 柳" },
@@ -39,6 +41,22 @@ if status_ok then
           { provider = "scroll_bar", hl = hl.fg("TypeDef", { fg = C.yellow }) },
           { provider = provider.spacer(2) },
           { provider = provider.spacer(), hl = hl.mode() },
+        },
+      },
+    },
+  }))
+  -- stylua: ignore
+  feline.winbar.setup(astronvim.user_plugin_opts("plugins.feline.winbar", {
+    disable = disabled,
+    components = {
+      active = {
+        {
+          { provider = provider.breadcrumbs(), enabled = conditional.aerial_available, hl = hl.group_fn("WinBar", default_hl) },
+        },
+      },
+      inactive = {
+        {
+          { provider = { name = "file_info", opts = { colored_icon = false, type = "unique-short" } }, hl = hl.group_fn("WinBarNC", default_hl) },
         },
       },
     },

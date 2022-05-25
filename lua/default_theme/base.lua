@@ -64,6 +64,8 @@ local base = {
   SpellRare = { fg = C.yellow, bg = C.none },
   StatusLine = { fg = C.fg, bg = C.grey_4 },
   StatusLineNC = { fg = C.grey, bg = C.none },
+  WinBar = { fg = C.grey_2, bg = C.bg },
+  WinBarNC = { fg = C.grey, bg = C.bg },
   StatusLineTerm = { fg = C.fg, bg = C.grey_4 },
   StatusLineTermNC = { fg = C.grey_4, bg = C.none },
   TabLine = { fg = C.grey, bg = C.none },
