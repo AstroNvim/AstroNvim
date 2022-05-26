@@ -2,7 +2,7 @@ return {
   BufferLineFill = { fg = C.grey_9, bg = C.grey_4 },
   BufferLineBackground = { fg = C.grey_9, bg = C.grey_4 },
   BufferLineBufferVisible = { fg = C.fg, bg = C.bg },
-  BufferLineBufferSelected = { fg = C.fg, bg = C.bg },
+  BufferLineBufferSelected = { fg = C.white, bg = C.bg, bold = true },
   BufferLineTab = { fg = C.grey_9, bg = C.bg },
   BufferLineTabSelected = { fg = C.fg, bg = C.bg },
   BufferLineTabClose = { fg = C.red_4, bg = C.bg },
