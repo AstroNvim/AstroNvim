@@ -116,11 +116,12 @@ local astro_plugins = {
   },
 
   -- Snippet collection
-  ["rafamadriz/friendly-snippets"] = { event = "InsertEnter" },
+  ["rafamadriz/friendly-snippets"] = { opt = true },
 
   -- Snippet engine
   ["L3MON4D3/LuaSnip"] = {
-    after = "friendly-snippets",
+    module = "luasnip",
+    wants = "friendly-snippets",
     config = function()
       require("configs.luasnip").config()
     end,
@@ -128,7 +129,7 @@ local astro_plugins = {
 
   -- Completion engine
   ["hrsh7th/nvim-cmp"] = {
-    after = "LuaSnip",
+    event = "InsertEnter",
     config = function()
       require("configs.cmp").config()
     end,
