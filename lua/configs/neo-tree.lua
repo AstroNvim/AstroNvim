@@ -4,6 +4,7 @@ function M.config()
   local status_ok, neotree = pcall(require, "neo-tree")
   if status_ok then
     neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
+      close_if_last_window = true,
       popup_border_style = "rounded",
       enable_diagnostics = false,
       default_component_configs = {
