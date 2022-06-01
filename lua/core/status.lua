@@ -46,7 +46,7 @@ function M.hl.fg(hlgroup, base)
 end
 
 function M.hl.mode(base)
-  local lualine_avail, lualine = pcall(require, "lualine.themes." .. vim.g.colors_name)
+  local lualine_avail, lualine = pcall(require, "lualine.themes." .. (vim.g.colors_name or "default_theme"))
   return function()
     return M.hl.group(
       "Feline" .. M.modes[vim.fn.mode()][2],
