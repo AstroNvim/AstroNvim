@@ -5,14 +5,8 @@ function M.config()
   if status_ok then
     local actions = require "telescope.actions"
 
-    local notify_present, _ = pcall(require, "notify")
-    if notify_present then
-      telescope.load_extension "notify"
-    end
-    local aerial_present, _ = pcall(require, "aerial")
-    if aerial_present then
-      telescope.load_extension "aerial"
-    end
+    astronvim.conditional_func(telescope.load_extension, pcall(require, "notify"), "notify")
+    astronvim.conditional_func(telescope.load_extension, pcall(require, "aerial"), "aerial")
 
     telescope.setup(astronvim.user_plugin_opts("plugins.telescope", {
       defaults = {

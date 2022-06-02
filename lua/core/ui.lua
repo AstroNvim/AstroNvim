@@ -139,7 +139,5 @@ function ui.telescope_select()
 end
 
 for ui_addition, enabled in pairs(astronvim.user_plugin_opts("ui", { nui_input = true, telescope_select = true })) do
-  if enabled and type(ui[ui_addition]) == "function" then
-    ui[ui_addition]()
-  end
+  astronvim.conditional_func(ui[ui_addition], enabled)
 end

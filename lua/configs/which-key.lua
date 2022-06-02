@@ -6,15 +6,12 @@ function M.config()
   if status_ok then
     local show = which_key.show
     local show_override = user_plugin_opts("which-key.show", nil, false)
-    if type(show_override) == "function" then
-      which_key.show = show_override(show)
-    else
-      which_key.show = function(keys, opts)
+    which_key.show = type(show_override) == "function" and show_override(show)
+      or function(keys, opts)
         if vim.bo.filetype ~= "TelescopePrompt" then
           show(keys, opts)
         end
       end
-    end
     which_key.setup(user_plugin_opts("plugins.which-key", {
       plugins = {
         spelling = { enabled = true },

@@ -44,6 +44,12 @@ local function func_or_extend(overrides, default, extend)
   return default
 end
 
+function astronvim.conditional_func(func, condition, ...)
+  if (condition == nil and true or condition) and type(func) == "function" then
+    return func(...)
+  end
+end
+
 local function user_setting_table(module)
   local settings = astronvim.user_settings or {}
   for tbl in string.gmatch(module, "([^%.]+)") do
@@ -86,13 +92,13 @@ function astronvim.vim_opts(options)
   end
 end
 
-function astronvim.user_plugin_opts(module, default, extend)
+function astronvim.user_plugin_opts(module, default, extend, prefix)
   if extend == nil then
     extend = true
   end
   default = default or {}
-  local user_settings = load_module_file("user." .. module)
-  if user_settings == nil then
+  local user_settings = load_module_file((prefix or "user") .. "." .. module)
+  if user_settings == nil and prefix == nil then
     user_settings = user_setting_table(module)
   end
   if user_settings ~= nil then
@@ -254,6 +260,7 @@ function astronvim.update()
     })
     :sync()
 end
+
 function astronvim.version()
   (require "plenary.job")
     :new({

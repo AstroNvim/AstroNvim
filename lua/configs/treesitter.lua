@@ -15,24 +15,16 @@ function M.config()
         enable = true,
         enable_autocmd = false,
       },
-      autopairs = {
-        enable = true,
-      },
-      incremental_selection = {
-        enable = true,
-      },
-      indent = {
-        enable = false,
-      },
       rainbow = {
         enable = true,
         disable = { "html" },
         extended_mode = false,
         max_file_lines = nil,
       },
-      autotag = {
-        enable = true,
-      },
+      autopairs = { enable = true },
+      autotag = { enable = true },
+      incremental_selection = { enable = true },
+      indent = { enable = false },
     }))
   end
 end
