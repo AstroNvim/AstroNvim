@@ -2,12 +2,10 @@ local status_ok, lspconfig = pcall(require, "lspconfig")
 if status_ok then
   require "configs.lsp.handlers"
   local insert = table.insert
-  local tbl_deep_extend = vim.tbl_deep_extend
   local tbl_contains = vim.tbl_contains
   local sign_define = vim.fn.sign_define
   local user_plugin_opts = astronvim.user_plugin_opts
   local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
-  local on_attach = astronvim.lsp.on_attach
 
   local signs = {
     { name = "DiagnosticSignError", text = "" },
@@ -46,22 +44,7 @@ if status_ok then
   end
   for _, server in ipairs(servers) do
     if not tbl_contains(skip_setup, server) then
-      local old_on_attach = lspconfig[server].on_attach
-      local opts = {
-        on_attach = function(client, bufnr)
-          if old_on_attach then
-            old_on_attach(client, bufnr)
-          end
-          on_attach(client, bufnr)
-        end,
-        capabilities = tbl_deep_extend("force", astronvim.lsp.capabilities, lspconfig[server].capabilities or {}),
-      }
-      local present, av_overrides = pcall(require, "configs.lsp.server-settings." .. server)
-      if present then
-        opts = tbl_deep_extend("force", av_overrides, opts)
-      end
-      opts = user_plugin_opts("lsp.server-settings." .. server, opts)
-
+      local opts = astronvim.lsp.server_settings(server)
       if type(user_registration) == "function" then
         user_registration(server, opts)
       else

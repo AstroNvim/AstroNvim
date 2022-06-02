@@ -1,5 +1,6 @@
 astronvim.lsp = {}
 local map = vim.keymap.set
+local tbl_deep_extend = vim.tbl_deep_extend
 local user_plugin_opts = astronvim.user_plugin_opts
 
 local function lsp_highlight_document(client)
@@ -94,5 +95,24 @@ astronvim.lsp.capabilities.textDocument.completion.completionItem.resolveSupport
     "additionalTextEdits",
   },
 }
+
+function astronvim.lsp.server_settings(server)
+  local lspconfig = require "lspconfig"
+  local old_on_attach = lspconfig[server].on_attach
+  local opts = {
+    on_attach = function(client, bufnr)
+      if old_on_attach then
+        old_on_attach(client, bufnr)
+      end
+      astronvim.lsp.on_attach(client, bufnr)
+    end,
+    capabilities = tbl_deep_extend("force", astronvim.lsp.capabilities, lspconfig[server].capabilities or {}),
+  }
+  local present, av_overrides = pcall(require, "configs.lsp.server-settings." .. server)
+  if present then
+    opts = tbl_deep_extend("force", av_overrides, opts)
+  end
+  return user_plugin_opts("lsp.server-settings." .. server, opts)
+end
 
 return astronvim.lsp
