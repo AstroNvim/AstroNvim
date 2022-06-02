@@ -254,5 +254,21 @@ function astronvim.update()
     })
     :sync()
 end
+function astronvim.version()
+  (require "plenary.job")
+    :new({
+      command = "git",
+      args = { "describe", "--tags" },
+      cwd = stdpath "config",
+      on_exit = function(out, return_val)
+        if return_val == 0 then
+          vim.notify("Version: " .. out:result()[1], "info", astronvim.base_notification)
+        else
+          vim.notify("Error retrieving version", "error", astronvim.base_notification)
+        end
+      end,
+    })
+    :start()
+end
 
 return astronvim
