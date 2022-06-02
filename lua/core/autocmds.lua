@@ -99,4 +99,5 @@ if is_available "feline.nvim" then
 end
 
 create_command("AstroUpdate", astronvim.update, { desc = "Update AstroNvim" })
+create_command("AstroVersion", astronvim.version, { desc = "Check AstroNvim Version" })
 create_command("ToggleHighlightURL", astronvim.toggle_url_match, { desc = "Toggle URL Highlights" })
