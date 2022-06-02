@@ -20,7 +20,4 @@ for _, source in ipairs {
   end
 end
 
-local polish = astronvim.user_plugin_opts("polish", nil, false)
-if type(polish) == "function" then
-  polish()
-end
+astronvim.conditional_func(astronvim.user_plugin_opts("polish", nil, false))

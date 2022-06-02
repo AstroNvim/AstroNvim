@@ -1,7 +1,7 @@
 astronvim.lsp = {}
 local map = vim.keymap.set
-local tbl_deep_extend = vim.tbl_deep_extend
 local user_plugin_opts = astronvim.user_plugin_opts
+local conditional_func = astronvim.conditional_func
 
 local function lsp_highlight_document(client)
   if client.resolved_capabilities.document_highlight then
@@ -63,19 +63,10 @@ astronvim.lsp.on_attach = function(client, bufnr)
     vim.lsp.buf.formatting()
   end, { desc = "Format file with LSP" })
 
-  if client.name == "tsserver" or client.name == "jsonls" or client.name == "html" or client.name == "sumneko_lua" then
-    client.resolved_capabilities.document_formatting = false
-  end
-
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
-  if type(on_attach_override) == "function" then
-    on_attach_override(client, bufnr)
-  end
-
   local aerial_avail, aerial = pcall(require, "aerial")
-  if aerial_avail then
-    aerial.on_attach(client, bufnr)
-  end
+  conditional_func(on_attach_override, true, client, bufnr)
+  conditional_func(aerial.on_attach, aerial_avail, client, bufnr)
   lsp_highlight_document(client)
 end
 
@@ -89,30 +80,29 @@ astronvim.lsp.capabilities.textDocument.completion.completionItem.deprecatedSupp
 astronvim.lsp.capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
 astronvim.lsp.capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
 astronvim.lsp.capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    "documentation",
-    "detail",
-    "additionalTextEdits",
-  },
+  properties = { "documentation", "detail", "additionalTextEdits" },
 }
 
-function astronvim.lsp.server_settings(server)
-  local lspconfig = require "lspconfig"
-  local old_on_attach = lspconfig[server].on_attach
-  local opts = {
-    on_attach = function(client, bufnr)
-      if old_on_attach then
-        old_on_attach(client, bufnr)
-      end
-      astronvim.lsp.on_attach(client, bufnr)
-    end,
-    capabilities = tbl_deep_extend("force", astronvim.lsp.capabilities, lspconfig[server].capabilities or {}),
-  }
-  local present, av_overrides = pcall(require, "configs.lsp.server-settings." .. server)
-  if present then
-    opts = tbl_deep_extend("force", av_overrides, opts)
+function astronvim.lsp.server_settings(server_name)
+  local server = require("lspconfig")[server_name]
+  local opts = user_plugin_opts(
+    "lsp.server-settings." .. server_name,
+    user_plugin_opts("lsp.server-settings." .. server_name, {
+      capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
+    }, true, "configs")
+  )
+  local old_on_attach = server.on_attach
+  local user_on_attach = opts.on_attach
+  opts.on_attach = function(client, bufnr)
+    conditional_func(old_on_attach, true, client, bufnr)
+    astronvim.lsp.on_attach(client, bufnr)
+    conditional_func(user_on_attach, true, client, bufnr)
   end
-  return user_plugin_opts("lsp.server-settings." .. server, opts)
+  return opts
+end
+
+function astronvim.lsp.disable_formatting(client)
+  client.resolved_capabilities.document_formatting = false
 end
 
 return astronvim.lsp
