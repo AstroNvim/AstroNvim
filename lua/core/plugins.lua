@@ -311,6 +311,13 @@ local astro_plugins = {
   },
 }
 
+if astronvim.updater.snapshot then
+  for plugin, options in pairs(astro_plugins) do
+    local pin = astronvim.updater.snapshot[plugin:match "/([^/]*)$"]
+    options.commit = pin and pin.commit or options.commit
+  end
+end
+
 local user_plugin_opts = astronvim.user_plugin_opts
 local packer = astronvim.initialize_packer()
 packer.startup {
