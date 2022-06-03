@@ -47,6 +47,7 @@ function M.config()
       show_trailing_blankline_indent = false,
       use_treesitter = true,
       char = "▏",
+      context_char = "▏",
       show_current_context = true,
     }))
   end
