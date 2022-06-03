@@ -30,6 +30,8 @@ astronvim.user_settings = load_module_file "user.init"
 astronvim.default_compile_path = stdpath "config" .. "/lua/packer_compiled.lua"
 astronvim.base_notification = { title = "AstroNvim" }
 astronvim.user_terminals = {}
+astronvim.url_matcher =
+  "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
 
 local function func_or_extend(overrides, default, extend)
   if extend then
@@ -48,6 +50,27 @@ function astronvim.conditional_func(func, condition, ...)
   if (condition == nil and true or condition) and type(func) == "function" then
     return func(...)
   end
+end
+
+function astronvim.trim_or_nil(str)
+  return type(str) == "string" and vim.trim(str) or nil
+end
+
+function astronvim.echo(messages)
+  messages = messages or { { "\n" } }
+  if type(messages) == "table" then
+    vim.api.nvim_echo(messages, false, {})
+  end
+end
+
+function astronvim.confirm_prompt(messages)
+  if messages then
+    astronvim.echo(messages)
+  end
+  local confirmed = string.lower(vim.fn.input "(y/n) ") == "y"
+  astronvim.echo()
+  astronvim.echo()
+  return confirmed
 end
 
 local function user_setting_table(module)
@@ -231,11 +254,7 @@ end
 function astronvim.set_url_match()
   astronvim.delete_url_match()
   if vim.g.highlighturl_enabled then
-    vim.fn.matchadd(
-      "HighlightURL",
-      "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+",
-      15
-    )
+    vim.fn.matchadd("HighlightURL", astronvim.url_matcher, 15)
   end
 end
 
@@ -244,38 +263,15 @@ function astronvim.toggle_url_match()
   astronvim.set_url_match()
 end
 
-function astronvim.update()
-  (require "plenary.job")
-    :new({
-      command = "git",
-      args = { "pull", "--ff-only" },
-      cwd = stdpath "config",
-      on_exit = function(_, return_val)
-        if return_val == 0 then
-          vim.notify("Updated!", "info", astronvim.base_notification)
-        else
-          vim.notify("Update failed! Please try pulling manually.", "error", astronvim.base_notification)
-        end
-      end,
-    })
-    :sync()
+function astronvim.cmd(cmd, show_error)
+  local result = vim.fn.system(cmd)
+  local success = vim.api.nvim_get_vvar "shell_error" == 0
+  if not success and (show_error == nil and true or show_error) then
+    vim.api.nvim_err_writeln("Error running command: " .. cmd .. "\nError message:\n" .. result)
+  end
+  return success and result or nil
 end
 
-function astronvim.version()
-  (require "plenary.job")
-    :new({
-      command = "git",
-      args = { "describe", "--tags" },
-      cwd = stdpath "config",
-      on_exit = function(out, return_val)
-        if return_val == 0 then
-          vim.notify("Version: " .. out:result()[1], "info", astronvim.base_notification)
-        else
-          vim.notify("Error retrieving version", "error", astronvim.base_notification)
-        end
-      end,
-    })
-    :start()
-end
+require "core.utils.updater"
 
 return astronvim
