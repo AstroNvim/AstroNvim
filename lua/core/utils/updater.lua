@@ -150,7 +150,7 @@ function astronvim.updater.update()
         { "!\n", "Title" },
         { "Please restart and run :PackerSync.\n\n", "WarningMsg" },
       }
-      if #changelog > 0 then
+      if #changelog > 0 and options.show_changelog then
         vim.list_extend(summary, { { "Changelog:\n" } })
         vim.list_extend(summary, pretty_changelog(changelog))
       end
