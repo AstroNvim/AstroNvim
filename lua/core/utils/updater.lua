@@ -10,9 +10,13 @@ options.pin_plugins = options.pin_plugins == true and options.channel == "stable
   or options.pin_plugins
 if type(options.pin_plugins) == "string" then
   local loaded, snapshot_file = pcall(fn.readfile, fn.stdpath "config" .. "/snapshots/" .. options.pin_plugins)
+  local snapshot
   if loaded then
-    local _, snapshot = pcall(fn.json_decode, snapshot_file)
+    loaded, snapshot = pcall(fn.json_decode, snapshot_file)
     astronvim.updater.snapshot = type(snapshot) == "table" and snapshot or nil
+  end
+  if not loaded then
+    vim.api.nvim_err_writeln("Error loading snapshot: " .. options.pin_plugins)
   end
 end
 
