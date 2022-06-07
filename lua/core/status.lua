@@ -48,12 +48,12 @@ end
 function M.hl.mode(base)
   local lualine_avail, lualine = pcall(require, "lualine.themes." .. (vim.g.colors_name or "default_theme"))
   return function()
+    local lualine_opts = lualine_avail and lualine[M.modes[vim.fn.mode()][2]:lower()].a
     return M.hl.group(
       "Feline" .. M.modes[vim.fn.mode()][2],
       vim.tbl_deep_extend(
         "force",
-        lualine_avail and lualine[M.modes[vim.fn.mode()][2]:lower()].a
-          or { fg = C.bg_1, bg = M.modes[vim.fn.mode()][3] },
+        type(lualine_opts) == "table" and lualine_opts or { fg = C.bg_1, bg = M.modes[vim.fn.mode()][3] },
         base or {}
       )
     )
