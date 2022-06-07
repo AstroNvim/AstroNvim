@@ -27,20 +27,15 @@ function astronvim.updater.version()
   end
 end
 
-local function echo_cancelled()
-  astronvim.echo { { "Update cancelled", "WarningMsg" } }
+local function attempt_update(target)
+  if options.channel == "stable" or options.commit then
+    return git.checkout(target, false)
+  else
+    return git.pull(false)
+  end
 end
 
-local function pretty_changelog(commits)
-  local changelog = {}
-  for _, commit in ipairs(commits) do
-    local hash, type, title = commit:match "(%[.*%])(.*:)(.*)"
-    if hash and type and title then
-      vim.list_extend(changelog, { { hash, "DiffText" }, { type, "Typedef" }, { title, "Title" }, { "\n" } })
-    end
-  end
-  return changelog
-end
+local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 
 function astronvim.updater.update()
   for remote, entry in pairs(options.remotes and options.remotes or {}) do
@@ -74,6 +69,7 @@ function astronvim.updater.update()
   options.branch = is_stable and "main" or options.branch
   if not git.fetch(options.remote) then
     vim.api.nvim_err_writeln("Error fetching remote: " .. options.remote)
+    return
   end
   local local_branch = (options.remote == "origin" and "" or (options.remote .. "_")) .. options.branch
   if git.current_branch() ~= local_branch then
@@ -99,66 +95,61 @@ function astronvim.updater.update()
   else -- get most recent commit
     target = git.remote_head(options.remote, options.branch)
   end
-  if source and target then -- continue if current and target commits were found
-    if source == target then
-      astronvim.echo { { "No updates available", "String" } }
-    elseif -- prompt user if they want to accept update
-      not options.skip_prompts
+  if not source or not target then -- continue if current and target commits were found
+    vim.api.nvim_err_writeln "Error checking for updates"
+    return
+  elseif source == target then
+    astronvim.echo { { "No updates available", "String" } }
+    return
+  elseif -- prompt user if they want to accept update
+    not options.skip_prompts
+    and not astronvim.confirm_prompt {
+      { "Update available to ", "Title" },
+      { is_stable and options.version or target, "String" },
+      { "\nContinue?" },
+    }
+  then
+    astronvim.echo(cancelled_message)
+    return
+  else -- perform update
+    local changelog = git.get_commit_range(source, target)
+    local breaking = git.breaking_changes(changelog)
+    local breaking_prompt = { { "Update contains the following breaking changes:\n", "WarningMsg" } }
+    vim.list_extend(breaking_prompt, git.pretty_changelog(breaking))
+    vim.list_extend(breaking_prompt, { { "\nWould you like to continue?" } })
+    if #breaking > 0 and not options.skip_prompts and not astronvim.confirm_prompt(breaking_prompt) then
+      astronvim.echo(cancelled_message)
+      return
+    end
+    local updated = attempt_update(target)
+    if
+      not updated
+      and not options.skip_prompts
       and not astronvim.confirm_prompt {
-        { "Update available to ", "Title" },
-        { is_stable and options.version or target, "String" },
-        { "\nContinue?" },
+        { "Unable to pull due to local modifications to base files.\n", "ErrorMsg" },
+        { "Reset local files and continue?" },
       }
     then
-      echo_cancelled()
+      astronvim.echo(cancelled_message)
       return
-    else -- perform update
-      local changelog = git.get_commit_range(source, target)
-      local breaking = git.breaking_changes(changelog)
-      local breaking_prompt = { { "Update contains the following breaking changes:\n", "WarningMsg" } }
-      vim.list_extend(breaking_prompt, pretty_changelog(breaking))
-      vim.list_extend(breaking_prompt, { { "\nWould you like to continue?" } })
-      if #breaking > 0 and not options.skip_prompts and not astronvim.confirm_prompt(breaking_prompt) then
-        echo_cancelled()
-        return
-      end
-      local function attempt_update() -- helper function to attempt an update
-        if is_stable or options.commit then
-          return git.checkout(target, false)
-        else
-          return git.pull(false)
-        end
-      end
-      local updated = attempt_update()
-      if
-        not updated
-        and not options.skip_prompts
-        and not astronvim.confirm_prompt {
-          { "Unable to pull due to local modifications to base files.\n", "ErrorMsg" },
-          { "Reset local files and continue?" },
-        }
-      then
-        echo_cancelled()
-        return
-      elseif not updated then
-        git.hard_reset(source)
-        updated = attempt_update()
-      end
-      if not updated then
-        vim.api.nvim_err_writeln "Error ocurred performing update"
-        return
-      end
-      local summary = {
-        { "AstroNvim updated successfully to ", "Title" },
-        { git.current_version(), "String" },
-        { "!\n", "Title" },
-        { "Please restart and run :PackerSync.\n\n", "WarningMsg" },
-      }
-      if #changelog > 0 and options.show_changelog then
-        vim.list_extend(summary, { { "Changelog:\n" } })
-        vim.list_extend(summary, pretty_changelog(changelog))
-      end
-      astronvim.echo(summary)
+    elseif not updated then
+      git.hard_reset(source)
+      updated = attempt_update(target)
     end
+    if not updated then
+      vim.api.nvim_err_writeln "Error ocurred performing update"
+      return
+    end
+    local summary = {
+      { "AstroNvim updated successfully to ", "Title" },
+      { git.current_version(), "String" },
+      { "!\n", "Title" },
+      { "Please restart and run :PackerSync.\n\n", "WarningMsg" },
+    }
+    if options.show_changelog and #changelog > 0 then
+      vim.list_extend(summary, { { "Changelog:\n", "Title" } })
+      vim.list_extend(summary, git.pretty_changelog(changelog))
+    end
+    astronvim.echo(summary)
   end
 end
