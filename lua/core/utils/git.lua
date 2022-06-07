@@ -83,4 +83,15 @@ function git.breaking_changes(commits)
   end, commits)
 end
 
+function git.pretty_changelog(commits)
+  local changelog = {}
+  for _, commit in ipairs(commits) do
+    local hash, type, msg = commit:match "(%[.*%])(.*:)(.*)"
+    if hash and type and msg then
+      vim.list_extend(changelog, { { hash, "DiffText" }, { type, "Typedef" }, { msg }, { "\n" } })
+    end
+  end
+  return changelog
+end
+
 return git
