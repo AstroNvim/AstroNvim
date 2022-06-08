@@ -16,7 +16,7 @@ for _, source in ipairs {
 } do
   local status_ok, fault = pcall(require, source)
   if not status_ok then
-    error("Failed to load " .. source .. "\n\n" .. fault)
+    vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault)
   end
 end
 
