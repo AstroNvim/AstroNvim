@@ -2,21 +2,18 @@ local fn = vim.fn
 local git = require "core.utils.git"
 local options = astronvim.user_plugin_opts(
   "updater",
-  { remote = "origin", branch = "main", channel = "nightly", pin_plugins = true, show_changelog = true }
+  { remote = "origin", branch = "main", channel = "nightly", show_changelog = true }
 )
 
 astronvim.updater = { options = options }
-options.pin_plugins = options.pin_plugins == true and options.channel == "stable" and git.current_version()
-  or options.pin_plugins
-if type(options.pin_plugins) == "string" then
-  local loaded, snapshot_file = pcall(fn.readfile, fn.stdpath "config" .. "/snapshots/" .. options.pin_plugins)
-  local snapshot
+if options.pin_plugins == nil and options.channel == "stable" or options.pin_plugins then
+  local loaded, snapshot = pcall(fn.readfile, fn.stdpath "config" .. "/packer_snapshot")
   if loaded then
-    loaded, snapshot = pcall(fn.json_decode, snapshot_file)
+    loaded, snapshot = pcall(fn.json_decode, snapshot)
     astronvim.updater.snapshot = type(snapshot) == "table" and snapshot or nil
   end
   if not loaded then
-    vim.api.nvim_err_writeln("Error loading snapshot: " .. options.pin_plugins)
+    vim.api.nvim_err_writeln "Error loading packer snapshot"
   end
 end
 
