@@ -15,7 +15,7 @@ local astro_plugins = {
   ["Darazaki/indent-o-matic"] = {
     event = "BufReadPost",
     config = function()
-      require("configs.indent-o-matic").config()
+      require "configs.indent-o-matic"
     end,
   },
 
@@ -23,7 +23,7 @@ local astro_plugins = {
   ["rcarriga/nvim-notify"] = {
     event = "VimEnter",
     config = function()
-      require("configs.notify").config()
+      require "configs.notify"
     end,
   },
 
@@ -42,7 +42,7 @@ local astro_plugins = {
   ["mrjones2014/smart-splits.nvim"] = {
     module = "smart-splits",
     config = function()
-      require("configs.smart-splits").config()
+      require "configs.smart-splits"
     end,
   },
 
@@ -50,7 +50,7 @@ local astro_plugins = {
   ["kyazdani42/nvim-web-devicons"] = {
     event = "VimEnter",
     config = function()
-      require("configs.icons").config()
+      require "configs.icons"
     end,
   },
 
@@ -58,7 +58,7 @@ local astro_plugins = {
   ["akinsho/bufferline.nvim"] = {
     after = "nvim-web-devicons",
     config = function()
-      require("configs.bufferline").config()
+      require "configs.bufferline"
     end,
   },
 
@@ -75,7 +75,7 @@ local astro_plugins = {
       vim.g.neo_tree_remove_legacy_commands = true
     end,
     config = function()
-      require("configs.neo-tree").config()
+      require "configs.neo-tree"
     end,
   },
 
@@ -83,7 +83,7 @@ local astro_plugins = {
   ["feline-nvim/feline.nvim"] = {
     after = "nvim-web-devicons",
     config = function()
-      require("configs.feline").config()
+      require "configs.feline"
     end,
   },
 
@@ -111,7 +111,7 @@ local astro_plugins = {
       "TSEnableAll",
     },
     config = function()
-      require("configs.treesitter").config()
+      require "configs.treesitter"
     end,
   },
 
@@ -123,7 +123,7 @@ local astro_plugins = {
     module = "luasnip",
     wants = "friendly-snippets",
     config = function()
-      require("configs.luasnip").config()
+      require "configs.luasnip"
     end,
   },
 
@@ -131,7 +131,7 @@ local astro_plugins = {
   ["hrsh7th/nvim-cmp"] = {
     event = "InsertEnter",
     config = function()
-      require("configs.cmp").config()
+      require "configs.cmp"
     end,
   },
 
@@ -174,7 +174,7 @@ local astro_plugins = {
   ["williamboman/nvim-lsp-installer"] = {
     after = "nvim-lspconfig",
     config = function()
-      require("configs.nvim-lsp-installer").config()
+      require "configs.nvim-lsp-installer"
       require "configs.lsp"
     end,
   },
@@ -184,7 +184,7 @@ local astro_plugins = {
     module = "aerial",
     cmd = { "AerialToggle", "AerialOpen", "AerialInfo" },
     config = function()
-      require("configs.aerial").config()
+      require "configs.aerial"
     end,
   },
 
@@ -192,7 +192,7 @@ local astro_plugins = {
   ["jose-elias-alvarez/null-ls.nvim"] = {
     event = { "BufRead", "BufNewFile" },
     config = function()
-      require("configs.null-ls").config()
+      require "configs.null-ls"
     end,
   },
 
@@ -201,7 +201,7 @@ local astro_plugins = {
     cmd = "Telescope",
     module = "telescope",
     config = function()
-      require("configs.telescope").config()
+      require "configs.telescope"
     end,
   },
 
@@ -218,7 +218,7 @@ local astro_plugins = {
   ["lewis6991/gitsigns.nvim"] = {
     event = "BufEnter",
     config = function()
-      require("configs.gitsigns").config()
+      require "configs.gitsigns"
     end,
   },
 
@@ -227,7 +227,7 @@ local astro_plugins = {
     cmd = "Alpha",
     module = "alpha",
     config = function()
-      require("configs.alpha").config()
+      require "configs.alpha"
     end,
   },
 
@@ -235,7 +235,7 @@ local astro_plugins = {
   ["norcalli/nvim-colorizer.lua"] = {
     event = { "BufRead", "BufNewFile" },
     config = function()
-      require("configs.colorizer").config()
+      require "configs.colorizer"
     end,
   },
 
@@ -243,7 +243,7 @@ local astro_plugins = {
   ["windwp/nvim-autopairs"] = {
     event = "InsertEnter",
     config = function()
-      require("configs.autopairs").config()
+      require "configs.autopairs"
     end,
   },
 
@@ -252,7 +252,7 @@ local astro_plugins = {
     cmd = "ToggleTerm",
     module = { "toggleterm", "toggleterm.terminal" },
     config = function()
-      require("configs.toggleterm").config()
+      require "configs.toggleterm"
     end,
   },
 
@@ -261,7 +261,7 @@ local astro_plugins = {
     module = { "Comment", "Comment.api" },
     keys = { "gc", "gb", "g<", "g>" },
     config = function()
-      require("configs.Comment").config()
+      require "configs.Comment"
     end,
   },
 
@@ -269,7 +269,7 @@ local astro_plugins = {
   ["lukas-reineke/indent-blankline.nvim"] = {
     event = "BufRead",
     config = function()
-      require("configs.indent-line").config()
+      require "configs.indent-line"
     end,
   },
 
@@ -277,7 +277,7 @@ local astro_plugins = {
   ["folke/which-key.nvim"] = {
     module = "which-key",
     config = function()
-      require("configs.which-key").config()
+      require "configs.which-key"
     end,
   },
 
@@ -285,7 +285,7 @@ local astro_plugins = {
   ["declancm/cinnamon.nvim"] = {
     event = { "BufRead", "BufNewFile" },
     config = function()
-      require("configs.cinnamon").config()
+      require "configs.cinnamon"
     end,
   },
 
@@ -293,7 +293,7 @@ local astro_plugins = {
   ["max397574/better-escape.nvim"] = {
     event = "InsertCharPre",
     config = function()
-      require("configs.better_escape").config()
+      require "configs.better_escape"
     end,
   },
 
@@ -306,7 +306,7 @@ local astro_plugins = {
     cmd = "SessionManager",
     event = "BufWritePost",
     config = function()
-      require("configs.session_manager").config()
+      require "configs.session_manager"
     end,
   },
 }
