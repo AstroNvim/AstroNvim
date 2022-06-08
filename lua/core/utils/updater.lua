@@ -23,7 +23,7 @@ end
 function astronvim.updater.version()
   local version = git.current_version()
   if version then
-    vim.notify("Version: " .. version, "info", astronvim.base_notification)
+    astronvim.notify("Version: " .. version)
   end
 end
 

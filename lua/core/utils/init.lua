@@ -20,7 +20,7 @@ local function load_module_file(module)
     if status_ok then
       found_module = loaded_module
     else
-      vim.notify("Error loading " .. found_module, "error", astronvim.base_notification)
+      astronvim.notify("Error loading " .. found_module, "error")
     end
   end
   return found_module
@@ -28,7 +28,6 @@ end
 
 astronvim.user_settings = load_module_file "user.init"
 astronvim.default_compile_path = stdpath "config" .. "/lua/packer_compiled.lua"
-astronvim.base_notification = { title = "AstroNvim" }
 astronvim.user_terminals = {}
 astronvim.url_matcher =
   "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
@@ -54,6 +53,10 @@ end
 
 function astronvim.trim_or_nil(str)
   return type(str) == "string" and vim.trim(str) or nil
+end
+
+function astronvim.notify(msg, type, opts)
+  vim.notify(msg, type, vim.tbl_deep_extend("force", { title = "AstroNvim" }, opts or {}))
 end
 
 function astronvim.echo(messages)
@@ -147,7 +150,7 @@ function astronvim.url_opener()
   elseif vim.fn.has "unix" == 1 then
     vim.fn.jobstart({ "xdg-open", vim.fn.expand "<cfile>" }, { detach = true })
   else
-    vim.notify("gx is not supported on this OS!", "error", astronvim.base_notification)
+    astronvim.notify("gx is not supported on this OS!", "error")
   end
 end
 
