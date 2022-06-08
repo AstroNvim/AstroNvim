@@ -97,11 +97,11 @@ function astronvim.initialize_packer()
       "https://github.com/wbthomason/packer.nvim",
       packer_path,
     }
-    print "Cloning packer...\nSetup AstroNvim"
+    astronvim.echo { { "Initializing Packer...\n\n" } }
     vim.cmd "packadd packer.nvim"
     packer_avail, packer = pcall(require, "packer")
     if not packer_avail then
-      error("Failed to load packer at:" .. packer_path .. "\n\n" .. packer)
+      vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path .. "\n\n" .. packer)
     end
   end
   return packer
@@ -137,7 +137,7 @@ function astronvim.compiled()
   if run_me then
     run_me()
   else
-    print "Please run :PackerSync"
+    astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
   end
 end
 
