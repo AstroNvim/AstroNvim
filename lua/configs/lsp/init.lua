@@ -1,6 +1,5 @@
 local status_ok, lspconfig = pcall(require, "lspconfig")
 if status_ok then
-  require "configs.lsp.handlers"
   local insert = table.insert
   local tbl_contains = vim.tbl_contains
   local sign_define = vim.fn.sign_define

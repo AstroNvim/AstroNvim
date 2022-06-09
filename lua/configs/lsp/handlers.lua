@@ -1,3 +1,4 @@
+-- TODO: Move this to utils/lsp.lua with v2.0.0
 astronvim.lsp = {}
 local map = vim.keymap.set
 local user_plugin_opts = astronvim.user_plugin_opts
