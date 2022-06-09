@@ -24,6 +24,8 @@
 AstroNvim is an aesthetic and feature-rich neovim config that is extensible and easy to use with a great set of plugins
 </p>
 
+**_Notice:_** AstroNvim v1.4.0 has added `stable` and `nightly` update channels. For the time being we have kept the default update channel to `nightly` so that the behavior of AstroNvim doesn't change (this could be considered a breaking change to some). We are planning to make the `stable` channel the default update channel when Neovim v0.8 is released and we tag AstroNvim v2.0.0 to incorporate this "breaking" change.
+
 ## 🌟 Preview
 
 ![Preview1](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dashboard.png)
