@@ -93,6 +93,7 @@ if is_available "feline.nvim" then
     desc = "Reload feline on colorscheme change",
     group = "feline_setup",
     callback = function()
+      package.loaded["configs.feline"] = nil
       require "configs.feline"
     end,
   })
