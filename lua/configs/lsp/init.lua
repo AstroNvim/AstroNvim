@@ -30,7 +30,6 @@ vim.diagnostic.config(user_plugin_opts("diagnostics", {
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
-require "configs.lsp.handlers"
 require "configs.mason-lspconfig"
 
 for _, server in ipairs(user_plugin_opts "lsp.servers") do
