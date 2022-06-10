@@ -446,5 +446,4 @@ function astronvim.cmd(cmd, show_error)
 end
 
 require "core.utils.updater"
-
-return astronvim
+require "core.utils.lsp"
