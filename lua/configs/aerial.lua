@@ -6,6 +6,7 @@ if status_ok then
     min_width = 28,
     show_guides = true,
     filter_kind = false,
+    disable_max_lines = 30000,
     icons = {
       Array = "",
       Boolean = "⊨",
