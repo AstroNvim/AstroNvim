@@ -13,6 +13,16 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   end,
 })
 
+augroup("remember-cursor-position", { clear = true })
+cmd({ "BufReadPost" }, {
+  desc = "Remember cursor position",
+  group = "remember-cursor-position",
+  pattern = "*",
+  command = [[
+  if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  ]]
+})
+
 if is_available "alpha-nvim" then
   augroup("alpha_settings", { clear = true })
   if is_available "bufferline.nvim" then
