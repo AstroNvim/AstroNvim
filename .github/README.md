@@ -43,6 +43,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 - Syntax highlighting with [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 - Formatting and linting with [Null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
 - Language Server Protocol with [Native LSP](https://github.com/neovim/nvim-lspconfig)
+- Buffer Line with [bufferline.nvim](https://github.com/akinsho/bufferline.nvim)
 
 ## ⚡ Requirements
 
