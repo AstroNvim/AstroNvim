@@ -30,7 +30,7 @@ if status_ok then
       },
     },
     window = {
-      width = 25,
+      width = 50,
       mappings = {
         ["o"] = "open",
       },
