@@ -169,6 +169,13 @@ if is_available "telescope.nvim" then
   map("n", "<leader>fw", function()
     require("telescope.builtin").live_grep()
   end, { desc = "Search words" })
+  map("n", "<leader>fW", function()
+    require("telescope.builtin").live_grep {
+      additional_args = function(args)
+        return vim.list_extend(args, { "--hidden", "--no-ignore" })
+      end,
+    }
+  end, { desc = "Search words in all files" })
   map("n", "<leader>gt", function()
     require("telescope.builtin").git_status()
   end, { desc = "Git status" })
@@ -181,6 +188,9 @@ if is_available "telescope.nvim" then
   map("n", "<leader>ff", function()
     require("telescope.builtin").find_files()
   end, { desc = "Search files" })
+  map("n", "<leader>fF", function()
+    require("telescope.builtin").find_files { hidden = true, no_ignore = true }
+  end, { desc = "Search all files" })
   map("n", "<leader>fb", function()
     require("telescope.builtin").buffers()
   end, { desc = "Search buffers" })
