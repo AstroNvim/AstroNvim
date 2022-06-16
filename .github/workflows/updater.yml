@@ -21,7 +21,7 @@ jobs:
               settings += tab + tab + `branch = "${src.ref}",\n`
             }
             if (user != "AstroNvim") {
-              settings += tab + tab + `remote = "${user},"\n`
+              settings += tab + tab + `remote = "${user}",\n`
               settings += tab + tab + `remotes = {\n`
               settings += tab + tab + tab + `["${user}"] = "${user}/${src.repo.name}",\n`
               settings += tab + tab + `},\n`
