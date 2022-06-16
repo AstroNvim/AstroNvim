@@ -93,6 +93,22 @@ if is_available "gitsigns.nvim" then
   end, { desc = "View git diff" })
 end
 
+-- NeoTest
+if is_available "neotest" then
+  map("n", "<leader>nn", function()
+    require("neotest").run.run()
+  end, { desc = "Run nearest test"})
+  map("n", "<leader>nf", function()
+    require("neotest").run.run(vim.fn.expand("%"))
+  end, { desc = "Run tests in current file"})
+  map("n", "<leader>no", function()
+    require("neotest").output.open()
+  end, { desc = "Display output of tests"})
+  map("n", "<leader>ns", function()
+    require("neotest").summary.toggle()
+  end, { desc = "Open the summary window"})
+end
+
 -- NeoTree
 if is_available "neo-tree.nvim" then
   map("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Toggle Explorer" })
