@@ -309,6 +309,14 @@ local astro_plugins = {
       require "configs.session_manager"
     end,
   },
+
+  ["EdenEast/nightfox.nvim"] = {},
+
+  ["nvim-neotest/neotest"] = {
+    config = function()
+      require "configs.neotest"
+    end,
+  }
 }
 
 if astronvim.updater.snapshot then
