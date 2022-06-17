@@ -248,7 +248,7 @@ local astro_plugins = {
   },
 
   -- Terminal
-  ["akinsho/nvim-toggleterm.lua"] = {
+  ["akinsho/toggleterm.nvim"] = {
     cmd = "ToggleTerm",
     module = { "toggleterm", "toggleterm.terminal" },
     config = function()
