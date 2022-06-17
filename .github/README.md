@@ -49,6 +49,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
 - [Neovim 0.7+](https://github.com/neovim/neovim/releases/tag/v0.7.0)
+- [xclip](https://github.com/astrand/xclip) - (Linux only) xclip is necessary for the clipboard integration with the system clipboard
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 - Optional Requirements:
   - [ripgrep](https://github.com/BurntSushi/ripgrep) - live grep telescope search (`<leader>fw`)
