@@ -241,7 +241,7 @@ if is_available "telescope.nvim" then
 end
 
 -- Terminal
-if is_available "nvim-toggleterm.lua" then
+if is_available "toggleterm.nvim" then
   local toggle_term_cmd = astronvim.toggle_term_cmd
   map("n", "<C-\\>", "<cmd>ToggleTerm<cr>", { desc = "Toggle terminal" })
   map("n", "<leader>gg", function()
