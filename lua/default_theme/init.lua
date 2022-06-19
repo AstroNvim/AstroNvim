@@ -35,7 +35,7 @@ for plugin, enabled in
     rainbow = true,
     symbols_outline = false,
     telescope = true,
-    vimwiki = false,
+    vimwiki = true,
     ["which-key"] = true,
   }))
 do

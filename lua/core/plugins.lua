@@ -2,6 +2,12 @@ local astro_plugins = {
   -- Plugin manager
   ["wbthomason/packer.nvim"] = {},
 
+  ["vimwiki/vimwiki"] = {
+    config = function()
+     vim.g.vimwiki_list = {{path = '~/Docs/wiki', syntax = 'markdown', ext = '.md'}}
+    end,
+  },
+
   -- Optimiser
   ["lewis6991/impatient.nvim"] = {},
 
