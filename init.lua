@@ -3,8 +3,6 @@ if impatient_ok then
   impatient.enable_profile()
 end
 
-vim.opt.rtp:append(vim.fn.stdpath "config" .. "/../astronvim")
-
 for _, source in ipairs {
   "core.utils",
   "core.options",
