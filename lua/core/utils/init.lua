@@ -2,10 +2,13 @@ _G.astronvim = {}
 local stdpath = vim.fn.stdpath
 local tbl_insert = table.insert
 
-local supported_configs = {
-  stdpath "config",
-  stdpath "config" .. "/../astronvim",
-}
+local path_avail, path = pcall(require, "plenary/path")
+local astronvim_config = nil
+if path_avail then
+  astronvim_config = path:new(vim.fn.stdpath "config"):parent() .. "/astronvim"
+  vim.opt.rtp:append(astronvim_config)
+end
+local supported_configs = { stdpath "config", astronvim_config }
 
 local function load_module_file(module)
   local found_module = nil
@@ -27,7 +30,7 @@ local function load_module_file(module)
 end
 
 astronvim.user_settings = load_module_file "user.init"
-astronvim.default_compile_path = stdpath "config" .. "/lua/packer_compiled.lua"
+astronvim.default_compile_path = stdpath "data" .. "/packer_compiled.lua"
 astronvim.user_terminals = {}
 astronvim.url_matcher =
   "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
