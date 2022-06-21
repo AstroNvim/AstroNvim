@@ -2,13 +2,15 @@ _G.astronvim = {}
 local stdpath = vim.fn.stdpath
 local tbl_insert = table.insert
 
+astronvim.install = astronvim_installation or { home = stdpath "config" }
+
 local path_avail, path = pcall(require, "plenary/path")
 local astronvim_config = nil
 if path_avail then
-  astronvim_config = path:new(vim.fn.stdpath "config"):parent() .. "/astronvim"
+  astronvim_config = path:new(stdpath "config"):parent() .. "/astronvim"
   vim.opt.rtp:append(astronvim_config)
 end
-local supported_configs = { stdpath "config", astronvim_config }
+local supported_configs = { astronvim.install.home, astronvim_config }
 
 local function load_module_file(module)
   local found_module = nil

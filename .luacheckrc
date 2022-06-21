@@ -2,6 +2,7 @@
 globals = {
   "PACKER_BOOTSTRAP",
   "astronvim",
+  "astronvim_installation",
   "vim",
   "C",
   "packer_plugins",
