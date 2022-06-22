@@ -113,16 +113,14 @@ astronvim.lsp.on_attach = function(client, bufnr)
           desc = "Hover diagnostics",
           buffer = bufnr,
         },
-        ["Format"] = {
-          function()
-            vim.lsp.buf.formatting()
-          end,
-          desc = "Format file with LSP",
-        },
       },
     }),
     { buffer = bufnr }
   )
+
+  vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
+    vim.lsp.buf.formatting()
+  end, { desc = "Format file with LSP" })
 
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
   local aerial_avail, aerial = pcall(require, "aerial")
