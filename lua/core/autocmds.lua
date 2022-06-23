@@ -102,18 +102,6 @@ if is_available "neo-tree.nvim" then
   })
 end
 
-if is_available "feline.nvim" then
-  augroup("feline_setup", { clear = true })
-  cmd("ColorScheme", {
-    desc = "Reload feline on colorscheme change",
-    group = "feline_setup",
-    callback = function()
-      package.loaded["configs.feline"] = nil
-      require "configs.feline"
-    end,
-  })
-end
-
 augroup("astronvim_highlights", { clear = true })
 cmd({ "VimEnter", "ColorScheme" }, {
   desc = "Load custom highlights from user configuration",

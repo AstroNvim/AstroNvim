@@ -43,7 +43,7 @@ local astro_plugins = {
 
   -- Icons
   ["kyazdani42/nvim-web-devicons"] = {
-    event = "VimEnter",
+    module = "nvim-web-devicons",
     config = function() require "configs.icons" end,
   },
 
@@ -55,7 +55,6 @@ local astro_plugins = {
 
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
-    after = "nvim-web-devicons",
     config = function() require "configs.bufferline" end,
   },
 
@@ -79,9 +78,8 @@ local astro_plugins = {
   },
 
   -- Statusline
-  ["feline-nvim/feline.nvim"] = {
-    after = "nvim-web-devicons",
-    config = function() require "configs.feline" end,
+  ["rebelot/heirline.nvim"] = {
+    config = function() require "configs.heirline" end,
   },
 
   -- Parenthesis highlighting
