@@ -5,12 +5,8 @@ local map = vim.keymap.set
 
 astronvim.install = astronvim_installation or { home = stdpath "config" }
 
-local path_avail, path = pcall(require, "plenary/path")
-local astronvim_config = nil
-if path_avail then
-  astronvim_config = path:new(stdpath "config"):parent() .. "/astronvim"
-  vim.opt.rtp:append(astronvim_config)
-end
+local astronvim_config = stdpath("config"):gsub("nvim$", "astronvim")
+vim.opt.rtp:append(astronvim_config)
 local supported_configs = { astronvim.install.home, astronvim_config }
 
 local function load_module_file(module)
