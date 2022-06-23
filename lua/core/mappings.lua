@@ -249,7 +249,7 @@ if is_available "telescope.nvim" then
     function()
       require("telescope.builtin").git_branches()
     end,
-    desc = "Git branchs",
+    desc = "Git branches",
   }
   maps.n["<leader>gc"] = {
     function()
@@ -297,7 +297,7 @@ if is_available "telescope.nvim" then
     function()
       require("telescope.builtin").git_branches()
     end,
-    desc = "Git branchs",
+    desc = "Git branches",
   }
   maps.n["<leader>sh"] = {
     function()
