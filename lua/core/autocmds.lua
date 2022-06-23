@@ -87,18 +87,6 @@ if is_available "neo-tree.nvim" then
   })
 end
 
-if is_available "feline.nvim" then
-  augroup("feline_setup", { clear = true })
-  cmd("ColorScheme", {
-    desc = "Reload feline on colorscheme change",
-    group = "feline_setup",
-    callback = function()
-      package.loaded["configs.feline"] = nil
-      require "configs.feline"
-    end,
-  })
-end
-
 create_command("AstroUpdate", astronvim.updater.update, { desc = "Update AstroNvim" })
 create_command("AstroVersion", astronvim.updater.version, { desc = "Check AstroNvim Version" })
 create_command("ToggleHighlightURL", astronvim.toggle_url_match, { desc = "Toggle URL Highlights" })
