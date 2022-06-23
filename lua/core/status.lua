@@ -61,22 +61,87 @@ function M.hl.mode(base)
   end
 end
 
-function M.provider.lsp_progress()
-  local Lsp = vim.lsp.util.get_progress_messages()[1]
-  return Lsp
-      and string.format(
-        " %%<%s %s %s (%s%%%%) ",
-        ((Lsp.percentage or 0) >= 70 and { "", "", "" } or { "", "", "" })[math.floor(
-          vim.loop.hrtime() / 12e7
-        ) % 3 + 1],
-        Lsp.title or "",
-        Lsp.message or "",
-        Lsp.percentage or 0
-      )
-    or ""
+function M.hl.filetype_color(base)
+  local _, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand "%:t", nil, { default = true })
+  return vim.tbl_deep_extend("force", base or {}, { fg = color })
 end
 
-function M.provider.lsp_client_names(expand_null_ls)
+local function icon_str(str, icon)
+  return str and str ~= "" and (icon and icon or "") .. str or ""
+end
+
+function M.provider.percentage(icon)
+  return icon_str("%p%%", icon)
+end
+
+function M.provider.ruler(line_padding, char_padding, icon)
+  return icon_str(string.format("%%%dl:%%%dc", line_padding or 0, char_padding or 0), icon)
+end
+
+function M.provider.scrollbar(icon)
+  local sbar = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
+  return function()
+    local curr_line = vim.api.nvim_win_get_cursor(0)[1]
+    local lines = vim.api.nvim_buf_line_count(0)
+    local i = math.floor((curr_line - 1) / lines * #sbar) + 1
+    return icon_str(string.rep(sbar[i], 2), icon)
+  end
+end
+
+function M.provider.filetype(icon)
+  return function()
+    return icon_str(string.lower(vim.bo.filetype), icon)
+  end
+end
+
+function M.provider.fileicon(icon)
+  return function()
+    local ft_icon, _ = require("nvim-web-devicons").get_icon(vim.fn.expand "%:t", nil, { default = true })
+    return icon_str(ft_icon, icon)
+  end
+end
+
+function M.provider.git_branch(icon)
+  return function()
+    return icon_str(vim.b.gitsigns_head or "", icon)
+  end
+end
+
+function M.provider.git_diff(type, icon)
+  return function()
+    local status = vim.b.gitsigns_status_dict
+    return icon_str(status and status[type] and status[type] > 0 and tostring(status[type]) or "", icon)
+  end
+end
+
+function M.provider.diagnostics(severity, icon)
+  return function()
+    local count = #vim.diagnostic.get(0, severity and { severity = severity })
+    return icon_str(count ~= 0 and tostring(count) or "", icon)
+  end
+end
+
+function M.provider.lsp_progress(icon)
+  return function()
+    local Lsp = vim.lsp.util.get_progress_messages()[1]
+    return icon_str(
+      Lsp
+          and string.format(
+            " %%<%s %s %s (%s%%%%) ",
+            ((Lsp.percentage or 0) >= 70 and { "", "", "" } or { "", "", "" })[math.floor(
+              vim.loop.hrtime() / 12e7
+            ) % 3 + 1],
+            Lsp.title or "",
+            Lsp.message or "",
+            Lsp.percentage or 0
+          )
+        or "",
+      icon
+    )
+  end
+end
+
+function M.provider.lsp_client_names(expand_null_ls, icon)
   return function()
     local buf_client_names = {}
     for _, client in pairs(vim.lsp.buf_get_clients(0)) do
@@ -87,13 +152,15 @@ function M.provider.lsp_client_names(expand_null_ls)
         table.insert(buf_client_names, client.name)
       end
     end
-    return table.concat(buf_client_names, ", ")
+    return icon_str(table.concat(buf_client_names, ", "), icon)
   end
 end
 
-function M.provider.treesitter_status()
-  local ts = vim.treesitter.highlighter.active[vim.api.nvim_get_current_buf()]
-  return (ts and next(ts)) and " 綠TS" or ""
+function M.provider.treesitter_status(icon)
+  return function()
+    local ts = vim.treesitter.highlighter.active[vim.api.nvim_get_current_buf()]
+    return icon_str((ts and next(ts)) and "TS" or "", icon)
+  end
 end
 
 function M.provider.spacer(n)
