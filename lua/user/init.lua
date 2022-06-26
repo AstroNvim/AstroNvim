@@ -1,5 +1,5 @@
 return {
-  colorscheme = "dayfox",
+  colorscheme = "duskfox",
   plugins = {
     init = {
       {
@@ -33,6 +33,50 @@ return {
             },
           }
         end,
+      },
+    },
+    treesitter = {
+      ensure_installed = {
+        "lua",
+        "python",
+        "java",
+        "javascript",
+        "typescript",
+        "c",
+        "cpp",
+        "rust",
+        "scss",
+        "swift",
+        "ruby",
+        "php",
+        "make",
+        "json",
+        "html",
+        "graphql",
+        "go",
+        "erlang",
+        "elixir",
+        "dockerfile"
+      },
+    },
+    ["nvim-lsp-installer"] = {
+      ensure_installed = {
+        "sumneko_lua",
+        "clangd",
+        "dockerls",
+        "eslint",
+        "elixirls",
+        "erlangls",
+        "golangci_lint_ls",
+        "graphql",
+        "html",
+        "jsonls",
+        "jdtls",
+        "intelephense",
+        "pyright",
+        "solargraph",
+        "rust_analyzer",
+        "sourcekit"
       },
     },
   },
