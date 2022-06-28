@@ -293,6 +293,12 @@ if is_available "telescope.nvim" then
     end,
     desc = "Search history",
   }
+  maps.n["<leader>fc"] = {
+    function()
+      require("telescope.builtin").grep_string()
+    end,
+    desc = "Search for word under cursor",
+  }
   maps.n["<leader>sb"] = {
     function()
       require("telescope.builtin").git_branches()
