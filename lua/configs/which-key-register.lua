@@ -33,7 +33,7 @@ if status_ok then
     init_table("n", "<leader>", "g")
   end
 
-  if is_available "nvim-toggleterm.lua" then
+  if is_available "toggleterm.nvim" then
     init_table("n", "<leader>", "g")
     init_table("n", "<leader>", "t")
   end

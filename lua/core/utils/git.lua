@@ -1,7 +1,11 @@
 local git = { url = "https://github.com/" }
 
 function git.cmd(args, ...)
-  return astronvim.cmd("git -C " .. vim.fn.stdpath "config" .. " " .. args, ...)
+  return astronvim.cmd("git -C " .. astronvim.install.home .. " " .. args, ...)
+end
+
+function git.is_repo()
+  return git.cmd("rev-parse --is-inside-work-tree", false)
 end
 
 function git.fetch(remote, ...)

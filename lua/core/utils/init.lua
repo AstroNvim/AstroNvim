@@ -1,11 +1,13 @@
 _G.astronvim = {}
 local stdpath = vim.fn.stdpath
 local tbl_insert = table.insert
+local map = vim.keymap.set
 
-local supported_configs = {
-  stdpath "config",
-  stdpath "config" .. "/../astronvim",
-}
+astronvim.install = astronvim_installation or { home = stdpath "config" }
+
+local astronvim_config = stdpath("config"):gsub("nvim$", "astronvim")
+vim.opt.rtp:append(astronvim_config)
+local supported_configs = { astronvim.install.home, astronvim_config }
 
 local function load_module_file(module)
   local found_module = nil
@@ -27,7 +29,7 @@ local function load_module_file(module)
 end
 
 astronvim.user_settings = load_module_file "user.init"
-astronvim.default_compile_path = stdpath "config" .. "/lua/packer_compiled.lua"
+astronvim.default_compile_path = stdpath "data" .. "/packer_compiled.lua"
 astronvim.user_terminals = {}
 astronvim.url_matcher =
   "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
@@ -244,6 +246,23 @@ end
 
 function astronvim.is_available(plugin)
   return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
+end
+
+function astronvim.set_mappings(map_table, base)
+  for mode, maps in pairs(map_table) do
+    for keymap, options in pairs(maps) do
+      if options then
+        local cmd = options
+        if type(options) == "table" then
+          cmd = options[1]
+          options[1] = nil
+        else
+          options = {}
+        end
+        map(mode, keymap, cmd, vim.tbl_deep_extend("force", options, base or {}))
+      end
+    end
+  end
 end
 
 function astronvim.delete_url_match()

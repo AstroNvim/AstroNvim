@@ -43,7 +43,7 @@ local base = {
   DiffDelete = { fg = C.grey_3, bg = C.red },
   DiffText = { fg = C.grey_3, bg = C.yellow },
   ErrorMsg = { fg = C.red, bg = C.none },
-  VertSplit = { fg = C.black, bg = C.none },
+  VertSplit = { fg = C.grey_4, bg = C.none },
   Folded = { fg = C.grey, bg = C.none },
   FoldColumn = { fg = C.none, bg = C.none },
   IncSearch = { fg = C.yellow, bg = C.grey },

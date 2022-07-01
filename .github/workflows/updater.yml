@@ -1,7 +1,10 @@
 name: Updater Comment
 
 on:
-  pull_request:
+  pull_request_target:
+    paths:
+      - "**.lua"
+      - "packer_snapshot"
     types:
       - opened
 
@@ -13,22 +16,20 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const pr = context.payload.pull_request
-            const user = pr.head.user.login
-            const repo = pr.head.repo.name
+            const src = context.payload.pull_request.head
+            const user = src.user.login
             const tab = "  "
-            let settings = "updater = {\n" + tab + `channel = "nightly",\n`
-            const branch = pr.head.ref
-            if (branch != "main") {
-              settings += tab + `branch = "${branch}",\n`
+            let settings = tab + "updater = {\n" + tab + tab + `channel = "nightly",\n`
+            if (src.ref != "main") {
+              settings += tab + tab + `branch = "${src.ref}",\n`
             }
             if (user != "AstroNvim") {
-              settings += tab + `remote = "${user}"\n`
-              settings += tab + `remotes = {\n`
-              settings += tab + tab + `["${user}"] = "${user}/${repo}",\n`
-              settings += tab + `}\n`
+              settings += tab + tab + `remote = "${user}",\n`
+              settings += tab + tab + `remotes = {\n`
+              settings += tab + tab + tab + `["${user}"] = "${user}/${src.repo.name}",\n`
+              settings += tab + tab + `},\n`
             }
-            settings += "}"
+            settings += tab + "},"
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
