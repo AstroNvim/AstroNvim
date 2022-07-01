@@ -130,18 +130,30 @@ end
 
 -- NeoTest
 if is_available "neotest" then
-  map("n", "<leader>nn", function()
-    require("neotest").run.run()
-  end, { desc = "Run nearest test"})
-  map("n", "<leader>nf", function()
-    require("neotest").run.run(vim.fn.expand("%"))
-  end, { desc = "Run tests in current file"})
-  map("n", "<leader>no", function()
-    require("neotest").output.open()
-  end, { desc = "Display output of tests"})
-  map("n", "<leader>ns", function()
-    require("neotest").summary.toggle()
-  end, { desc = "Open the summary window"})
+  maps.n["<leader>nn"] = {
+    function()
+      require("neotest").run.run()
+    end,
+    desc = "Run nearest test"
+  }
+  maps.n["<leader>nf"] = {
+    function()
+      require("neotest").run.run(vim.fn.expand("%"))
+    end,
+    desc = "Run tests in current file"
+  }
+  maps.n["<leader>no"] = {
+    function()
+      require("neotest").output.open()
+    end,
+    desc = "Display output of tests"
+  }
+  maps.n["<leader>ns"] = {
+    function()
+      require("neotest").summary.toggle()
+    end,
+    desc = "Open the summary window"
+  }
 end
 
 -- NeoTree
