@@ -6,6 +6,7 @@ end
 for _, source in ipairs {
   "core.utils",
   "core.options",
+  "core.bootstrap",
   "core.plugins",
   "core.autocmds",
   "core.mappings",
