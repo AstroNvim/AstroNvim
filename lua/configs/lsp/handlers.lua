@@ -2,22 +2,6 @@ astronvim.lsp = {}
 local user_plugin_opts = astronvim.user_plugin_opts
 local conditional_func = astronvim.conditional_func
 
-local function lsp_highlight_document(client)
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
-    vim.api.nvim_create_autocmd("CursorHold", {
-      group = "lsp_document_highlight",
-      pattern = "<buffer>",
-      callback = vim.lsp.buf.document_highlight,
-    })
-    vim.api.nvim_create_autocmd("CursorMoved", {
-      group = "lsp_document_highlight",
-      pattern = "<buffer>",
-      callback = vim.lsp.buf.clear_references,
-    })
-  end
-end
-
 astronvim.lsp.on_attach = function(client, bufnr)
   astronvim.set_mappings(
     user_plugin_opts("lsp.mappings", {
@@ -122,11 +106,24 @@ astronvim.lsp.on_attach = function(client, bufnr)
     vim.lsp.buf.formatting()
   end, { desc = "Format file with LSP" })
 
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+    vim.api.nvim_create_autocmd("CursorHold", {
+      group = "lsp_document_highlight",
+      pattern = "<buffer>",
+      callback = vim.lsp.buf.document_highlight,
+    })
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      group = "lsp_document_highlight",
+      pattern = "<buffer>",
+      callback = vim.lsp.buf.clear_references,
+    })
+  end
+
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
   local aerial_avail, aerial = pcall(require, "aerial")
   conditional_func(on_attach_override, true, client, bufnr)
   conditional_func(aerial.on_attach, aerial_avail, client, bufnr)
-  lsp_highlight_document(client)
 end
 
 astronvim.lsp.capabilities = vim.lsp.protocol.make_client_capabilities()
