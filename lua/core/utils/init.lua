@@ -90,7 +90,7 @@ local function user_setting_table(module)
 end
 
 function astronvim.initialize_packer()
-  local packer_avail, packer = pcall(require, "packer")
+  local packer_avail, _ = pcall(require, "packer")
   if not packer_avail then
     local packer_path = stdpath "data" .. "/site/pack/packer/start/packer.nvim"
     vim.fn.delete(packer_path, "rf")
@@ -104,12 +104,21 @@ function astronvim.initialize_packer()
     }
     astronvim.echo { { "Initializing Packer...\n\n" } }
     vim.cmd "packadd packer.nvim"
-    packer_avail, packer = pcall(require, "packer")
+    packer_avail, _ = pcall(require, "packer")
     if not packer_avail then
-      vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path .. "\n\n" .. packer)
+      vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path)
     end
   end
-  return packer
+  if packer_avail then
+    local run_me, _ = loadfile(
+      astronvim.user_plugin_opts("plugins.packer", { compile_path = astronvim.default_compile_path }).compile_path
+    )
+    if run_me then
+      run_me()
+    else
+      astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
+    end
+  end
 end
 
 function astronvim.vim_opts(options)
@@ -133,17 +142,6 @@ function astronvim.user_plugin_opts(module, default, extend, prefix)
     default = func_or_extend(user_settings, default, extend)
   end
   return default
-end
-
-function astronvim.compiled()
-  local run_me, _ = loadfile(
-    astronvim.user_plugin_opts("plugins.packer", { compile_path = astronvim.default_compile_path }).compile_path
-  )
-  if run_me then
-    run_me()
-  else
-    astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
-  end
 end
 
 function astronvim.url_opener()
