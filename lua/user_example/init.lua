@@ -143,7 +143,7 @@ local config = {
   -- Modify which-key registration
   ["which-key"] = {
     -- Add bindings
-    register_mappings = {
+    register = {
       -- first key is the mode, n == normal mode
       n = {
         -- second key is the prefix, <leader> prefixes
