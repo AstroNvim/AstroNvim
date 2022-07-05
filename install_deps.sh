@@ -19,12 +19,12 @@ if [[ $platform == 'linux' ]]; then
 elif [[ $platform == 'darwin' ]]; then
   echo "Determined platform: $platform" 
   brew update && brew upgrade
-  brew install git curl node python ruby rust lua go typescript shellcheck ripgrep fd lazygit ncdu
+  brew install git curl node python ruby rust lua go typescript shellcheck ripgrep fd lazygit ncdu hadolint checkmake
 fi
 
 sudo luarocks install luacheck
 cargo install selene stylua
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 pip install flake8 black isort
-npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good fixjson @fsouza/prettierd
+npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good fixjson @fsouza/prettierd stylelint
 
