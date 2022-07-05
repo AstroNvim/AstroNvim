@@ -11,10 +11,10 @@ fi
 if [[ $platform == 'linux' ]]; then
   distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
   echo "Determined platform: $distro"
-  if [[ $distro == 'arch' ]]; then
+  if [[ $distro == 'Garuda Linux' ]]; then
     sudo pacman -Syy
     sudo pacman -Su
-    sudo pacman -S git curl node python ruby rust lua go typescript shellcheck ripgrep fd lazygit ncdu 
+    sudo pacman -S git curl nodejs python ruby rust lua go typescript shellcheck ripgrep fd lazygit ncdu 
   fi
 elif [[ $platform == 'darwin' ]]; then
   echo "Determined platform: $platform" 
