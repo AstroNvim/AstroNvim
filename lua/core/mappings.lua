@@ -169,7 +169,6 @@ end
 -- Terminal
 if is_available "toggleterm.nvim" then
   local toggle_term_cmd = astronvim.toggle_term_cmd
-  maps.n["<C-\\>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" }
   maps.n["<leader>gg"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
   maps.n["<leader>tn"] = { function() toggle_term_cmd "node" end, desc = "ToggleTerm node" }
   maps.n["<leader>tu"] = { function() toggle_term_cmd "ncdu" end, desc = "ToggleTerm NCDU" }
@@ -185,9 +184,7 @@ end
 maps.v["<"] = { "<gv", desc = "unindent line" }
 maps.v[">"] = { ">gv", desc = "indent line" }
 
--- Improved Terminal Mappings
-maps.t["<esc>"] = { "<C-\\><C-n>", desc = "Terminal normal mode" }
-maps.t["jk"] = { "<C-\\><C-n>", desc = "Terminal normal mode" }
+-- Improved Terminal Navigation
 maps.t["<C-h>"] = { "<c-\\><c-n><c-w>h", desc = "Terminal left window navigation" }
 maps.t["<C-j>"] = { "<c-\\><c-n><c-w>j", desc = "Terminal down window navigation" }
 maps.t["<C-k>"] = { "<c-\\><c-n><c-w>k", desc = "Terminal up window navigation" }
