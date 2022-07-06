@@ -78,6 +78,12 @@ git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 nvim +PackerSync
 ```
 
+#### Install depedencies (Garuda and MacOSX)
+
+```
+sh install_deps.sh
+```
+
 ## 📦 Basic Setup
 
 #### Install LSP
