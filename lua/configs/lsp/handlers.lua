@@ -63,6 +63,8 @@ astronvim.lsp.capabilities.textDocument.completion.completionItem.tagSupport = {
 astronvim.lsp.capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = { "documentation", "detail", "additionalTextEdits" },
 }
+astronvim.lsp.capabilities = user_plugin_opts("lsp.capabilities", astronvim.lsp.capabilities)
+astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
@@ -70,6 +72,7 @@ function astronvim.lsp.server_settings(server_name)
     "lsp.server-settings." .. server_name,
     user_plugin_opts("lsp.server-settings." .. server_name, {
       capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
+      flags = vim.tbl_deep_extend("force", astronvim.lsp.flags, server.flags or {}),
     }, true, "configs")
   )
   local old_on_attach = server.on_attach
