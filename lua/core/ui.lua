@@ -50,25 +50,17 @@ function ui.nui_input()
       },
     }, {
       default_value = default_value,
-      on_close = function()
-        on_done(nil)
-      end,
-      on_submit = function(value)
-        on_done(value)
-      end,
+      on_close = function() on_done(nil) end,
+      on_submit = function(value) on_done(value) end,
     })
 
     input_ui:mount()
 
     -- cancel operation if cursor leaves input
-    input_ui:on(event.BufLeave, function()
-      on_done(nil)
-    end, { once = true })
+    input_ui:on(event.BufLeave, function() on_done(nil) end, { once = true })
 
     -- cancel operation if <Esc> is pressed
-    input_ui:map("n", "<Esc>", function()
-      on_done(nil)
-    end, { noremap = true, nowait = true })
+    input_ui:map("n", "<Esc>", function() on_done(nil) end, { noremap = true, nowait = true })
   end
 end
 
@@ -85,9 +77,7 @@ function ui.telescope_select()
 
     if opts.format_item then
       local format_item = opts.format_item
-      opts.format_item = function(item)
-        return tostring(format_item(item))
-      end
+      opts.format_item = function(item) return tostring(format_item(item)) end
     else
       opts.format_item = tostring
     end
@@ -103,38 +93,40 @@ function ui.telescope_select()
 
     local picker_opts = themes.get_dropdown()
 
-    pickers.new(picker_opts, {
-      prompt_title = opts.prompt,
-      previewer = false,
-      finder = finders.new_table {
-        results = items,
-        entry_maker = entry_maker,
-      },
-      sorter = conf.generic_sorter(opts),
-      attach_mappings = function(prompt_bufnr)
-        actions.select_default:replace(function()
-          local selection = state.get_selected_entry()
-          actions.close(prompt_bufnr)
-          if not selection then
-            -- User did not select anything.
-            on_choice(nil, nil)
-            return
-          end
-          local idx = nil
-          for i, item in ipairs(items) do
-            if item == selection.value then
-              idx = i
-              break
+    pickers
+      .new(picker_opts, {
+        prompt_title = opts.prompt,
+        previewer = false,
+        finder = finders.new_table {
+          results = items,
+          entry_maker = entry_maker,
+        },
+        sorter = conf.generic_sorter(opts),
+        attach_mappings = function(prompt_bufnr)
+          actions.select_default:replace(function()
+            local selection = state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if not selection then
+              -- User did not select anything.
+              on_choice(nil, nil)
+              return
             end
-          end
-          on_choice(selection.value, idx)
-        end)
+            local idx = nil
+            for i, item in ipairs(items) do
+              if item == selection.value then
+                idx = i
+                break
+              end
+            end
+            on_choice(selection.value, idx)
+          end)
 
-        actions.close:enhance { post = function() end }
+          actions.close:enhance { post = function() end }
 
-        return true
-      end,
-    }):find()
+          return true
+        end,
+      })
+      :find()
   end)
 end
 
