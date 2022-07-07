@@ -6,92 +6,30 @@ astronvim.lsp.on_attach = function(client, bufnr)
   astronvim.set_mappings(
     user_plugin_opts("lsp.mappings", {
       n = {
-        ["K"] = {
-          function()
-            vim.lsp.buf.hover()
-          end,
-          desc = "Hover symbol details",
-        },
-        ["<leader>la"] = {
-          function()
-            vim.lsp.buf.code_action()
-          end,
-          desc = "LSP code action",
-        },
-        ["<leader>lf"] = {
-          function()
-            vim.lsp.buf.formatting_sync()
-          end,
-          desc = "Format code",
-        },
-        ["<leader>lh"] = {
-          function()
-            vim.lsp.buf.signature_help()
-          end,
-          desc = "Signature help",
-        },
-        ["<leader>lr"] = {
-          function()
-            vim.lsp.buf.rename()
-          end,
-          desc = "Rename current symbol",
-        },
-        ["gD"] = {
-          function()
-            vim.lsp.buf.declaration()
-          end,
-          desc = "Declaration of current symbol",
-        },
-        ["gI"] = {
-          function()
-            vim.lsp.buf.implementation()
-          end,
-          desc = "Implementation of current symbol",
-        },
-        ["gd"] = {
-          function()
-            vim.lsp.buf.definition()
-          end,
-          desc = "Show the definition of current symbol",
-        },
-        ["gr"] = {
-          function()
-            vim.lsp.buf.references()
-          end,
-          desc = "References of current symbol",
-        },
-        ["<leader>ld"] = {
-          function()
-            vim.diagnostic.open_float()
-          end,
-          desc = "Hover diagnostics",
-        },
-        ["[d"] = {
-          function()
-            vim.diagnostic.goto_prev()
-          end,
-          desc = "Previous diagnostic",
-        },
-        ["]d"] = {
-          function()
-            vim.diagnostic.goto_next()
-          end,
-          desc = "Next diagnostic",
-        },
-        ["gl"] = {
-          function()
-            vim.diagnostic.open_float()
-          end,
-          desc = "Hover diagnostics",
-        },
+        ["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
+        ["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
+        ["<leader>lf"] = { function() vim.lsp.buf.formatting_sync() end, desc = "Format code" },
+        ["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help" },
+        ["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" },
+        ["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol" },
+        ["gI"] = { function() vim.lsp.buf.implementation() end, desc = "Implementation of current symbol" },
+        ["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol" },
+        ["gr"] = { function() vim.lsp.buf.references() end, desc = "References of current symbol" },
+        ["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
+        ["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" },
+        ["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" },
+        ["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
       },
     }),
     { buffer = bufnr }
   )
 
-  vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
-    vim.lsp.buf.formatting()
-  end, { desc = "Format file with LSP" })
+  vim.api.nvim_buf_create_user_command(
+    bufnr,
+    "Format",
+    function() vim.lsp.buf.formatting() end,
+    { desc = "Format file with LSP" }
+  )
 
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
@@ -144,8 +82,6 @@ function astronvim.lsp.server_settings(server_name)
   return opts
 end
 
-function astronvim.lsp.disable_formatting(client)
-  client.resolved_capabilities.document_formatting = false
-end
+function astronvim.lsp.disable_formatting(client) client.resolved_capabilities.document_formatting = false end
 
 return astronvim.lsp

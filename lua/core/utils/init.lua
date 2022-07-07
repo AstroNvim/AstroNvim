@@ -13,9 +13,7 @@ local function load_module_file(module)
   local found_module = nil
   for _, config_path in ipairs(supported_configs) do
     local module_path = config_path .. "/lua/" .. module:gsub("%.", "/") .. ".lua"
-    if vim.fn.filereadable(module_path) == 1 then
-      found_module = module_path
-    end
+    if vim.fn.filereadable(module_path) == 1 then found_module = module_path end
   end
   if found_module then
     local status_ok, loaded_module = pcall(require, module)
@@ -48,14 +46,10 @@ local function func_or_extend(overrides, default, extend)
 end
 
 function astronvim.conditional_func(func, condition, ...)
-  if (condition == nil and true or condition) and type(func) == "function" then
-    return func(...)
-  end
+  if (condition == nil and true or condition) and type(func) == "function" then return func(...) end
 end
 
-function astronvim.trim_or_nil(str)
-  return type(str) == "string" and vim.trim(str) or nil
-end
+function astronvim.trim_or_nil(str) return type(str) == "string" and vim.trim(str) or nil end
 
 function astronvim.notify(msg, type, opts)
   vim.notify(msg, type, vim.tbl_deep_extend("force", { title = "AstroNvim" }, opts or {}))
@@ -63,15 +57,11 @@ end
 
 function astronvim.echo(messages)
   messages = messages or { { "\n" } }
-  if type(messages) == "table" then
-    vim.api.nvim_echo(messages, false, {})
-  end
+  if type(messages) == "table" then vim.api.nvim_echo(messages, false, {}) end
 end
 
 function astronvim.confirm_prompt(messages)
-  if messages then
-    astronvim.echo(messages)
-  end
+  if messages then astronvim.echo(messages) end
   local confirmed = string.lower(vim.fn.input "(y/n) ") == "y"
   astronvim.echo()
   astronvim.echo()
@@ -82,9 +72,7 @@ local function user_setting_table(module)
   local settings = astronvim.user_settings or {}
   for tbl in string.gmatch(module, "([^%.]+)") do
     settings = settings[tbl]
-    if settings == nil then
-      break
-    end
+    if settings == nil then break end
   end
   return settings
 end
@@ -105,9 +93,7 @@ function astronvim.initialize_packer()
     astronvim.echo { { "Initializing Packer...\n\n" } }
     vim.cmd "packadd packer.nvim"
     packer_avail, _ = pcall(require, "packer")
-    if not packer_avail then
-      vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path)
-    end
+    if not packer_avail then vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path) end
   end
   if packer_avail then
     local run_me, _ = loadfile(
@@ -130,17 +116,11 @@ function astronvim.vim_opts(options)
 end
 
 function astronvim.user_plugin_opts(module, default, extend, prefix)
-  if extend == nil then
-    extend = true
-  end
+  if extend == nil then extend = true end
   default = default or {}
   local user_settings = load_module_file((prefix or "user") .. "." .. module)
-  if user_settings == nil and prefix == nil then
-    user_settings = user_setting_table(module)
-  end
-  if user_settings ~= nil then
-    default = func_or_extend(user_settings, default, extend)
-  end
+  if user_settings == nil and prefix == nil then user_settings = user_setting_table(module) end
+  if user_settings ~= nil then default = func_or_extend(user_settings, default, extend) end
   return default
 end
 
@@ -157,9 +137,7 @@ end
 -- term_details can be either a string for just a command or
 -- a complete table to provide full access to configuration when calling Terminal:new()
 function astronvim.toggle_term_cmd(term_details)
-  if type(term_details) == "string" then
-    term_details = { cmd = term_details, hidden = true }
-  end
+  if type(term_details) == "string" then term_details = { cmd = term_details, hidden = true } end
   local term_key = term_details.cmd
   if vim.v.count > 0 and term_details.count == nil then
     term_details.count = vim.v.count
@@ -188,15 +166,11 @@ function astronvim.get_user_cmp_source(source)
     buffer = 500,
     path = 250,
   })[source.name]
-  if priority then
-    source.priority = priority
-  end
+  if priority then source.priority = priority end
   return source
 end
 
-function astronvim.add_user_cmp_source(source)
-  astronvim.add_cmp_source(astronvim.get_user_cmp_source(source))
-end
+function astronvim.add_user_cmp_source(source) astronvim.add_cmp_source(astronvim.get_user_cmp_source(source)) end
 
 function astronvim.null_ls_providers(filetype)
   local registered = {}
@@ -219,9 +193,7 @@ end
 
 function astronvim.alpha_button(sc, txt)
   local sc_ = sc:gsub("%s", ""):gsub("LDR", "<leader>")
-  if vim.g.mapleader then
-    sc = sc:gsub("LDR", vim.g.mapleader == " " and "SPC" or vim.g.mapleader)
-  end
+  if vim.g.mapleader then sc = sc:gsub("LDR", vim.g.mapleader == " " and "SPC" or vim.g.mapleader) end
   return {
     type = "button",
     val = txt,
@@ -242,9 +214,7 @@ function astronvim.alpha_button(sc, txt)
   }
 end
 
-function astronvim.is_available(plugin)
-  return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
-end
+function astronvim.is_available(plugin) return packer_plugins ~= nil and packer_plugins[plugin] ~= nil end
 
 function astronvim.set_mappings(map_table, base)
   for mode, maps in pairs(map_table) do
@@ -265,17 +235,13 @@ end
 
 function astronvim.delete_url_match()
   for _, match in ipairs(vim.fn.getmatches()) do
-    if match.group == "HighlightURL" then
-      vim.fn.matchdelete(match.id)
-    end
+    if match.group == "HighlightURL" then vim.fn.matchdelete(match.id) end
   end
 end
 
 function astronvim.set_url_match()
   astronvim.delete_url_match()
-  if vim.g.highlighturl_enabled then
-    vim.fn.matchadd("HighlightURL", astronvim.url_matcher, 15)
-  end
+  if vim.g.highlighturl_enabled then vim.fn.matchadd("HighlightURL", astronvim.url_matcher, 15) end
 end
 
 function astronvim.toggle_url_match()
