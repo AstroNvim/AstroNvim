@@ -14,12 +14,12 @@ if [[ $platform == 'linux' ]]; then
   if [[ $distro == 'Garuda Linux' ]]; then
     sudo pacman -Syy
     sudo pacman -Su
-    sudo pacman -S git curl nodejs python ruby rust lua go typescript shellcheck ripgrep fd lazygit ncdu 
+    sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go typescript rebar3 shellcheck ripgrep fd lazygit ncdu 
   fi
 elif [[ $platform == 'darwin' ]]; then
   echo "Determined platform: $platform" 
   brew update && brew upgrade
-  brew install git curl node python ruby rust lua go typescript shellcheck ripgrep fd lazygit ncdu hadolint checkmake
+  brew install git curl node python erlang elixir ruby rust lua go typescript rebar3 shellcheck ripgrep fd lazygit ncdu hadolint checkmake
 fi
 
 sudo luarocks install luacheck
