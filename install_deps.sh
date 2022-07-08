@@ -16,8 +16,8 @@ if [ "$platform" = "linux" ]; then
     sudo pacman -Su
     sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go \
       typescript ghc perl shellcheck ripgrep fd lazygit ncdu nvm \
-      checkmake postgresql github-cli sqlite
-    yay -S rebar3 hadolint
+      checkmake postgresql github-cli sqlite openssl readline xz zlib
+    yay -S rebar3 hadolint rbenv
   elif [ "$distro" = "Ubuntu Linux" ]; then
     sudo apt-get update
     sudo apt-get upgrade
@@ -28,9 +28,11 @@ elif [ "$platform" = "darwin" ]; then
   brew update && brew upgrade
   brew install git curl node python erlang elixir ruby rust lua go \
     typescript ghc perl rebar3 shellcheck ripgrep fd lazygit ncdu \
-    nvm hadolint checkmake postgresql gh sqlite
+    nvm hadolint checkmake postgresql gh openssl readline sqlite3 \
+    xz zlib rbenv
 fi
 
+curl https://pyenv.run | bash
 sudo luarocks install luacheck
 cargo install selene stylua
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
