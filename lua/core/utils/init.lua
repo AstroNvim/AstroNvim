@@ -4,10 +4,9 @@ local tbl_insert = table.insert
 local map = vim.keymap.set
 
 astronvim.install = astronvim_installation or { home = stdpath "config" }
-
-local astronvim_config = stdpath("config"):gsub("nvim$", "astronvim")
-vim.opt.rtp:append(astronvim_config)
-local supported_configs = { astronvim.install.home, astronvim_config }
+astronvim.install.config = stdpath("config"):gsub("nvim$", "astronvim")
+vim.opt.rtp:append(astronvim.install.config)
+local supported_configs = { astronvim.install.home, astronvim.install.config }
 
 local function load_module_file(module)
   local found_module = nil
