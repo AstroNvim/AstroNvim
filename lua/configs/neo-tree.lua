@@ -57,11 +57,6 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     },
   },
   event_handlers = {
-    {
-      event = "vim_buffer_enter",
-      handler = function(_)
-        if vim.bo.filetype == "neo-tree" then vim.wo.signcolumn = "auto" end
-      end,
-    },
+    { event = "neo_tree_buffer_enter", handler = function(_) vim.opt_local.signcolumn = "auto" end },
   },
 }))
