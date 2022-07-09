@@ -34,10 +34,11 @@ fi
 
 curl https://pyenv.run | bash
 sudo luarocks install luacheck
-cargo install selene stylua
+cargo install selene stylua macchina
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 pip install flake8 black isort
 npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
   fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
   sass serverless npm-run-all nativescript
+curl -s "https://get.sdkman.io" | bash
 
