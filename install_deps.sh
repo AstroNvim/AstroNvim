@@ -42,3 +42,13 @@ npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
   sass serverless npm-run-all nativescript
 curl -s "https://get.sdkman.io" | bash
 
+if [ -n "$ZSH_VERSION" ]; then
+  zsh_shell=true
+elif [ -n "$FISH_VERSION" ]; then
+  fish_shell=true
+  curl -sL https://git.io/fisher | . && fisher install jorgebucaran/fisher
+  fisher install reitzig/sdkman-for-fish@v1.4.0
+elif [ -n "$BASH_VERSION" ]; then
+  bash_shell=true
+fi
+
