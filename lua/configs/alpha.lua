@@ -24,14 +24,14 @@ alpha.setup(astronvim.user_plugin_opts("plugins.alpha", {
     { type = "padding", val = 5 },
     {
       type = "group",
-      val = {
+      val = astronvim.user_plugin_opts("buttons", {
         alpha_button("LDR f f", "  Find File  "),
         alpha_button("LDR f o", "  Recents  "),
         alpha_button("LDR f w", "  Find Word  "),
         alpha_button("LDR f n", "  New File  "),
         alpha_button("LDR f m", "  Bookmarks  "),
         alpha_button("LDR S l", "  Last Session  "),
-      },
+      }, false),
       opts = { spacing = 1 },
     },
   },
