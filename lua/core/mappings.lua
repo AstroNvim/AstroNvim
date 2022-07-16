@@ -2,6 +2,110 @@ local is_available = astronvim.is_available
 
 local maps = { n = {}, v = {}, t = {}, [""] = {} }
 
+local bool2str = function(bool)
+  return bool and "on" or "off"
+end
+
+-- Toggle background="dark"|"light"
+local toggle_background = function()
+  local background = vim.go.background  -- global
+  if background == "light" then
+    vim.go.background = "dark"
+  else
+    vim.go.background = "light"
+  end
+  print(string.format("background=%s", vim.go.background))
+end
+
+-- Toggle completion (by running cmp setup again).
+-- local toggle_completion = function()
+--   astrovim.cmp_enable = not astronvim.cmp_enable
+--   print(string.format("completion=%s", bool2str(astrovim.cmp_enable)))
+-- end
+
+-- Toggle signcolumn="auto"|"no"
+local toggle_signcolumn = function()
+  local signcolumn = vim.wo.signcolumn  -- local to window
+  if signcolumn == "no" then
+    vim.wo.signcolumn = "auto"
+  else
+    vim.wo.signcolumn = "no"
+  end
+  print(string.format("signcolumn=%s", vim.wo.signcolumn))
+end
+
+-- Set the indent and tab related numbers.
+local set_indent = function()
+  local indent = tonumber(
+    vim.fn.input("Set indent value (>0 expandtab, <=0 noexpandtab, 0 vim defaults): ")
+  )
+  if not indent then
+    indent = 0
+  end
+  vim.bo.expandtab = (indent > 0)       -- local to buffer
+  indent = math.abs(indent)
+  vim.bo.tabstop = indent               -- local to buffer
+  vim.bo.softtabstop = indent           -- local to buffer
+  vim.bo.shiftwidth = indent            -- local to buffer
+  print(string.format("indent=%d %s", indent, vim.bo.expandtab and "expandtab" or "noexpandtab"))
+end
+
+-- Change the number display modes.
+local change_number = function()
+  local number = vim.wo.number          -- local to window
+  local relativenumber = vim.wo.relativenumber  -- local to window
+  if (number == false) and (relativenumber == false) then
+    vim.wo.number = true
+    vim.wo.relativenumber = false
+  elseif (number == true) and (relativenumber == false) then
+    vim.wo.number = false
+    vim.wo.relativenumber = true
+  elseif (number == false) and (relativenumber == true) then
+    vim.wo.number = true
+    vim.wo.relativenumber = true
+  else -- (number == true) and (relativenumber == true) then
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+  end
+  print(
+    string.format("number=%s, relativenumber=%s",
+      bool2str(vim.wo.number),
+      bool2str(vim.wo.relativenumber)
+    )
+  )
+end
+
+-- Toggle spell.
+local toggle_spell = function()
+  vim.wo.spell = not vim.wo.spell       -- local to window
+  print(string.format("spell=%s", bool2str(vim.wo.spell)))
+end
+
+-- Toggle syntax/treesitter
+local change_syntax = function()
+  local parsers = require("nvim-treesitter.parsers")
+  if parsers.has_parser() then
+    if vim.g.syntax_on then               -- local to buffer
+      vim.cmd("TSBufDisable highlight")
+      vim.cmd("syntax off")
+    else
+      vim.cmd("TSBufEnable highlight")
+      vim.cmd("syntax on")
+    end
+    local state = bool2str(vim.g.syntax_on)
+    print(string.format("treesitter %s", state))
+  else
+    if vim.g.syntax_on then
+      vim.cmd("syntax off")
+    else
+      vim.cmd("syntax on")
+    end
+    local state = bool2str(vim.g.syntax_on)
+    print(string.format("syntax %s", state))
+  end
+end
+
+
 maps[""]["<Space>"] = "<Nop>"
 
 -- Normal --
@@ -9,7 +113,6 @@ maps[""]["<Space>"] = "<Nop>"
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>q<cr>", desc = "Quit" }
 maps.n["<leader>h"] = { "<cmd>nohlsearch<cr>", desc = "No Highlight" }
-maps.n["<leader>u"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL Highlights" }
 maps.n["<leader>fn"] = { "<cmd>enew<cr>", desc = "New File" }
 maps.n["gx"] = { function() astronvim.url_opener() end, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
@@ -189,5 +292,15 @@ maps.t["<C-h>"] = { "<c-\\><c-n><c-w>h", desc = "Terminal left window navigation
 maps.t["<C-j>"] = { "<c-\\><c-n><c-w>j", desc = "Terminal down window navigation" }
 maps.t["<C-k>"] = { "<c-\\><c-n><c-w>k", desc = "Terminal up window navigation" }
 maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window naviation" }
+
+-- Custom menu for extra functionalities
+maps.n["xb"] = { toggle_background, desc = "Toggle background" }
+-- maps.t["xc"] = { toggle_completion, desc = "Toggle completion" }
+maps.n["xg"] = { toggle_signcolumn, desc = "Toggle signcolumn" }
+maps.n["xn"] = { change_number, desc = "Change line numbering" }
+maps.n["xi"] = { set_indent, desc = "Change indent setting" }
+maps.n["xp"] = { toggle_spell, desc = "Toggle spellcheck" }
+maps.n["xu"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL Highlights" }
+maps.n["xy"] = { change_syntax, desc = "Toggle syntax highlight" }
 
 astronvim.set_mappings(astronvim.user_plugin_opts("mappings", maps))

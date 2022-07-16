@@ -8,6 +8,7 @@ local mappings = {
       f = { name = "File" },
       p = { name = "Packer" },
       l = { name = "LSP" },
+      x = { name = "eXtra" },
     },
   },
 }
