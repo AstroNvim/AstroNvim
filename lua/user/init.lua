@@ -114,6 +114,11 @@ return {
     end,
     treesitter = {
       ensure_installed = {
+        "bash",
+        "haskell",
+        "markdown",
+        "toml",
+        "yaml",
         "lua",
         "python",
         "java",
@@ -155,5 +160,10 @@ return {
         "rust_analyzer"
       },
     },
+    ["neo-tree"] = {
+      window = {
+        width = 50
+      }
+    }
   },
 }
