@@ -66,35 +66,6 @@ if is_available "gitsigns.nvim" then
   maps.n["<leader>gd"] = { function() require("gitsigns").diffthis() end, desc = "View git diff" }
 end
 
--- NeoTest
-if is_available "neotest" then
-  maps.n["<leader>n"] = "Tests"
-  maps.n["<leader>nn"] = {
-    function()
-      require("neotest").run.run()
-    end,
-    desc = "Run nearest test"
-  }
-  maps.n["<leader>nf"] = {
-    function()
-      require("neotest").run.run(vim.fn.expand("%"))
-    end,
-    desc = "Run tests in current file"
-  }
-  maps.n["<leader>no"] = {
-    function()
-      require("neotest").output.open()
-    end,
-    desc = "Display output of tests"
-  }
-  maps.n["<leader>ns"] = {
-    function()
-      require("neotest").summary.toggle()
-    end,
-    desc = "Open the summary window"
-  }
-end
-
 -- NeoTree
 if is_available "neo-tree.nvim" then
   maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "Toggle Explorer" }
