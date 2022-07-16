@@ -68,6 +68,7 @@ end
 
 -- NeoTest
 if is_available "neotest" then
+  maps.n["<leader>n"] = "Tests"
   maps.n["<leader>nn"] = {
     function()
       require("neotest").run.run()
