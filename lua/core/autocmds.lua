@@ -1,4 +1,5 @@
 local is_available = astronvim.is_available
+local user_plugin_opts = astronvim.user_plugin_opts
 local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
@@ -8,9 +9,7 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
   group = "highlighturl",
   pattern = "*",
-  callback = function()
-    astronvim.set_url_match()
-  end,
+  callback = function() astronvim.set_url_match() end,
 })
 
 if is_available "alpha-nvim" then
@@ -25,9 +24,7 @@ if is_available "alpha-nvim" then
         vim.opt.showtabline = 0
         cmd("BufUnload", {
           pattern = "<buffer>",
-          callback = function()
-            vim.opt.showtabline = prev_showtabline
-          end,
+          callback = function() vim.opt.showtabline = prev_showtabline end,
         })
       end,
     })
@@ -41,9 +38,7 @@ if is_available "alpha-nvim" then
       vim.opt.laststatus = 0
       cmd("BufUnload", {
         pattern = "<buffer>",
-        callback = function()
-          vim.opt.laststatus = prev_status
-        end,
+        callback = function() vim.opt.laststatus = prev_status end,
       })
     end,
   })
@@ -65,9 +60,7 @@ if is_available "alpha-nvim" then
             end
           end
         end
-        if not should_skip then
-          alpha.start(true)
-        end
+        if not should_skip then alpha.start(true) end
       end
     end,
   })
@@ -80,9 +73,7 @@ if is_available "neo-tree.nvim" then
     group = "neotree_start",
     callback = function()
       local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
-      if stats and stats.type == "directory" then
-        require("neo-tree.setup.netrw").hijack()
-      end
+      if stats and stats.type == "directory" then require("neo-tree.setup.netrw").hijack() end
     end,
   })
 end
@@ -98,6 +89,19 @@ if is_available "feline.nvim" then
     end,
   })
 end
+
+augroup("astronvim_highlights", { clear = true })
+cmd({ "VimEnter", "ColorScheme" }, {
+  desc = "Load custom highlights from user configuration",
+  group = "astronvim_highlights",
+  callback = function()
+    if vim.g.colors_name then
+      for group, spec in pairs(user_plugin_opts("highlights." .. vim.g.colors_name)) do
+        vim.api.nvim_set_hl(0, group, spec)
+      end
+    end
+  end,
+})
 
 create_command("AstroUpdate", astronvim.updater.update, { desc = "Update AstroNvim" })
 create_command("AstroVersion", astronvim.updater.version, { desc = "Check AstroNvim Version" })

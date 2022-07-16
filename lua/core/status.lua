@@ -1,9 +1,7 @@
 local M = { hl = {}, provider = {}, conditional = {} }
 local C = require "default_theme.colors"
 
-local function hl_by_name(name)
-  return string.format("#%06x", vim.api.nvim_get_hl_by_name(name.group, true)[name.prop])
-end
+local function hl_by_name(name) return string.format("#%06x", vim.api.nvim_get_hl_by_name(name.group, true)[name.prop]) end
 
 local function hl_prop(group, prop)
   local status_ok, color = pcall(hl_by_name, { group = group, prop = prop })
@@ -41,9 +39,7 @@ function M.hl.group(hlgroup, base)
   )
 end
 
-function M.hl.fg(hlgroup, base)
-  return vim.tbl_deep_extend("force", base or {}, { fg = hl_prop(hlgroup, "foreground") })
-end
+function M.hl.fg(hlgroup, base) return vim.tbl_deep_extend("force", base or {}, { fg = hl_prop(hlgroup, "foreground") }) end
 
 function M.hl.mode(base)
   local lualine_avail, lualine = pcall(require, "lualine.themes." .. (vim.g.colors_name or "default_theme"))
@@ -96,13 +92,9 @@ function M.provider.treesitter_status()
   return (ts and next(ts)) and " 綠TS" or ""
 end
 
-function M.provider.spacer(n)
-  return string.rep(" ", n or 1)
-end
+function M.provider.spacer(n) return string.rep(" ", n or 1) end
 
-function M.conditional.git_available()
-  return vim.b.gitsigns_head ~= nil
-end
+function M.conditional.git_available() return vim.b.gitsigns_head ~= nil end
 
 function M.conditional.git_changed()
   local git_status = vim.b.gitsigns_status_dict
@@ -114,9 +106,7 @@ function M.conditional.has_filetype()
 end
 
 function M.conditional.bar_width(n)
-  return function()
-    return (vim.opt.laststatus:get() == 3 and vim.opt.columns:get() or vim.fn.winwidth(0)) > (n or 80)
-  end
+  return function() return (vim.opt.laststatus:get() == 3 and vim.opt.columns:get() or vim.fn.winwidth(0)) > (n or 80) end
 end
 
 return M

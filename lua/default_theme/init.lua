@@ -1,7 +1,5 @@
 vim.cmd "highlight clear"
-if vim.fn.exists "syntax_on" then
-  vim.cmd "syntax reset"
-end
+if vim.fn.exists "syntax_on" then vim.cmd "syntax reset" end
 vim.o.background = "dark"
 vim.o.termguicolors = true
 vim.g.colors_name = "default_theme"
@@ -39,9 +37,7 @@ for plugin, enabled in
     ["which-key"] = true,
   }))
 do
-  if enabled then
-    highlights = vim.tbl_deep_extend("force", highlights, require("default_theme.plugins." .. plugin))
-  end
+  if enabled then highlights = vim.tbl_deep_extend("force", highlights, require("default_theme.plugins." .. plugin)) end
 end
 
 for group, spec in pairs(user_plugin_opts("default_theme.highlights", highlights)) do
