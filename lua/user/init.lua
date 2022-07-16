@@ -1,5 +1,3 @@
-local is_available = astronvim.is_available
-
 return {
   colorscheme = "duskfox",
   -- Set dashboard header
