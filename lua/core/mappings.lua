@@ -17,12 +17,49 @@ local toggle_background = function()
   print(string.format("background=%s", vim.go.background))
 end
 
--- Toggle completion (by running cmp setup again).
--- local toggle_completion = function()
---   astrovim.cmp_enable = not astronvim.cmp_enable
---   print(string.format("completion=%s", bool2str(astrovim.cmp_enable)))
--- end
+-- Toggle completion (by running cmp setup again). 
+-- https://github.com/hrsh7th/nvim-cmp/issues/429
+-- https://neovim.discourse.group/t/toggle-nvim-cmp/2520/2
+-- https://www.reddit.com/r/neovim/comments/rh0ohq/nvimcmp_temporarily_disable_autocompletion/
+-- https://www.littlehart.net/atthekeyboard/2021/11/12/grumpy-nvim-setup/
+-- https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/init.lua
+-- https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques
 
+-- toggle_completion() -- <leader>tc -- toggle completion
+-- https://github.com/hrsh7th/nvim-cmp/issues/261
+-- My own old solution
+-- https://github.com/hrsh7th/nvim-cmp/issues/106
+-- require('cmp').setup.buffer { enabled = false } -- new calling convention
+vim.g.cmp_toggle_flag = true -- initialize
+local normal_buftype = function()
+  return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt'
+end
+local toggle_completion = function()
+  local ok, cmp = pcall(require, "cmp")
+  if ok then
+    local next_cmp_toggle_flag = not vim.g.cmp_toggle_flag
+    if next_cmp_toggle_flag then
+      print("completion on")
+    else
+      print("completion off")
+    end
+    cmp.setup.buffer {
+      enabled = function()
+        vim.g.cmp_toggle_flag = next_cmp_toggle_flag
+        if next_cmp_toggle_flag then
+          return normal_buftype
+        else
+          return next_cmp_toggle_flag
+        end
+      end
+    }
+  else
+    print("completion not available")
+  end
+end
+
+-- 
+-- 
 -- Toggle signcolumn="auto"|"no"
 local toggle_signcolumn = function()
   local signcolumn = vim.wo.signcolumn  -- local to window
@@ -40,7 +77,7 @@ local set_indent = function()
     vim.fn.input("Set indent value (>0 expandtab, <=0 noexpandtab, 0 vim defaults): ")
   )
   if not indent then
-    indent = 0
+    indent = -8                         -- noexpandtab, tabstop=8
   end
   vim.bo.expandtab = (indent > 0)       -- local to buffer
   indent = math.abs(indent)
@@ -295,7 +332,7 @@ maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window naviation
 
 -- Custom menu for extra functionalities
 maps.n["xb"] = { toggle_background, desc = "Toggle background" }
--- maps.t["xc"] = { toggle_completion, desc = "Toggle completion" }
+maps.n["xc"] = { toggle_completion, desc = "Toggle completion" }
 maps.n["xg"] = { toggle_signcolumn, desc = "Toggle signcolumn" }
 maps.n["xn"] = { change_number, desc = "Change line numbering" }
 maps.n["xi"] = { set_indent, desc = "Change indent setting" }
