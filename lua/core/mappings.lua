@@ -331,13 +331,13 @@ maps.t["<C-k>"] = { "<c-\\><c-n><c-w>k", desc = "Terminal up window navigation" 
 maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window naviation" }
 
 -- Custom menu for extra functionalities
-maps.n["xb"] = { toggle_background, desc = "Toggle background" }
-maps.n["xc"] = { toggle_completion, desc = "Toggle completion" }
-maps.n["xg"] = { toggle_signcolumn, desc = "Toggle signcolumn" }
-maps.n["xn"] = { change_number, desc = "Change line numbering" }
-maps.n["xi"] = { set_indent, desc = "Change indent setting" }
-maps.n["xp"] = { toggle_spell, desc = "Toggle spellcheck" }
-maps.n["xu"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL Highlights" }
-maps.n["xy"] = { change_syntax, desc = "Toggle syntax highlight" }
+maps.n["<leader>xb"] = { toggle_background, desc = "Toggle background" }
+maps.n["<leader>xc"] = { toggle_completion, desc = "Toggle completion" }
+maps.n["<leader>xg"] = { toggle_signcolumn, desc = "Toggle signcolumn" }
+maps.n["<leader>xn"] = { change_number, desc = "Change line numbering" }
+maps.n["<leader>xi"] = { set_indent, desc = "Change indent setting" }
+maps.n["<leader>xp"] = { toggle_spell, desc = "Toggle spellcheck" }
+maps.n["<leader>xu"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL Highlights" }
+maps.n["<leader>xy"] = { change_syntax, desc = "Toggle syntax highlight" }
 
 astronvim.set_mappings(astronvim.user_plugin_opts("mappings", maps))
