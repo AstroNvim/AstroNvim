@@ -37,9 +37,7 @@ if is_available "telescope.nvim" then
   init_table("n", "<leader>", "g")
 end
 
-mappings = user_plugin_opts("which-key.register_mappings", mappings)
--- support previous legacy notation, deprecate at some point
-mappings.n["<leader>"] = user_plugin_opts("which-key.register_n_leader", mappings.n["<leader>"])
+mappings = user_plugin_opts("which-key.register", mappings)
 for mode, prefixes in pairs(mappings) do
   for prefix, mapping_table in pairs(prefixes) do
     which_key.register(mapping_table, {

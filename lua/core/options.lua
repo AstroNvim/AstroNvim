@@ -2,6 +2,7 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
   opt = {
     backspace = vim.opt.backspace + { "nostop" }, -- Don't stop backspace at insert
     clipboard = "unnamedplus", -- Connection to the system clipboard
+    cmdheight = 0, -- hide command line unless needed
     completeopt = { "menuone", "noselect" }, -- Options for insert mode completion
     copyindent = true, -- Copy the previous indentation on autoindenting
     cursorline = true, -- Highlight the text line of the cursor
@@ -35,8 +36,6 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
     writebackup = false, -- Disable making a backup before overwriting a file
   },
   g = {
-    do_filetype_lua = 1, -- use filetype.lua
-    did_load_filetypes = 0, -- don't use filetype.vim
     highlighturl_enabled = true, -- highlight URLs by default
     mapleader = " ", -- set leader key
     zipPlugin = false, -- disable zip

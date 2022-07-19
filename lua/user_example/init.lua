@@ -29,6 +29,13 @@ local config = {
       local C = require "default_theme.colors"
 
       highlights.Normal = { fg = C.fg, bg = C.bg }
+
+      -- New approach instead of diagnostic_style
+      highlights.DiagnosticError.italic = true
+      highlights.DiagnosticHint.italic = true
+      highlights.DiagnosticInfo.italic = true
+      highlights.DiagnosticWarn.italic = true
+
       return highlights
     end,
   },
@@ -45,7 +52,6 @@ local config = {
 
   -- Default theme configuration
   default_theme = {
-    diagnostics_style = { italic = true },
     -- Modify the color table
     colors = {
       fg = "#abb2bf",
@@ -109,11 +115,11 @@ local config = {
       -- set up null-ls's on_attach function
       config.on_attach = function(client)
         -- NOTE: You can remove this on attach function to disable format on save
-        if client.resolved_capabilities.document_formatting then
+        if client.server_capabilities.documentFormattingProvider then
           vim.api.nvim_create_autocmd("BufWritePre", {
             desc = "Auto format before save",
             pattern = "<buffer>",
-            callback = vim.lsp.buf.formatting_sync,
+            callback = function() vim.lsp.buf.format() end,
           })
         end
       end
@@ -143,7 +149,7 @@ local config = {
   -- Modify which-key registration
   ["which-key"] = {
     -- Add bindings
-    register_mappings = {
+    register = {
       -- first key is the mode, n == normal mode
       n = {
         -- second key is the prefix, <leader> prefixes

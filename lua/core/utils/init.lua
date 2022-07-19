@@ -90,7 +90,7 @@ function astronvim.initialize_packer()
       packer_path,
     }
     astronvim.echo { { "Initializing Packer...\n\n" } }
-    vim.cmd "packadd packer.nvim"
+    vim.cmd { cmd = "packadd", args = { "packer.nvim" } }
     packer_avail, _ = pcall(require, "packer")
     if not packer_avail then vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path) end
   end
@@ -213,6 +213,16 @@ function astronvim.alpha_button(sc, txt)
   }
 end
 
+function astronvim.format_symbols(symbols, depth, separator, icons)
+  local parts = {}
+  depth = depth or #symbols
+  symbols = depth > 0 and { unpack(symbols, 1, depth) } or { unpack(symbols, #symbols + 1 + depth) }
+  for _, symbol in ipairs(symbols) do
+    table.insert(parts, icons == false and symbol.name or string.format("%s %s", symbol.icon, symbol.name))
+  end
+  return table.concat(parts, separator)
+end
+
 function astronvim.is_available(plugin) return packer_plugins ~= nil and packer_plugins[plugin] ~= nil end
 
 function astronvim.set_mappings(map_table, base)
@@ -258,5 +268,4 @@ function astronvim.cmd(cmd, show_error)
 end
 
 require "core.utils.updater"
-
-return astronvim
+require "core.utils.lsp"

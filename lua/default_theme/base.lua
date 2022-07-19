@@ -66,6 +66,8 @@ local base = {
   StatusLineNC = { fg = C.grey, bg = C.none },
   StatusLineTerm = { fg = C.fg, bg = C.grey_4 },
   StatusLineTermNC = { fg = C.grey_4, bg = C.none },
+  WinBar = { fg = C.grey_2, bg = C.bg },
+  WinBarNC = { fg = C.grey, bg = C.bg },
   TabLine = { fg = C.grey, bg = C.none },
   TabLineSel = { fg = C.fg, bg = C.none },
   TabLineFill = { fg = C.none, bg = C.grey_3 },
