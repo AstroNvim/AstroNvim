@@ -23,24 +23,23 @@ end
 -- My own old solution
 -- https://github.com/hrsh7th/nvim-cmp/issues/106
 -- require('cmp').setup.buffer { enabled = false } -- new calling convention
-vim.g.cmp_on = true -- initialize global var for toggle_completion
+vim.g.cmp_toggle_flag = true -- initialize global var for toggle_completion
 
 function astronvim.toggle_completion()
   local ok, cmp = pcall(require, "cmp")
   if ok then
-    local next_cmp_toggle_flag = not vim.g.cmp_toggle_flag
-    if next_cmp_toggle_flag then
+    vim.g.cmp_toggle_flag = not vim.g.cmp_toggle_flag
+    if vim.g.cmp_toggle_flag then
       print("completion on")
     else
       print("completion off")
     end
     cmp.setup.buffer {
       enabled = function()
-        vim.g.cmp_toggle_flag = next_cmp_toggle_flag
-        if next_cmp_toggle_flag then
+        if vim.g.cmp_toggle_flag then
           return normal_buftype
         else
-          return next_cmp_toggle_flag
+          return false
         end
       end
     }
