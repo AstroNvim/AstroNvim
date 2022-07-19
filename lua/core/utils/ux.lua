@@ -23,7 +23,7 @@ end
 -- My own old solution
 -- https://github.com/hrsh7th/nvim-cmp/issues/106
 -- require('cmp').setup.buffer { enabled = false } -- new calling convention
-vim.g.cmp_toggle_flag = true -- initialize
+vim.g.cmp_on = true -- initialize global var for toggle_completion
 
 function astronvim.toggle_completion()
   local ok, cmp = pcall(require, "cmp")
@@ -80,16 +80,16 @@ end
 function astronvim.change_number()
   local number = vim.wo.number          -- local to window
   local relativenumber = vim.wo.relativenumber  -- local to window
-  if (number == false) and (relativenumber == false) then
+  if not number and not relativenumber then
     vim.wo.number = true
     vim.wo.relativenumber = false
-  elseif (number == true) and (relativenumber == false) then
+  elseif number and not relativenumber then
     vim.wo.number = false
     vim.wo.relativenumber = true
-  elseif (number == false) and (relativenumber == true) then
+  elseif not number and relativenumber then
     vim.wo.number = true
     vim.wo.relativenumber = true
-  else -- (number == true) and (relativenumber == true) then
+  else -- number and relativenumber
     vim.wo.number = false
     vim.wo.relativenumber = false
   end
@@ -109,24 +109,22 @@ end
 
 -- Toggle syntax/treesitter
 function astronvim.toggle_syntax()
-  local parsers = require("nvim-treesitter.parsers")
-  if parsers.has_parser() then
-    if vim.g.syntax_on then               -- local to buffer
+  local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
+  if vim.g.syntax_on then               -- global var for on//off
+    if ts_avail and parsers.has_parser() then
       vim.cmd("TSBufDisable highlight")
-      vim.cmd("syntax off")
-    else
-      vim.cmd("TSBufEnable highlight")
-      vim.cmd("syntax on")
     end
-    local state = bool2str(vim.g.syntax_on)
-    print(string.format("treesitter %s", state))
+    vim.cmd("syntax off")  -- set vim.g.syntax_on = false
   else
-    if vim.g.syntax_on then
-      vim.cmd("syntax off")
-    else
-      vim.cmd("syntax on")
+    if ts_avail and parsers.has_parser() then
+      vim.cmd("TSBufEnable highlight")
     end
-    local state = bool2str(vim.g.syntax_on)
+    vim.cmd("syntax on")   -- set vim.g.syntax_on = true
+  end
+  local state = bool2str(vim.g.syntax_on)
+  if ts_avail and parsers.has_parser() then
+    print(string.format("syntax and treesitter %s", state))
+  else
     print(string.format("syntax %s", state))
   end
 end
