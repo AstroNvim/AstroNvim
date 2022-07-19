@@ -9,7 +9,6 @@ maps[""]["<Space>"] = "<Nop>"
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>q<cr>", desc = "Quit" }
 maps.n["<leader>h"] = { "<cmd>nohlsearch<cr>", desc = "No Highlight" }
-maps.n["<leader>u"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL Highlights" }
 maps.n["<leader>fn"] = { "<cmd>enew<cr>", desc = "New File" }
 maps.n["gx"] = { function() astronvim.url_opener() end, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
@@ -189,5 +188,21 @@ maps.t["<C-h>"] = { "<c-\\><c-n><c-w>h", desc = "Terminal left window navigation
 maps.t["<C-j>"] = { "<c-\\><c-n><c-w>j", desc = "Terminal down window navigation" }
 maps.t["<C-k>"] = { "<c-\\><c-n><c-w>k", desc = "Terminal up window navigation" }
 maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window naviation" }
+
+-- Custom menu for modification of the user experience
+if is_available "nvim-autopairs" then
+  maps.n["<leader>ua"] = { function() astronvim.toggle_autopairs() end, desc = "Toggle autopairs" }
+end
+maps.n["<leader>ub"] = { function() astronvim.toggle_background() end, desc = "Toggle background" }
+if is_available "nvim-cmp" then
+  maps.n["<leader>uc"] = { function() astronvim.toggle_cmp() end, desc = "Toggle completion" }
+end
+maps.n["<leader>ug"] = { function() astronvim.toggle_signcolumn() end, desc = "Toggle signcolumn" }
+maps.n["<leader>ui"] = { function() astronvim.set_indent() end, desc = "Change indent setting" }
+maps.n["<leader>un"] = { function() astronvim.change_number() end, desc = "Change line numbering" }
+maps.n["<leader>up"] = { function() astronvim.toggle_spell() end, desc = "Toggle spellcheck" }
+maps.n["<leader>uu"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL highlight" }
+maps.n["<leader>uw"] = { function() astronvim.toggle_wrap() end, desc = "Toggle wrap" }
+maps.n["<leader>uy"] = { function() astronvim.toggle_syntax() end, desc = "Toggle syntax highlight" }
 
 astronvim.set_mappings(astronvim.user_plugin_opts("mappings", maps))
