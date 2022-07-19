@@ -1,7 +1,5 @@
 -- Functions to toggle and tweak User Experience
 --
-local is_available = astronvim.is_available
-
 local bool2str = function(bool)
   return bool and "on" or "off"
 end
@@ -11,7 +9,7 @@ local normal_buftype = function()
 end
 
 -- Toggle background="dark"|"light"
-astronvim.toggle_background = function()
+function astronvim.toggle_background()
   local background = vim.go.background  -- global
   if background == "light" then
     vim.go.background = "dark"
@@ -27,7 +25,7 @@ end
 -- require('cmp').setup.buffer { enabled = false } -- new calling convention
 vim.g.cmp_toggle_flag = true -- initialize
 
-astronvim.toggle_completion = function()
+function astronvim.toggle_completion()
   local ok, cmp = pcall(require, "cmp")
   if ok then
     local next_cmp_toggle_flag = not vim.g.cmp_toggle_flag
@@ -52,7 +50,7 @@ astronvim.toggle_completion = function()
 end
 
 -- Toggle signcolumn="auto"|"no"
-astronvim.toggle_signcolumn = function()
+function astronvim.toggle_signcolumn()
   local signcolumn = vim.wo.signcolumn  -- local to window
   if signcolumn == "no" then
     vim.wo.signcolumn = "auto"
@@ -63,7 +61,7 @@ astronvim.toggle_signcolumn = function()
 end
 
 -- Set the indent and tab related numbers.
-astronvim.set_indent = function()
+function astronvim.set_indent()
   local indent = tonumber(
     vim.fn.input("Set indent value (>0 expandtab, <=0 noexpandtab, 0 vim defaults): ")
   )
@@ -79,7 +77,7 @@ astronvim.set_indent = function()
 end
 
 -- Change the number display modes.
-astronvim.change_number = function()
+function astronvim.change_number()
   local number = vim.wo.number          -- local to window
   local relativenumber = vim.wo.relativenumber  -- local to window
   if (number == false) and (relativenumber == false) then
@@ -104,13 +102,13 @@ astronvim.change_number = function()
 end
 
 -- Toggle spell.
-astronvim.toggle_spell = function()
+function astronvim.toggle_spell()
   vim.wo.spell = not vim.wo.spell       -- local to window
   print(string.format("spell=%s", bool2str(vim.wo.spell)))
 end
 
 -- Toggle syntax/treesitter
-astronvim.toggle_syntax = function()
+function astronvim.toggle_syntax()
   local parsers = require("nvim-treesitter.parsers")
   if parsers.has_parser() then
     if vim.g.syntax_on then               -- local to buffer
