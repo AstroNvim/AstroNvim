@@ -6,6 +6,7 @@ local mappings = {
       f = { name = "File" },
       p = { name = "Packer" },
       l = { name = "LSP" },
+      u = { name = "UI" },
     },
   },
 }
