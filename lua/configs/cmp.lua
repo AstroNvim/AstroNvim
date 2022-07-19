@@ -63,6 +63,7 @@ setup(astronvim.user_plugin_opts("plugins.cmp", {
       border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
     },
   },
+  completion = { autocomplete = astronvim.set_cmp_autocomplete() },
   mapping = {
     ["<Up>"] = cmp.mapping.select_prev_item(),
     ["<Down>"] = cmp.mapping.select_next_item(),
