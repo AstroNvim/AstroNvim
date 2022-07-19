@@ -447,5 +447,8 @@ function astronvim.cmd(cmd, show_error)
   return success and result or nil
 end
 
+require "core.utils.ui"
 require "core.utils.updater"
 require "core.utils.lsp"
+
+return astronvim
