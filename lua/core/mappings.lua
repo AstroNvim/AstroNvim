@@ -196,7 +196,7 @@ maps.n["<leader>ug"] = { function() astronvim.toggle_signcolumn() end, desc = "T
 maps.n["<leader>ui"] = { function() astronvim.set_indent() end, desc = "Change indent setting" }
 maps.n["<leader>un"] = { function() astronvim.change_number() end, desc = "Change line numbering" }
 maps.n["<leader>up"] = { function() astronvim.toggle_spell() end, desc = "Toggle spellcheck" }
-maps.n["<leader>uu"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL highlights" }
+maps.n["<leader>uu"] = { function() astronvim.toggle_url_match() end, desc = "Toggle URL highlight" }
 maps.n["<leader>uy"] = { function() astronvim.toggle_syntax() end, desc = "Toggle syntax highlight" }
 
 astronvim.set_mappings(astronvim.user_plugin_opts("mappings", maps))
