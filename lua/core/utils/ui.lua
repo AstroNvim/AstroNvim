@@ -1,4 +1,4 @@
--- Functions to toggle and tweak User Experience
+-- Functions to change User Interface behavior
 --
 local bool2str = function(bool)
   return bool and "on" or "off"
