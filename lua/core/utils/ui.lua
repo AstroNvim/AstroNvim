@@ -1,4 +1,4 @@
--- Functions to change User Interface behavior
+-- Functions to toggle User Interface (UI) behavior
 --
 local bool2str = function(bool)
   return bool and "on" or "off"
@@ -16,7 +16,7 @@ function astronvim.toggle_background()
   else
     vim.go.background = "light"
   end
-  astronvim.echo({{string.format("background=%s", vim.go.background)}})
+  vim.notify(string.format("background=%s", vim.go.background))
 end
 
 -- https://github.com/hrsh7th/nvim-cmp/issues/261
@@ -30,9 +30,9 @@ function astronvim.toggle_completion()
   if ok then
     vim.g.cmp_toggle_flag = not vim.g.cmp_toggle_flag
     if vim.g.cmp_toggle_flag then
-      astronvim.echo({{"completion on"}})
+      vim.notify("completion on")
     else
-      astronvim.echo({{"completion off"}})
+      vim.notify("completion off")
     end
     cmp.setup.buffer {
       enabled = function()
@@ -44,7 +44,7 @@ function astronvim.toggle_completion()
       end
     }
   else
-    astronvim.echo({{"completion not available"}})
+    vim.notify("completion not available")
   end
 end
 
@@ -56,7 +56,7 @@ function astronvim.toggle_signcolumn()
   else
     vim.wo.signcolumn = "no"
   end
-  astronvim.echo({{string.format("signcolumn=%s", vim.wo.signcolumn)}})
+  vim.notify(string.format("signcolumn=%s", vim.wo.signcolumn))
 end
 
 -- Set the indent and tab related numbers.
@@ -72,7 +72,7 @@ function astronvim.set_indent()
   vim.bo.tabstop = indent               -- local to buffer
   vim.bo.softtabstop = indent           -- local to buffer
   vim.bo.shiftwidth = indent            -- local to buffer
-  astronvim.echo({{string.format("indent=%d %s", indent, vim.bo.expandtab and "expandtab" or "noexpandtab")}})
+  vim.notify(string.format("indent=%d %s", indent, vim.bo.expandtab and "expandtab" or "noexpandtab"))
 end
 
 -- Change the number display modes.
@@ -92,20 +92,18 @@ function astronvim.change_number()
     vim.wo.number = false
     vim.wo.relativenumber = false
   end
-  astronvim.echo(
-    {{
-      string.format("number=%s, relativenumber=%s",
-        bool2str(vim.wo.number),
-        bool2str(vim.wo.relativenumber)
-      )
-    }}
+  vim.notify(
+    string.format("number=%s, relativenumber=%s",
+      bool2str(vim.wo.number),
+      bool2str(vim.wo.relativenumber)
+    )
   )
 end
 
 -- Toggle spell.
 function astronvim.toggle_spell()
   vim.wo.spell = not vim.wo.spell       -- local to window
-  astronvim.echo({{string.format("spell=%s", bool2str(vim.wo.spell))}})
+  vim.notify(string.format("spell=%s", bool2str(vim.wo.spell)))
 end
 
 -- Toggle syntax/treesitter
@@ -124,9 +122,9 @@ function astronvim.toggle_syntax()
   end
   local state = bool2str(vim.g.syntax_on)
   if ts_avail and parsers.has_parser() then
-    astronvim.echo({{string.format("syntax and treesitter %s", state)}})
+    vim.notify(string.format("syntax and treesitter %s", state))
   else
-    astronvim.echo({{string.format("syntax %s", state)}})
+    vim.notify(string.format("syntax %s", state))
   end
 end
 
