@@ -106,6 +106,12 @@ function astronvim.toggle_spell()
   vim.notify(string.format("spell=%s", bool2str(vim.wo.spell)))
 end
 
+-- Toggle wrap.
+function astronvim.toggle_wrap()
+  vim.wo.wrap = not vim.wo.wrap       -- local to window
+  vim.notify(string.format("wrap=%s", bool2str(vim.wo.wrap)))
+end
+
 -- Toggle syntax/treesitter
 function astronvim.toggle_syntax()
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
