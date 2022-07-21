@@ -8,6 +8,24 @@ local normal_buftype = function()
   return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt'
 end
 
+vim.g.autopairs_toggle_flag = true -- initialize global var for astronvim.toggle_autopairs
+-- Toggle autopairs
+function astronvim.toggle_autopairs()
+  local ok, autopairs = pcall(require, "nvim-autopairs")
+  if ok then
+    vim.g.autopairs_toggle_flag = not vim.g.autopairs_toggle_flag
+    if vim.g.autopairs_toggle_flag then
+      autopairs.enable()
+      vim.notify("autopairs on")
+    else
+      autopairs.disable()
+      vim.notify("autopairs off")
+    end
+  else
+    vim.notify("autopairs not available")
+  end
+end
+
 -- Toggle background="dark"|"light"
 function astronvim.toggle_background()
   local background = vim.go.background  -- global

@@ -190,6 +190,7 @@ maps.t["<C-k>"] = { "<c-\\><c-n><c-w>k", desc = "Terminal up window navigation" 
 maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window naviation" }
 
 -- Custom menu for modification of the user experience
+maps.n["<leader>ua"] = { function() astronvim.toggle_autopairs() end, desc = "Toggle autopairs" }
 maps.n["<leader>ub"] = { function() astronvim.toggle_background() end, desc = "Toggle background" }
 maps.n["<leader>uc"] = { function() astronvim.toggle_completion() end, desc = "Toggle completion" }
 maps.n["<leader>ug"] = { function() astronvim.toggle_signcolumn() end, desc = "Toggle signcolumn" }
