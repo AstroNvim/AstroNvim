@@ -31,7 +31,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
     { desc = "Format file with LSP" }
   )
 
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.DocumentHighlight then
     vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
     vim.api.nvim_create_autocmd("CursorHold", {
       group = "lsp_document_highlight",
@@ -85,6 +85,6 @@ function astronvim.lsp.server_settings(server_name)
   return opts
 end
 
-function astronvim.lsp.disable_formatting(client) client.resolved_capabilities.document_formatting = false end
+function astronvim.lsp.disable_formatting(client) client.server_capabilities.documentFormattingProvider = false end
 
 return astronvim.lsp
