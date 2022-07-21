@@ -99,15 +99,11 @@ function astronvim.change_number()
   local relativenumber = vim.wo.relativenumber  -- local to window
   if not number and not relativenumber then
     vim.wo.number = true
-    vim.wo.relativenumber = false
   elseif number and not relativenumber then
-    vim.wo.number = false
     vim.wo.relativenumber = true
-  elseif not number and relativenumber then
-    vim.wo.number = true
-    vim.wo.relativenumber = true
-  else -- number and relativenumber
+  elseif number and relativenumber then
     vim.wo.number = false
+  else -- not number and relativenumber
     vim.wo.relativenumber = false
   end
   vim.notify(
