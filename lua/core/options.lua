@@ -57,5 +57,7 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
     loaded_zipPlugin = true, -- disable zip
     loaded_vimball = true, -- disable vimball
     loaded_vimballPlugin = true, -- disable vimball
+    autopairs_toggle_flag = true, -- initialize global var for astronvim.toggle_autopairs
+    cmp_toggle_flag = true, -- initialize global var for toggle_completion
   },
 }))

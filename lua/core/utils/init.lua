@@ -258,5 +258,6 @@ function astronvim.cmd(cmd, show_error)
 end
 
 require "core.utils.updater"
+require "core.utils.ui"
 
 return astronvim
