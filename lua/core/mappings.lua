@@ -202,3 +202,4 @@ maps.n["<leader>uw"] = { function() astronvim.toggle_wrap() end, desc = "Toggle 
 maps.n["<leader>uy"] = { function() astronvim.toggle_syntax() end, desc = "Toggle syntax highlight" }
 
 astronvim.set_mappings(astronvim.user_plugin_opts("mappings", maps))
+
