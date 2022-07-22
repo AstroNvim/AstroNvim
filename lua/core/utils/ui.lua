@@ -9,19 +9,10 @@ local normal_buftype = function()
 end
 
 -- Toggle autopairs
-function astronvim.init_autopairs()
-  if vim.g.autopairs_toggle_flag then
-    local ok, autopairs = pcall(require, "nvim-autopairs")
-    if ok then
-      autopairs.enable()
-    end
-  end
-end
-
 function astronvim.toggle_autopairs()
-  vim.g.autopairs_toggle_flag = not vim.g.autopairs_toggle_flag
   local ok, autopairs = pcall(require, "nvim-autopairs")
   if ok then
+    vim.g.autopairs_toggle_flag = not vim.g.autopairs_toggle_flag
     if vim.g.autopairs_toggle_flag then
       autopairs.enable()
       vim.notify("autopairs on")
@@ -45,25 +36,15 @@ function astronvim.toggle_background()
   vim.notify(string.format("background=%s", vim.go.background))
 end
 
--- https://github.com/hrsh7th/nvim-cmp/issues/261 -- My own old solution
--- https://github.com/hrsh7th/nvim-cmp/issues/106 -- New calling convention setup.buffer
-function astronvim.init_completion()
-  if vim.g.cmp_toggle_flag then
-    local ok, cmp = pcall(require, "cmp")
-    if ok then
-      cmp.setup.buffer {
-        enabled = function()
-          return normal_buftype
-        end
-      }
-    end
-  end
-end
+-- https://github.com/hrsh7th/nvim-cmp/issues/261
+-- My own old solution
+-- https://github.com/hrsh7th/nvim-cmp/issues/106
+-- require('cmp').setup.buffer { enabled = false } -- new calling convention
 
 function astronvim.toggle_completion()
-  vim.g.cmp_toggle_flag = not vim.g.cmp_toggle_flag
   local ok, cmp = pcall(require, "cmp")
   if ok then
+    vim.g.cmp_toggle_flag = not vim.g.cmp_toggle_flag
     if vim.g.cmp_toggle_flag then
       vim.notify("completion on")
     else
