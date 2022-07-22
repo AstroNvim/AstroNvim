@@ -8,7 +8,6 @@ local normal_buftype = function()
   return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt'
 end
 
-vim.g.autopairs_toggle_flag = true -- initialize global var for astronvim.toggle_autopairs
 -- Toggle autopairs
 function astronvim.toggle_autopairs()
   local ok, autopairs = pcall(require, "nvim-autopairs")
@@ -41,7 +40,6 @@ end
 -- My own old solution
 -- https://github.com/hrsh7th/nvim-cmp/issues/106
 -- require('cmp').setup.buffer { enabled = false } -- new calling convention
-vim.g.cmp_toggle_flag = true -- initialize global var for toggle_completion
 
 function astronvim.toggle_completion()
   local ok, cmp = pcall(require, "cmp")
