@@ -33,6 +33,7 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     width = 25,
     mappings = {
       ["o"] = "open",
+      ["D"] = "delete",
     },
   },
   filesystem = {
