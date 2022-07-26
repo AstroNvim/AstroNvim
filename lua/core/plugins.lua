@@ -138,14 +138,22 @@ local astro_plugins = {
     config = function() astronvim.add_user_cmp_source "nvim_lsp" end,
   },
 
+  -- Package Manager
+  ["williamboman/mason.nvim"] = { config = function() require "configs.mason" end },
+
+  ["WhoIsSethDaniel/mason-tool-installer.nvim"] = {
+    after = "mason.nvim",
+    config = function() require "configs.mason-tool-installer" end,
+  },
+
   -- Built-in LSP
   ["neovim/nvim-lspconfig"] = { event = "VimEnter" },
 
   -- LSP manager
-  ["williamboman/nvim-lsp-installer"] = {
-    after = "nvim-lspconfig",
+  ["williamboman/mason-lspconfig.nvim"] = {
+    after = { "mason.nvim", "nvim-lspconfig" },
     config = function()
-      require "configs.nvim-lsp-installer"
+      require "configs.mason-lspconfig"
       require "configs.lsp"
     end,
   },

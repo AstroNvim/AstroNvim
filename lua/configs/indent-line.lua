@@ -4,8 +4,6 @@ indent_blankline.setup(astronvim.user_plugin_opts("plugins.indent_blankline", {
   buftype_exclude = {
     "nofile",
     "terminal",
-    "lsp-installer",
-    "lspinfo",
   },
   filetype_exclude = {
     "help",

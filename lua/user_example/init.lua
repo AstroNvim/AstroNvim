@@ -102,9 +102,8 @@ local config = {
       -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
       config.sources = {
         -- Set a formatter
-        null_ls.builtins.formatting.rufo,
-        -- Set a linter
-        null_ls.builtins.diagnostics.rubocop,
+        null_ls.builtins.formatting.stylua,
+        null_ls.builtins.formatting.prettier,
       }
       -- set up null-ls's on_attach function
       config.on_attach = function(client)
@@ -122,8 +121,13 @@ local config = {
     treesitter = {
       ensure_installed = { "lua" },
     },
-    ["nvim-lsp-installer"] = {
+    -- use mason-lspconfig to configure LSP installations
+    ["mason-lspconfig"] = {
       ensure_installed = { "sumneko_lua" },
+    },
+    -- use mason-tool-installer to configure DAP/Formatters/Linter installation
+    ["mason-tool-installer"] = {
+      ensure_installed = { "prettier", "stylua" },
     },
     packer = {
       compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
@@ -157,7 +161,7 @@ local config = {
 
   -- Extend LSP configuration
   lsp = {
-    -- enable servers that you already have installed without lsp-installer
+    -- enable servers that you already have installed without mason
     servers = {
       -- "pyright"
     },
