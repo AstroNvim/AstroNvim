@@ -82,11 +82,12 @@ if is_available "neovim-session-manager" then
     { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" }
 end
 
+-- Package Manager
+-- TODO: v2 rework these key bindings to be more general
+if is_available "mason.nvim" then maps.n["<leader>lI"] = { "<cmd>Mason<cr>", desc = "LSP installer" } end
+
 -- LSP Installer
-if is_available "nvim-lsp-installer" then
-  maps.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" }
-  maps.n["<leader>lI"] = { "<cmd>LspInstallInfo<cr>", desc = "LSP installer" }
-end
+if is_available "mason-lspconfig.nvim" then maps.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" } end
 
 -- Smart Splits
 if is_available "smart-splits.nvim" then
