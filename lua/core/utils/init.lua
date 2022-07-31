@@ -19,7 +19,7 @@ local function load_module_file(module)
     if status_ok then
       found_module = loaded_module
     else
-      astronvim.notify("Error loading " .. found_module, "error")
+      vim.api.nvim_err_writeln("Error loading file: " .. found_module)
     end
   end
   return found_module
