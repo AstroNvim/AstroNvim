@@ -82,8 +82,11 @@ if is_available "neovim-session-manager" then
 end
 
 -- Package Manager
--- TODO: v2 rework these key bindings to be more general
-if is_available "mason.nvim" then maps.n["<leader>lI"] = { "<cmd>Mason<cr>", desc = "LSP installer" } end
+if is_available "mason.nvim" then maps.n["<leader>pI"] = { "<cmd>Mason<cr>", desc = "Mason Installer" } end
+
+if is_available "mason-tool-installer.nvim" then
+  maps.n["<leader>pU"] = { "<cmd>MasonToolsUpdate<cr>", desc = "Mason Update" }
+end
 
 -- LSP Installer
 if is_available "mason-lspconfig.nvim" then maps.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" } end
