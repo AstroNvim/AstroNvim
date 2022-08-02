@@ -4,7 +4,7 @@ local mappings = {
   n = {
     ["<leader>"] = {
       f = { name = "File" },
-      p = { name = "Packer" },
+      p = { name = "Packages" },
       l = { name = "LSP" },
       u = { name = "UI" },
     },
