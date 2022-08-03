@@ -114,11 +114,11 @@ end
 function astronvim.toggle_syntax()
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
   if vim.g.syntax_on then -- global var for on//off
-    if ts_avail and parsers.has_parser() then vim.cmd "TSBufDisable highlight" end
-    vim.cmd "syntax off" -- set vim.g.syntax_on = false
+    if ts_avail and parsers.has_parser() then vim.cmd.TSBufDisable "highlight" end
+    vim.cmd.syntax "off" -- set vim.g.syntax_on = false
   else
-    if ts_avail and parsers.has_parser() then vim.cmd "TSBufEnable highlight" end
-    vim.cmd "syntax on" -- set vim.g.syntax_on = true
+    if ts_avail and parsers.has_parser() then vim.cmd.TSBufEnable "highlight" end
+    vim.cmd.syntax "on" -- set vim.g.syntax_on = true
   end
   vim.notify(string.format("syntax %s", bool2str(vim.g.syntax_on)))
 end
