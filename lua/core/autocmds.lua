@@ -29,9 +29,9 @@ cmd("BufEnter", {
       end
     end
     if #vim.api.nvim_list_tabpages() > 1 then
-      vim.cmd "tabclose"
+      vim.cmd.tabclose()
     else
-      vim.cmd "qall"
+      vim.cmd.qall()
     end
   end,
 })
