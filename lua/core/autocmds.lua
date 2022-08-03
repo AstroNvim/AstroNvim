@@ -24,7 +24,7 @@ cmd("BufEnter", {
       local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
       if vim.tbl_contains(sidebar_fts, ft) then sidebars[ft] = true end
     end, vim.api.nvim_list_bufs())
-    if num_wins > 1 and vim.tbl_count(sidebars) == num_wins then vim.cmd "quit" end
+    if num_wins > 1 and vim.tbl_count(sidebars) == num_wins then vim.cmd.quit() end
   end,
 })
 
