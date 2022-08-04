@@ -25,7 +25,7 @@ alpha.setup(astronvim.user_plugin_opts("plugins.alpha", {
     {
       type = "group",
       val = {
-        alpha_button("LDR f f", "  Find File  "),
+        alpha_button("LDR f f", "  Find File  "),
         alpha_button("LDR f o", "  Recents  "),
         alpha_button("LDR f w", "  Find Word  "),
         alpha_button("LDR f n", "  New File  "),
