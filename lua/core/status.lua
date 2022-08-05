@@ -88,8 +88,8 @@ function M.provider.lsp_client_names(expand_null_ls)
 end
 
 function M.provider.treesitter_status()
-  local ts = vim.treesitter.highlighter.active[vim.api.nvim_get_current_buf()]
-  return (ts and next(ts)) and " 綠TS" or ""
+  local ts_avail, ts = pcall(require, "nvim-treesitter.parsers")
+  return (ts_avail and ts.has_parser()) and " 綠TS" or ""
 end
 
 function M.provider.spacer(n) return string.rep(" ", n or 1) end

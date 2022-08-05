@@ -36,10 +36,10 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 
 local servers = user_plugin_opts "lsp.servers"
 local skip_setup = user_plugin_opts "lsp.skip_setup"
-local installer_avail, lsp_installer = pcall(require, "nvim-lsp-installer")
+local installer_avail, lsp_installer = pcall(require, "mason-lspconfig")
 if installer_avail then
   for _, server in ipairs(lsp_installer.get_installed_servers()) do
-    insert(servers, server.name)
+    insert(servers, server)
   end
 end
 for _, server in ipairs(servers) do

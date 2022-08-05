@@ -24,7 +24,10 @@ local astro_plugins = {
   },
 
   -- Neovim UI Enhancer
-  ["MunifTanjim/nui.nvim"] = { module = "nui" },
+  ["stevearc/dressing.nvim"] = {
+    event = "VimEnter",
+    config = function() require "configs.dressing" end,
+  },
 
   -- Cursorhold fix
   ["antoinemadec/FixCursorHold.nvim"] = {
@@ -58,7 +61,7 @@ local astro_plugins = {
     branch = "v2.x",
     module = "neo-tree",
     cmd = "Neotree",
-    requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    requires = { { "MunifTanjim/nui.nvim", module = "nui" } },
     setup = function() vim.g.neo_tree_remove_legacy_commands = true end,
     config = function() require "configs.neo-tree" end,
   },
@@ -135,14 +138,22 @@ local astro_plugins = {
     config = function() astronvim.add_user_cmp_source "nvim_lsp" end,
   },
 
+  -- Package Manager
+  ["williamboman/mason.nvim"] = { config = function() require "configs.mason" end },
+
+  ["WhoIsSethDaniel/mason-tool-installer.nvim"] = {
+    after = "mason.nvim",
+    config = function() require "configs.mason-tool-installer" end,
+  },
+
   -- Built-in LSP
   ["neovim/nvim-lspconfig"] = { event = "VimEnter" },
 
   -- LSP manager
-  ["williamboman/nvim-lsp-installer"] = {
-    after = "nvim-lspconfig",
+  ["williamboman/mason-lspconfig.nvim"] = {
+    after = { "mason.nvim", "nvim-lspconfig" },
     config = function()
-      require "configs.nvim-lsp-installer"
+      require "configs.mason-lspconfig"
       require "configs.lsp"
     end,
   },

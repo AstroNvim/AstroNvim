@@ -54,6 +54,11 @@ local treesitter = {
   markdownTSLiteral = { fg = C.green },
   markdownTSPunctSpecial = { fg = C.red },
   markdownTSPunctDelimiter = { fg = C.fg },
+  rustTSType = { fg = C.yellow },
+  rustTSFuncMacro = { fg = C.orange },
+  rustTSNamespace = { fg = C.yellow },
+  rustTSConstant = { fg = C.cyan },
+  rustTSKeywordFunction = { fg = C.orange },
 }
 
 return treesitter
