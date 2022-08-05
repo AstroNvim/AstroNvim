@@ -152,10 +152,7 @@ local astro_plugins = {
   -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
     after = { "mason.nvim", "nvim-lspconfig" },
-    config = function()
-      require "configs.mason-lspconfig"
-      require "configs.lsp"
-    end,
+    config = function() require "configs.lsp" end,
   },
 
   -- LSP symbols
