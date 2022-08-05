@@ -147,7 +147,7 @@ local astro_plugins = {
   },
 
   -- Built-in LSP
-  ["neovim/nvim-lspconfig"] = { event = "VimEnter" },
+  ["neovim/nvim-lspconfig"] = {},
 
   -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
