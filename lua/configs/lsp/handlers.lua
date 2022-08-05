@@ -1,6 +1,20 @@
 astronvim.lsp = {}
+local tbl_contains = vim.tbl_contains
 local user_plugin_opts = astronvim.user_plugin_opts
 local conditional_func = astronvim.conditional_func
+local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
+local skip_setup = user_plugin_opts "lsp.skip_setup"
+
+astronvim.lsp.setup = function(server)
+  if not tbl_contains(skip_setup, server) then
+    local opts = astronvim.lsp.server_settings(server)
+    if type(user_registration) == "function" then
+      user_registration(server, opts)
+    else
+      require("lspconfig")[server].setup(opts)
+    end
+  end
+end
 
 astronvim.lsp.on_attach = function(client, bufnr)
   astronvim.set_mappings(
