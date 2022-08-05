@@ -48,7 +48,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 ## ⚡ Requirements
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
-- [Neovim 0.7+](https://github.com/neovim/neovim/releases/tag/v0.7.0)
+- [Stable Neovim 0.7+](https://github.com/neovim/neovim/releases/tag/v0.7.0)
 - A clipboard tool is necessary for the integration with the system clipboard (see [`:help clipboard-tool`](https://neovim.io/doc/user/provider.html#clipboard-tool) for supported solutions)
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 - Optional Requirements:
