@@ -196,7 +196,7 @@ local astro_plugins = {
   },
 
   -- Color highlighting
-  ["norcalli/nvim-colorizer.lua"] = {
+  ["NvChad/nvim-colorizer.lua"] = {
     event = { "BufRead", "BufNewFile" },
     config = function() require "configs.colorizer" end,
   },
