@@ -229,18 +229,7 @@ local config = {
         -- null_ls.builtins.formatting.stylua,
         -- null_ls.builtins.formatting.prettier,
       }
-      -- set up null-ls's on_attach function
-      -- NOTE: You can uncomment this on attach function to enable format on save
-      -- config.on_attach = function(client)
-      --   if client.resolved_capabilities.document_formatting then
-      --     vim.api.nvim_create_autocmd("BufWritePre", {
-      --       desc = "Auto format before save",
-      --       pattern = "<buffer>",
-      --      callback = function() vim.lsp.buf.format() end,
-      --     })
-      --   end
-      -- end
-      return config -- return final config table to use in require("null-ls").setup(config)
+      return config -- return final config table
     end,
     treesitter = { -- overrides `require("treesitter").setup(...)`
       -- ensure_installed = { "lua" },

@@ -72,6 +72,16 @@ astronvim.lsp.on_attach = function(client, bufnr)
     })
   end
 
+  if client.server_capabilities.documentFormattingProvider then
+    vim.api.nvim_create_augroup("auto_format", { clear = true })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = "auto_format",
+      desc = "Auto format before save",
+      pattern = "<buffer>",
+      callback = function() vim.lsp.buf.format() end,
+    })
+  end
+
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
   local aerial_avail, aerial = pcall(require, "aerial")
   conditional_func(on_attach_override, true, client, bufnr)
