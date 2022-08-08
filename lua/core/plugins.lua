@@ -47,6 +47,9 @@ local astro_plugins = {
     config = function() require "configs.icons" end,
   },
 
+  -- LSP Icons
+  ["onsails/lspkind.nvim"] = { module = "lspkind" },
+
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
     config = function() require "configs.bufferline" end,
