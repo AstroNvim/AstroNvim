@@ -49,7 +49,7 @@ local base = {
   IncSearch = { fg = C.yellow, bg = C.grey },
   LineNr = { fg = C.grey_1, bg = C.none },
   NonText = { fg = C.grey_1, bg = C.none },
-  Pmenu = { fg = C.fg, bg = C.black_1 },
+  Pmenu = { fg = C.fg, bg = C.bg },
   PmenuSel = { fg = C.none, bg = C.grey_4 },
   PmenuSbar = { fg = C.none, bg = C.grey_3 },
   PmenuThumb = { fg = C.none, bg = C.fg },
@@ -84,7 +84,7 @@ local base = {
   CmpItemKind = { fg = C.yellow },
   CmpItemAbbr = { fg = C.fg },
   CmpItemMenuDefault = { fg = C.fg },
-  FloatBorder = { bg = C.none },
+  FloatBorder = { fg = C.grey_6, bg = C.bg },
   MatchParen = { fg = C.none, bg = C.grey_5 },
 }
 
