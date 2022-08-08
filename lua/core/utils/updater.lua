@@ -1,9 +1,13 @@
 local fn = vim.fn
 local git = require "core.utils.git"
-local options = astronvim.user_plugin_opts(
-  "updater",
-  { remote = "origin", branch = "main", channel = "nightly", show_changelog = true }
-)
+local options = astronvim.user_plugin_opts("updater", {
+  remote = "origin",
+  branch = "main",
+  channel = "nightly",
+  show_changelog = true,
+  auto_reload = false,
+  auto_quit = false,
+})
 
 if astronvim.install.is_stable ~= nil then options.channel = astronvim.install.is_stable and "stable" or "nightly" end
 
@@ -31,6 +35,20 @@ local function attempt_update(target)
 end
 
 local cancelled_message = { { "Update cancelled", "WarningMsg" } }
+
+function astronvim.updater.reload()
+  if vim.fn.exists ":LspStop" ~= 0 then vim.cmd "LspStop" end
+  local reload_module = require("plenary.reload").reload_module
+  reload_module("user", false)
+  reload_module("configs", false)
+  reload_module("default_theme", false)
+  reload_module("core", false)
+  -- manual unload plugins if they exist
+  reload_module("cmp", false)
+  reload_module("which-key", false)
+  local reloaded, _ = pcall(dofile, vim.fn.expand "$MYVIMRC")
+  if reloaded then astronvim.notify "Reloaded AstroNvim" end
+end
 
 function astronvim.updater.update()
   if not git.is_repo() then
@@ -105,7 +123,7 @@ function astronvim.updater.update()
     and not astronvim.confirm_prompt {
       { "Update available to ", "Title" },
       { is_stable and options.version or target, "String" },
-      { "\nContinue?" },
+      { "\nUpdating requires a restart, continue?" },
     }
   then
     astronvim.echo(cancelled_message)
@@ -143,12 +161,36 @@ function astronvim.updater.update()
       { "AstroNvim updated successfully to ", "Title" },
       { git.current_version(), "String" },
       { "!\n", "Title" },
-      { "Please restart and run :PackerSync.\n\n", "WarningMsg" },
+      {
+        options.auto_reload and "AstroNvim will now sync packer and quit.\n\n"
+          or "Please restart and run :PackerSync.\n\n",
+        "WarningMsg",
+      },
     }
     if options.show_changelog and #changelog > 0 then
       vim.list_extend(summary, { { "Changelog:\n", "Title" } })
       vim.list_extend(summary, git.pretty_changelog(changelog))
     end
     astronvim.echo(summary)
+
+    if options.auto_quit then
+      vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
+    end
+
+    if options.auto_reload then
+      astronvim.updater.reload()
+      local packer_avail, packer = pcall(require, "packer")
+      if packer_avail then
+        vim.api.nvim_create_autocmd(
+          "User",
+          { pattern = "PackerComplete", command = "doautocmd User AstroUpdateComplete" }
+        )
+        packer.sync()
+      else
+        vim.cmd [[doautocmd User AstroUpdateComplete]]
+      end
+    else
+      vim.cmd [[doautocmd User AstroUpdateComplete]]
+    end
   end
 end
