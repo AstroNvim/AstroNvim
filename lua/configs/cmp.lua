@@ -80,6 +80,7 @@ setup(astronvim.user_plugin_opts("plugins.cmp", {
     },
   },
   completion = {
+    autocomplete = astronvim.set_cmp_autocomplete()
     completeopt = "menu,menuone,noinsert",
   },
   mapping = {
