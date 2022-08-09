@@ -258,6 +258,8 @@ local astro_plugins = {
     event = "BufWritePost",
     config = function() require "configs.session_manager" end,
   },
+  
+  ["carbon-language/vim-carbon-lang"] = {},
 }
 
 if astronvim.updater.snapshot then
