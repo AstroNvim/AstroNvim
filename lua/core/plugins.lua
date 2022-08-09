@@ -48,7 +48,10 @@ local astro_plugins = {
   },
 
   -- LSP Icons
-  ["onsails/lspkind.nvim"] = { module = "lspkind" },
+  ["onsails/lspkind.nvim"] = {
+    module = "lspkind",
+    config = function() require "configs.lspkind" end,
+  },
 
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
