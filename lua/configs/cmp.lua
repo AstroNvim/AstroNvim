@@ -13,18 +13,7 @@ setup(astronvim.user_plugin_opts("plugins.cmp", {
   preselect = cmp.PreselectMode.None,
   formatting = {
     fields = { "kind", "abbr", "menu" },
-    format = lspkind_status_ok and lspkind.cmp_format(astronvim.user_plugin_opts("plugins.lspkind", {
-      mode = "symbol",
-      symbol_map = {
-        Constructor = "",
-        Class = "",
-        Property = "",
-        Unit = "",
-        Snippet = "",
-        Reference = "",
-        TypeParameter = "",
-      },
-    })) or nil,
+    format = lspkind_status_ok and lspkind.cmp_format(astronvim.lspkind) or nil,
   },
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
