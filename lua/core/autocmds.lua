@@ -103,7 +103,7 @@ cmd({ "VimEnter", "ColorScheme" }, {
   end,
 })
 
-create_command("AstroUpdate", astronvim.updater.update, { desc = "Update AstroNvim" })
-create_command("AstroReload", astronvim.updater.reload, { desc = "Reload AstroNvim" })
-create_command("AstroVersion", astronvim.updater.version, { desc = "Check AstroNvim Version" })
+create_command("AstroUpdate", function() astronvim.updater.update() end, { desc = "Update AstroNvim" })
+create_command("AstroReload", function() astronvim.updater.reload() end, { desc = "Reload AstroNvim" })
+create_command("AstroVersion", function() astronvim.updater.version() end, { desc = "Check AstroNvim Version" })
 create_command("ToggleHighlightURL", astronvim.toggle_url_match, { desc = "Toggle URL Highlights" })
