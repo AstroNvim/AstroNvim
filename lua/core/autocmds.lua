@@ -12,6 +12,26 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   callback = function() astronvim.set_url_match() end,
 })
 
+augroup("auto_quit", { clear = true })
+cmd("BufEnter", {
+  desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
+  group = "auto_quit",
+  callback = function()
+    local num_wins = #vim.api.nvim_list_wins()
+    local not_sidebars = num_wins
+    local sidebar_fts = { "aerial", "neo-tree" }
+    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+      if
+        vim.api.nvim_buf_is_loaded(bufnr)
+        and vim.tbl_contains(sidebar_fts, vim.api.nvim_buf_get_option(bufnr, "filetype"))
+      then
+        not_sidebars = not_sidebars - 1
+      end
+    end
+    if num_wins > 1 and not_sidebars == 0 then vim.cmd "quit" end
+  end,
+})
+
 if is_available "alpha-nvim" then
   augroup("alpha_settings", { clear = true })
   if is_available "bufferline.nvim" then
