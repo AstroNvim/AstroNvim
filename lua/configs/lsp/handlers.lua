@@ -34,6 +34,9 @@ astronvim.lsp.on_attach = function(client, bufnr)
         ["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" },
         ["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
       },
+      v = {
+        ["<leader>la"] = { function() vim.lsp.buf.range_code_action() end, desc = "Range LSP code action" },
+      },
     }),
     { buffer = bufnr }
   )
