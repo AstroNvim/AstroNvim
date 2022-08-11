@@ -102,9 +102,10 @@ Run `:AstroUpdate` to get the latest updates from the repository<br>
 ## 🗒️ Links
 
 [AstroNvim Documentation](https://astronvim.github.io/)
+[Core AstroNvim LUA API Documentation](https://astronvim.github.io/AstroNvim/)
 
-- [Basic Usage](https://astronvim.github.io/usage/walkthrough) is given for basic usage
-- [Default Mappings](https://astronvim.github.io/usage/mappings) more about the default key bindings
+- [Basic Usage](https://astronvim.github.io/Basic%20Usage/walkthrough) is given for basic usage
+- [Default Mappings](https://astronvim.github.io/Basic%20Usage/mappings) more about the default key bindings
 - [Default Plugin Configuration](https://astronvim.github.io/configuration/plugin_defaults) more about the provided plugin defaults
 - [Advanced Configuration](https://astronvim.github.io/configuration/config_options) more about advanced configuration
 
