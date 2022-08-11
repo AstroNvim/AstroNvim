@@ -287,6 +287,29 @@ end
 -- @param source a cmp source string or table (see cmp documentation for source table format)
 function astronvim.add_user_cmp_source(source) astronvim.add_cmp_source(astronvim.get_user_cmp_source(source)) end
 
+--- register mappings table with which-key
+-- @param mappings nested table of mappings where the first key is the mode, the second key is the prefix, and the value is the mapping table for which-key
+-- @param opts table of which-key options when setting the mappings (see which-key documentation for possible values)
+function astronvim.which_key_register(mappings, opts)
+  local status_ok, which_key = pcall(require, "which-key")
+  if not status_ok then return end
+  for mode, prefixes in pairs(mappings) do
+    for prefix, mapping_table in pairs(prefixes) do
+      which_key.register(
+        mapping_table,
+        vim.tbl_deep_extend("force", {
+          mode = mode,
+          prefix = prefix,
+          buffer = nil,
+          silent = true,
+          noremap = true,
+          nowait = true,
+        }, opts or {})
+      )
+    end
+  end
+end
+
 --- Get a list of registered null-ls providers for a given filetype
 -- @param filetype the filetype to search null-ls for
 -- @return a list of null-ls sources
