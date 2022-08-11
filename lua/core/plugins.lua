@@ -250,6 +250,8 @@ local astro_plugins = {
   -- Terminal
   ["akinsho/toggleterm.nvim"] = {
     cmd = "ToggleTerm",
+    event = { "BufRead", "BufNewFile" },
+    tag = 'v1.*',
     module = { "toggleterm", "toggleterm.terminal" },
     config = function()
       require "configs.toggleterm"
@@ -309,7 +311,31 @@ local astro_plugins = {
       require "configs.session_manager"
     end,
   },
+
+  ["xiyaowong/nvim-transparent"] = {
+    enable = true, -- boolean: enable transparent
+    extra_groups = { -- table/string: additional groups that should be cleared
+      -- In particular, when you set it to 'all', that means all available groups
+
+      -- example of akinsho/nvim-bufferline.lua
+      "BufferLineTabClose",
+      "BufferlineBufferSelected",
+      "BufferLineFill",
+      "BufferLineBackground",
+      "BufferLineSeparator",
+      "BufferLineIndicatorSelected",
+    },
+    exclude = {}, -- table: groups you don't want to clear
+  },
+
+  ["Pocco81/AutoSave.nvim"] = {
+    enabled = true,
+    execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
+    events = {"InsertLeave", "TextChanged"},
+  }
 }
+
+vim.g.transparent_enabled = true
 
 if astronvim.updater.snapshot then
   for plugin, options in pairs(astro_plugins) do

@@ -5,6 +5,7 @@ map("", "<Space>", "<Nop>") -- disable space because leader
 
 -- Normal --
 -- Standard Operations
+map("n", "<leader>v", "<cmd>vsplit<cr>")
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "No Highlight" })

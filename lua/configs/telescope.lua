@@ -90,7 +90,11 @@ if status_ok then
         },
       },
     },
-    pickers = {},
+    pickers = {
+      find_files = {
+        hidden = true
+      }
+    },
     extensions = {},
   }))
 end

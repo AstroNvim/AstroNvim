@@ -20,4 +20,5 @@ for _, source in ipairs {
   end
 end
 
+
 astronvim.conditional_func(astronvim.user_plugin_opts("polish", nil, false))

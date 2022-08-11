@@ -1,5 +1,9 @@
 local ui = {}
 
+require("notify").setup({
+  background_colour = "#000000",
+})
+
 function ui.nui_input()
   -- Set up NUI for UI Input
   -- From: https://github.com/MunifTanjim/nui.nvim/wiki/vim.ui#vimuiinput

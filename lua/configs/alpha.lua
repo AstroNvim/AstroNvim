@@ -4,23 +4,6 @@ if status_ok then
   alpha.setup(astronvim.user_plugin_opts("plugins.alpha", {
     layout = {
       { type = "padding", val = vim.fn.max { 2, vim.fn.floor(vim.fn.winheight(0) * 0.2) } },
-      {
-        type = "text",
-        val = astronvim.user_plugin_opts("header", {
-          " █████  ███████ ████████ ██████   ██████",
-          "██   ██ ██         ██    ██   ██ ██    ██",
-          "███████ ███████    ██    ██████  ██    ██",
-          "██   ██      ██    ██    ██   ██ ██    ██",
-          "██   ██ ███████    ██    ██   ██  ██████",
-          " ",
-          "    ███    ██ ██    ██ ██ ███    ███",
-          "    ████   ██ ██    ██ ██ ████  ████",
-          "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
-          "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
-          "    ██   ████   ████   ██ ██      ██",
-        }, false),
-        opts = { position = "center", hl = "DashboardHeader" },
-      },
       { type = "padding", val = 5 },
       {
         type = "group",

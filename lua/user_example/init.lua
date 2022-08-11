@@ -99,6 +99,7 @@ local config = {
         null_ls.builtins.formatting.rufo,
         -- Set a linter
         null_ls.builtins.diagnostics.rubocop,
+        null_ls.builtins.formatting.black
       }
       -- set up null-ls's on_attach function
       config.on_attach = function(client)
