@@ -1,34 +1,8 @@
 local cmp_status_ok, cmp = pcall(require, "cmp")
 local snip_status_ok, luasnip = pcall(require, "luasnip")
+local lspkind_status_ok, lspkind = pcall(require, "lspkind")
 if not (cmp_status_ok and snip_status_ok) then return end
 local setup = cmp.setup
-local kind_icons = {
-  Text = "",
-  Method = "",
-  Function = "",
-  Constructor = "",
-  Field = "ﰠ",
-  Variable = "",
-  Class = "",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "פּ",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
-}
 
 local function has_words_before()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -39,10 +13,7 @@ setup(astronvim.user_plugin_opts("plugins.cmp", {
   preselect = cmp.PreselectMode.None,
   formatting = {
     fields = { "kind", "abbr", "menu" },
-    format = function(_, vim_item)
-      vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-      return vim_item
-    end,
+    format = lspkind_status_ok and lspkind.cmp_format(astronvim.lspkind) or nil,
   },
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
