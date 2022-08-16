@@ -206,9 +206,9 @@ local astro_plugins = {
   },
 
   -- Color highlighting
-  ["NvChad/nvim-colorizer.lua"] = {
+  ["brenoprata10/nvim-highlight-colors"] = {
     event = { "BufRead", "BufNewFile" },
-    config = function() require "configs.colorizer" end,
+    config = function() require "configs.nvim-highlight-colors" end,
   },
 
   -- Autopairs
