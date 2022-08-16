@@ -30,12 +30,7 @@ end
 
 --- Toggle background="dark"|"light"
 function astronvim.ui.toggle_background()
-  local background = vim.go.background -- global
-  if background == "light" then
-    vim.go.background = "dark"
-  else
-    vim.go.background = "light"
-  end
+  vim.go.background = vim.go.background == "light" and "dark" or "light"
   vim.notify(string.format("background=%s", vim.go.background))
 end
 
@@ -82,10 +77,7 @@ end
 
 --- Set the indent and tab related numbers
 function astronvim.ui.set_indent()
-  local indent = tonumber(vim.fn.input "Set indent value (>0 expandtab, <=0 noexpandtab, 0 vim defaults): ")
-  if not indent then
-    indent = -8 -- noexpandtab, tabstop=8
-  end
+  local indent = tonumber(vim.fn.input "Set indent value (>0 expandtab, <=0 noexpandtab, 0 vim defaults): ") or -8
   vim.bo.expandtab = (indent > 0) -- local to buffer
   indent = math.abs(indent)
   vim.bo.tabstop = indent -- local to buffer
@@ -133,4 +125,10 @@ function astronvim.ui.toggle_syntax()
     vim.cmd.syntax "on" -- set vim.g.syntax_on = true
   end
   vim.notify(string.format("syntax %s", bool2str(vim.g.syntax_on)))
+end
+
+--- Toggle URL/URI syntax highlighting rules
+function astronvim.ui.toggle_url_match()
+  vim.g.highlighturl_enabled = not vim.g.highlighturl_enabled
+  astronvim.set_url_match()
 end
