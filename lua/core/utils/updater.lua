@@ -17,8 +17,8 @@ local options = astronvim.user_plugin_opts("updater", {
   branch = "main",
   channel = "nightly",
   show_changelog = true,
-  auto_reload = false,
-  auto_quit = false,
+  auto_reload = true,
+  auto_quit = true,
 })
 
 -- set the install channel
