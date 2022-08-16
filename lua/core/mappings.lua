@@ -200,6 +200,9 @@ maps.n["<leader>ub"] = { function() astronvim.ui.toggle_background() end, desc =
 if is_available "nvim-cmp" then
   maps.n["<leader>uc"] = { function() astronvim.ui.toggle_cmp() end, desc = "Toggle completion" }
 end
+if is_available "nvim-colorizer.lua" then
+  maps.n["<leader>uC"] = { "<cmd>ColorizerToggle<cr>", desc = "Toggle color highlight" }
+end
 maps.n["<leader>ug"] = { function() astronvim.ui.toggle_signcolumn() end, desc = "Toggle signcolumn" }
 maps.n["<leader>ui"] = { function() astronvim.ui.set_indent() end, desc = "Change indent setting" }
 maps.n["<leader>un"] = { function() astronvim.ui.change_number() end, desc = "Change line numbering" }
