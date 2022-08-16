@@ -428,12 +428,6 @@ function astronvim.set_url_match()
   if vim.g.highlighturl_enabled then vim.fn.matchadd("HighlightURL", astronvim.url_matcher, 15) end
 end
 
---- Toggle URL/URI syntax highlighting rules
-function astronvim.toggle_url_match()
-  vim.g.highlighturl_enabled = not vim.g.highlighturl_enabled
-  astronvim.set_url_match()
-end
-
 --- Run a shell command and capture the output and if the command succeeded or failed
 -- @param cmd the terminal command to execute
 -- @param show_error boolean of whether or not to show an unsuccessful command as an error to the user
