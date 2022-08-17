@@ -1,0 +1,6 @@
+blank_issues_enabled: true
+
+contact_links:
+  - name: Discord community
+    url: https://discord.gg/UcZutyeaFW
+    about: Ask questions and discussions about AstroNvim on Discord
