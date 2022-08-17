@@ -19,13 +19,13 @@ local astro_plugins = {
 
   -- Notification Enhancer
   ["rcarriga/nvim-notify"] = {
-    event = "VimEnter",
+    event = "UIEnter",
     config = function() require "configs.notify" end,
   },
 
   -- Neovim UI Enhancer
   ["stevearc/dressing.nvim"] = {
-    event = "VimEnter",
+    event = "UIEnter",
     config = function() require "configs.dressing" end,
   },
 
@@ -55,6 +55,7 @@ local astro_plugins = {
 
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
+    event = "UIEnter",
     config = function() require "configs.bufferline" end,
   },
 
@@ -79,6 +80,7 @@ local astro_plugins = {
 
   -- Statusline
   ["rebelot/heirline.nvim"] = {
+    event = "UIEnter",
     config = function() require "configs.heirline" end,
   },
 
