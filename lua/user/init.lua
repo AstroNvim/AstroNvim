@@ -113,6 +113,9 @@ return {
       return config -- return final config table
     end,
     treesitter = {
+      highlight = {
+        enable = true,
+      },
       ensure_installed = {
         "bash",
         "haskell",

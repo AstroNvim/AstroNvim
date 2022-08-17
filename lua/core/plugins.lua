@@ -268,8 +268,6 @@ local astro_plugins = {
     config = function() require "configs.session_manager" end,
   },
 
-  ["EdenEast/nightfox.nvim"] = {},
-
   ["nvim-neotest/neotest-python"] = {},
   ["nvim-neotest/neotest-vim-test"] = {},
   ["nvim-neotest/neotest-plenary"] = {},
