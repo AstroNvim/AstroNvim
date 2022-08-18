@@ -11,6 +11,7 @@ local lsp_comps = require('windline.components.lsp')
 local lsp_progress = require('windline.components.lsp_progress')
 local git_comps = require('windline.components.git')
 local b_components = require('windline.components.basic')
+local lsp_p = require('core.status')
 
 local hl_list = {
     Black = { 'white', 'black' },
@@ -108,17 +109,17 @@ basic.file_name = {
 basic.lsp_diagnos = {
     name = 'diagnostic',
     hl_colors = {
-        red = { 'red', 'black' },
-        yellow = { 'yellow', 'black' },
-        blue = { 'blue', 'black' },
+        red = { 'red', 'black_light' },
+        yellow = { 'yellow', 'black_light' },
+        blue = { 'blue', 'black_light' },
     },
     width = 90,
     text = function(bufnr)
         if lsp_comps.check_lsp(bufnr) then
             return {
-                { lsp_comps.lsp_error({ format = '  %s' }), 'red' },
-                { lsp_comps.lsp_warning({ format = '  %s' }), 'yellow' },
-                { lsp_comps.lsp_hint({ format = '  %s' }), 'blue' },
+                { lsp_comps.lsp_error({ format = '   %s ' }), 'red' },
+                { lsp_comps.lsp_warning({ format = '   %s ' }), 'yellow' },
+                { lsp_comps.lsp_hint({ format = '  %s ' }), 'blue' },
             }
         end
         return ''
@@ -127,11 +128,16 @@ basic.lsp_diagnos = {
 
 basic.lsp_name = {
     width = 100,
+    hl_colors = {
+        green = { 'green', 'black_light' },
+        blue = { 'blue', 'black_light' },
+    },
     name = 'lsp_name',
     text = function(bufnr)
         if lsp_comps.check_lsp(bufnr) then
             return {
-                { lsp_comps.lsp_name({ format = ' %s '}) },
+                { lsp_p.provider.lsp_client_names(true), 'blue' },
+                { lsp_p.provider.treesitter_status, 'green' },
             }
         end
         return ''
@@ -142,20 +148,54 @@ basic.git = {
     name = 'git',
     width = 90,
     hl_colors = {
-        green = { 'green', 'black' },
-        red = { 'red', 'black' },
-        blue = { 'blue', 'black' },
+        green = { 'green', 'black_light' },
+        red = { 'red', 'black_light' },
+        blue = { 'blue', 'black_light' },
     },
     text = function(bufnr)
         if git_comps.is_git(bufnr) then
             return {
-                { ' ' },
                 { git_comps.diff_added({ format = ' %s' }), 'green' },
                 { git_comps.diff_removed({ format = '  %s' }), 'red' },
                 { git_comps.diff_changed({ format = ' 柳%s' }), 'blue' },
             }
         end
         return ''
+    end,
+}
+
+basic.right = {
+    hl_colors = {
+        Normal = { 'white', 'black_light' },
+        Insert = { 'black', 'red' },
+        Visual = { 'black', 'green' },
+        Replace = { 'black', 'cyan' },
+        Command = { 'black', 'yellow' },
+    },
+    text = function()
+        return {
+            { '  ', state.mode[2] },
+            { b_components.progress },
+            { ' ' },
+            { b_components.line_col },
+        }
+    end,
+}
+
+basic.right_sep = {
+    name = 'right_sep',
+    hl_colors = {
+        Normal = { 'black_light', 'black' },
+        Insert = { 'red', 'black' },
+        Visual = { 'green', 'black' },
+        Replace = { 'cyan', 'black' },
+        Command = { 'yellow', 'black' },
+    },
+    text = function()
+        return sep.left_rounded
+    end,
+    hl = function()
+        return state.mode[2]
     end,
 }
 
@@ -253,25 +293,23 @@ local default = {
         wave_left,
         { ' ', { 'FilenameBg', 'black' } },
         basic.divider,
-        { sep.left_filled, { 'green', 'black' } },
+        { sep.left_filled, { 'black_light', 'black' } },
         basic.lsp_diagnos,
         basic.lsp_name,
         basic.git,
-        { git_comps.git_branch({ icon = '  ' }), { 'green', 'black' }, 90 },
+        { git_comps.git_branch({ icon = '  ' }), { 'green', 'black_light' }, 90 },
         { lsp_progress.lsp_progress() },
-        { sep.right_filled, { 'green', 'black' } },
+        { sep.right_filled, { 'black_light', 'black' } },
         basic.divider,
         wave_right,
-        basic.line_col,
-        basic.progress,
+        basic.right_sep,
+        basic.right,
     },
     inactive = {
         basic.file_name_inactive,
         basic.divider,
         basic.divider,
-        basic.line_col_inactive,
-        { '', { 'white', 'InactiveBg' } },
-        basic.progress_inactive,
+        basic.right,
     },
 }
 
