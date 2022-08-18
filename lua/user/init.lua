@@ -25,6 +25,12 @@ return {
   plugins = {
     init = {
       {
+        "windwp/windline.nvim",
+        config = function ()
+          require('configs.fearless')
+        end
+      },
+      {
         "EdenEast/nightfox.nvim",
         config = function()
           require("nightfox").setup {
@@ -82,14 +88,14 @@ return {
           map("n", "<F10>", ":lua require('dap').step_over()<cr>", { desc = "Step over" })
           map("n", "<F11>", ":lua require('dap').step_into()<cr>", { desc = "Step into" })
           map("n", "<F12>", ":lua require('dap').step_out()<cr>", { desc = "Step out" })
-          map("n", "<leader>bp", ":lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle breakpoint" })
-          map("n", "<leader>Bp", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", { desc = "Set conditional breakpoint" })
-          map("n", "<leader>lp", ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Logpoint message: '))<cr>", { desc = "Set logpoint" })
-          map("n", "<leader>rp", ":lua require('dap').repl.open()<cr>", { desc = "Open REPL" })
-          map("n", "<leader>RR", ":lua require('dap').run_last()<cr>", { desc = "Run last debugged program" })
-          map("n", "<leader>XX", ":lua require('dap').terminate()<cr>", { desc = "Terminate program being debugged" })
-          map("n", "<leader>du", ":lua require('dap').up()<cr>", { desc = "Up one frame" })
-          map("n", "<leader>dd", ":lua require('dap').down()<cr>", { desc = "Down one frame" })
+          map("n", "<leader>Dt", ":lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle breakpoint" })
+          map("n", "<leader>DP", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", { desc = "Set conditional breakpoint" })
+          map("n", "<leader>DB", ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Logpoint message: '))<cr>", { desc = "Set logpoint" })
+          map("n", "<leader>Dp", ":lua require('dap').repl.open()<cr>", { desc = "Open REPL" })
+          map("n", "<leader>DR", ":lua require('dap').run_last()<cr>", { desc = "Run last debugged program" })
+          map("n", "<leader>DX", ":lua require('dap').terminate()<cr>", { desc = "Terminate program being debugged" })
+          map("n", "<leader>Du", ":lua require('dap').up()<cr>", { desc = "Up one frame" })
+          map("n", "<leader>Dd", ":lua require('dap').down()<cr>", { desc = "Down one frame" })
         end,
       },
       {
@@ -112,35 +118,35 @@ return {
           }
         end,
       },
-      {
-        "nvim-neorg/neorg",
-        after = { "nvim-treesitter" },
+      --{
+      --  "nvim-neorg/neorg",
+      --  after = { "nvim-treesitter" },
         -- Is configured via the server_registration_override installed below!
-        config = function()
-          require("neorg").setup {
-            load = {
-              ["core.defaults"] = {},
-              ["core.norg.concealer"] = {},
-              ["core.keybinds"] = {},
-              ["core.gtd.base"] = {
-                config = {
-                  workspace = "work",
-                }
-              },
-              ["core.gtd.ui"] = {},
-              ["core.gtd.helpers"] = {},
-              ["core.norg.dirman"] = {
-                config = {
-                  workspaces = {
-                    work = "~/notes/work",
-                    home = "~/notes/home",
-                  }
-                }
-              }
-            }
-          }
-        end,
-      },
+      --  config = function()
+      --    require("neorg").setup {
+      --      load = {
+      --        ["core.defaults"] = {},
+      --        ["core.norg.concealer"] = {},
+      --        ["core.keybinds"] = {},
+      --        ["core.gtd.base"] = {
+      --          config = {
+      --            workspace = "work",
+      --          }
+      --        },
+      --        ["core.gtd.ui"] = {},
+      --        ["core.gtd.helpers"] = {},
+      --        ["core.norg.dirman"] = {
+      --          config = {
+      --            workspaces = {
+      --              work = "~/notes/work",
+      --              home = "~/notes/home",
+      --            }
+      --          }
+      --        }
+      --      }
+      --    }
+      --  end,
+      --},
     },
     ["null-ls"] = function(config)
       local null_ls = require "null-ls"
@@ -202,7 +208,7 @@ return {
         enable = true,
       },
       ensure_installed = {
-        "norg",
+        --"norg",
         "bash",
         "haskell",
         "markdown",
@@ -284,5 +290,8 @@ return {
         desc = "Open the summary window"
       }
     }
-  }
+  },
+  --polish = function ()
+  --  vim.opt.laststatus = 2
+  --end,
 }
