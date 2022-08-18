@@ -16,12 +16,13 @@ if [ "$platform" = "linux" ]; then
     sudo pacman -Su
     sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go \
       typescript ghc perl shellcheck ripgrep fd lazygit ncdu nvm \
-      checkmake postgresql github-cli sqlite openssl readline xz zlib gum
+      checkmake postgresql github-cli sqlite openssl readline xz zlib gum \
+      rust-analyzer
     yay -S rebar3 hadolint rbenv
   elif [ "$distro" = "Ubuntu Linux" ]; then
     sudo apt-get update
     sudo apt-get upgrade
-    sudo apt-get install git curl gum
+    sudo apt-get install git curl gum rust-analyzer
   fi
 elif [ "$platform" = "darwin" ]; then
   echo "Determined platform: $platform" 
@@ -29,7 +30,7 @@ elif [ "$platform" = "darwin" ]; then
   brew install git curl node python erlang elixir ruby rust lua go \
     typescript ghc perl rebar3 shellcheck ripgrep fd lazygit ncdu \
     nvm hadolint checkmake postgresql gh openssl readline sqlite3 \
-    xz zlib rbenv gum
+    xz zlib rbenv gum rust-analyzer
 fi
 
 curl https://pyenv.run | bash
