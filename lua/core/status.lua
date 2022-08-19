@@ -187,9 +187,13 @@ function M.utils.stylize(str, opts)
     },
     icon = "",
   }, opts or {})
-  local left = opts.separator.left .. string.rep(" ", opts.padding.left) .. opts.icon
-  local right = string.rep(" ", opts.padding.right) .. opts.separator.right
-  return str and str ~= "" and left .. str .. right or ""
+  if type(opts.icon) == "table" then
+    opts.icon = astronvim.pad_string(astronvim.get_icon(opts.icon.kind), opts.icon.padding)
+  end
+  return str
+      and str ~= ""
+      and opts.separator.left .. astronvim.pad_string(opts.icon .. str, opts.padding) .. opts.separator.right
+    or ""
 end
 
 function M.utils.width(is_winbar)

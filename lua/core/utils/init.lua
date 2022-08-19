@@ -96,6 +96,23 @@ end
 -- @return a trimmed version of the string or nil if the parameter isn't a string
 function astronvim.trim_or_nil(str) return type(str) == "string" and vim.trim(str) or nil end
 
+--- Add left and/or right padding to a string
+-- @param str the string to add padding to
+-- @param padding a table of the format `{ left = 0, right = 0}` that defines the number of spaces to include to the left and the right of the string
+-- @return the padded string
+function astronvim.pad_string(str, padding)
+  padding = padding or {}
+  return str and str ~= "" and string.rep(" ", padding.left or 0) .. str .. string.rep(" ", padding.right or 0) or ""
+end
+
+--- Get an icon from `lspkind` if it is available and return it
+-- @param kind the kind of icon in `lspkind` to retrieve
+-- @return the icon
+function astronvim.get_icon(kind)
+  local status_ok, lspkind = pcall(require, "lspkind")
+  return status_ok and lspkind.symbolic(kind, { with_text = false }) or ""
+end
+
 --- Serve a notification with a title of AstroNvim
 -- @param msg the notification body
 -- @param type the type of the notification (:help vim.log.levels)
