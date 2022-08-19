@@ -53,7 +53,10 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
       condition = conditions.is_git_repo,
       hl = { fg = "branch_fg" },
       utils.surround(st.separators.left, "branch_bg", {
-        { provider = st.provider.git_branch { icon = " " }, hl = { bold = true } },
+        {
+          provider = st.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
+          hl = { bold = true },
+        },
       }),
     },
     {
@@ -68,19 +71,58 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
       condition = st.condition.git_changed,
       hl = { fg = "git_fg" },
       utils.surround(st.separators.left, "git_bg", {
-        { provider = st.provider.git_diff("added", { icon = "  " }), hl = { fg = "git_add" } },
-        { provider = st.provider.git_diff("changed", { icon = "  " }), hl = { fg = "git_change" } },
-        { provider = st.provider.git_diff("removed", { icon = "  " }), hl = { fg = "git_del" } },
+        {
+          provider = st.provider.git_diff("added", { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } }),
+          hl = { fg = "git_add" },
+        },
+        {
+          provider = st.provider.git_diff(
+            "changed",
+            { icon = { kind = "GitChange", padding = { left = 1, right = 1 } } }
+          ),
+          hl = { fg = "git_change" },
+        },
+        {
+          provider = st.provider.git_diff(
+            "removed",
+            { icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } }
+          ),
+          hl = { fg = "git_del" },
+        },
       }),
     },
     {
       condition = conditions.has_diagnostics,
       hl = { fg = "diagnostic_fg" },
       utils.surround(st.separators.left, "diagnostic_bg", {
-        { provider = st.provider.diagnostics("ERROR", { icon = "  " }), hl = { fg = "diag_error" } },
-        { provider = st.provider.diagnostics("WARN", { icon = "  " }), hl = { fg = "diag_warn" } },
-        { provider = st.provider.diagnostics("INFO", { icon = "  " }), hl = { fg = "diag_info" } },
-        { provider = st.provider.diagnostics("HINT", { icon = "  " }), hl = { fg = "diag_hint" } },
+        {
+          provider = st.provider.diagnostics(
+            "ERROR",
+            { icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } } }
+          ),
+          hl = { fg = "diag_error" },
+        },
+        {
+          provider = st.provider.diagnostics(
+            "WARN",
+            { icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } } }
+          ),
+          hl = { fg = "diag_warn" },
+        },
+        {
+          provider = st.provider.diagnostics(
+            "INFO",
+            { icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } } }
+          ),
+          hl = { fg = "diag_info" },
+        },
+        {
+          provider = st.provider.diagnostics(
+            "HINT",
+            { icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } } }
+          ),
+          hl = { fg = "diag_hint" },
+        },
       }),
     },
     { provider = st.provider.fill() },
@@ -93,18 +135,20 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
           { provider = st.provider.lsp_progress { padding = { right = 1 } } },
           { provider = "" }
         ),
-        utils.make_flexible_component(
-          2,
-          { provider = st.provider.lsp_client_names(true, 0.25, { icon = "  " }) },
-          { provider = st.provider.str("LSP", { icon = "  " }) }
-        ),
+        utils.make_flexible_component(2, {
+          provider = st.provider.lsp_client_names(
+            true,
+            0.25,
+            { icon = { kind = "ActiveLSP", padding = { right = 2 } } }
+          ),
+        }, { provider = st.provider.str("LSP", { icon = { kind = "ActiveLSP", padding = { right = 2 } } }) }),
       }),
     },
     {
       condition = st.condition.treesitter_available,
       hl = { fg = "ts_fg" },
       utils.surround(st.separators.right, "ts_bg", {
-        { provider = st.provider.str("TS", { icon = "綠" }) },
+        { provider = st.provider.str("TS", { icon = { kind = "ActiveTS" } }) },
       }),
     },
     {
