@@ -4,10 +4,10 @@ local sign_define = vim.fn.sign_define
 local user_plugin_opts = astronvim.user_plugin_opts
 
 local signs = {
-  { name = "DiagnosticSignError", text = "" },
-  { name = "DiagnosticSignWarn", text = "" },
-  { name = "DiagnosticSignHint", text = "" },
-  { name = "DiagnosticSignInfo", text = "" },
+  { name = "DiagnosticSignError", text = astronvim.get_icon "DiagnosticError" },
+  { name = "DiagnosticSignWarn", text = astronvim.get_icon "DiagnosticWarn" },
+  { name = "DiagnosticSignHint", text = astronvim.get_icon "DiagnosticHint" },
+  { name = "DiagnosticSignInfo", text = astronvim.get_icon "DiagnosticInfo" },
 }
 for _, sign in ipairs(signs) do
   sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
