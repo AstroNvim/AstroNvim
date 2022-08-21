@@ -4,6 +4,7 @@ local utils = require('windline.utils')
 local sep = helper.separators
 local animation = require('wlanimation')
 local efffects = require('wlanimation.effects')
+local HSL = require('wlanimation.utils')
 
 local state = _G.WindLine.state
 
@@ -12,7 +13,6 @@ local lsp_progress = require('windline.components.lsp_progress')
 local git_comps = require('windline.components.git')
 local b_components = require('windline.components.basic')
 local lsp_p = require('core.status')
-local colors = require('core.colors')
 
 local hl_list = {
     Black = { 'white', 'black' },
@@ -138,8 +138,7 @@ basic.lsp_name = {
         if lsp_comps.check_lsp(bufnr) then
             return {
                 { lsp_p.provider.lsp_client_names(true), 'blue' },
-                { lsp_p.provider.treesitter_status, 'green' },
-            }
+           }
         end
         return ''
     end,
@@ -156,7 +155,7 @@ basic.git = {
     text = function(bufnr)
         if git_comps.is_git(bufnr) then
             return {
-                { git_comps.diff_added({ format = ' %s' }), 'green' },
+                { git_comps.diff_added({ format = '  %s' }), 'green' },
                 { git_comps.diff_removed({ format = '  %s' }), 'red' },
                 { git_comps.diff_changed({ format = ' 柳%s' }), 'blue' },
             }
@@ -175,7 +174,7 @@ basic.right = {
     },
     text = function()
         return {
-            { '  ', state.mode[2] },
+            { ' ', state.mode[2] },
             { b_components.progress },
             { ' ' },
             { b_components.line_col },
@@ -200,14 +199,38 @@ basic.right_sep = {
     end,
 }
 
-local c_green = colors.new('#e8f99b')
-local green_shades = c_green:shades(8)
+basic.treesitter = {
+    name = 'treesitter',
+    hl_colors = {
+        green = { 'green', 'black' },
+    },
+    text = function()
+        return {
+            { lsp_p.provider.treesitter_status, 'green' },
+            { ' ' },
+        }
+    end,
+    hl = function()
+        return state.mode[2]
+    end,
+}
 
-local c_purple = colors.new('#ffb0ff')
-local purple_shades = c_purple:shades(8)
+local green_shades = HSL.rgb_to_hsl('#ffb0ff'):shades(10,8)
 
 local status_color = ''
 local change_color = function()
+    local hl_colors = {
+        Normal = { 'white', 'black' },
+        Insert = { 'black', 'red' },
+        Visual = { 'black', 'green' },
+        Replace = { 'black', 'cyan' },
+        Command = { 'black', 'yellow' },
+    }
+
+    if state.mode[2] ~= nil then
+        purple_shades = HSL.rgb_to_hsl(utils.get_color(WindLine.state.colors, hl_colors[state.mode[2]][2])):shades(10,8)
+    end
+
     local anim_colors = purple_shades
 
     if status_color == 'blue' then
@@ -292,6 +315,7 @@ local default = {
         { sep.right_filled, { 'black_light', 'black' } },
         basic.divider,
         wave_right,
+        basic.treesitter,
         basic.right_sep,
         basic.right,
     },
@@ -327,15 +351,19 @@ windline.setup({
     },
 })
 
-WindLine.fearless_anim_toggle = change_color
+local function anim_toggle()
+    local timer = vim.loop.new_timer()
+    timer:start(
+        0,
+        4000,
+        vim.schedule_wrap(function()
+            change_color()
+        end)
+    )
+end
+
+WindLine.fearless_anim_toggle = anim_toggle
 
 vim.api.nvim_set_keymap('n', '<leader>u9', '<cmd>lua WindLine.fearless_anim_toggle()<cr>', {})
 
-local timer = vim.loop.new_timer()
-timer:start(
-    0,
-    4000,
-    vim.schedule_wrap(function()
-        change_color()
-    end)
-)
+anim_toggle()
