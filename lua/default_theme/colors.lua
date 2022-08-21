@@ -15,6 +15,7 @@ local colors = {
   blue_1 = "#40d9ff",
   blue_2 = "#1b1f27",
   blue_3 = "#8094B4",
+  blue_4 = "#90c7f3",
   orange = "#d19a66",
   orange_1 = "#ff9640",
   orange_2 = "#ff8800",
@@ -26,6 +27,7 @@ local colors = {
   red_2 = "#ffbba6",
   red_3 = "#cc626a",
   red_4 = "#d47d85",
+  red_5 = "#e9989e",
   grey = "#5c6370",
   grey_1 = "#4b5263",
   grey_2 = "#777d86",
@@ -39,8 +41,10 @@ local colors = {
   grey_10 = "#D3D3D3",
   gold = "#ffcc00",
   cyan = "#56b6c2",
+  cyan_1 = "#88cbd4",
   purple = "#c678dd",
   purple_1 = "#a9a1e1",
+  purple_2 = "#c2bdea",
 
   -- icon colors
   c = "#519aba",

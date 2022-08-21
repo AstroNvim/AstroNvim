@@ -18,17 +18,13 @@ cmd("BufEnter", {
   group = "auto_quit",
   callback = function()
     local num_wins = #vim.api.nvim_list_wins()
-    local not_sidebars = num_wins
     local sidebar_fts = { "aerial", "neo-tree" }
-    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-      if
-        vim.api.nvim_buf_is_loaded(bufnr)
-        and vim.tbl_contains(sidebar_fts, vim.api.nvim_buf_get_option(bufnr, "filetype"))
-      then
-        not_sidebars = not_sidebars - 1
-      end
-    end
-    if num_wins > 1 and not_sidebars == 0 then vim.cmd "quit" end
+    local sidebars = {}
+    vim.tbl_map(function(bufnr)
+      local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+      if vim.tbl_contains(sidebar_fts, ft) then sidebars[ft] = true end
+    end, vim.api.nvim_list_bufs())
+    if num_wins > 1 and vim.tbl_count(sidebars) == num_wins then vim.cmd "quit" end
   end,
 })
 
