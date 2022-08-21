@@ -12,6 +12,7 @@ local lsp_progress = require('windline.components.lsp_progress')
 local git_comps = require('windline.components.git')
 local b_components = require('windline.components.basic')
 local lsp_p = require('core.status')
+local colors = require('core.colors')
 
 local hl_list = {
     Black = { 'white', 'black' },
@@ -199,29 +200,18 @@ basic.right_sep = {
     end,
 }
 
+local c_green = colors.new('#e8f99b')
+local green_shades = c_green:shades(8)
+
+local c_purple = colors.new('#ffb0ff')
+local purple_shades = c_purple:shades(8)
+
 local status_color = ''
 local change_color = function()
-    local anim_colors = {
-        '#ffb0ff',
-        '#ff93ff',
-        '#fb76f9',
-        '#dd59db',
-        '#bf3bbf',
-        '#a31aa3',
-        '#800084',
-        '#5a005f',
-    }
+    local anim_colors = purple_shades
+
     if status_color == 'blue' then
-        anim_colors = {
-            '#e8f99b',
-            '#def772',
-            '#d5f54a',
-            '#ccf222',
-            '#b7dd0d',
-            '#95b50a',
-            '#748d08',
-            '#536406',
-        }
+        anim_colors = green_shades
         status_color = 'yellow'
     else
         status_color = 'blue'
@@ -336,6 +326,10 @@ windline.setup({
         default,
     },
 })
+
+WindLine.fearless_anim_toggle = change_color
+
+vim.api.nvim_set_keymap('n', '<leader>u9', '<cmd>lua WindLine.fearless_anim_toggle()<cr>', {})
 
 local timer = vim.loop.new_timer()
 timer:start(
