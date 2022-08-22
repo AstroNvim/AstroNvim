@@ -4,6 +4,7 @@ local C = require "default_theme.colors"
 local utils = require "heirline.utils"
 local conditions = require "heirline.conditions"
 local st = require "core.status"
+vim.g.heirline_filename = not astronvim.is_available "bufferline.nvim"
 
 local function hl_default(hlgroup, prop, default)
   return vim.fn.hlexists(hlgroup) == 1 and utils.get_highlight(hlgroup)[prop] or default
@@ -52,6 +53,14 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     {
       condition = conditions.is_git_repo,
       hl = { fg = "branch_fg" },
+      on_click = {
+        name = "heirline_branch",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
+          end
+        end,
+      },
       utils.surround(st.separators.left, "branch_bg", {
         {
           provider = st.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
@@ -62,14 +71,35 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     {
       condition = st.condition.has_filetype,
       hl = { fg = "file_fg" },
+      on_click = {
+        name = "heirline_filename",
+        callback = function() vim.g.heirline_filename = not vim.g.heirline_filename end,
+      },
       utils.surround(st.separators.left, "file_bg", {
         { provider = st.provider.fileicon(), hl = st.hl.filetype_color },
-        { provider = st.provider.filetype { padding = { left = 1 } } },
+        {
+          init = utils.pick_child_on_condition,
+          { -- if filetype is toggled
+            condition = function() return not vim.g.heirline_filename end,
+            { provider = st.provider.filetype { padding = { left = 1 } } },
+          },
+          { -- if filename is toggled
+            { provider = st.provider.filename(nil, { padding = { left = 1 } }) },
+          },
+        },
       }),
     },
     {
       condition = st.condition.git_changed,
       hl = { fg = "git_fg" },
+      on_click = {
+        name = "heirline_git",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").git_status() end, 100)
+          end
+        end,
+      },
       utils.surround(st.separators.left, "git_bg", {
         {
           provider = st.provider.git_diff("added", { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } }),
@@ -94,6 +124,14 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     {
       condition = conditions.has_diagnostics,
       hl = { fg = "diagnostic_fg" },
+      on_click = {
+        name = "heirline_diagnostic",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").diagnostics() end, 100)
+          end
+        end,
+      },
       utils.surround(st.separators.left, "diagnostic_bg", {
         {
           provider = st.provider.diagnostics(
@@ -129,6 +167,12 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     {
       condition = conditions.lsp_attached,
       hl = { fg = "lsp_fg" },
+      on_click = {
+        name = "heirline_lsp",
+        callback = function()
+          vim.defer_fn(function() vim.cmd "LspInfo" end, 100)
+        end,
+      },
       utils.surround(st.separators.right, "lsp_bg", {
         utils.make_flexible_component(
           1,
@@ -166,10 +210,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     { -- active winbar
       condition = conditions.is_active,
       hl = { fg = "winbar_fg", bg = "winbar_bg" },
-      {
-        provider = st.provider.breadcrumbs(nil, " > ", true, { padding = { left = 1 } }),
-        condition = st.condition.aerial_available,
-      },
+      { init = st.init.breadcrumbs(" > ", { padding = { left = 1 } }), condition = st.condition.aerial_available },
     },
     { -- fallback if not active
       hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
