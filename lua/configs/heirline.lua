@@ -4,7 +4,6 @@ local C = require "default_theme.colors"
 local utils = require "heirline.utils"
 local conditions = require "heirline.conditions"
 local st = require "core.status"
-vim.g.heirline_filename = not astronvim.is_available "bufferline.nvim"
 
 local function hl_default(hlgroup, prop, default)
   return vim.fn.hlexists(hlgroup) == 1 and utils.get_highlight(hlgroup)[prop] or default
@@ -45,179 +44,41 @@ local function setup_colors()
   return colors
 end
 
+local bar_components = astronvim.user_plugin_opts("heirline.components", {
+  statusline = {
+    astronvim.status.components.left_mode,
+    astronvim.status.components.git_branch,
+    astronvim.status.components.filename_filetype,
+    astronvim.status.components.git_diff,
+    astronvim.status.components.diagnostics,
+    astronvim.status.components.fill,
+    astronvim.status.components.lsp,
+    astronvim.status.components.treesitter,
+    astronvim.status.components.nav,
+    astronvim.status.components.right_mode,
+  },
+  winbar = {
+    active = { astronvim.status.components.breadcrumbs },
+    inactive = { astronvim.status.components.filename },
+  },
+}, false)
+
 heirline.load_colors(setup_colors())
 local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
-  {
-    hl = { fg = "fg", bg = "bg" },
-    utils.surround({ "", st.separators.left[2] }, st.hl.mode_fg, { provider = st.provider.str " " }),
-    {
-      condition = conditions.is_git_repo,
-      hl = { fg = "branch_fg" },
-      on_click = {
-        name = "heirline_branch",
-        callback = function()
-          if astronvim.is_available "telescope.nvim" then
-            vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
-          end
-        end,
-      },
-      utils.surround(st.separators.left, "branch_bg", {
-        {
-          provider = st.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
-          hl = { bold = true },
-        },
-      }),
-    },
-    {
-      condition = st.condition.has_filetype,
-      hl = { fg = "file_fg" },
-      on_click = {
-        name = "heirline_filename",
-        callback = function() vim.g.heirline_filename = not vim.g.heirline_filename end,
-      },
-      utils.surround(st.separators.left, "file_bg", {
-        { provider = st.provider.fileicon(), hl = st.hl.filetype_color },
-        {
-          init = utils.pick_child_on_condition,
-          { -- if filetype is toggled
-            condition = function() return not vim.g.heirline_filename end,
-            { provider = st.provider.filetype { padding = { left = 1 } } },
-          },
-          { -- if filename is toggled
-            { provider = st.provider.filename(nil, { padding = { left = 1 } }) },
-          },
-        },
-      }),
-    },
-    {
-      condition = st.condition.git_changed,
-      hl = { fg = "git_fg" },
-      on_click = {
-        name = "heirline_git",
-        callback = function()
-          if astronvim.is_available "telescope.nvim" then
-            vim.defer_fn(function() require("telescope.builtin").git_status() end, 100)
-          end
-        end,
-      },
-      utils.surround(st.separators.left, "git_bg", {
-        {
-          provider = st.provider.git_diff("added", { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } }),
-          hl = { fg = "git_add" },
-        },
-        {
-          provider = st.provider.git_diff(
-            "changed",
-            { icon = { kind = "GitChange", padding = { left = 1, right = 1 } } }
-          ),
-          hl = { fg = "git_change" },
-        },
-        {
-          provider = st.provider.git_diff(
-            "removed",
-            { icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } }
-          ),
-          hl = { fg = "git_del" },
-        },
-      }),
-    },
-    {
-      condition = conditions.has_diagnostics,
-      hl = { fg = "diagnostic_fg" },
-      on_click = {
-        name = "heirline_diagnostic",
-        callback = function()
-          if astronvim.is_available "telescope.nvim" then
-            vim.defer_fn(function() require("telescope.builtin").diagnostics() end, 100)
-          end
-        end,
-      },
-      utils.surround(st.separators.left, "diagnostic_bg", {
-        {
-          provider = st.provider.diagnostics(
-            "ERROR",
-            { icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } } }
-          ),
-          hl = { fg = "diag_error" },
-        },
-        {
-          provider = st.provider.diagnostics(
-            "WARN",
-            { icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } } }
-          ),
-          hl = { fg = "diag_warn" },
-        },
-        {
-          provider = st.provider.diagnostics(
-            "INFO",
-            { icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } } }
-          ),
-          hl = { fg = "diag_info" },
-        },
-        {
-          provider = st.provider.diagnostics(
-            "HINT",
-            { icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } } }
-          ),
-          hl = { fg = "diag_hint" },
-        },
-      }),
-    },
-    { provider = st.provider.fill() },
-    {
-      condition = conditions.lsp_attached,
-      hl = { fg = "lsp_fg" },
-      on_click = {
-        name = "heirline_lsp",
-        callback = function()
-          vim.defer_fn(function() vim.cmd "LspInfo" end, 100)
-        end,
-      },
-      utils.surround(st.separators.right, "lsp_bg", {
-        utils.make_flexible_component(
-          1,
-          { provider = st.provider.lsp_progress { padding = { right = 1 } } },
-          { provider = "" }
-        ),
-        utils.make_flexible_component(2, {
-          provider = st.provider.lsp_client_names(
-            true,
-            0.25,
-            { icon = { kind = "ActiveLSP", padding = { right = 2 } } }
-          ),
-        }, { provider = st.provider.str("LSP", { icon = { kind = "ActiveLSP", padding = { right = 2 } } }) }),
-      }),
-    },
-    {
-      condition = st.condition.treesitter_available,
-      hl = { fg = "ts_fg" },
-      utils.surround(st.separators.right, "ts_bg", {
-        { provider = st.provider.str("TS", { icon = { kind = "ActiveTS" } }) },
-      }),
-    },
-    {
-      hl = { fg = "nav_fg" },
-      utils.surround(st.separators.right, "nav_bg", {
-        { provider = st.provider.ruler(0, 0) },
-        { provider = st.provider.percentage { padding = { left = 1 } } },
-        { provider = st.provider.scrollbar { padding = { left = 1 } }, hl = { fg = "scrollbar" } },
-      }),
-    },
-    utils.surround({ st.separators.right[1], "" }, st.hl.mode_fg, { provider = st.provider.str " " }),
-  },
-  {
+  bar_components.statusline and vim.tbl_deep_extend(
+    "force",
+    bar_components.statusline,
+    { hl = { fg = "fg", bg = "bg" } }
+  ) or nil,
+  bar_components.winbar and {
     init = utils.pick_child_on_condition,
-    { -- active winbar
-      condition = conditions.is_active,
-      hl = { fg = "winbar_fg", bg = "winbar_bg" },
-      { init = st.init.breadcrumbs(" > ", { padding = { left = 1 } }), condition = st.condition.aerial_available },
-    },
-    { -- fallback if not active
-      hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
-      { provider = st.provider.fileicon { padding = { left = 1, right = 1 } } },
-      { provider = st.provider.filename() },
-    },
-  },
+    vim.tbl_deep_extend(
+      "force",
+      bar_components.winbar.active,
+      { condition = conditions.is_active, hl = { fg = "winbar_fg", bg = "winbar_bg" } }
+    ),
+    vim.tbl_deep_extend("force", bar_components.winbar.inactive, { hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" } }),
+  } or nil,
 })
 heirline.setup(heirline_opts[1], heirline_opts[2])
 
