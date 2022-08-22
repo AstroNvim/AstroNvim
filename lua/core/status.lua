@@ -1,6 +1,7 @@
-local M = { hl = {}, init = {}, provider = {}, condition = {}, utils = {} }
+astronvim.status = { hl = {}, init = {}, provider = {}, condition = {}, components = {}, utils = {}, env = {} }
 
-M.modes = {
+astronvim.status.env.heirline_filename = not astronvim.is_available "bufferline.nvim"
+astronvim.status.env.modes = {
   ["n"] = { "NORMAL", "normal" },
   ["no"] = { "N-PENDING", "normal" },
   ["i"] = { "INSERT", "insert" },
@@ -23,28 +24,28 @@ M.modes = {
   ["!"] = { "SHELL", "inactive" },
 }
 
-M.separators = astronvim.user_plugin_opts("heirline.separators", {
+astronvim.status.separators = astronvim.user_plugin_opts("heirline.separators", {
   left = { "", "  " },
   right = { "  ", "" },
   center = { "  ", "  " },
 })
 
-function M.hl.lualine_mode(mode, fallback)
+function astronvim.status.hl.lualine_mode(mode, fallback)
   local lualine_avail, lualine = pcall(require, "lualine.themes." .. (vim.g.colors_name or "default_theme"))
   local lualine_opts = lualine_avail and lualine[mode]
   return lualine_opts and type(lualine_opts.a) == "table" and lualine_opts.a.bg or fallback
 end
 
-function M.hl.mode() return { fg = M.modes[vim.fn.mode()][2] } end
+function astronvim.status.hl.mode() return { fg = astronvim.status.hl.mode_fg() } end
 
-function M.hl.mode_fg() return M.modes[vim.fn.mode()][2] end
+function astronvim.status.hl.mode_fg() return astronvim.status.env.modes[vim.fn.mode()][2] end
 
-function M.hl.filetype_color()
+function astronvim.status.hl.filetype_color()
   local _, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand "%:t", nil, { default = true })
   return { fg = color }
 end
 
-function M.init.breadcrumbs(separator, opts)
+function astronvim.status.init.breadcrumbs(separator, opts)
   separator = separator or " > "
   local aerial_avail, aerial = pcall(require, "aerial")
   opts = vim.tbl_deep_extend(
@@ -84,74 +85,77 @@ function M.init.breadcrumbs(separator, opts)
   end
 end
 
-function M.provider.fill() return "%=" end
+function astronvim.status.provider.fill() return "%=" end
 
-function M.provider.percentage(opts) return M.utils.stylize("%p%%", opts) end
+function astronvim.status.provider.percentage(opts) return astronvim.status.utils.stylize("%p%%", opts) end
 
-function M.provider.ruler(line_padding, char_padding, opts)
-  return M.utils.stylize(string.format("%%%dl:%%%dc", line_padding or 0, char_padding or 0), opts)
+function astronvim.status.provider.ruler(line_padding, char_padding, opts)
+  return astronvim.status.utils.stylize(string.format("%%%dl:%%%dc", line_padding or 0, char_padding or 0), opts)
 end
 
-function M.provider.scrollbar(opts)
+function astronvim.status.provider.scrollbar(opts)
   local sbar = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
   return function()
     local curr_line = vim.api.nvim_win_get_cursor(0)[1]
     local lines = vim.api.nvim_buf_line_count(0)
     local i = math.floor((curr_line - 1) / lines * #sbar) + 1
-    return M.utils.stylize(string.rep(sbar[i], 2), opts)
+    return astronvim.status.utils.stylize(string.rep(sbar[i], 2), opts)
   end
 end
 
-function M.provider.filetype(opts)
-  return function() return M.utils.stylize(string.lower(vim.bo.filetype), opts) end
+function astronvim.status.provider.filetype(opts)
+  return function() return astronvim.status.utils.stylize(string.lower(vim.bo.filetype), opts) end
 end
 
-function M.provider.filename(modify, opts)
+function astronvim.status.provider.filename(modify, opts)
   return function()
     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), modify or ":t")
-    return M.utils.stylize(filename == "" and "[No Name]" or filename, opts)
+    return astronvim.status.utils.stylize(filename == "" and "[No Name]" or filename, opts)
   end
 end
 
-function M.provider.fileicon(opts)
+function astronvim.status.provider.fileicon(opts)
   return function()
     local ft_icon, _ = require("nvim-web-devicons").get_icon(vim.fn.expand "%:t", nil, { default = true })
-    return M.utils.stylize(ft_icon, opts)
+    return astronvim.status.utils.stylize(ft_icon, opts)
   end
 end
 
-function M.provider.git_branch(opts)
-  return function() return M.utils.stylize(vim.b.gitsigns_head or "", opts) end
+function astronvim.status.provider.git_branch(opts)
+  return function() return astronvim.status.utils.stylize(vim.b.gitsigns_head or "", opts) end
 end
 
-function M.provider.git_diff(type, opts)
+function astronvim.status.provider.git_diff(type, opts)
   return function()
     local status = vim.b.gitsigns_status_dict
-    return M.utils.stylize(status and status[type] and status[type] > 0 and tostring(status[type]) or "", opts)
+    return astronvim.status.utils.stylize(
+      status and status[type] and status[type] > 0 and tostring(status[type]) or "",
+      opts
+    )
   end
 end
 
-function M.provider.diagnostics(severity, opts)
+function astronvim.status.provider.diagnostics(severity, opts)
   return function()
     local count = #vim.diagnostic.get(0, severity and { severity = vim.diagnostic.severity[severity] })
-    return M.utils.stylize(count ~= 0 and tostring(count) or "", opts)
+    return astronvim.status.utils.stylize(count ~= 0 and tostring(count) or "", opts)
   end
 end
 
-function M.provider.breadcrumbs(depth, separator, icons, opts)
+function astronvim.status.provider.breadcrumbs(depth, separator, icons, opts)
   return function()
     local aerial_avail, aerial = pcall(require, "aerial")
-    return M.utils.stylize(
+    return astronvim.status.utils.stylize(
       aerial_avail and astronvim.format_symbols(aerial.get_location(true), depth, separator or " > ", icons) or "",
       opts
     )
   end
 end
 
-function M.provider.lsp_progress(opts)
+function astronvim.status.provider.lsp_progress(opts)
   return function()
     local Lsp = vim.lsp.util.get_progress_messages()[1]
-    return M.utils.stylize(
+    return astronvim.status.utils.stylize(
       Lsp
           and string.format(
             " %%<%s %s %s (%s%%%%) ",
@@ -168,7 +172,7 @@ function M.provider.lsp_progress(opts)
   end
 end
 
-function M.provider.lsp_client_names(expand_null_ls, trunc, opts)
+function astronvim.status.provider.lsp_client_names(expand_null_ls, trunc, opts)
   return function()
     local buf_client_names = {}
     for _, client in pairs(vim.lsp.buf_get_clients(0)) do
@@ -181,41 +185,41 @@ function M.provider.lsp_client_names(expand_null_ls, trunc, opts)
     end
     local str = table.concat(buf_client_names, ", ")
     if type(trunc) == "number" then
-      local max_width = math.floor(M.utils.width() * trunc)
+      local max_width = math.floor(astronvim.status.utils.width() * trunc)
       if #str > max_width then str = string.sub(str, 0, max_width) .. "…" end
     end
-    return M.utils.stylize(str, opts)
+    return astronvim.status.utils.stylize(str, opts)
   end
 end
 
-function M.provider.treesitter_status(opts)
+function astronvim.status.provider.treesitter_status(opts)
   return function()
     local ts_avail, ts = pcall(require, "nvim-treesitter.parsers")
-    return M.utils.stylize((ts_avail and ts.has_parser()) and "TS" or "", opts)
+    return astronvim.status.utils.stylize((ts_avail and ts.has_parser()) and "TS" or "", opts)
   end
 end
 
-function M.provider.str(str, opts) return M.utils.stylize(str or " ", opts) end
+function astronvim.status.provider.str(str, opts) return astronvim.status.utils.stylize(str or " ", opts) end
 
-function M.condition.git_available() return vim.b.gitsigns_head ~= nil end
+function astronvim.status.condition.git_available() return vim.b.gitsigns_head ~= nil end
 
-function M.condition.git_changed()
+function astronvim.status.condition.git_changed()
   local git_status = vim.b.gitsigns_status_dict
   return git_status and (git_status.added or 0) + (git_status.removed or 0) + (git_status.changed or 0) > 0
 end
 
-function M.condition.has_filetype()
+function astronvim.status.condition.has_filetype()
   return vim.fn.empty(vim.fn.expand "%:t") ~= 1 and vim.bo.filetype and vim.bo.filetype ~= ""
 end
 
-function M.condition.aerial_available() return astronvim.is_available "aerial.nvim" end
+function astronvim.status.condition.aerial_available() return astronvim.is_available "aerial.nvim" end
 
-function M.condition.treesitter_available()
+function astronvim.status.condition.treesitter_available()
   local ts_avail, ts = pcall(require, "nvim-treesitter.parsers")
   return ts_avail and ts.has_parser()
 end
 
-function M.utils.stylize(str, opts)
+function astronvim.status.utils.stylize(str, opts)
   opts = vim.tbl_deep_extend("force", {
     padding = {
       left = 0,
@@ -236,8 +240,202 @@ function M.utils.stylize(str, opts)
     or ""
 end
 
-function M.utils.width(is_winbar)
+function astronvim.status.utils.width(is_winbar)
   return vim.o.laststatus == 3 and not is_winbar and vim.o.columns or vim.api.nvim_win_get_width(0)
 end
 
-return M
+local heirline_available, _ = pcall(require, "heirline")
+if heirline_available then
+  local utils = require "heirline.utils"
+  local conditions = require "heirline.conditions"
+
+  astronvim.status.components.left_mode = utils.surround(
+    { "", astronvim.status.separators.left[2] },
+    astronvim.status.hl.mode_fg,
+    { provider = astronvim.status.provider.str " " }
+  )
+
+  astronvim.status.components.right_mode = utils.surround(
+    { astronvim.status.separators.right[1], "" },
+    astronvim.status.hl.mode_fg,
+    { provider = astronvim.status.provider.str " " }
+  )
+
+  astronvim.status.components.fill = { provider = astronvim.status.provider.fill() }
+
+  astronvim.status.components.nav = {
+    hl = { fg = "nav_fg" },
+    utils.surround(astronvim.status.separators.right, "nav_bg", {
+      { provider = astronvim.status.provider.ruler(0, 0) },
+      { provider = astronvim.status.provider.percentage { padding = { left = 1 } } },
+      { provider = astronvim.status.provider.scrollbar { padding = { left = 1 } }, hl = { fg = "scrollbar" } },
+    }),
+  }
+
+  astronvim.status.components.filename = {
+    { provider = astronvim.status.provider.fileicon { padding = { left = 1, right = 1 } } },
+    { provider = astronvim.status.provider.filename() },
+  }
+
+  astronvim.status.components.filename_filetype = {
+    condition = astronvim.status.condition.has_filetype,
+    hl = { fg = "file_fg" },
+    utils.surround(astronvim.status.separators.left, "file_bg", {
+      { provider = astronvim.status.provider.fileicon(), hl = astronvim.status.hl.filetype_color },
+      {
+        init = utils.pick_child_on_condition,
+        { -- if filetype is toggled
+          condition = function() return not astronvim.status.env.heirline_filename end,
+          { provider = astronvim.status.provider.filetype { padding = { left = 1 } } },
+        },
+        { -- if filename is toggled
+          { provider = astronvim.status.provider.filename(nil, { padding = { left = 1 } }) },
+        },
+      },
+      on_click = {
+        name = "heirline_filename",
+        callback = function() astronvim.status.env.heirline_filename = not astronvim.status.env.heirline_filename end,
+      },
+    }),
+  }
+
+  astronvim.status.components.git_branch = {
+    condition = conditions.is_git_repo,
+    hl = { fg = "branch_fg" },
+    utils.surround(astronvim.status.separators.left, "branch_bg", {
+      {
+        provider = astronvim.status.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
+        hl = { bold = true },
+        on_click = {
+          name = "heirline_branch",
+          callback = function()
+            if astronvim.is_available "telescope.nvim" then
+              vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
+            end
+          end,
+        },
+      },
+    }),
+  }
+
+  astronvim.status.components.git_diff = {
+    condition = astronvim.status.condition.git_changed,
+    hl = { fg = "git_fg" },
+    utils.surround(astronvim.status.separators.left, "git_bg", {
+      {
+        provider = astronvim.status.provider.git_diff(
+          "added",
+          { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } }
+        ),
+        hl = { fg = "git_add" },
+      },
+      {
+        provider = astronvim.status.provider.git_diff(
+          "changed",
+          { icon = { kind = "GitChange", padding = { left = 1, right = 1 } } }
+        ),
+        hl = { fg = "git_change" },
+      },
+      {
+        provider = astronvim.status.provider.git_diff(
+          "removed",
+          { icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } }
+        ),
+        hl = { fg = "git_del" },
+      },
+      on_click = {
+        name = "heirline_git",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").git_status() end, 100)
+          end
+        end,
+      },
+    }),
+  }
+
+  astronvim.status.components.diagnostics = {
+    condition = conditions.has_diagnostics,
+    hl = { fg = "diagnostic_fg" },
+    utils.surround(astronvim.status.separators.left, "diagnostic_bg", {
+      {
+        provider = astronvim.status.provider.diagnostics(
+          "ERROR",
+          { icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } } }
+        ),
+        hl = { fg = "diag_error" },
+      },
+      {
+        provider = astronvim.status.provider.diagnostics(
+          "WARN",
+          { icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } } }
+        ),
+        hl = { fg = "diag_warn" },
+      },
+      {
+        provider = astronvim.status.provider.diagnostics(
+          "INFO",
+          { icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } } }
+        ),
+        hl = { fg = "diag_info" },
+      },
+      {
+        provider = astronvim.status.provider.diagnostics(
+          "HINT",
+          { icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } } }
+        ),
+        hl = { fg = "diag_hint" },
+      },
+      on_click = {
+        name = "heirline_diagnostic",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").diagnostics() end, 100)
+          end
+        end,
+      },
+    }),
+  }
+
+  astronvim.status.components.lsp = {
+    condition = conditions.lsp_attached,
+    hl = { fg = "lsp_fg" },
+    utils.surround(astronvim.status.separators.right, "lsp_bg", {
+      utils.make_flexible_component(
+        1,
+        { provider = astronvim.status.provider.lsp_progress { padding = { right = 1 } } },
+        { provider = "" }
+      ),
+      utils.make_flexible_component(2, {
+        provider = astronvim.status.provider.lsp_client_names(
+          true,
+          0.25,
+          { icon = { kind = "ActiveLSP", padding = { right = 2 } } }
+        ),
+      }, {
+        provider = astronvim.status.provider.str("LSP", { icon = { kind = "ActiveLSP", padding = { right = 2 } } }),
+      }),
+      on_click = {
+        name = "heirline_lsp",
+        callback = function()
+          vim.defer_fn(function() vim.cmd "LspInfo" end, 100)
+        end,
+      },
+    }),
+  }
+
+  astronvim.status.components.breadcrumbs = {
+    init = astronvim.status.init.breadcrumbs(" > ", { padding = { left = 1 } }),
+    condition = astronvim.status.condition.aerial_available,
+  }
+
+  astronvim.status.components.treesitter = {
+    condition = astronvim.status.condition.treesitter_available,
+    hl = { fg = "ts_fg" },
+    utils.surround(astronvim.status.separators.right, "ts_bg", {
+      { provider = astronvim.status.provider.str("TS", { icon = { kind = "ActiveTS" } }) },
+    }),
+  }
+end
+
+return astronvim.status
