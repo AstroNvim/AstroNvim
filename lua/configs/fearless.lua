@@ -362,8 +362,4 @@ local function anim_toggle()
     )
 end
 
-WindLine.fearless_anim_toggle = anim_toggle
-
-vim.api.nvim_set_keymap('n', '<leader>u9', '<cmd>lua WindLine.fearless_anim_toggle()<cr>', {})
-
 anim_toggle()
