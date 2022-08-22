@@ -208,6 +208,8 @@ basic.treesitter = {
         return {
             { lsp_p.provider.treesitter_status, 'green' },
             { ' ' },
+            { b_components.file_type( { icon = true } ) },
+            { ' ' },
         }
     end,
     hl = function()
@@ -215,7 +217,7 @@ basic.treesitter = {
     end,
 }
 
-local green_shades = HSL.rgb_to_hsl('#ffb0ff'):shades(10,8)
+local is_run = false
 
 local status_color = ''
 local change_color = function()
@@ -226,6 +228,8 @@ local change_color = function()
         Replace = { 'black', 'cyan' },
         Command = { 'black', 'yellow' },
     }
+
+    local green_shades, purple_shades = HSL.rgb_to_hsl('#ffb0ff'):shades(10,8)
 
     if state.mode[2] ~= nil then
         purple_shades = HSL.rgb_to_hsl(utils.get_color(WindLine.state.colors, hl_colors[state.mode[2]][2])):shades(10,8)
@@ -239,6 +243,12 @@ local change_color = function()
     else
         status_color = 'blue'
     end
+
+    if is_run then
+        animation.stop_all()
+        is_run = false
+    end
+    is_run = true
 
     animation.stop_all()
     animation.animation({
@@ -303,6 +313,7 @@ local default = {
         basic.vi_mode_sep,
         { ' ', '' },
         basic.file_name,
+        { b_components.file_size() },
         wave_left,
         { ' ', { 'FilenameBg', 'black' } },
         basic.divider,
