@@ -168,7 +168,8 @@ local astro_plugins = {
   },
 
   -- LSP symbols
-  ["stevearc/aerial.nvim"] = {
+  -- ["stevearc/aerial.nvim"] = {
+  ["mehalter/aerial.nvim"] = {
     module = "aerial",
     cmd = { "AerialToggle", "AerialOpen", "AerialInfo" },
     config = function() require "configs.aerial" end,

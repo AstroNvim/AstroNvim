@@ -387,22 +387,6 @@ function astronvim.alpha_button(sc, txt)
   }
 end
 
---- Format an array of symbols into a path like string
--- @param symbols an array like table of symbols where each entry is a table of format { icon = <string>, name = <string> }
--- @param depth the maximum depth of symbols to include in the final string
--- @param separator the separator character to use between symbols
--- @param icons a boolean of whether or not to include icons in the final path string
--- @return a path string of symbols separated by the given separator
-function astronvim.format_symbols(symbols, depth, separator, icons)
-  local parts = {}
-  depth = depth or #symbols
-  symbols = depth > 0 and { unpack(symbols, 1, depth) } or { unpack(symbols, #symbols + 1 + depth) }
-  for _, symbol in ipairs(symbols) do
-    table.insert(parts, icons == false and symbol.name or string.format("%s %s", symbol.icon, symbol.name))
-  end
-  return table.concat(parts, separator)
-end
-
 --- Check if a plugin is defined in packer. Useful with lazy loading when a plugin is not necessarily loaded yet
 -- @param plugin the plugin string to search for
 -- @return boolean value if the plugin is available

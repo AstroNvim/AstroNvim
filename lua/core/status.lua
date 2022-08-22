@@ -1,4 +1,4 @@
-local M = { hl = {}, provider = {}, condition = {}, utils = {} }
+local M = { hl = {}, init = {}, provider = {}, condition = {}, utils = {} }
 
 M.modes = {
   ["n"] = { "NORMAL", "normal" },
@@ -42,6 +42,46 @@ function M.hl.mode_fg() return M.modes[vim.fn.mode()][2] end
 function M.hl.filetype_color()
   local _, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand "%:t", nil, { default = true })
   return { fg = color }
+end
+
+function M.init.breadcrumbs(separator, opts)
+  separator = separator or " > "
+  local aerial_avail, aerial = pcall(require, "aerial")
+  opts = vim.tbl_deep_extend(
+    "force",
+    { icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } },
+    opts or {}
+  )
+  return function(self)
+    local data = aerial_avail and aerial.get_location(true) or {}
+    local children = {}
+    -- create a child for each level
+    for i, d in ipairs(data) do
+      local child = {
+        { provider = d.name }, -- add symbol name
+        on_click = { -- add on click function
+          callback = function() vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { d.lnum, d.col }) end,
+          name = string.format("goto_symbol_%d_%d", d.lnum, d.col),
+        },
+      }
+      if opts.icon.enabled then -- add icon and highlight if enabled
+        table.insert(child, 1, {
+          provider = string.format("%s ", d.icon),
+          hl = opts.icon.hl and string.format("Aerial%sIcon", d.kind) or nil,
+        })
+      end
+      if #data > 1 and i < #data then table.insert(child, { provider = separator }) end -- add a separator only if needed
+      table.insert(children, child)
+    end
+    if opts.padding.left > 0 then -- add left padding
+      table.insert(children, 1, { provider = astronvim.pad_string(" ", { left = opts.padding.left }) })
+    end
+    if opts.padding.right > 0 then -- add right padding
+      table.insert(children, { provider = astronvim.pad_string(" ", { right = opts.padding.right }) })
+    end
+    -- instantiate the new child
+    self[1] = self:new(children, 1)
+  end
 end
 
 function M.provider.fill() return "%=" end
