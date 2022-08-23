@@ -70,7 +70,7 @@ local function func_or_extend(overrides, default, extend)
   if extend then
     -- if the override is a table, use vim.tbl_deep_extend
     if type(overrides) == "table" then
-      default = vim.tbl_deep_extend("force", default, overrides)
+      default = astronvim.default_tbl(overrides, default)
     -- if the override is  a function, call it with the default and overwrite default with the return value
     elseif type(overrides) == "function" then
       default = overrides(default)
@@ -83,12 +83,29 @@ local function func_or_extend(overrides, default, extend)
   return default
 end
 
+function astronvim.default_tbl(opts, default)
+  opts = opts or {}
+  return default and vim.tbl_deep_extend("force", default, opts) or opts
+end
+
 --- Call function if a condition is met
 -- @param func the function to run
 -- @param condition a boolean value of whether to run the function or not
 function astronvim.conditional_func(func, condition, ...)
   -- if the condition is true or no condition is provided, evaluate the function with the rest of the parameters and return the result
   if (condition == nil and true or condition) and type(func) == "function" then return func(...) end
+end
+
+--- Get highlight properties for a given highlight name
+-- @param name highlight group name
+-- @return table of highlight group properties
+function astronvim.get_hlgroup(name, fallback)
+  local hl = vim.fn.hlexists(name) == 1 and vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors) or {}
+  return astronvim.default_tbl(
+    vim.o.termguicolors and { fg = hl.foreground, bg = hl.background, sp = hl.special }
+      or { cterfm = hl.foreground, ctermbg = hl.background },
+    fallback
+  )
 end
 
 --- Trim a string or return nil
@@ -117,9 +134,7 @@ end
 -- @param msg the notification body
 -- @param type the type of the notification (:help vim.log.levels)
 -- @param opts table of nvim-notify options to use (:help notify-options)
-function astronvim.notify(msg, type, opts)
-  vim.notify(msg, type, vim.tbl_deep_extend("force", { title = "AstroNvim" }, opts or {}))
-end
+function astronvim.notify(msg, type, opts) vim.notify(msg, type, astronvim.default_tbl(opts, { title = "AstroNvim" })) end
 
 --- Wrapper function for neovim echo API
 -- @param messages an array like table where each item is an array like table of strings to echo
@@ -314,14 +329,14 @@ function astronvim.which_key_register(mappings, opts)
     for prefix, mapping_table in pairs(prefixes) do
       which_key.register(
         mapping_table,
-        vim.tbl_deep_extend("force", {
+        astronvim.default_tbl(opts, {
           mode = mode,
           prefix = prefix,
           buffer = nil,
           silent = true,
           noremap = true,
           nowait = true,
-        }, opts or {})
+        })
       )
     end
   end
@@ -457,6 +472,7 @@ function astronvim.cmd(cmd, show_error)
 end
 
 require "core.utils.ui"
+require "core.utils.status"
 require "core.utils.updater"
 require "core.utils.lsp"
 
