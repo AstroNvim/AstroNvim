@@ -1,40 +1,54 @@
 local status_ok, heirline = pcall(require, "heirline")
-if not status_ok then return end
+if not status_ok or not astronvim.status then return end
 local C = require "default_theme.colors"
 local utils = require "heirline.utils"
 local conditions = require "heirline.conditions"
-local st = require "core.status"
-
-local function hl_default(hlgroup, prop, default)
-  return vim.fn.hlexists(hlgroup) == 1 and utils.get_highlight(hlgroup)[prop] or default
-end
 
 local function setup_colors()
+  local statusline = astronvim.get_hlgroup("StatusLine", { fg = C.fg, bg = C.grey_4 })
+  local winbar = astronvim.get_hlgroup("WinBar", { fg = C.grey_2, bg = C.bg })
+  local winbarnc = astronvim.get_hlgroup("WinBarNC", { fg = C.grey, bg = C.bg })
+  local conditional = astronvim.get_hlgroup("Conditional", { fg = C.purple_1, bg = C.grey_4 })
+  local string = astronvim.get_hlgroup("String", { fg = C.green, bg = C.grey_4 })
+  local typedef = astronvim.get_hlgroup("TypeDef", { fg = C.yellow, bg = C.grey_4 })
+  local heirlinenormal = astronvim.get_hlgroup("HerlineNormal", { fg = C.blue, bg = C.grey_4 })
+  local heirlineinsert = astronvim.get_hlgroup("HeirlineInsert", { fg = C.green, bg = C.grey_4 })
+  local heirlinevisual = astronvim.get_hlgroup("HeirlineVisual", { fg = C.purple, bg = C.grey_4 })
+  local heirlinereplace = astronvim.get_hlgroup("HeirlineReplace", { fg = C.red_1, bg = C.grey_4 })
+  local heirlinecommand = astronvim.get_hlgroup("HeirlineCommand", { fg = C.yellow_1, bg = C.grey_4 })
+  local heirlineinactive = astronvim.get_hlgroup("HeirlineInactive", { fg = C.grey_7, bg = C.grey_4 })
+  local gitsignsadd = astronvim.get_hlgroup("GitSignsAdd", { fg = C.green, bg = C.grey_4 })
+  local gitsignschange = astronvim.get_hlgroup("GitSignsChange", { fg = C.orange_1, bg = C.grey_4 })
+  local gitsignsdelete = astronvim.get_hlgroup("GitSignsDelete", { fg = C.red_1, bg = C.grey_4 })
+  local diagnosticerror = astronvim.get_hlgroup("DiagnosticError", { fg = C.red_1, bg = C.grey_4 })
+  local diagnosticwarn = astronvim.get_hlgroup("DiagnosticWarn", { fg = C.orange_1, bg = C.grey_4 })
+  local diagnosticinfo = astronvim.get_hlgroup("DiagnosticInfo", { fg = C.white_2, bg = C.grey_4 })
+  local diagnostichint = astronvim.get_hlgroup("DiagnosticHint", { fg = C.yellow_1, bg = C.grey_4 })
   local colors = astronvim.user_plugin_opts("heirline.colors", {
-    fg = hl_default("StatusLine", "fg", C.fg),
-    bg = hl_default("StatusLine", "bg", C.grey_4),
-    section_bg = hl_default("StatusLine", "bg", C.grey_4),
-    section_fg = hl_default("StatusLine", "fg", C.grey_4),
-    branch_fg = hl_default("Conditional", "fg", C.purple_1),
-    ts_fg = hl_default("String", "fg", C.green),
-    scrollbar = hl_default("TypeDef", "fg", C.yellow),
-    git_add = hl_default("GitSignsAdd", "fg", C.green),
-    git_change = hl_default("GitSignsChange", "fg", C.orange_1),
-    git_del = hl_default("GitSignsDelete", "fg", C.red_1),
-    diag_error = hl_default("DiagnosticError", "fg", C.red_1),
-    diag_warn = hl_default("DiagnosticWarn", "fg", C.orange_1),
-    diag_info = hl_default("DiagnosticInfo", "fg", C.white_2),
-    diag_hint = hl_default("DiagnosticHint", "fg", C.yellow_1),
-    normal = st.hl.lualine_mode("normal", hl_default("HeirlineNormal", "fg", C.blue)),
-    insert = st.hl.lualine_mode("insert", hl_default("HeirlineInsert", "fg", C.green)),
-    visual = st.hl.lualine_mode("visual", hl_default("HeirlineVisual", "fg", C.purple)),
-    replace = st.hl.lualine_mode("replace", hl_default("HeirlineReplace", "fg", C.red_1)),
-    command = st.hl.lualine_mode("command", hl_default("HeirlineCommand", "fg", C.yellow_1)),
-    inactive = hl_default("HeirlineInactive", "fg", C.grey_7),
-    winbar_fg = hl_default("WinBar", "fg", C.grey_2),
-    winbar_bg = hl_default("WinBar", "bg", C.bg),
-    winbarnc_fg = hl_default("WinBarNC", "fg", C.grey),
-    winbarnc_bg = hl_default("WinBarNC", "bg", C.bg),
+    fg = statusline.fg,
+    bg = statusline.bg,
+    section_fg = statusline.fg,
+    section_bg = statusline.bg,
+    branch_fg = conditional.bg,
+    ts_fg = string.fg,
+    scrollbar = typedef.fg,
+    git_add = gitsignsadd.fg,
+    git_change = gitsignschange.fg,
+    git_del = gitsignsdelete.fg,
+    diag_error = diagnosticerror.fg,
+    diag_warn = diagnosticwarn.fg,
+    diag_info = diagnosticinfo.fg,
+    diag_hint = diagnostichint.fg,
+    normal = astronvim.status.hl.lualine_mode("normal", heirlinenormal.fg),
+    insert = astronvim.status.hl.lualine_mode("insert", heirlineinsert.fg),
+    visual = astronvim.status.hl.lualine_mode("visual", heirlinevisual.fg),
+    replace = astronvim.status.hl.lualine_mode("replace", heirlinereplace.fg),
+    command = astronvim.status.hl.lualine_mode("command", heirlinecommand.fg),
+    inactive = heirlineinactive.fg,
+    winbar_fg = winbar.fg,
+    winbar_bg = winbar.bg,
+    winbarnc_fg = winbarnc.fg,
+    winbarnc_bg = winbarnc.bg,
   })
 
   for _, section in ipairs { "branch", "file", "git", "diagnostic", "lsp", "ts", "nav" } do
@@ -43,6 +57,194 @@ local function setup_colors()
   end
   return colors
 end
+
+-- define Heirline components
+astronvim.status.components.left_mode = utils.surround(
+  { "", astronvim.status.separators.left[2] },
+  astronvim.status.hl.mode_fg,
+  { provider = astronvim.status.provider.str { str = " " } }
+)
+
+astronvim.status.components.right_mode = utils.surround(
+  { astronvim.status.separators.right[1], "" },
+  astronvim.status.hl.mode_fg,
+  { provider = astronvim.status.provider.str { str = " " } }
+)
+
+astronvim.status.components.fill = { provider = astronvim.status.provider.fill() }
+
+astronvim.status.components.nav = {
+  hl = { fg = "nav_fg" },
+  utils.surround(astronvim.status.separators.right, "nav_bg", {
+    { provider = astronvim.status.provider.ruler() },
+    { provider = astronvim.status.provider.percentage { padding = { left = 1 } } },
+    { provider = astronvim.status.provider.scrollbar { padding = { left = 1 } }, hl = { fg = "scrollbar" } },
+  }),
+}
+
+astronvim.status.components.filename = {
+  { provider = astronvim.status.provider.fileicon { padding = { left = 1, right = 1 } } },
+  { provider = astronvim.status.provider.filename() },
+}
+
+astronvim.status.env.heirline_filename = not astronvim.is_available "bufferline.nvim" -- initiate environment variable
+astronvim.status.components.filename_filetype = {
+  condition = astronvim.status.condition.has_filetype,
+  hl = { fg = "file_fg" },
+  utils.surround(astronvim.status.separators.left, "file_bg", {
+    { provider = astronvim.status.provider.fileicon(), hl = astronvim.status.hl.filetype_color },
+    {
+      init = utils.pick_child_on_condition,
+      { -- if filetype is toggled
+        condition = function() return not astronvim.status.env.heirline_filename end,
+        { provider = astronvim.status.provider.filetype { padding = { left = 1 } } },
+      },
+      { -- if filename is toggled
+        { provider = astronvim.status.provider.filename { padding = { left = 1 } } },
+      },
+    },
+    on_click = {
+      name = "heirline_filename",
+      callback = function() astronvim.status.env.heirline_filename = not astronvim.status.env.heirline_filename end,
+    },
+  }),
+}
+
+astronvim.status.components.git_branch = {
+  condition = conditions.is_git_repo,
+  hl = { fg = "branch_fg" },
+  utils.surround(astronvim.status.separators.left, "branch_bg", {
+    {
+      provider = astronvim.status.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
+      hl = { bold = true },
+      on_click = {
+        name = "heirline_branch",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
+          end
+        end,
+      },
+    },
+  }),
+}
+
+astronvim.status.components.git_diff = {
+  condition = astronvim.status.condition.git_changed,
+  hl = { fg = "git_fg" },
+  utils.surround(astronvim.status.separators.left, "git_bg", {
+    {
+      provider = astronvim.status.provider.git_diff {
+        type = "added",
+        icon = { kind = "GitAdd", padding = { left = 1, right = 1 } },
+      },
+      hl = { fg = "git_add" },
+    },
+    {
+      provider = astronvim.status.provider.git_diff {
+        type = "changed",
+        icon = { kind = "GitChange", padding = { left = 1, right = 1 } },
+      },
+      hl = { fg = "git_change" },
+    },
+    {
+      provider = astronvim.status.provider.git_diff {
+        type = "removed",
+        icon = { kind = "GitDelete", padding = { left = 1, right = 1 } },
+      },
+      hl = { fg = "git_del" },
+    },
+    on_click = {
+      name = "heirline_git",
+      callback = function()
+        if astronvim.is_available "telescope.nvim" then
+          vim.defer_fn(function() require("telescope.builtin").git_status() end, 100)
+        end
+      end,
+    },
+  }),
+}
+
+astronvim.status.components.diagnostics = {
+  condition = conditions.has_diagnostics,
+  hl = { fg = "diagnostic_fg" },
+  utils.surround(astronvim.status.separators.left, "diagnostic_bg", {
+    {
+      provider = astronvim.status.provider.diagnostics {
+        severity = "ERROR",
+        icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } },
+      },
+      hl = { fg = "diag_error" },
+    },
+    {
+      provider = astronvim.status.provider.diagnostics {
+        severity = "WARN",
+        icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } },
+      },
+      hl = { fg = "diag_warn" },
+    },
+    {
+      provider = astronvim.status.provider.diagnostics {
+        severity = "INFO",
+        icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } },
+      },
+      hl = { fg = "diag_info" },
+    },
+    {
+      provider = astronvim.status.provider.diagnostics {
+        severity = "HINT",
+        icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } },
+      },
+      hl = { fg = "diag_hint" },
+    },
+    on_click = {
+      name = "heirline_diagnostic",
+      callback = function()
+        if astronvim.is_available "telescope.nvim" then
+          vim.defer_fn(function() require("telescope.builtin").diagnostics() end, 100)
+        end
+      end,
+    },
+  }),
+}
+
+astronvim.status.components.lsp = {
+  condition = conditions.lsp_attached,
+  hl = { fg = "lsp_fg" },
+  utils.surround(astronvim.status.separators.right, "lsp_bg", {
+    utils.make_flexible_component(
+      1,
+      { provider = astronvim.status.provider.lsp_progress { padding = { right = 1 } } },
+      { provider = "" }
+    ),
+    utils.make_flexible_component(2, {
+      provider = astronvim.status.provider.lsp_client_names {
+        icon = { kind = "ActiveLSP", padding = { right = 2 } },
+      },
+    }, {
+      provider = astronvim.status.provider.str { str = "LSP", icon = { kind = "ActiveLSP", padding = { right = 2 } } },
+    }),
+    on_click = {
+      name = "heirline_lsp",
+      callback = function()
+        vim.defer_fn(function() vim.cmd "LspInfo" end, 100)
+      end,
+    },
+  }),
+}
+
+astronvim.status.components.breadcrumbs = {
+  init = astronvim.status.init.breadcrumbs { padding = { left = 1 } },
+  condition = astronvim.status.condition.aerial_available,
+}
+
+astronvim.status.components.treesitter = {
+  condition = astronvim.status.condition.treesitter_available,
+  hl = { fg = "ts_fg" },
+  utils.surround(astronvim.status.separators.right, "ts_bg", {
+    { provider = astronvim.status.provider.str { str = "TS", icon = { kind = "ActiveTS" } } },
+  }),
+}
 
 local bar_components = astronvim.user_plugin_opts("heirline.components", {
   statusline = {
