@@ -1,3 +1,14 @@
+--- ### AstroNvim LSP
+--
+-- This module is automatically loaded by AstroNvim on during it's initialization into global variable `astronvim.lsp`
+--
+-- This module can also be manually loaded with `local updater = require("core.utils").lsp`
+--
+-- @module core.utils.lsp
+-- @see core.utils
+-- @copyright 2022
+-- @license GNU General Public License v3.0
+
 astronvim.lsp = {}
 local tbl_contains = vim.tbl_contains
 local user_plugin_opts = astronvim.user_plugin_opts
@@ -5,6 +16,8 @@ local conditional_func = astronvim.conditional_func
 local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
 local skip_setup = user_plugin_opts "lsp.skip_setup"
 
+--- Helper function to set up a given server with the Neovim LSP client
+-- @param server the name of the server to be setup
 astronvim.lsp.setup = function(server)
   if not tbl_contains(skip_setup, server) then
     local opts = astronvim.lsp.server_settings(server)
@@ -16,6 +29,9 @@ astronvim.lsp.setup = function(server)
   end
 end
 
+--- The `on_attach` function used by AstroNvim
+-- @param client the LSP client details when attaching
+-- @param bufnr the number of the buffer that the LSP client is attaching to
 astronvim.lsp.on_attach = function(client, bufnr)
   astronvim.set_mappings(
     user_plugin_opts("lsp.mappings", {
@@ -88,6 +104,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
   conditional_func(aerial.on_attach, aerial_avail, client, bufnr)
 end
 
+--- The default AstroNvim LSP capabilities
 astronvim.lsp.capabilities = vim.lsp.protocol.make_client_capabilities()
 astronvim.lsp.capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
 astronvim.lsp.capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -103,6 +120,9 @@ astronvim.lsp.capabilities.textDocument.completion.completionItem.resolveSupport
 astronvim.lsp.capabilities = user_plugin_opts("lsp.capabilities", astronvim.lsp.capabilities)
 astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 
+--- Get the server settings for a given language server to be provided to the server's `setup()` call
+-- @param  server_name the name of the server
+-- @return the table of LSP options used when setting up the given language server
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
   local opts = user_plugin_opts(
@@ -122,6 +142,8 @@ function astronvim.lsp.server_settings(server_name)
   return opts
 end
 
+--- A helper function to disable formatting for a given LSP client
+-- @param client the client details of the LSP
 function astronvim.lsp.disable_formatting(client)
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
