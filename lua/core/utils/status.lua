@@ -38,7 +38,7 @@ astronvim.status.separators = astronvim.user_plugin_opts("heirline.separators", 
   center = { "  ", "  " },
 })
 
---- Get the highlight color of the lualine theme for the current colorscheme
+--- Get the highlight background color of the lualine theme for the current colorscheme
 -- @param  mode the neovim mode to get the color of
 -- @param  fallback the color to fallback on if a lualine theme is not present
 -- @return The background color of the lualine theme or the fallback parameter if one doesn't exist
@@ -48,14 +48,19 @@ function astronvim.status.hl.lualine_mode(mode, fallback)
   return lualine_opts and type(lualine_opts.a) == "table" and lualine_opts.a.bg or fallback
 end
 
-function astronvim.status.hl.mode() return { fg = astronvim.status.hl.mode_fg() } end
+--- Get the highlight for the current mode
+-- @return the highlight group for the current mode
+-- @usage local heirline_component = { provider = "Example Provider", hl = astronvim.status.hl.mode },
+function astronvim.status.hl.mode() return { bg = astronvim.status.hl.mode_bg() } end
 
---- Get the foreground color group for the current mode
+--- Get the foreground color group for the current mode, good for usage with Heirline surround utility
 -- @return the highlight group for the current mode foreground
-function astronvim.status.hl.mode_fg() return astronvim.status.env.modes[vim.fn.mode()][2] end
+-- @usage local heirline_component = require("heirline.utils").surround({ "|", "|" }, astronvim.status.hl.mode_bg, heirline_component),
+function astronvim.status.hl.mode_bg() return astronvim.status.env.modes[vim.fn.mode()][2] end
 
 --- Get the foreground color group for the current filetype
 -- @return the highlight group for the current filetype foreground
+-- @usage local heirline_component = { provider = astronvim.status.provider.fileicon(), hl = astronvim.status.hl.filetype_color },
 function astronvim.status.hl.filetype_color()
   local _, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand "%:t", nil, { default = true })
   return { fg = color }
@@ -64,6 +69,7 @@ end
 --- An `init` function to build a set of children components for LSP breadcrumbs
 -- @param opts options for configuring the breadcrumbs (default: `{ separator = " > ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
 -- @return The Heirline init function
+-- @usage local heirline_component = { init = astronvim.status.init.breadcrumbs { padding = { left = 1 } }
 function astronvim.status.init.breadcrumbs(opts)
   local aerial_avail, aerial = pcall(require, "aerial")
   opts = astronvim.default_tbl(
@@ -102,15 +108,33 @@ function astronvim.status.init.breadcrumbs(opts)
   end
 end
 
+--- A provider function for the fill string
+-- @return the statusline string for filling the empty space
+-- @usage local heirline_component = { provider = astronvim.status.provider.fill }
 function astronvim.status.provider.fill() return "%=" end
 
+--- A provider function for showing the percentage of the current location in a document
+-- @param opts options passed to the stylize function
+-- @return the statusline string for displaying the percentage of current document location
+-- @usage local heirline_component = { provider = astronvim.status.provider.percentage() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.percentage(opts) return astronvim.status.utils.stylize("%p%%", opts) end
 
+--- A provider function for showing the current line and character in a document
+-- @param opts options for padding the line and character locations and options passed to the stylize function
+-- @return the statusline string for showing location in document line_num:char_num
+-- @usage local heirline_component = { provider = astronvim.status.provider.ruler({ pad_ruler = { line = 3, char = 2 } }) }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.ruler(opts)
   opts = astronvim.default_tbl(opts, { pad_ruler = { line = 0, char = 0 } })
   return astronvim.status.utils.stylize(string.format("%%%dl:%%%dc", opts.pad_ruler.line, opts.pad_ruler.char), opts)
 end
 
+--- A provider function for showing the current location as a scrollbar
+-- @param opts options passed to the stylize function
+-- @return the function for outputting the scrollbar
+-- @usage local heirline_component = { provider = astronvim.status.provider.scrollbar() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.scrollbar(opts)
   local sbar = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
   return function()
@@ -121,10 +145,20 @@ function astronvim.status.provider.scrollbar(opts)
   end
 end
 
+--- A provider function for showing the current filetype
+-- @param opts options passed to the stylize function
+-- @return the function for outputting the filetype
+-- @usage local heirline_component = { provider = astronvim.status.provider.filetype() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.filetype(opts)
   return function() return astronvim.status.utils.stylize(string.lower(vim.bo.filetype), opts) end
 end
 
+--- A provider function for showing the current filename
+-- @param opts options for argument to fnamemodify to format filename and options passed to the stylize function
+-- @return the function for outputting the filename
+-- @usage local heirline_component = { provider = astronvim.status.provider.filename() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.filename(opts)
   opts = astronvim.default_tbl(opts, { modify = ":t" })
   return function()
@@ -133,6 +167,11 @@ function astronvim.status.provider.filename(opts)
   end
 end
 
+--- A provider function for showing the current filetype icon
+-- @param opts options passed to the stylize function
+-- @return the function for outputting the filetype icon
+-- @usage local heirline_component = { provider = astronvim.status.provider.fileicon() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.fileicon(opts)
   return function()
     local ft_icon, _ = require("nvim-web-devicons").get_icon(vim.fn.expand "%:t", nil, { default = true })
@@ -140,10 +179,20 @@ function astronvim.status.provider.fileicon(opts)
   end
 end
 
+--- A provider function for showing the current git branch
+-- @param opts options passed to the stylize function
+-- @return the function for outputting the git branch
+-- @usage local heirline_component = { provider = astronvim.status.provider.git_branch() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.git_branch(opts)
   return function() return astronvim.status.utils.stylize(vim.b.gitsigns_head or "", opts) end
 end
 
+--- A provider function for showing the current git diff count of a specific type
+-- @param opts options for type of git diff and options passed to the stylize function
+-- @return the function for outputting the git diff
+-- @usage local heirline_component = { provider = astronvim.status.provider.git_diff({ type = "added" }) }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.git_diff(opts)
   if not opts or not opts.type then return end
   return function()
@@ -155,6 +204,11 @@ function astronvim.status.provider.git_diff(opts)
   end
 end
 
+--- A provider function for showing the current diagnostic count of a specific severity
+-- @param opts options for severity of diagnostic and options passed to the stylize function
+-- @return the function for outputting the diagnostic count
+-- @usage local heirline_component = { provider = astronvim.status.provider.diagnostics({ severity = "ERROR" }) }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.diagnostics(opts)
   if not opts or not opts.severity then return end
   return function()
@@ -163,6 +217,11 @@ function astronvim.status.provider.diagnostics(opts)
   end
 end
 
+--- A provider function for showing the current progress of loading language servers
+-- @param opts options passed to the stylize function
+-- @return the function for outputting the LSP progress
+-- @usage local heirline_component = { provider = astronvim.status.provider.lsp_progress() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.lsp_progress(opts)
   return function()
     local Lsp = vim.lsp.util.get_progress_messages()[1]
@@ -183,6 +242,11 @@ function astronvim.status.provider.lsp_progress(opts)
   end
 end
 
+--- A provider function for showing the connected LSP client names
+-- @param opts options for explanding null_ls clients, max width percentage, and options passed to the stylize function
+-- @return the function for outputting the LSP client names
+-- @usage local heirline_component = { provider = astronvim.status.provider.lsp_client_names({ expand_null_ls = true, truncate = 0.25 }) }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.lsp_client_names(opts)
   opts = astronvim.default_tbl(opts, { expand_null_ls = true, truncate = 0.25 })
   return function()
@@ -204,6 +268,11 @@ function astronvim.status.provider.lsp_client_names(opts)
   end
 end
 
+--- A provider function for showing if treesitter is connected
+-- @param opts options passed to the stylize function
+-- @return the function for outputting TS if treesitter is connected
+-- @usage local heirline_component = { provider = astronvim.status.provider.treesitter_status() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.treesitter_status(opts)
   return function()
     local ts_avail, ts = pcall(require, "nvim-treesitter.parsers")
@@ -211,29 +280,49 @@ function astronvim.status.provider.treesitter_status(opts)
   end
 end
 
+--- A provider function for displaying a single string
+-- @param opts options passed to the stylize function
+-- @return the stylized statusline string
+-- @usage local heirline_component = { provider = astronvim.status.provider.str({ str = "Hello" }) }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.str(opts)
   opts = astronvim.default_tbl(opts, { str = " " })
   return astronvim.status.utils.stylize(opts.str, opts)
 end
 
-function astronvim.status.condition.git_available() return vim.b.gitsigns_head ~= nil end
-
+--- A condition function if there are any git changes
+-- @return boolean of wether or not there are any git changes
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.git_changed }
 function astronvim.status.condition.git_changed()
   local git_status = vim.b.gitsigns_status_dict
   return git_status and (git_status.added or 0) + (git_status.removed or 0) + (git_status.changed or 0) > 0
 end
 
+--- A condition function if there is a defined filetype
+-- @return boolean of wether or not there is a filetype
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.has_filetype }
 function astronvim.status.condition.has_filetype()
   return vim.fn.empty(vim.fn.expand "%:t") ~= 1 and vim.bo.filetype and vim.bo.filetype ~= ""
 end
 
+--- A condition function if Aerial is available
+-- @return boolean of wether or not aerial plugin is installed
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.aerial_available }
 function astronvim.status.condition.aerial_available() return astronvim.is_available "aerial.nvim" end
 
+--- A condition function if treesitter is in use
+-- @return boolean of wether or not treesitter is active
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.treesitter_available }
 function astronvim.status.condition.treesitter_available()
   local ts_avail, ts = pcall(require, "nvim-treesitter.parsers")
   return ts_avail and ts.has_parser()
 end
 
+--- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding
+-- @param str the string to stylize
+-- @param opts options of `{ padding = { left = 0, right = 0 }, separator = { left = "|", right = "|" }, icon = { kind = "NONE", padding = { left = 0, right = 0 } } }`
+-- @return the stylized string
+-- @usage local string = astronvim.status.utils.stylize("Hello", { padding = { left = 1, right = 1 }, icon = { kind = "String" } })
 function astronvim.status.utils.stylize(str, opts)
   opts = astronvim.default_tbl(opts, {
     padding = { left = 0, right = 0 },
@@ -247,6 +336,9 @@ function astronvim.status.utils.stylize(str, opts)
     or ""
 end
 
+--- A utility function to get the width of the bar
+-- @param is_winbar boolean true if you want the width of the winbar, false if you want the statusline width
+-- @return the width of the specified bar
 function astronvim.status.utils.width(is_winbar)
   return vim.o.laststatus == 3 and not is_winbar and vim.o.columns or vim.api.nvim_win_get_width(0)
 end

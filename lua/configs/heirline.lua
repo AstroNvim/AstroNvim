@@ -29,7 +29,7 @@ local function setup_colors()
     bg = statusline.bg,
     section_fg = statusline.fg,
     section_bg = statusline.bg,
-    branch_fg = conditional.bg,
+    branch_fg = conditional.fg,
     ts_fg = string.fg,
     scrollbar = typedef.fg,
     git_add = gitsignsadd.fg,
@@ -61,13 +61,13 @@ end
 -- define Heirline components
 astronvim.status.components.left_mode = utils.surround(
   { "", astronvim.status.separators.left[2] },
-  astronvim.status.hl.mode_fg,
+  astronvim.status.hl.mode_bg,
   { provider = astronvim.status.provider.str { str = " " } }
 )
 
 astronvim.status.components.right_mode = utils.surround(
   { astronvim.status.separators.right[1], "" },
-  astronvim.status.hl.mode_fg,
+  astronvim.status.hl.mode_bg,
   { provider = astronvim.status.provider.str { str = " " } }
 )
 
