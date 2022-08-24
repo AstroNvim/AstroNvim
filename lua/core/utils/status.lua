@@ -98,14 +98,84 @@ function astronvim.status.init.breadcrumbs(opts)
       table.insert(children, child)
     end
     if opts.padding.left > 0 then -- add left padding
-      table.insert(children, 1, { provider = astronvim.pad_string(" ", { left = opts.padding.left }) })
+      table.insert(children, 1, { provider = astronvim.pad_string(" ", { left = opts.padding.left - 1 }) })
     end
     if opts.padding.right > 0 then -- add right padding
-      table.insert(children, { provider = astronvim.pad_string(" ", { right = opts.padding.right }) })
+      table.insert(children, { provider = astronvim.pad_string(" ", { right = opts.padding.right - 1 }) })
     end
     -- instantiate the new child
     self[1] = self:new(children, 1)
   end
+end
+
+--- An `init` function to build a set of children components for an entire file information section
+-- @param opts options for configuring file_icon, filename, filetype, file_modified, file_read_only, and the overall padding
+-- @return The Heirline init function
+-- @usage local heirline_component = { init = astronvim.status.init.file_info() }
+function astronvim.status.init.file_info(opts)
+  opts = astronvim.default_tbl(opts, {
+    file_icon = { highlight = true, padding = { right = 1 } },
+    filename = {},
+    filetype = false,
+    file_modified = { padding = { left = 1 } },
+    file_read_only = { padding = { left = 1 } },
+  })
+  return astronvim.status.init.builder {
+    {
+      provider = "file_icon",
+      opts = opts.file_icon,
+      hl = opts.file_icon.highlight and astronvim.status.hl.filetype_color or nil,
+    },
+    { provider = "filename", opts = opts.filename },
+    { provider = "filetype", opts = opts.filetype },
+    { provider = "file_modified", opts = opts.file_modified },
+    { provider = "file_read_only", opts = opts.file_read_only },
+    padding = opts.padding,
+  }
+end
+
+--- An `init` function to build a set of children components for an entire navigation section
+-- @param opts options for configuring ruler, percentage, scrollbar, and the overall padding
+-- @return The Heirline init function
+-- @usage local heirline_component = { init = astronvim.status.init.nav() }
+function astronvim.status.init.nav(opts)
+  opts = astronvim.default_tbl(opts, {
+    ruler = {},
+    percentage = { padding = { left = 1 } },
+    scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
+  })
+  return astronvim.status.init.builder {
+    { provider = "ruler", opts = opts.ruler },
+    { provider = "percentage", opts = opts.percentage },
+    { provider = "scrollbar", opts = opts.scrollbar, hl = opts.scrollbar.hl },
+    padding = opts.padding,
+  }
+end
+
+--- A general `init` function to build a section of astronvim status providers with highlights and conditions
+-- @param opts a list of components to build into a section
+-- @return The Heirline init function
+-- @usage local heirline_component = { init = astronvim.status.init.builder({ { provider = "file_icon", opts = { padding = { right = 1 } } }, { provider = "filename" } })
+function astronvim.status.init.builder(opts)
+  opts = astronvim.default_tbl(opts, { padding = { left = 0, right = 0 } })
+  local children = {}
+  if opts.padding.left > 0 then -- add left padding
+    table.insert(children, { provider = astronvim.pad_string(" ", { left = opts.padding.left - 1 }) })
+  end
+  for _, entry in ipairs(opts) do
+    if
+      type(entry) == "table"
+      and astronvim.status.provider[entry.provider]
+      and (entry.opts == nil or type(entry.opts) == "table")
+    then
+      entry.provider = astronvim.status.provider[entry.provider](entry.opts)
+      table.insert(children, entry)
+    end
+  end
+  if opts.padding.right > 0 then -- add right padding
+    table.insert(children, { provider = astronvim.pad_string(" ", { right = opts.padding.right - 1 }) })
+  end
+  return function(self) self[1] = self:new(children, 1) end
 end
 
 --- A provider function for the fill string
@@ -163,16 +233,39 @@ function astronvim.status.provider.filename(opts)
   opts = astronvim.default_tbl(opts, { modify = ":t" })
   return function()
     local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), opts.modify)
-    return astronvim.status.utils.stylize(filename == "" and "[No Name]" or filename, opts)
+    return astronvim.status.utils.stylize((filename == "" and "[No Name]" or filename), opts)
+  end
+end
+
+--- A provider function for showing if the current file is modifiable
+-- @param opts options passed to the stylize function
+-- @return the function for outputting the indicator if the file is modified
+-- @usage local heirline_component = { provider = astronvim.status.provider.file_modified() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.file_modified(opts)
+  return function() return astronvim.status.utils.stylize(vim.bo.modified and astronvim.get_icon "FileModified" or "", opts) end
+end
+
+--- A provider function for showing if the current file is read-only
+-- @param opts options passed to the stylize function
+-- @return the function for outputting the indicator if the file is read-only
+-- @usage local heirline_component = { provider = astronvim.status.provider.file_read_only() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.file_read_only(opts)
+  return function()
+    return astronvim.status.utils.stylize(
+      (not vim.bo.modifiable or vim.bo.readonly) and astronvim.get_icon "FileReadOnly" or "",
+      opts
+    )
   end
 end
 
 --- A provider function for showing the current filetype icon
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the filetype icon
--- @usage local heirline_component = { provider = astronvim.status.provider.fileicon() }
+-- @usage local heirline_component = { provider = astronvim.status.provider.file_icon() }
 -- @see astronvim.status.utils.stylize
-function astronvim.status.provider.fileicon(opts)
+function astronvim.status.provider.file_icon(opts)
   return function()
     local ft_icon, _ = require("nvim-web-devicons").get_icon(vim.fn.expand "%:t", nil, { default = true })
     return astronvim.status.utils.stylize(ft_icon, opts)
