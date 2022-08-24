@@ -102,10 +102,8 @@ astronvim.status.components.git_branch = {
   condition = conditions.is_git_repo,
   hl = { fg = "branch_fg" },
   utils.surround(astronvim.status.separators.left, "branch_bg", {
-    {
-      provider = astronvim.status.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
-      hl = { bold = true },
-    },
+    provider = astronvim.status.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
+    hl = { bold = true },
     on_click = {
       name = "heirline_branch",
       callback = function()
@@ -241,7 +239,11 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
   },
   {
     init = utils.pick_child_on_condition,
-    { condition = conditions.is_active, { astronvim.status.components.breadcrumbs } },
+    {
+      condition = function() return conditions.buffer_matches { buftype = { "terminal" } } end,
+      init = function() vim.opt_local.winbar = nil end,
+    },
+    { condition = conditions.is_active, astronvim.status.components.breadcrumbs },
     { astronvim.status.components.filename },
   },
 })
@@ -257,6 +259,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 vim.api.nvim_create_autocmd("User", {
+  pattern = "HeirlineInitWinbar",
   group = "Heirline",
   desc = "Disable winbar for some windows",
   callback = function(args)
