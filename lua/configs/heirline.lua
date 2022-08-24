@@ -75,38 +75,26 @@ astronvim.status.components.fill = { provider = astronvim.status.provider.fill()
 
 astronvim.status.components.nav = {
   hl = { fg = "nav_fg" },
-  utils.surround(astronvim.status.separators.right, "nav_bg", {
-    { provider = astronvim.status.provider.ruler() },
-    { provider = astronvim.status.provider.percentage { padding = { left = 1 } } },
-    { provider = astronvim.status.provider.scrollbar { padding = { left = 1 } }, hl = { fg = "scrollbar" } },
-  }),
+  utils.surround(astronvim.status.separators.right, "nav_bg", { init = astronvim.status.init.nav() }),
 }
 
 astronvim.status.components.filename = {
-  { provider = astronvim.status.provider.fileicon { padding = { left = 1, right = 1 } } },
-  { provider = astronvim.status.provider.filename() },
+  init = astronvim.status.init.file_info {
+    file_icon = { highlight = false, padding = { left = 1 } },
+    padding = { left = 1 },
+  },
 }
 
-astronvim.status.env.heirline_filename = not astronvim.is_available "bufferline.nvim" -- initiate environment variable
 astronvim.status.components.filename_filetype = {
   condition = astronvim.status.condition.has_filetype,
   hl = { fg = "file_fg" },
   utils.surround(astronvim.status.separators.left, "file_bg", {
-    { provider = astronvim.status.provider.fileicon(), hl = astronvim.status.hl.filetype_color },
-    {
-      init = utils.pick_child_on_condition,
-      { -- if filetype is toggled
-        condition = function() return not astronvim.status.env.heirline_filename end,
-        { provider = astronvim.status.provider.filetype { padding = { left = 1 } } },
-      },
-      { -- if filename is toggled
-        { provider = astronvim.status.provider.filename { padding = { left = 1 } } },
-      },
-    },
-    on_click = {
-      name = "heirline_filename",
-      callback = function() astronvim.status.env.heirline_filename = not astronvim.status.env.heirline_filename end,
-    },
+    init = astronvim.status.init.file_info(astronvim.is_available "bufferline.nvim" and {
+      file_icon = { padding = { left = 1 } },
+      filetype = {},
+      filename = false,
+      file_modified = false,
+    } or { file_icon = { padding = { left = 1 } } }),
   }),
 }
 
@@ -117,14 +105,14 @@ astronvim.status.components.git_branch = {
     {
       provider = astronvim.status.provider.git_branch { icon = { kind = "GitBranch", padding = { right = 1 } } },
       hl = { bold = true },
-      on_click = {
-        name = "heirline_branch",
-        callback = function()
-          if astronvim.is_available "telescope.nvim" then
-            vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
-          end
-        end,
-      },
+    },
+    on_click = {
+      name = "heirline_branch",
+      callback = function()
+        if astronvim.is_available "telescope.nvim" then
+          vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
+        end
+      end,
     },
   }),
 }
@@ -133,26 +121,22 @@ astronvim.status.components.git_diff = {
   condition = astronvim.status.condition.git_changed,
   hl = { fg = "git_fg" },
   utils.surround(astronvim.status.separators.left, "git_bg", {
-    {
-      provider = astronvim.status.provider.git_diff {
-        type = "added",
-        icon = { kind = "GitAdd", padding = { left = 1, right = 1 } },
+    init = astronvim.status.init.builder {
+      {
+        provider = "git_diff",
+        opts = { type = "added", icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } },
+        hl = { fg = "git_add" },
       },
-      hl = { fg = "git_add" },
-    },
-    {
-      provider = astronvim.status.provider.git_diff {
-        type = "changed",
-        icon = { kind = "GitChange", padding = { left = 1, right = 1 } },
+      {
+        provider = "git_diff",
+        opts = { type = "changed", icon = { kind = "GitChange", padding = { left = 1, right = 1 } } },
+        hl = { fg = "git_change" },
       },
-      hl = { fg = "git_change" },
-    },
-    {
-      provider = astronvim.status.provider.git_diff {
-        type = "removed",
-        icon = { kind = "GitDelete", padding = { left = 1, right = 1 } },
+      {
+        provider = "git_diff",
+        opts = { type = "removed", icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } },
+        hl = { fg = "git_del" },
       },
-      hl = { fg = "git_del" },
     },
     on_click = {
       name = "heirline_git",
@@ -169,33 +153,27 @@ astronvim.status.components.diagnostics = {
   condition = conditions.has_diagnostics,
   hl = { fg = "diagnostic_fg" },
   utils.surround(astronvim.status.separators.left, "diagnostic_bg", {
-    {
-      provider = astronvim.status.provider.diagnostics {
-        severity = "ERROR",
-        icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } },
+    init = astronvim.status.init.builder {
+      {
+        provider = "diagnostics",
+        opts = { severity = "ERROR", icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } } },
+        hl = { fg = "diag_error" },
       },
-      hl = { fg = "diag_error" },
-    },
-    {
-      provider = astronvim.status.provider.diagnostics {
-        severity = "WARN",
-        icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } },
+      {
+        provider = "diagnostics",
+        opts = { severity = "WARN", icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } } },
+        hl = { fg = "diag_warn" },
       },
-      hl = { fg = "diag_warn" },
-    },
-    {
-      provider = astronvim.status.provider.diagnostics {
-        severity = "INFO",
-        icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } },
+      {
+        provider = "diagnostics",
+        opts = { severity = "INFO", icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } } },
+        hl = { fg = "diag_info" },
       },
-      hl = { fg = "diag_info" },
-    },
-    {
-      provider = astronvim.status.provider.diagnostics {
-        severity = "HINT",
-        icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } },
+      {
+        provider = "diagnostics",
+        opts = { severity = "HINT", icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } } },
+        hl = { fg = "diag_hint" },
       },
-      hl = { fg = "diag_hint" },
     },
     on_click = {
       name = "heirline_diagnostic",
@@ -242,12 +220,14 @@ astronvim.status.components.treesitter = {
   condition = astronvim.status.condition.treesitter_available,
   hl = { fg = "ts_fg" },
   utils.surround(astronvim.status.separators.right, "ts_bg", {
-    { provider = astronvim.status.provider.str { str = "TS", icon = { kind = "ActiveTS" } } },
+    provider = astronvim.status.provider.str { str = "TS", icon = { kind = "ActiveTS" } },
   }),
 }
 
-local bar_components = astronvim.user_plugin_opts("heirline.components", {
-  statusline = {
+heirline.load_colors(setup_colors())
+local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
+  {
+    hl = { fg = "fg", bg = "bg" },
     astronvim.status.components.left_mode,
     astronvim.status.components.git_branch,
     astronvim.status.components.filename_filetype,
@@ -259,28 +239,11 @@ local bar_components = astronvim.user_plugin_opts("heirline.components", {
     astronvim.status.components.nav,
     astronvim.status.components.right_mode,
   },
-  winbar = {
-    active = { astronvim.status.components.breadcrumbs },
-    inactive = { astronvim.status.components.filename },
-  },
-}, false)
-
-heirline.load_colors(setup_colors())
-local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
-  bar_components.statusline and vim.tbl_deep_extend(
-    "force",
-    bar_components.statusline,
-    { hl = { fg = "fg", bg = "bg" } }
-  ) or nil,
-  bar_components.winbar and {
+  {
     init = utils.pick_child_on_condition,
-    vim.tbl_deep_extend(
-      "force",
-      bar_components.winbar.active,
-      { condition = conditions.is_active, hl = { fg = "winbar_fg", bg = "winbar_bg" } }
-    ),
-    vim.tbl_deep_extend("force", bar_components.winbar.inactive, { hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" } }),
-  } or nil,
+    { condition = conditions.is_active, { astronvim.status.components.breadcrumbs } },
+    { astronvim.status.components.filename },
+  },
 })
 heirline.setup(heirline_opts[1], heirline_opts[2])
 
