@@ -43,6 +43,10 @@ astronvim.lspkind = astronvim.user_plugin_opts("plugins.lspkind", {
     GitStaged = "✓",
     GitUnstaged = "✗",
     GitUntracked = "★",
+    LSPLoaded = "",
+    LSPLoading1 = "",
+    LSPLoading2 = "",
+    LSPLoading3 = "",
   },
 })
 lspkind.init(astronvim.lspkind)

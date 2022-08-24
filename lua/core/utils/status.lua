@@ -8,6 +8,7 @@
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 astronvim.status = { hl = {}, init = {}, provider = {}, condition = {}, components = {}, utils = {}, env = {} }
+local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
 
 astronvim.status.env.modes = {
   ["n"] = { "NORMAL", "normal" },
@@ -62,7 +63,8 @@ function astronvim.status.hl.mode_bg() return astronvim.status.env.modes[vim.fn.
 -- @return the highlight group for the current filetype foreground
 -- @usage local heirline_component = { provider = astronvim.status.provider.fileicon(), hl = astronvim.status.hl.filetype_color },
 function astronvim.status.hl.filetype_color()
-  local _, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand "%:t", nil, { default = true })
+  if not devicons_avail then return {} end
+  local _, color = devicons.get_icon_color(vim.fn.expand "%:t", nil, { default = true })
   return { fg = color }
 end
 
@@ -266,8 +268,9 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_icon() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_icon(opts)
+  if not devicons_avail then return "" end
   return function()
-    local ft_icon, _ = require("nvim-web-devicons").get_icon(vim.fn.expand "%:t", nil, { default = true })
+    local ft_icon, _ = devicons.get_icon(vim.fn.expand "%:t", nil, { default = true })
     return astronvim.status.utils.stylize(ft_icon, opts)
   end
 end
@@ -322,9 +325,11 @@ function astronvim.status.provider.lsp_progress(opts)
       Lsp
           and string.format(
             " %%<%s %s %s (%s%%%%) ",
-            ((Lsp.percentage or 0) >= 70 and { "", "", "" } or { "", "", "" })[math.floor(
-              vim.loop.hrtime() / 12e7
-            ) % 3 + 1],
+            astronvim.get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
+              "Loading1",
+              "Loading2",
+              "Loading3",
+            })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1]),
             Lsp.title or "",
             Lsp.message or "",
             Lsp.percentage or 0
