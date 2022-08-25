@@ -29,6 +29,15 @@ astronvim.lsp.setup = function(server)
   end
 end
 
+--- The default formatting filter used by AstroNvim's formatting bindings. Configured with the `lsp.formatting` user configuration options
+-- @param client the client to check if formatting should be enabled
+-- @return true if the client should be used for formatting
+astronvim.lsp.format_filter = function(client)
+  local formatting = astronvim.user_plugin_opts("lsp.formatting", { disabled = {} })
+  return type(formatting.filter) == "function" and formatting.filter(client)
+    or not vim.tbl_contains(formatting.disabled, client.name)
+end
+
 --- The `on_attach` function used by AstroNvim
 -- @param client the LSP client details when attaching
 -- @param bufnr the number of the buffer that the LSP client is attaching to
@@ -38,7 +47,10 @@ astronvim.lsp.on_attach = function(client, bufnr)
       n = {
         ["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
         ["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
-        ["<leader>lf"] = { function() vim.lsp.buf.format() end, desc = "Format code" },
+        ["<leader>lf"] = {
+          function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
+          desc = "Format code",
+        },
         ["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help" },
         ["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" },
         ["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol" },
@@ -56,7 +68,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
         ["<leader>lf"] = {
           function()
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", false)
-            vim.lsp.buf.range_formatting()
+            vim.lsp.buf.range_formatting { filter = astronvim.lsp.format_filter }
           end,
           desc = "Range format code",
         },
@@ -94,7 +106,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
       group = "auto_format",
       desc = "Auto format before save",
       pattern = "<buffer>",
-      callback = function() vim.lsp.buf.format() end,
+      callback = function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
     })
   end
 
@@ -140,13 +152,6 @@ function astronvim.lsp.server_settings(server_name)
     conditional_func(user_on_attach, true, client, bufnr)
   end
   return opts
-end
-
---- A helper function to disable formatting for a given LSP client
--- @param client the client details of the LSP
-function astronvim.lsp.disable_formatting(client)
-  client.server_capabilities.documentFormattingProvider = false
-  client.server_capabilities.documentRangeFormattingProvider = false
 end
 
 return astronvim.lsp
