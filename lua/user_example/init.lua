@@ -130,6 +130,14 @@ local config = {
     servers = {
       -- "pyright"
     },
+    formatting = {
+      disabled = { -- disable formatting capabilities for the listed clients
+        "sumneko_lua",
+      },
+      -- filter = function(client) -- fully override the default formatting function
+      --   return true
+      -- end
+    },
     -- easily add or disable built in mappings added during LSP attaching
     mappings = {
       n = {
@@ -159,12 +167,6 @@ local config = {
       --     },
       --   },
       -- },
-      -- Example disabling formatting for a specific language server
-      -- gopls = { -- override table for require("lspconfig").gopls.setup({...})
-      --   on_attach = function(client, bufnr)
-      --     client.resolved_capabilities.document_formatting = false
-      --   end
-      -- }
     },
   },
 
