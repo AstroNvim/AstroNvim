@@ -110,76 +110,6 @@ function astronvim.status.init.breadcrumbs(opts)
   end
 end
 
---- An `init` function to build a set of children components for an entire file information section
--- @param opts options for configuring file_icon, filename, filetype, file_modified, file_read_only, and the overall padding
--- @return The Heirline init function
--- @usage local heirline_component = { init = astronvim.status.init.file_info() }
-function astronvim.status.init.file_info(opts)
-  opts = astronvim.default_tbl(opts, {
-    file_icon = { highlight = true, padding = { right = 1 } },
-    filename = {},
-    filetype = false,
-    file_modified = { padding = { left = 1 } },
-    file_read_only = { padding = { left = 1 } },
-  })
-  return astronvim.status.init.builder {
-    opts.file_icon and {
-      provider = "file_icon",
-      opts = opts.file_icon,
-      hl = opts.file_icon.highlight and astronvim.status.hl.filetype_color or nil,
-    } or nil,
-    opts.filename and { provider = "filename", opts = opts.filename } or nil,
-    opts.filetype and { provider = "filetype", opts = opts.filetype } or nil,
-    opts.file_modified and { provider = "file_modified", opts = opts.file_modified } or nil,
-    opts.file_read_only and { provider = "file_read_only", opts = opts.file_read_only } or nil,
-    padding = opts.padding,
-  }
-end
-
---- An `init` function to build a set of children components for an entire navigation section
--- @param opts options for configuring ruler, percentage, scrollbar, and the overall padding
--- @return The Heirline init function
--- @usage local heirline_component = { init = astronvim.status.init.nav() }
-function astronvim.status.init.nav(opts)
-  opts = astronvim.default_tbl(opts, {
-    ruler = {},
-    percentage = { padding = { left = 1 } },
-    scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
-  })
-  return astronvim.status.init.builder {
-    opts.ruler and { provider = "ruler", opts = opts.ruler } or nil,
-    opts.percentage and { provider = "percentage", opts = opts.percentage } or nil,
-    opts.scrollbar and { provider = "scrollbar", opts = opts.scrollbar, hl = opts.scrollbar.hl } or nil,
-    padding = opts.padding,
-  }
-end
-
---- A general `init` function to build a section of astronvim status providers with highlights and conditions
--- @param opts a list of components to build into a section
--- @return The Heirline init function
--- @usage local heirline_component = { init = astronvim.status.init.builder({ { provider = "file_icon", opts = { padding = { right = 1 } } }, { provider = "filename" } })
-function astronvim.status.init.builder(opts)
-  opts = astronvim.default_tbl(opts, { padding = { left = 0, right = 0 } })
-  local children = {}
-  if opts.padding.left > 0 then -- add left padding
-    table.insert(children, { provider = astronvim.pad_string(" ", { left = opts.padding.left - 1 }) })
-  end
-  for _, entry in ipairs(opts) do
-    if
-      type(entry) == "table"
-      and astronvim.status.provider[entry.provider]
-      and (entry.opts == nil or type(entry.opts) == "table")
-    then
-      entry.provider = astronvim.status.provider[entry.provider](entry.opts)
-      table.insert(children, entry)
-    end
-  end
-  if opts.padding.right > 0 then -- add right padding
-    table.insert(children, { provider = astronvim.pad_string(" ", { right = opts.padding.right - 1 }) })
-  end
-  return function(self) self[1] = self:new(children, 1) end
-end
-
 --- A provider function for the fill string
 -- @return the statusline string for filling the empty space
 -- @usage local heirline_component = { provider = astronvim.status.provider.fill }
@@ -432,6 +362,73 @@ function astronvim.status.utils.stylize(str, opts)
       and str ~= ""
       and opts.separator.left .. astronvim.pad_string(icon .. str, opts.padding) .. opts.separator.right
     or ""
+end
+
+--- A function to build a set of children components for an entire file information section
+-- @param opts options for configuring file_icon, filename, filetype, file_modified, file_read_only, and the overall padding
+-- @return The Heirline init function
+-- @usage local heirline_component = astronvim.status.init.file_info()
+function astronvim.status.components.file_info(opts)
+  opts = astronvim.default_tbl(opts, {
+    file_icon = { highlight = true, padding = { right = 1 } },
+    filename = {},
+    filetype = false,
+    file_modified = { padding = { left = 1 } },
+    file_read_only = { padding = { left = 1 } },
+  })
+  for i, key in ipairs { "file_icon", "filename", "filetype", "file_modified", "file_read_only" } do
+    opts[i] = opts[key]
+        and { provider = key, opts = opts[key], hl = opts[key].highlight and astronvim.status.hl.filetype_color }
+      or false
+    opts[key] = nil
+  end
+  return astronvim.status.components.builder(opts)
+end
+
+--- A function to build a set of children components for an entire navigation section
+-- @param opts options for configuring ruler, percentage, scrollbar, and the overall padding
+-- @return The Heirline init function
+-- @usage local heirline_component = astronvim.status.components.nav()
+function astronvim.status.components.nav(opts)
+  opts = astronvim.default_tbl(opts, {
+    ruler = {},
+    percentage = { padding = { left = 1 } },
+    scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
+  })
+  for i, key in ipairs { "ruler", "percentage", "scrollbar" } do
+    opts[i] = opts[key] and { provider = key, opts = opts[key], hl = opts[key].hl } or false
+    opts[key] = nil
+  end
+  return astronvim.status.components.builder(opts)
+end
+
+--- A general function to build a section of astronvim status providers with highlights and conditions
+-- @param opts a list of components to build into a section
+-- @return The Heirline init function
+-- @usage local heirline_component = astronvim.status.components.builder({ { provider = "file_icon", opts = { padding = { right = 1 } } }, { provider = "filename" } })
+function astronvim.status.components.builder(opts)
+  opts = astronvim.default_tbl(opts, { padding = { left = 0, right = 0 } })
+  local children = {}
+  if opts.padding.left > 0 then -- add left padding
+    table.insert(children, { provider = astronvim.pad_string(" ", { left = opts.padding.left - 1 }) })
+  end
+  for key, entry in pairs(opts) do
+    if
+      type(key) == "number"
+      and type(entry) == "table"
+      and astronvim.status.provider[entry.provider]
+      and (entry.opts == nil or type(entry.opts) == "table")
+    then
+      entry.provider = astronvim.status.provider[entry.provider](entry.opts)
+      table.insert(children, entry)
+    elseif type(key) == "string" then
+      children[key] = entry
+    end
+  end
+  if opts.padding.right > 0 then -- add right padding
+    table.insert(children, { provider = astronvim.pad_string(" ", { right = opts.padding.right - 1 }) })
+  end
+  return children
 end
 
 --- A utility function to get the width of the bar

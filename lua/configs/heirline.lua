@@ -75,27 +75,27 @@ astronvim.status.components.fill = { provider = astronvim.status.provider.fill()
 
 astronvim.status.components.nav = {
   hl = { fg = "nav_fg" },
-  utils.surround(astronvim.status.separators.right, "nav_bg", { init = astronvim.status.init.nav() }),
+  utils.surround(astronvim.status.separators.right, "nav_bg", astronvim.status.components.nav()),
 }
 
-astronvim.status.components.filename = {
-  init = astronvim.status.init.file_info {
-    file_icon = { highlight = false, padding = { left = 1 } },
-    padding = { left = 1 },
-  },
+astronvim.status.components.filename = astronvim.status.components.file_info {
+  file_icon = { highlight = false, padding = { left = 1 } },
+  padding = { left = 1 },
 }
 
 astronvim.status.components.filename_filetype = {
   condition = astronvim.status.condition.has_filetype,
   hl = { fg = "file_fg" },
-  utils.surround(astronvim.status.separators.left, "file_bg", {
-    init = astronvim.status.init.file_info(astronvim.is_available "bufferline.nvim" and {
+  utils.surround(
+    astronvim.status.separators.left,
+    "file_bg",
+    astronvim.status.components.file_info(astronvim.is_available "bufferline.nvim" and {
       file_icon = { padding = { left = 1 } },
       filetype = {},
       filename = false,
       file_modified = false,
-    } or { file_icon = { padding = { left = 1 } } }),
-  }),
+    } or { file_icon = { padding = { left = 1 } } })
+  ),
 }
 
 astronvim.status.components.git_branch = {
@@ -118,8 +118,10 @@ astronvim.status.components.git_branch = {
 astronvim.status.components.git_diff = {
   condition = astronvim.status.condition.git_changed,
   hl = { fg = "git_fg" },
-  utils.surround(astronvim.status.separators.left, "git_bg", {
-    init = astronvim.status.init.builder {
+  utils.surround(
+    astronvim.status.separators.left,
+    "git_bg",
+    astronvim.status.components.builder {
       {
         provider = "git_diff",
         opts = { type = "added", icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } },
@@ -135,23 +137,23 @@ astronvim.status.components.git_diff = {
         opts = { type = "removed", icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } },
         hl = { fg = "git_del" },
       },
-    },
-    on_click = {
-      name = "heirline_git",
-      callback = function()
-        if astronvim.is_available "telescope.nvim" then
-          vim.defer_fn(function() require("telescope.builtin").git_status() end, 100)
-        end
-      end,
-    },
-  }),
+      on_click = {
+        name = "heirline_git",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").git_status() end, 100)
+          end
+        end,
+      },
+    }
+  ),
 }
 
 astronvim.status.components.diagnostics = {
   condition = conditions.has_diagnostics,
   hl = { fg = "diagnostic_fg" },
   utils.surround(astronvim.status.separators.left, "diagnostic_bg", {
-    init = astronvim.status.init.builder {
+    astronvim.status.components.builder {
       {
         provider = "diagnostics",
         opts = { severity = "ERROR", icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } } },
@@ -172,14 +174,14 @@ astronvim.status.components.diagnostics = {
         opts = { severity = "HINT", icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } } },
         hl = { fg = "diag_hint" },
       },
-    },
-    on_click = {
-      name = "heirline_diagnostic",
-      callback = function()
-        if astronvim.is_available "telescope.nvim" then
-          vim.defer_fn(function() require("telescope.builtin").diagnostics() end, 100)
-        end
-      end,
+      on_click = {
+        name = "heirline_diagnostic",
+        callback = function()
+          if astronvim.is_available "telescope.nvim" then
+            vim.defer_fn(function() require("telescope.builtin").diagnostics() end, 100)
+          end
+        end,
+      },
     },
   }),
 }
