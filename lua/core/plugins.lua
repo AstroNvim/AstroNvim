@@ -80,7 +80,7 @@ local astro_plugins = {
 
   -- Statusline
   ["rebelot/heirline.nvim"] = {
-    event = "UIEnter",
+    event = "VimEnter",
     config = function() require "configs.heirline" end,
   },
 
