@@ -123,15 +123,15 @@ function astronvim.status.init.file_info(opts)
     file_read_only = { padding = { left = 1 } },
   })
   return astronvim.status.init.builder {
-    {
+    opts.file_icon and {
       provider = "file_icon",
       opts = opts.file_icon,
       hl = opts.file_icon.highlight and astronvim.status.hl.filetype_color or nil,
-    },
-    { provider = "filename", opts = opts.filename },
-    { provider = "filetype", opts = opts.filetype },
-    { provider = "file_modified", opts = opts.file_modified },
-    { provider = "file_read_only", opts = opts.file_read_only },
+    } or nil,
+    opts.filename and { provider = "filename", opts = opts.filename } or nil,
+    opts.filetype and { provider = "filetype", opts = opts.filetype } or nil,
+    opts.file_modified and { provider = "file_modified", opts = opts.file_modified } or nil,
+    opts.file_read_only and { provider = "file_read_only", opts = opts.file_read_only } or nil,
     padding = opts.padding,
   }
 end
@@ -147,9 +147,9 @@ function astronvim.status.init.nav(opts)
     scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
   })
   return astronvim.status.init.builder {
-    { provider = "ruler", opts = opts.ruler },
-    { provider = "percentage", opts = opts.percentage },
-    { provider = "scrollbar", opts = opts.scrollbar, hl = opts.scrollbar.hl },
+    opts.ruler and { provider = "ruler", opts = opts.ruler } or nil,
+    opts.percentage and { provider = "percentage", opts = opts.percentage } or nil,
+    opts.scrollbar and { provider = "scrollbar", opts = opts.scrollbar, hl = opts.scrollbar.hl } or nil,
     padding = opts.padding,
   }
 end
