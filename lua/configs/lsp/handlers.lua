@@ -111,6 +111,9 @@ function astronvim.lsp.server_settings(server_name)
   return opts
 end
 
-function astronvim.lsp.disable_formatting(client) client.resolved_capabilities.document_formatting = false end
+function astronvim.lsp.disable_formatting(client)
+  client.resolved_capabilities.document_formatting = false
+  client.resolved_capabilities.document_range_formatting = false
+end
 
 return astronvim.lsp
