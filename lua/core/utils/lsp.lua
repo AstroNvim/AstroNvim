@@ -34,8 +34,11 @@ end
 -- @return true if the client should be used for formatting
 astronvim.lsp.format_filter = function(client)
   local formatting = astronvim.user_plugin_opts("lsp.formatting", { disabled = {} })
-  return type(formatting.filter) == "function" and formatting.filter(client)
-    or not vim.tbl_contains(formatting.disabled, client.name)
+  if type(formatting.filter) == "function" then
+    return formatting.filter(client)
+  else
+    return not vim.tbl_contains(formatting.disabled, client.name)
+  end
 end
 
 --- The `on_attach` function used by AstroNvim
