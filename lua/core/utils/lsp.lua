@@ -41,6 +41,23 @@ astronvim.lsp.format_filter = function(client)
   end
 end
 
+--- The default formatting filter used by AstroNvim's formatting bindings. Configured with the `lsp.formatting` user configuration options
+-- @param client the client to check if formatting should be enabled
+-- @return true if the client should be used for formatting
+astronvim.lsp.auto_format_filter = function(client)
+  -- no auto-formating for things that do not format.
+  if not astronvim.lsp.format_filter(client) then
+    return false;
+  end
+
+  local formatting = astronvim.user_plugin_opts("lsp.auto-formatting", { disabled = {} })
+  if type(formatting.filter) == "function" then
+    return formatting.filter(client)
+  else
+    return not vim.tbl_contains(formatting.disabled, client.name)
+  end
+end
+
 --- The `on_attach` function used by AstroNvim
 -- @param client the LSP client details when attaching
 -- @param bufnr the number of the buffer that the LSP client is attaching to
@@ -108,7 +125,11 @@ astronvim.lsp.on_attach = function(client, bufnr)
       group = "auto_format",
       desc = "Auto format before save",
       pattern = "<buffer>",
-      callback = function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
+      callback = function()
+        if astronvim.lsp.auto_format_filter(client) then
+          vim.lsp.buf.format { filter = astronvim.lsp.format_filter }
+        end
+      end,
     })
   end
 

@@ -130,6 +130,14 @@ local config = {
     servers = {
       -- "pyright"
     },
+    ["auto-formatting"] = {
+      disabled = { -- disable auto-formatting for the listed clients
+        "sumneko_lua",
+      },
+      -- filter = function(client) -- do not autoformat ever
+      --   return false
+      -- end
+    },
     formatting = {
       disabled = { -- disable formatting capabilities for the listed clients
         "sumneko_lua",
