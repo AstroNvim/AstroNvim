@@ -51,6 +51,7 @@ astronvim.status.separators = astronvim.user_plugin_opts("heirline.separators", 
   left = { "", "  " },
   right = { "  ", "" },
   center = { "  ", "  " },
+  tab = { "", "" },
 })
 
 --- Get the highlight background color of the lualine theme for the current colorscheme
@@ -76,9 +77,13 @@ function astronvim.status.hl.mode_bg() return astronvim.status.env.modes[vim.fn.
 --- Get the foreground color group for the current filetype
 -- @return the highlight group for the current filetype foreground
 -- @usage local heirline_component = { provider = astronvim.status.provider.fileicon(), hl = astronvim.status.hl.filetype_color },
-function astronvim.status.hl.filetype_color()
+function astronvim.status.hl.filetype_color(self)
   if not devicons_avail then return {} end
-  local _, color = devicons.get_icon_color(vim.fn.expand "%:t", nil, { default = true })
+  local _, color = devicons.get_icon_color(
+    vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ":t"),
+    nil,
+    { default = true }
+  )
   return { fg = color }
 end
 
@@ -195,7 +200,10 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.filetype() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.filetype(opts)
-  return function() return astronvim.status.utils.stylize(string.lower(vim.bo.filetype), opts) end
+  return function(self)
+    local buffer = vim.bo[self and self.bufnr or 0]
+    return astronvim.status.utils.stylize(string.lower(buffer.filetype), opts)
+  end
 end
 
 --- A provider function for showing the current filename
@@ -204,9 +212,9 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.filename() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.filename(opts)
-  opts = astronvim.default_tbl(opts, { fname = function() return vim.api.nvim_buf_get_name(0) end, modify = ":t" })
-  return function()
-    local filename = vim.fn.fnamemodify(opts.fname(), opts.modify)
+  opts = astronvim.default_tbl(opts, { fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ":t" })
+  return function(self)
+    local filename = vim.fn.fnamemodify(opts.fname(self and self.bufnr or 0), opts.modify)
     return astronvim.status.utils.stylize((filename == "" and "[No Name]" or filename), opts)
   end
 end
@@ -217,7 +225,10 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_modified() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_modified(opts)
-  return function() return astronvim.status.utils.stylize(vim.bo.modified and astronvim.get_icon "FileModified" or "", opts) end
+  return function(self)
+    local buffer = vim.bo[self and self.bufnr or 0]
+    return astronvim.status.utils.stylize(buffer.modified and astronvim.get_icon "FileModified" or "", opts)
+  end
 end
 
 --- A provider function for showing if the current file is read-only
@@ -226,9 +237,10 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_read_only() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_read_only(opts)
-  return function()
+  return function(self)
+    local buffer = vim.bo[self and self.bufnr or 0]
     return astronvim.status.utils.stylize(
-      (not vim.bo.modifiable or vim.bo.readonly) and astronvim.get_icon "FileReadOnly" or "",
+      (not buffer.modifiable or buffer.readonly) and astronvim.get_icon "FileReadOnly" or "",
       opts
     )
   end
@@ -241,8 +253,12 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_icon(opts)
   if not devicons_avail then return "" end
-  return function()
-    local ft_icon, _ = devicons.get_icon(vim.fn.expand "%:t", nil, { default = true })
+  return function(self)
+    local ft_icon, _ = devicons.get_icon(
+      vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ":t"),
+      nil,
+      { default = true }
+    )
     return astronvim.status.utils.stylize(ft_icon, opts)
   end
 end
@@ -253,7 +269,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.git_branch() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.git_branch(opts)
-  return function() return astronvim.status.utils.stylize(vim.b.gitsigns_head or "", opts) end
+  return function(self) return astronvim.status.utils.stylize(vim.b[self and self.bufnr or 0].gitsigns_head or "", opts) end
 end
 
 --- A provider function for showing the current git diff count of a specific type
@@ -263,8 +279,8 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.git_diff(opts)
   if not opts or not opts.type then return end
-  return function()
-    local status = vim.b.gitsigns_status_dict
+  return function(self)
+    local status = vim.b[self and self.bufnr or 0].gitsigns_status_dict
     return astronvim.status.utils.stylize(
       status and status[opts.type] and status[opts.type] > 0 and tostring(status[opts.type]) or "",
       opts
@@ -279,8 +295,9 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.diagnostics(opts)
   if not opts or not opts.severity then return end
-  return function()
-    local count = #vim.diagnostic.get(0, opts.severity and { severity = vim.diagnostic.severity[opts.severity] })
+  return function(self)
+    local bufnr = self and self.bufnr or 0
+    local count = #vim.diagnostic.get(bufnr, opts.severity and { severity = vim.diagnostic.severity[opts.severity] })
     return astronvim.status.utils.stylize(count ~= 0 and tostring(count) or "", opts)
   end
 end
@@ -319,9 +336,9 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.lsp_client_names(opts)
   opts = astronvim.default_tbl(opts, { expand_null_ls = true, truncate = 0.25 })
-  return function()
+  return function(self)
     local buf_client_names = {}
-    for _, client in pairs(vim.lsp.get_active_clients { bufnr = 0 }) do
+    for _, client in pairs(vim.lsp.get_active_clients { bufnr = self and self.bufnr or 0 }) do
       if client.name == "null-ls" and opts.expand_null_ls then
         local null_ls_sources = {}
         for _, type in ipairs { "FORMATTING", "DIAGNOSTICS" } do
@@ -454,16 +471,28 @@ function astronvim.status.component.file_info(opts)
   opts = astronvim.default_tbl(opts, {
     file_icon = { highlight = true, padding = { left = 1, right = 1 } },
     filename = {},
-    filetype = false,
     file_modified = { padding = { left = 1 } },
     file_read_only = { padding = { left = 1 } },
     condition = astronvim.status.condition.has_filetype,
     surround = { separator = "left", color = "file_bg" },
     hl = { fg = "file_fg" },
   })
-  for i, key in ipairs { "file_icon", "filename", "filetype", "file_modified", "file_read_only" } do
+  for i, key in ipairs {
+    "file_icon",
+    "unique_path",
+    "filename",
+    "filetype",
+    "file_modified",
+    "file_read_only",
+    "close_button",
+  } do
     opts[i] = opts[key]
-        and { provider = key, opts = opts[key], hl = opts[key].highlight and astronvim.status.hl.filetype_color }
+        and {
+          provider = key,
+          opts = opts[key],
+          hl = opts[key].highlight and astronvim.status.hl.filetype_color or opts[key].hl,
+          on_click = opts[key].on_click,
+        }
       or false
   end
   return astronvim.status.component.builder(opts)
@@ -738,6 +767,68 @@ function astronvim.status.utils.surround(separator, color, component)
     })
   end
   return surrounded
+end
+
+function astronvim.status.utils.is_valid_buffer(bufnr)
+  if not bufnr or bufnr < 1 then return false end
+  return vim.bo[bufnr].buflisted and vim.api.nvim_buf_is_valid(bufnr)
+end
+
+function astronvim.status.utils.get_valid_buffers()
+  return vim.tbl_filter(astronvim.status.utils.is_valid_buffer, vim.api.nvim_list_bufs())
+end
+
+function astronvim.status.provider.unique_path(opts)
+  opts = astronvim.default_tbl(opts, {
+    buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t") end,
+    bufnr = 0,
+    max_length = 16,
+  })
+  return function(self)
+    opts.bufnr = self and self.bufnr or opts.bufnr
+    local name = opts.buf_name(opts.bufnr)
+    local unique_path = ""
+    -- check for same buffer names under different dirs
+    for _, value in ipairs(astronvim.status.utils.get_valid_buffers()) do
+      if name == opts.buf_name(value) and value ~= opts.bufnr then
+        local other = {}
+        for match in (vim.api.nvim_buf_get_name(value) .. "/"):gmatch("(.-)" .. "/") do
+          table.insert(other, match)
+        end
+
+        local current = {}
+        for match in (vim.api.nvim_buf_get_name(opts.bufnr) .. "/"):gmatch("(.-)" .. "/") do
+          table.insert(current, match)
+        end
+
+        unique_path = ""
+
+        for i = #current - 1, 1, -1 do
+          local value_current = current[i]
+          local other_current = other[i]
+
+          if value_current ~= other_current then
+            unique_path = value_current .. "/"
+            break
+          end
+        end
+        break
+      end
+    end
+    return astronvim.status.utils.stylize(
+      (
+        opts.max_length > 0
+        and #unique_path > opts.max_length
+        and string.sub(unique_path, 1, opts.max_length - 2) .. astronvim.get_icon "Ellipsis" .. "/"
+      ) or unique_path,
+      opts
+    )
+  end
+end
+
+function astronvim.status.provider.close_button(opts)
+  opts = astronvim.default_tbl(opts, { kind = "BufferClose" })
+  return astronvim.status.utils.stylize(astronvim.get_icon(opts.kind), opts)
 end
 
 return astronvim.status
