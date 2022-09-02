@@ -7,7 +7,6 @@ return {
   BufferLineIndicatorSelected = { fg = C.bg, bg = C.bg },
   BufferLineCloseButtonVisible = { fg = C.grey_10, bg = C.bg },
   BufferLineCloseButtonSelected = { fg = C.red_4, bg = C.bg },
-  BufferLineModified = { fg = C.red_4, bg = C.grey_4 },
   BufferLineModifiedVisible = { fg = C.fg, bg = C.bg },
   BufferLineModifiedSelected = { fg = C.green_2, bg = C.bg },
   BufferLineError = { fg = C.red_1, bg = C.red_1 },
