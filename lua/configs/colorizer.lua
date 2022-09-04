@@ -1,8 +1,8 @@
 local status_ok, colorizer = pcall(require, "colorizer")
 if not status_ok then return end
 local colorizer_opts = astronvim.user_plugin_opts("plugins.colorizer", {
-  { "*" },
-  {
+  filetypes = { "*" },
+  user_default_options = {
     RGB = true, -- #RGB hex codes
     RRGGBB = true, -- #RRGGBB hex codes
     names = false, -- "Name" codes like Blue
@@ -14,4 +14,4 @@ local colorizer_opts = astronvim.user_plugin_opts("plugins.colorizer", {
     mode = "background", -- Set the display mode
   },
 })
-colorizer.setup(colorizer_opts[1], colorizer_opts[2])
+colorizer.setup(colorizer_opts)
