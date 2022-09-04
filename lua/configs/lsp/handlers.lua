@@ -26,6 +26,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
         ["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help" },
         ["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" },
         ["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol" },
+        ["gT"] = { function() vim.lsp.buf.type_definition() end, desc = "Definition of current type" },
         ["gI"] = { function() vim.lsp.buf.implementation() end, desc = "Implementation of current symbol" },
         ["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol" },
         ["gr"] = { function() vim.lsp.buf.references() end, desc = "References of current symbol" },
@@ -111,6 +112,9 @@ function astronvim.lsp.server_settings(server_name)
   return opts
 end
 
-function astronvim.lsp.disable_formatting(client) client.resolved_capabilities.document_formatting = false end
+function astronvim.lsp.disable_formatting(client)
+  client.resolved_capabilities.document_formatting = false
+  client.resolved_capabilities.document_range_formatting = false
+end
 
 return astronvim.lsp
