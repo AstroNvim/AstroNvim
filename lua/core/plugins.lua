@@ -158,7 +158,7 @@ local astro_plugins = {
   },
 
   -- Built-in LSP
-  ["neovim/nvim-lspconfig"] = {},
+  ["neovim/nvim-lspconfig"] = { config = function() require "configs.lspconfig" end },
 
   -- LSP manager
   ["jayp0521/mason-null-ls.nvim"] = {
@@ -169,7 +169,7 @@ local astro_plugins = {
   -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
     after = { "mason.nvim", "nvim-lspconfig" },
-    config = function() require "configs.lsp" end,
+    config = function() require "configs.mason-lspconfig" end,
   },
 
   -- LSP symbols

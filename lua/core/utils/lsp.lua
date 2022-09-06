@@ -10,11 +10,37 @@
 -- @license GNU General Public License v3.0
 
 astronvim.lsp = {}
+local sign_define = vim.fn.sign_define
 local tbl_contains = vim.tbl_contains
 local user_plugin_opts = astronvim.user_plugin_opts
 local conditional_func = astronvim.conditional_func
 local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
 local skip_setup = user_plugin_opts "lsp.skip_setup"
+
+local signs = {
+  { name = "DiagnosticSignError", text = astronvim.get_icon "DiagnosticError" },
+  { name = "DiagnosticSignWarn", text = astronvim.get_icon "DiagnosticWarn" },
+  { name = "DiagnosticSignHint", text = astronvim.get_icon "DiagnosticHint" },
+  { name = "DiagnosticSignInfo", text = astronvim.get_icon "DiagnosticInfo" },
+}
+for _, sign in ipairs(signs) do
+  sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
+end
+astronvim.lsp.default_diagnostics = user_plugin_opts("diagnostics", {
+  virtual_text = true,
+  signs = { active = signs },
+  update_in_insert = true,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focused = false,
+    style = "minimal",
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
+})
 
 --- Helper function to set up a given server with the Neovim LSP client
 -- @param server the name of the server to be setup
@@ -140,9 +166,9 @@ astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 -- @return the table of LSP options used when setting up the given language server
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
-  local opts = user_plugin_opts(
+  local opts = user_plugin_opts( -- get user server-settings
     "lsp.server-settings." .. server_name,
-    user_plugin_opts("lsp.server-settings." .. server_name, {
+    user_plugin_opts("server-settings." .. server_name, { -- get default server-settings
       capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
       flags = vim.tbl_deep_extend("force", astronvim.lsp.flags, server.flags or {}),
     }, true, "configs")
