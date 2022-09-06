@@ -12,6 +12,7 @@ local function has_words_before()
 end
 
 setup(astronvim.user_plugin_opts("plugins.cmp", {
+  enabled = vim.g.cmp_enabled,
   preselect = cmp.PreselectMode.None,
   formatting = {
     fields = { "kind", "abbr", "menu" },
@@ -34,10 +35,6 @@ setup(astronvim.user_plugin_opts("plugins.cmp", {
   window = {
     completion = cmp.config.window.bordered(border_opts),
     documentation = cmp.config.window.bordered(border_opts),
-  },
-  completion = {
-    autocomplete = astronvim.ui.set_cmp_autocomplete(),
-    completeopt = "menu,menuone,noinsert",
   },
   mapping = {
     ["<Up>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }, { "i", "c" }),
