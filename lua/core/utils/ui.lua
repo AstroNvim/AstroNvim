@@ -46,29 +46,12 @@ function astronvim.ui.toggle_background()
   vim.notify(string.format("background=%s", vim.go.background))
 end
 
---- Toggle cmp autocompletion
-function astronvim.ui.set_cmp_autocomplete()
-  -- https://github.com/hrsh7th/nvim-cmp/issues/261 -- My own old solution
-  -- https://github.com/hrsh7th/nvim-cmp/issues/106 -- New calling convention setup.buffer
-  -- NEW : https://www.reddit.com/r/neovim/comments/rh0ohq/nvimcmp_temporarily_disable_autocompletion/ even better
-  local ok, _ = pcall(require, "cmp")
-  local autocomplete = {}
-  if ok then
-    if vim.g.cmp_enabled then autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged } end
-  end
-  return autocomplete
-end
-
 --- Toggle cmp entrirely
 function astronvim.ui.toggle_cmp()
   vim.g.cmp_enabled = not vim.g.cmp_enabled
   local ok, cmp = pcall(require, "cmp")
   if ok then
-    cmp.setup {
-      completion = {
-        autocomplete = vim.g.cmp_enabled and { require("cmp.types").cmp.TriggerEvent.TextChanged } or {},
-      },
-    }
+    cmp.setup { enabled = vim.g.cmp_enabled }
     vim.notify(string.format("completion %s", bool2str(vim.g.cmp_enabled)))
   else
     vim.notify "completion not available"
