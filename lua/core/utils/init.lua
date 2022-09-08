@@ -386,14 +386,14 @@ function astronvim.set_mappings(map_table, base)
       -- build the options for the command accordingly
       if options then
         local cmd = options
+        local keymap_opts = base or {}
         if type(options) == "table" then
           cmd = options[1]
-          options[1] = nil
-        else
-          options = {}
+          keymap_opts = vim.tbl_deep_extend("force", options, keymap_opts)
+          keymap_opts[1] = nil
         end
         -- extend the keybinding options with the base provided and set the mapping
-        map(mode, keymap, cmd, vim.tbl_deep_extend("force", options, base or {}))
+        map(mode, keymap, cmd, keymap_opts)
       end
     end
   end
