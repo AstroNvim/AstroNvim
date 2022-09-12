@@ -1,7 +1,7 @@
 local status_ok, aerial = pcall(require, "aerial")
 if not status_ok then return end
 aerial.setup(astronvim.user_plugin_opts("plugins.aerial", {
-  close_behavior = "global",
+  attach_mode = "global",
   backends = { "lsp", "treesitter", "markdown" },
   min_width = 28,
   show_guides = true,
