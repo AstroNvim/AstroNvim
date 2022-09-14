@@ -22,6 +22,7 @@ function astronvim.ui.toggle_autopairs()
     else
       autopairs.disable()
     end
+    vim.g.autopairs_enabled = autopairs.state.disabled
     vim.notify(string.format("autopairs %s", bool2str(not autopairs.state.disabled)))
   else
     vim.notify "autopairs not available"
