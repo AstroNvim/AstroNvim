@@ -21,7 +21,7 @@ npairs.setup(astronvim.user_plugin_opts("plugins.nvim-autopairs", {
   },
 }))
 
-if not vim.g.autopairs then npairs.disable() end
+if not vim.g.autopairs_enabled then npairs.disable() end
 
 local rules = astronvim.user_plugin_opts("nvim-autopairs").add_rules
 if vim.tbl_contains({ "function", "table" }, type(rules)) then
