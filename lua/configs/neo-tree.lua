@@ -30,15 +30,16 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     },
   },
   window = {
-    width = 25,
+    width = 50,
     mappings = {
       ["o"] = "open",
     },
+    position = "right",
   },
   filesystem = {
     filtered_items = {
       visible = false,
-      hide_dotfiles = true,
+      hide_dotfiles = false,
       hide_gitignored = false,
       hide_by_name = {
         ".DS_Store",

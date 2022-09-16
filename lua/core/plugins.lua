@@ -267,6 +267,9 @@ local astro_plugins = {
     event = "BufWritePost",
     config = function() require "configs.session_manager" end,
   },
+
+  -- GitHub Copilot
+  ["github/copilot.vim"] = {},
 }
 
 if astronvim.updater.snapshot then
