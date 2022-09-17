@@ -17,14 +17,22 @@ cmd("BufEnter", {
   desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
   group = "auto_quit",
   callback = function()
-    local num_wins = #vim.api.nvim_list_wins()
-    local sidebar_fts = { "aerial", "neo-tree" }
-    local sidebars = {}
-    vim.tbl_map(function(bufnr)
-      local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-      if vim.tbl_contains(sidebar_fts, ft) then sidebars[ft] = true end
-    end, vim.api.nvim_list_bufs())
-    if num_wins > 1 and vim.tbl_count(sidebars) == num_wins then vim.cmd "quit" end
+    local wins = vim.api.nvim_tabpage_list_wins(0)
+    -- Both neo-tree and aerial will auto-quit if there is only a single window left
+    if #wins <= 1 then return end
+    local sidebar_fts = { aerial = true, ["neo-tree"] = true }
+    for _, winid in ipairs(wins) do
+      if vim.api.nvim_win_is_valid(winid) then
+        local bufnr = vim.api.nvim_win_get_buf(winid)
+        -- If any visible windows are not sidebars, early return
+        if not sidebar_fts[vim.api.nvim_buf_get_option(bufnr, "filetype")] then return end
+      end
+    end
+    if #vim.api.nvim_list_tabpages() > 1 then
+      vim.cmd "tabclose"
+    else
+      vim.cmd "qall"
+    end
   end,
 })
 
