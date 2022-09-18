@@ -83,6 +83,17 @@ function M.provider.lsp_client_names(expand_null_ls)
         table.insert(buf_client_names, client.name)
       end
     end
+
+    -- remove duplicates LSP names from array
+    local seen = {}
+    for index,item in ipairs(buf_client_names) do
+      if seen[item] then
+        table.remove(buf_client_names, index)
+      else
+        seen[item] = true
+      end
+    end
+
     return table.concat(buf_client_names, ", ")
   end
 end
