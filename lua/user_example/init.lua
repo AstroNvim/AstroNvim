@@ -116,7 +116,7 @@ local config = {
       return highlights -- return overrides
       -- To disable highlights set by the default_theme just return an empty table
       -- return {}
-    end
+    end,
   },
 
   -- Diagnostics configuration (for vim.diagnostics.config({...}))
