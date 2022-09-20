@@ -19,7 +19,6 @@ for plugin, enabled in
   pairs(user_plugin_opts("default_theme.plugins", {
     aerial = true,
     beacon = false,
-    bufferline = true,
     dashboard = true,
     gitsigns = true,
     highlighturl = true,

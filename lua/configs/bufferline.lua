@@ -1,5 +1,15 @@
 local status_ok, bufferline = pcall(require, "bufferline")
 if not status_ok then return end
+
+-- Get highlights from default_theme if set
+local function get_hl()
+  if vim.g.colors_name == "default_theme" then
+    return require("default_theme.bufferline")
+  else
+    return nil
+  end
+end
+
 bufferline.setup(astronvim.user_plugin_opts("plugins.bufferline", {
   options = {
     offsets = {
@@ -15,4 +25,5 @@ bufferline.setup(astronvim.user_plugin_opts("plugins.bufferline", {
     tab_size = 20,
     separator_style = "thin",
   },
+  highlights = astronvim.user_plugin_opts("default_theme.bufferline_highlights", get_hl())
 }))
