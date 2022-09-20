@@ -51,6 +51,15 @@ local config = {
       end },
     },
 
+    ["cinnamon"] = function()
+        local cinnamon = require("cinnamon")
+        cinnamon.setup({
+            scroll_limit = 0,
+            centered = true,
+          })
+    end,
+  
+
     ["null-ls"] = function()
         local null_ls = require "null-ls"
         return {
