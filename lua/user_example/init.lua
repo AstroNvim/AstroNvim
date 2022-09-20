@@ -88,7 +88,6 @@ local config = {
     plugins = {
       aerial = true,
       beacon = false,
-      bufferline = true,
       dashboard = true,
       highlighturl = true,
       hop = false,
@@ -104,6 +103,20 @@ local config = {
       vimwiki = false,
       ["which-key"] = true,
     },
+    -- Override bufferline highlights(check ":h bufferline-highlights" for all available highlight groups)
+    -- you can directly set the value to a table containing overrides but you need
+    -- below function to use colors from default_theme or if you want to disable all highlights and let bufferline set its own
+    -- supports catppuccin, just set
+    -- bufferline_highlights = require("catppuccin.groups.integrations.bufferline").get()
+    -- again use a function for catppuccin overrides
+    bufferline_highlights = function(highlights)
+      local C = require "default_theme.colors"
+
+      highlights.fill = { fg = C.fg, bg = C.grey_4 } -- override highlights for specific group
+      return highlights -- return overrides
+      -- To disable highlights set by the default_theme just return an empty table
+      -- return {}
+    end
   },
 
   -- Diagnostics configuration (for vim.diagnostics.config({...}))
