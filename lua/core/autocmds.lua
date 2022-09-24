@@ -58,7 +58,8 @@ if is_available "alpha-nvim" then
     group = "alpha_settings",
     pattern = "alpha",
     callback = function()
-      local prev_status = vim.opt.laststatus
+      local user_opts = require "user.options"
+      local prev_status = user_opts.g.laststatus or user_opts.opt.laststatus or vim.opt.laststatus
       vim.opt.laststatus = 0
       cmd("BufUnload", {
         pattern = "<buffer>",
