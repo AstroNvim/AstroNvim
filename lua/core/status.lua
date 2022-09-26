@@ -77,8 +77,13 @@ function M.provider.lsp_client_names(expand_null_ls)
     local buf_client_names = {}
     for _, client in pairs(vim.lsp.buf_get_clients(0)) do
       if client.name == "null-ls" and expand_null_ls then
-        vim.list_extend(buf_client_names, astronvim.null_ls_sources(vim.bo.filetype, "FORMATTING"))
-        vim.list_extend(buf_client_names, astronvim.null_ls_sources(vim.bo.filetype, "DIAGNOSTICS"))
+        local null_ls_sources = {}
+        for _, type in ipairs { "FORMATTING", "DIAGNOSTICS" } do
+          for _, source in ipairs(astronvim.null_ls_sources(vim.bo.filetype, type)) do
+            null_ls_sources[source] = true
+          end
+        end
+        vim.list_extend(buf_client_names, vim.tbl_keys(null_ls_sources))
       else
         table.insert(buf_client_names, client.name)
       end
