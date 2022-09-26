@@ -71,65 +71,51 @@ end
 -- @param client the LSP client details when attaching
 -- @param bufnr the number of the buffer that the LSP client is attaching to
 astronvim.lsp.on_attach = function(client, bufnr)
-  astronvim.set_mappings(
-    user_plugin_opts("lsp.mappings", {
-      n = {
-        ["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
-        ["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
-        ["<leader>lf"] = {
-          function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
-          desc = "Format code",
-        },
-        ["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help" },
-        ["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" },
-        ["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol" },
-        ["gT"] = { function() vim.lsp.buf.type_definition() end, desc = "Definition of current type" },
-        ["gI"] = { function() vim.lsp.buf.implementation() end, desc = "Implementation of current symbol" },
-        ["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol" },
-        ["gr"] = { function() vim.lsp.buf.references() end, desc = "References of current symbol" },
-        ["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
-        ["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" },
-        ["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" },
-        ["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
-      },
-      v = {
-        ["<leader>la"] = { function() vim.lsp.buf.range_code_action() end, desc = "Range LSP code action" },
-        ["<leader>lf"] = {
-          function()
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", false)
-            vim.lsp.buf.range_formatting { filter = astronvim.lsp.format_filter }
-          end,
-          desc = "Range format code",
-        },
-      },
-    }),
-    { buffer = bufnr }
-  )
+  local capabilities = client.server_capabilities
+  local lsp_mappings = {
+    n = {
+      ["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
+      ["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" },
+      ["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" },
+      ["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
+    },
+    v = {},
+  }
 
-  astronvim.which_key_register({ v = { ["<leader>"] = { l = { name = "LSP" } } } }, { buffer = bufnr })
-
-  vim.api.nvim_buf_create_user_command(
-    bufnr,
-    "Format",
-    function() vim.lsp.buf.format { async = true } end,
-    { desc = "Format file with LSP" }
-  )
-
-  if client.server_capabilities.documentHighlightProvider then
-    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
-    vim.api.nvim_create_autocmd("CursorHold", {
-      group = "lsp_document_highlight",
-      pattern = "<buffer>",
-      callback = vim.lsp.buf.document_highlight,
-    })
-    vim.api.nvim_create_autocmd("CursorMoved", {
-      group = "lsp_document_highlight",
-      pattern = "<buffer>",
-      callback = vim.lsp.buf.clear_references,
-    })
+  if capabilities.codeActionProvider then
+    lsp_mappings.n["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" }
+    lsp_mappings.v["<leader>la"] = { function() vim.lsp.buf.range_code_action() end, desc = "Range LSP code action" }
   end
 
-  if client.server_capabilities.documentFormattingProvider then
+  if capabilities.declarationProvider then
+    lsp_mappings.n["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol" }
+  end
+
+  if capabilities.definitionProvider then
+    lsp_mappings.n["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol" }
+  end
+
+  if capabilities.documentFormattingProvider then
+    lsp_mappings.n["<leader>lf"] = {
+      function()
+        vim.lsp.buf.format { filter = function() astronvim.lsp.format_filter() end }
+      end,
+      desc = "Format code",
+    }
+    lsp_mappings.v["<leader>lf"] = {
+      function()
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", false)
+        vim.lsp.buf.range_formatting { filter = function() astronvim.lsp.format_filter() end }
+      end,
+      desc = "Range format code",
+    }
+
+    vim.api.nvim_buf_create_user_command(
+      bufnr,
+      "Format",
+      function() vim.lsp.buf.format { async = true } end,
+      { desc = "Format file with LSP" }
+    )
     vim.api.nvim_create_augroup("auto_format", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = "auto_format",
@@ -137,6 +123,49 @@ astronvim.lsp.on_attach = function(client, bufnr)
       pattern = "<buffer>",
       callback = function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
     })
+  end
+
+  if capabilities.documentHighlightProvider then
+    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+    vim.api.nvim_create_autocmd("CursorHold", {
+      group = "lsp_document_highlight",
+      pattern = "<buffer>",
+      callback = function() vim.lsp.buf.document_highlight() end,
+    })
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      group = "lsp_document_highlight",
+      pattern = "<buffer>",
+      callback = function() vim.lsp.buf.clear_references() end,
+    })
+  end
+
+  if capabilities.hoverProvider then
+    lsp_mappings.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" }
+  end
+
+  if capabilities.implementationProvider then
+    lsp_mappings.n["gI"] = { function() vim.lsp.buf.implementation() end, desc = "Implementation of current symbol" }
+  end
+
+  if capabilities.referencesProvider then
+    lsp_mappings.n["gr"] = { function() vim.lsp.buf.references() end, desc = "References of current symbol" }
+  end
+
+  if capabilities.renameProvider then
+    lsp_mappings.n["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" }
+  end
+
+  if capabilities.signatureHelpProvider then
+    lsp_mappings.n["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help" }
+  end
+
+  if capabilities.typeDefinitionProvider then
+    lsp_mappings.n["gT"] = { function() vim.lsp.buf.type_definition() end, desc = "Definition of current type" }
+  end
+
+  astronvim.set_mappings(user_plugin_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
+  if not vim.tbl_isempty(lsp_mappings.v) then
+    astronvim.which_key_register({ v = { ["<leader>"] = { l = { name = "LSP" } } } }, { buffer = bufnr })
   end
 
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
