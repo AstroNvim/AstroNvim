@@ -14,14 +14,14 @@ local git = require "core.utils.git"
 --- Updater settings overridden with any user provided configuration
 local options = astronvim.user_plugin_opts("updater", {
   remote = "origin",
-  branch = "main",
-  channel = "nightly",
+  channel = "stable",
   show_changelog = true,
   auto_reload = true,
   auto_quit = true,
 })
 
 -- set the install channel
+if options.branch then options.channel = "nightly" end
 if astronvim.install.is_stable ~= nil then options.channel = astronvim.install.is_stable and "stable" or "nightly" end
 
 astronvim.updater = { options = options }
@@ -118,7 +118,11 @@ function astronvim.updater.update()
     end
   end
   local is_stable = options.channel == "stable"
-  options.branch = is_stable and "main" or options.branch
+  if is_stable then
+    options.branch = "main"
+  elseif not options.branch then
+    options.branch = "nigthly"
+  end
   -- fetch the latest remote
   if not git.fetch(options.remote) then
     vim.api.nvim_err_writeln("Error fetching remote: " .. options.remote)
