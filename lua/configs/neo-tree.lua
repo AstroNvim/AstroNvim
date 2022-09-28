@@ -3,6 +3,16 @@ if not status_ok then return end
 neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
   close_if_last_window = true,
   enable_diagnostics = false,
+  source_selector = {
+    winbar = true,
+    content_layout = "center",
+    tab_labels = {
+      filesystem = astronvim.get_icon "FolderClosed" .. " File",
+      buffers = astronvim.get_icon "DefaultFile" .. " Bufs",
+      git_status = astronvim.get_icon "Git" .. " Git",
+      diagnostics = astronvim.get_icon "Diagnostic" .. " Diagnostic",
+    },
+  },
   default_component_configs = {
     indent = {
       padding = 0,
@@ -28,7 +38,7 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     },
   },
   window = {
-    width = 25,
+    width = 30,
     mappings = {
       ["o"] = "open",
     },
