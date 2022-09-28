@@ -74,21 +74,24 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     astronvim.status.component.mode { surround = { separator = "right" } },
   },
   {
-    init = astronvim.status.init.pick_child_on_condition,
+    fallthrough = false,
     {
-      condition = function() return astronvim.status.condition.buffer_matches { buftype = { "terminal" } } end,
+      condition = function()
+        return astronvim.status.condition.buffer_matches {
+          buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
+          filetype = { "NvimTree", "neo-tree", "dashboard", "Outline", "aerial" },
+        }
+      end,
       init = function() vim.opt_local.winbar = nil end,
     },
     {
       condition = astronvim.status.condition.is_active,
       astronvim.status.component.breadcrumbs { hl = { fg = "winbar_fg", bg = "winbar_bg" } },
     },
-    {
-      astronvim.status.component.file_info {
-        file_icon = { highlight = false },
-        hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
-        surround = false,
-      },
+    astronvim.status.component.file_info {
+      file_icon = { highlight = false },
+      hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
+      surround = false,
     },
   },
 })
@@ -101,16 +104,5 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     heirline.reset_highlights()
     heirline.load_colors(setup_colors())
-  end,
-})
-vim.api.nvim_create_autocmd("User", {
-  pattern = "HeirlineInitWinbar",
-  group = "Heirline",
-  desc = "Disable winbar for some windows",
-  callback = function(args)
-    local buftype = vim.tbl_contains({ "prompt", "nofile", "help", "quickfix" }, vim.bo[args.buf].buftype)
-    local filetype =
-      vim.tbl_contains({ "NvimTree", "neo-tree", "dashboard", "Outline", "aerial" }, vim.bo[args.buf].filetype)
-    if buftype or filetype then vim.opt_local.winbar = nil end
   end,
 })
