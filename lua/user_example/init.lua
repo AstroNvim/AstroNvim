@@ -62,6 +62,7 @@ local config = {
       mapleader = " ", -- sets vim.g.mapleader
       cmp_enabled = true, -- enable completion at start
       autopairs_enabled = true, -- enable autopairs at start
+      diagnostics_enabled = true, -- enable diagnostics at start
     },
   },
   -- If you need more control, you can use the function()...end notation
@@ -118,7 +119,7 @@ local config = {
     },
   },
 
-  -- Diagnostics configuration (for vim.diagnostics.config({...}))
+  -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
     virtual_text = true,
     underline = true,

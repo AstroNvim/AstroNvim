@@ -32,12 +32,7 @@ end
 --- Toggle diagnostics
 function astronvim.ui.toggle_diagnostics()
   vim.g.diagnostics_enabled = not vim.g.diagnostics_enabled
-  vim.diagnostic.config(vim.g.diagnostics_enabled and astronvim.lsp.default_diagnostics or {
-    underline = false,
-    virtual_text = false,
-    signs = false,
-    update_in_insert = false,
-  })
+  vim.diagnostic.config(astronvim.lsp.diagnostics[vim.g.diagnostics_enabled and "on" or "off"])
   vim.notify(string.format("diagnostics %s", bool2str(vim.g.diagnostics_enabled)))
 end
 
