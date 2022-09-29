@@ -26,21 +26,29 @@ local signs = {
 for _, sign in ipairs(signs) do
   sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
 end
-astronvim.lsp.default_diagnostics = user_plugin_opts("diagnostics", {
-  virtual_text = true,
-  signs = { active = signs },
-  update_in_insert = true,
-  underline = true,
-  severity_sort = true,
-  float = {
-    focused = false,
-    style = "minimal",
-    border = "rounded",
-    source = "always",
-    header = "",
-    prefix = "",
+astronvim.lsp.diagnostics = {
+  off = {
+    underline = false,
+    virtual_text = false,
+    signs = false,
+    update_in_insert = false,
   },
-})
+  on = user_plugin_opts("diagnostics", {
+    virtual_text = true,
+    signs = { active = signs },
+    update_in_insert = true,
+    underline = true,
+    severity_sort = true,
+    float = {
+      focused = false,
+      style = "minimal",
+      border = "rounded",
+      source = "always",
+      header = "",
+      prefix = "",
+    },
+  }),
+}
 
 --- Helper function to set up a given server with the Neovim LSP client
 -- @param server the name of the server to be setup

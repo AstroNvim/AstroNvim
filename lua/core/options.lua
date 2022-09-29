@@ -58,5 +58,6 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
     loaded_vimballPlugin = true, -- disable vimball
     cmp_enabled = true, -- enable completion at start
     autopairs_enabled = true, -- enable autopairs at start
+    diagnostics_enabled = true, -- enable diagnostics at start
   },
 }))
