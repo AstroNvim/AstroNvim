@@ -28,6 +28,20 @@ for _, sign in ipairs(signs) do
 end
 
 astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { disabled = {} })
+
+astronvim.lsp.format_opts = vim.deepcopy(astronvim.lsp.formatting)
+astronvim.lsp.format_opts.disabled = nil
+astronvim.lsp.format_opts.filter = function(client)
+  local filter = astronvim.lsp.formatting.filter
+  local disabled = astronvim.lsp.formatting.disabled
+  -- if client is fully disabled, return false
+  if vim.tbl_contains(disabled, client.name) then return false end
+  -- if filter function is defined and client is filtered out, return false
+  if type(filter) == "function" and not filter(client) then return false end
+  -- client has passed all checks, enable it for formatting
+  return true
+end
+
 astronvim.lsp.diagnostics = {
   off = {
     underline = false,
@@ -65,20 +79,6 @@ astronvim.lsp.setup = function(server)
   end
 end
 
---- The default formatting filter used by AstroNvim's formatting bindings. Configured with the `lsp.formatting` user configuration options
--- @param client the client to check if formatting should be enabled
--- @return true if the client should be used for formatting
-astronvim.lsp.format_filter = function(client)
-  local filter = astronvim.lsp.formatting.filter
-  local disabled = astronvim.lsp.formatting.disabled
-  -- if client is fully disabled, return false
-  if vim.tbl_contains(disabled, client.name) then return false end
-  -- if filter function is defined and client is filtered out, return false
-  if type(filter) == "function" and not filter(client) then return false end
-  -- client has passed all checks, enable it for formatting
-  return true
-end
-
 --- The `on_attach` function used by AstroNvim
 -- @param client the LSP client details when attaching
 -- @param bufnr the number of the buffer that the LSP client is attaching to
@@ -109,13 +109,13 @@ astronvim.lsp.on_attach = function(client, bufnr)
 
   if capabilities.documentFormattingProvider then
     lsp_mappings.n["<leader>lf"] = {
-      function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
+      function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       desc = "Format code",
     }
     lsp_mappings.v["<leader>lf"] = {
       function()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", false)
-        vim.lsp.buf.range_formatting { filter = astronvim.lsp.format_filter }
+        vim.lsp.buf.range_formatting(astronvim.lsp.format_opts)
       end,
       desc = "Range format code",
     }
@@ -123,7 +123,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
     vim.api.nvim_buf_create_user_command(
       bufnr,
       "Format",
-      function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter, async = true } end,
+      function() vim.lsp.buf.format(astronvim.default_tbl({ async = true }, astronvim.lsp.format_opts)) end,
       { desc = "Format file with LSP" }
     )
     vim.api.nvim_create_augroup("auto_format", { clear = true })
@@ -131,7 +131,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
       group = "auto_format",
       desc = "Auto format before save",
       pattern = "<buffer>",
-      callback = function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
+      callback = function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
     })
   end
 
