@@ -69,8 +69,8 @@ end
 -- @param client the client to check if formatting should be enabled
 -- @return true if the client should be used for formatting
 astronvim.lsp.format_filter = function(client)
-  local filter = astronvim.lsp.filter
-  local disabled = astronvim.lsp.disabled
+  local filter = astronvim.lsp.formatting.filter
+  local disabled = astronvim.lsp.formatting.disabled
   -- if client is fully disabled, return false
   if vim.tbl_contains(disabled, client.name) then return false end
   -- if filter function is defined and client is filtered out, return false
@@ -109,15 +109,13 @@ astronvim.lsp.on_attach = function(client, bufnr)
 
   if capabilities.documentFormattingProvider then
     lsp_mappings.n["<leader>lf"] = {
-      function()
-        vim.lsp.buf.format { filter = function() astronvim.lsp.format_filter() end }
-      end,
+      function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter } end,
       desc = "Format code",
     }
     lsp_mappings.v["<leader>lf"] = {
       function()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", false)
-        vim.lsp.buf.range_formatting { filter = function() astronvim.lsp.format_filter() end }
+        vim.lsp.buf.range_formatting { filter = astronvim.lsp.format_filter }
       end,
       desc = "Range format code",
     }
