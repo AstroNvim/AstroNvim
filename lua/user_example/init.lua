@@ -133,7 +133,7 @@ local config = {
     },
     formatting = {
       disabled = { -- disable formatting capabilities for the listed clients
-        "sumneko_lua",
+        -- "sumneko_lua",
       },
       -- filter = function(client) -- fully override the default formatting function
       --   return true
@@ -245,9 +245,6 @@ local config = {
     ["mason-tool-installer"] = { -- overrides `require("mason-tool-installer").setup(...)`
       -- ensure_installed = { "prettier", "stylua" },
     },
-    packer = { -- overrides `require("packer").setup(...)`
-      compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
-    },
   },
 
   -- LuaSnip Options
@@ -256,7 +253,7 @@ local config = {
     vscode_snippet_paths = {},
     -- Extend filetypes
     filetype_extend = {
-      javascript = { "javascriptreact" },
+      -- javascript = { "javascriptreact" },
     },
   },
 
@@ -295,16 +292,6 @@ local config = {
   -- augroups/autocommands and custom filetypes also this just pure lua so
   -- anything that doesn't fit in the normal config locations above can go here
   polish = function()
-    -- Set key binding
-    -- Set autocommands
-    -- vim.api.nvim_create_augroup("packer_conf", { clear = true })
-    -- vim.api.nvim_create_autocmd("BufWritePost", {
-    --   desc = "Sync packer after modifying plugins.lua",
-    --   group = "packer_conf",
-    --   pattern = "plugins.lua",
-    --   command = "source <afile> | PackerSync",
-    -- })
-
     -- Set up custom filetypes
     -- vim.filetype.add {
     --   extension = {

@@ -26,6 +26,8 @@ local signs = {
 for _, sign in ipairs(signs) do
   sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
 end
+
+astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { disabled = {} })
 astronvim.lsp.diagnostics = {
   off = {
     underline = false,
@@ -67,12 +69,14 @@ end
 -- @param client the client to check if formatting should be enabled
 -- @return true if the client should be used for formatting
 astronvim.lsp.format_filter = function(client)
-  local formatting = astronvim.user_plugin_opts("lsp.formatting", { disabled = {} })
-  if type(formatting.filter) == "function" then
-    return formatting.filter(client)
-  else
-    return not vim.tbl_contains(formatting.disabled, client.name)
-  end
+  local filter = astronvim.lsp.filter
+  local disabled = astronvim.lsp.disabled
+  -- if client is fully disabled, return false
+  if vim.tbl_contains(disabled, client.name) then return false end
+  -- if filter function is defined and client is filtered out, return false
+  if type(filter) == "function" and not filter(client) then return false end
+  -- client has passed all checks, enable it for formatting
+  return true
 end
 
 --- The `on_attach` function used by AstroNvim

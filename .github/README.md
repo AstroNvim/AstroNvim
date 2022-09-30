@@ -24,8 +24,6 @@
 AstroNvim is an aesthetic and feature-rich neovim config that is extensible and easy to use with a great set of plugins
 </p>
 
-**_Notice:_** AstroNvim v1.4.0 has added `stable` and `nightly` update channels. For the time being we have kept the default update channel to `nightly` so that the behavior of AstroNvim doesn't change (this could be considered a breaking change to some). We are planning to make the `stable` channel the default update channel when Neovim v0.8 is released and we tag AstroNvim v2.0.0 to incorporate this "breaking" change.
-
 ## 🌟 Preview
 
 ![Preview1](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dashboard.png)
@@ -48,7 +46,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 ## ⚡ Requirements
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads)
-- [Stable Neovim 0.7+](https://github.com/neovim/neovim/releases/tag/v0.7.0)
+- [Neovim 0.8+ (*Not* including nightly)](https://github.com/neovim/neovim/releases/tag/v0.8.0)
 - A clipboard tool is necessary for the integration with the system clipboard (see [`:help clipboard-tool`](https://neovim.io/doc/user/provider.html#clipboard-tool) for supported solutions)
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 - Optional Requirements:
@@ -60,8 +58,6 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
   - [Node](https://nodejs.org/en/) - node repl toggle terminal (`<leader>tn`)
 
 > Note when using default theme: For MacOS, the default terminal does not have true color support. You will need to use [iTerm2](https://iterm2.com/) or another [terminal emulator](https://gist.github.com/XVilka/8346728#terminal-emulators) that has true color support.
-
-> Note if you are still on Neovim v0.6: You can still install the previous version of AstroNvim that supported. After cloning the repository run `git checkout nvim-0.6` to check out this version. This will no longer be receiving updates.
 
 ## 🛠️ Installation
 
