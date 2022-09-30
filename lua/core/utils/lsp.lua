@@ -123,7 +123,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
     vim.api.nvim_buf_create_user_command(
       bufnr,
       "Format",
-      function() vim.lsp.buf.format { async = true } end,
+      function() vim.lsp.buf.format { filter = astronvim.lsp.format_filter, async = true } end,
       { desc = "Format file with LSP" }
     )
     vim.api.nvim_create_augroup("auto_format", { clear = true })
