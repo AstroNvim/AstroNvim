@@ -29,12 +29,6 @@ local astro_plugins = {
     config = function() require "configs.dressing" end,
   },
 
-  -- Cursorhold fix
-  ["antoinemadec/FixCursorHold.nvim"] = {
-    event = { "BufRead", "BufNewFile" },
-    config = function() vim.g.cursorhold_updatetime = 100 end,
-  },
-
   -- Smarter Splits
   ["mrjones2014/smart-splits.nvim"] = {
     module = "smart-splits",
@@ -79,9 +73,7 @@ local astro_plugins = {
   },
 
   -- Statusline
-  ["rebelot/heirline.nvim"] = {
-    config = function() require "configs.heirline" end,
-  },
+  ["rebelot/heirline.nvim"] = { config = function() require "configs.heirline" end },
 
   -- Parenthesis highlighting
   ["p00f/nvim-ts-rainbow"] = { after = "nvim-treesitter" },
