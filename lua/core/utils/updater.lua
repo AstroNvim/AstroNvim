@@ -121,7 +121,7 @@ function astronvim.updater.update()
   if is_stable then
     options.branch = "main"
   elseif not options.branch then
-    options.branch = "nigthly"
+    options.branch = "nightly"
   end
   -- fetch the latest remote
   if not git.fetch(options.remote) then
