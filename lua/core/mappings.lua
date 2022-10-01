@@ -202,7 +202,7 @@ if is_available "nvim-autopairs" then
 end
 maps.n["<leader>ub"] = { function() astronvim.ui.toggle_background() end, desc = "Toggle background" }
 if is_available "nvim-cmp" then
-  maps.n["<leader>uc"] = { function() astronvim.ui.toggle_cmp() end, desc = "Toggle completion" }
+  maps.n["<leader>uc"] = { function() astronvim.ui.toggle_cmp() end, desc = "Toggle autocompletion" }
 end
 if is_available "nvim-colorizer.lua" then
   maps.n["<leader>uC"] = { "<cmd>ColorizerToggle<cr>", desc = "Toggle color highlight" }

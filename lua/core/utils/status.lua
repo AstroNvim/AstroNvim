@@ -400,7 +400,7 @@ end
 --- A condition function if the current file has any diagnostics
 -- @return boolean of wether or not the current file has any diagnostics
 -- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.has_diagnostics }
-function astronvim.status.condition.has_diagnostics() return #vim.diagnostic.get(0) > 0 end
+function astronvim.status.condition.has_diagnostics() return vim.g.diagnostics_enabled and #vim.diagnostic.get(0) > 0 end
 
 --- A condition function if there is a defined filetype
 -- @return boolean of wether or not there is a filetype
@@ -726,6 +726,7 @@ function astronvim.status.utils.surround(separator, color, component)
     local colors = type(color) == "function" and color(self) or color
     return type(colors) == "string" and { main = colors } or colors
   end
+
   separator = type(separator) == "string" and astronvim.status.env.separators[separator] or separator
   local surrounded = {}
   if separator[1] ~= "" then
