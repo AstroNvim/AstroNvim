@@ -23,9 +23,9 @@ function astronvim.ui.toggle_autopairs()
       autopairs.disable()
     end
     vim.g.autopairs_enabled = autopairs.state.disabled
-    vim.notify(string.format("autopairs %s", bool2str(not autopairs.state.disabled)))
+    astronvim.notify(string.format("autopairs %s", bool2str(not autopairs.state.disabled)))
   else
-    vim.notify "autopairs not available"
+    astronvim.notify "autopairs not available"
   end
 end
 
@@ -33,13 +33,13 @@ end
 function astronvim.ui.toggle_diagnostics()
   vim.g.diagnostics_enabled = not vim.g.diagnostics_enabled
   vim.diagnostic.config(astronvim.lsp.diagnostics[vim.g.diagnostics_enabled and "on" or "off"])
-  vim.notify(string.format("diagnostics %s", bool2str(vim.g.diagnostics_enabled)))
+  astronvim.notify(string.format("diagnostics %s", bool2str(vim.g.diagnostics_enabled)))
 end
 
 --- Toggle background="dark"|"light"
 function astronvim.ui.toggle_background()
   vim.go.background = vim.go.background == "light" and "dark" or "light"
-  vim.notify(string.format("background=%s", vim.go.background))
+  astronvim.notify(string.format("background=%s", vim.go.background))
 end
 
 --- Toggle cmp entrirely
@@ -48,9 +48,9 @@ function astronvim.ui.toggle_cmp()
   local ok, cmp = pcall(require, "cmp")
   if ok then
     cmp.setup { enabled = vim.g.cmp_enabled }
-    vim.notify(string.format("completion %s", bool2str(vim.g.cmp_enabled)))
+    astronvim.notify(string.format("completion %s", bool2str(vim.g.cmp_enabled)))
   else
-    vim.notify "completion not available"
+    astronvim.notify "completion not available"
   end
 end
 
@@ -63,18 +63,19 @@ function astronvim.ui.toggle_signcolumn()
   else
     vim.wo.signcolumn = "no"
   end
-  vim.notify(string.format("signcolumn=%s", vim.wo.signcolumn))
+  astronvim.notify(string.format("signcolumn=%s", vim.wo.signcolumn))
 end
 
 --- Set the indent and tab related numbers
 function astronvim.ui.set_indent()
-  local indent = tonumber(vim.fn.input "Set indent value (>0 expandtab, <=0 noexpandtab, 0 vim defaults): ") or -8
+  local indent = tonumber(vim.fn.input "Set indent value (>0 expandtab, <=0 noexpandtab): ")
+  if not indent or indent == 0 then return end
   vim.bo.expandtab = (indent > 0) -- local to buffer
   indent = math.abs(indent)
   vim.bo.tabstop = indent -- local to buffer
   vim.bo.softtabstop = indent -- local to buffer
   vim.bo.shiftwidth = indent -- local to buffer
-  vim.notify(string.format("indent=%d %s", indent, vim.bo.expandtab and "expandtab" or "noexpandtab"))
+  astronvim.notify(string.format("indent=%d %s", indent, vim.bo.expandtab and "expandtab" or "noexpandtab"))
 end
 
 --- Change the number display modes
@@ -90,19 +91,21 @@ function astronvim.ui.change_number()
   else -- not number and relativenumber
     vim.wo.relativenumber = false
   end
-  vim.notify(string.format("number=%s, relativenumber=%s", bool2str(vim.wo.number), bool2str(vim.wo.relativenumber)))
+  astronvim.notify(
+    string.format("number=%s, relativenumber=%s", bool2str(vim.wo.number), bool2str(vim.wo.relativenumber))
+  )
 end
 
 --- Toggle spell
 function astronvim.ui.toggle_spell()
   vim.wo.spell = not vim.wo.spell -- local to window
-  vim.notify(string.format("spell=%s", bool2str(vim.wo.spell)))
+  astronvim.notify(string.format("spell=%s", bool2str(vim.wo.spell)))
 end
 
 --- Toggle wrap
 function astronvim.ui.toggle_wrap()
   vim.wo.wrap = not vim.wo.wrap -- local to window
-  vim.notify(string.format("wrap=%s", bool2str(vim.wo.wrap)))
+  astronvim.notify(string.format("wrap=%s", bool2str(vim.wo.wrap)))
 end
 
 --- Toggle syntax highlighting and treesitter
@@ -115,7 +118,7 @@ function astronvim.ui.toggle_syntax()
     if ts_avail and parsers.has_parser() then vim.cmd.TSBufEnable "highlight" end
     vim.cmd.syntax "on" -- set vim.g.syntax_on = true
   end
-  vim.notify(string.format("syntax %s", bool2str(vim.g.syntax_on)))
+  astronvim.notify(string.format("syntax %s", bool2str(vim.g.syntax_on)))
 end
 
 --- Toggle URL/URI syntax highlighting rules
