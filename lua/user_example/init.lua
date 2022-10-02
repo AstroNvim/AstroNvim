@@ -28,24 +28,11 @@ local config = {
   -- Set colorscheme to use
   colorscheme = "default_theme",
 
-  -- Override highlight groups in any theme
+  -- Add highlight groups in any theme
   highlights = {
     -- duskfox = { -- a table of overrides/changes to the default
     --   Normal = { bg = "#000000" },
     -- },
-    default_theme = function(highlights) -- or a function that returns a new table of colors to set
-      local C = require "default_theme.colors"
-
-      highlights.Normal = { fg = C.fg, bg = C.bg }
-
-      -- New approach instead of diagnostic_style
-      highlights.DiagnosticError.italic = true
-      highlights.DiagnosticHint.italic = true
-      highlights.DiagnosticInfo.italic = true
-      highlights.DiagnosticWarn.italic = true
-
-      return highlights
-    end,
   },
 
   -- set vim options here (vim.<first_key>.<second_key> =  value)
@@ -97,6 +84,19 @@ local config = {
       fg = "#abb2bf",
       bg = "#1e222a",
     },
+    highlights = function(hl) -- or a function that returns a new table of colors to set
+      local C = require "default_theme.colors"
+
+      hl.Normal = { fg = C.fg, bg = C.bg }
+
+      -- New approach instead of diagnostic_style
+      hl.DiagnosticError.italic = true
+      hl.DiagnosticHint.italic = true
+      hl.DiagnosticInfo.italic = true
+      hl.DiagnosticWarn.italic = true
+
+      return hl
+    end,
     -- enable or disable highlighting for extra plugins
     plugins = {
       aerial = true,
