@@ -50,6 +50,7 @@ local config = {
       cmp_enabled = true, -- enable completion at start
       autopairs_enabled = true, -- enable autopairs at start
       diagnostics_enabled = true, -- enable diagnostics at start
+      status_diagnostics_enabled = true, -- enable diagnostics in statusline
     },
   },
   -- If you need more control, you can use the function()...end notation

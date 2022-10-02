@@ -400,7 +400,9 @@ end
 --- A condition function if the current file has any diagnostics
 -- @return boolean of wether or not the current file has any diagnostics
 -- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.has_diagnostics }
-function astronvim.status.condition.has_diagnostics() return vim.g.diagnostics_enabled and #vim.diagnostic.get(0) > 0 end
+function astronvim.status.condition.has_diagnostics()
+  return vim.g.status_diagnostics_enabled and #vim.diagnostic.get(0) > 0
+end
 
 --- A condition function if there is a defined filetype
 -- @return boolean of wether or not there is a filetype
