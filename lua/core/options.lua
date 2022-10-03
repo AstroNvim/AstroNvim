@@ -21,6 +21,7 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
     scrolloff = 8, -- Number of lines to keep above and below the cursor
     shiftwidth = 2, -- Number of space inserted for indentation
     showmode = false, -- Disable showing modes in command line
+    showtabline = 2, -- always display tabline
     sidescrolloff = 8, -- Number of columns to keep at the sides of the cursor
     signcolumn = "yes", -- Always show the sign column
     smartcase = true, -- Case sensitivie searching
