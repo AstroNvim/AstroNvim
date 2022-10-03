@@ -1,6 +1,6 @@
 local is_available = astronvim.is_available
 
-local maps = { n = {}, v = {}, t = {}, [""] = {} }
+local maps = { i = {}, n = {}, v = {}, t = {}, [""] = {} }
 
 maps[""]["<Space>"] = "<Nop>"
 
@@ -184,6 +184,9 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" }
   maps.n["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
+  maps.n["<C-'>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" }
+  maps.i["<C-'>"] = maps.n["<C-'>"]
+  maps.t["<C-'>"] = maps.n["<C-'>"]
 end
 
 -- Stay in indent mode
