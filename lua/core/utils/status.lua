@@ -462,8 +462,7 @@ function astronvim.status.component.file_info(opts)
     filename = {},
     file_modified = { padding = { left = 1 } },
     file_read_only = { padding = { left = 1 } },
-    condition = astronvim.status.condition.has_filetype,
-    surround = { separator = "left", color = "file_info_bg" },
+    surround = { separator = "left", color = "file_info_bg", condition = astronvim.status.condition.has_filetype },
     hl = { fg = "file_info_fg" },
   })
   for i, key in ipairs {
@@ -537,7 +536,7 @@ end
 function astronvim.status.component.git_branch(opts)
   opts = astronvim.default_tbl(opts, {
     git_branch = { icon = { kind = "GitBranch", padding = { right = 1 } } },
-    surround = { separator = "left", color = "git_branch_bg" },
+    surround = { separator = "left", color = "git_branch_bg", condition = astronvim.status.condition.is_git_repo },
     hl = { fg = "git_branch_fg", bold = true },
     on_click = {
       name = "heirline_branch",
@@ -561,7 +560,6 @@ function astronvim.status.component.git_diff(opts)
     added = { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } },
     changed = { icon = { kind = "GitChange", padding = { left = 1, right = 1 } } },
     removed = { icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } },
-    condition = astronvim.status.condition.git_changed,
     hl = { fg = "git_diff_fg", bold = true },
     on_click = {
       name = "heirline_git",
@@ -571,7 +569,7 @@ function astronvim.status.component.git_diff(opts)
         end
       end,
     },
-    surround = { separator = "left", color = "git_diff_bg" },
+    surround = { separator = "left", color = "git_diff_bg", condition = astronvim.status.condition.git_changed },
   })
   for i, kind in ipairs { "added", "changed", "removed" } do
     if type(opts[kind]) == "table" then opts[kind].type = kind end
@@ -590,8 +588,7 @@ function astronvim.status.component.diagnostics(opts)
     WARN = { icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } } },
     INFO = { icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } } },
     HINT = { icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } } },
-    condition = astronvim.status.condition.has_diagnostics,
-    surround = { separator = "left", color = "diagnostics_bg" },
+    surround = { separator = "left", color = "diagnostics_bg", condition = astronvim.status.condition.has_diagnostics },
     hl = { fg = "diagnostics_fg" },
     on_click = {
       name = "heirline_diagnostic",
@@ -616,8 +613,11 @@ end
 function astronvim.status.component.treesitter(opts)
   opts = astronvim.default_tbl(opts, {
     str = { str = "TS", icon = { kind = "ActiveTS" } },
-    condition = astronvim.status.condition.treesitter_available,
-    surround = { separator = "right", color = "treesitter_bg" },
+    surround = {
+      separator = "right",
+      color = "treesitter_bg",
+      condition = astronvim.status.condition.treesitter_available,
+    },
     hl = { fg = "treesitter_fg" },
   })
   opts[1] = opts.str and { provider = "str", opts = opts.str } or false
@@ -632,9 +632,8 @@ function astronvim.status.component.lsp(opts)
   opts = astronvim.default_tbl(opts, {
     lsp_progress = { str = "", padding = { right = 1 } },
     lsp_client_names = { str = "LSP", icon = { kind = "ActiveLSP", padding = { right = 2 } } },
-    condition = astronvim.status.condition.lsp_attached,
     hl = { fg = "lsp_fg" },
-    surround = { separator = "right", color = "lsp_bg" },
+    surround = { separator = "right", color = "lsp_bg", condition = astronvim.status.condition.lsp_attached },
     on_click = {
       name = "heirline_lsp",
       callback = function()
@@ -684,7 +683,13 @@ function astronvim.status.component.builder(opts)
   if opts.padding.right > 0 then -- add right padding
     table.insert(children, { provider = astronvim.pad_string(" ", { right = opts.padding.right - 1 }) })
   end
-  return opts.surround and astronvim.status.utils.surround(opts.surround.separator, opts.surround.color, children)
+  return opts.surround
+      and astronvim.status.utils.surround(
+        opts.surround.separator,
+        opts.surround.color,
+        children,
+        opts.surround.condition
+      )
     or children
 end
 
@@ -722,15 +727,16 @@ end
 -- @param separator the separator index to use in `astronvim.status.env.separators`
 -- @param color the color to use as the separator foreground/component background
 -- @param component the component to surround
+-- @param condition the condition for displaying the surrounded component
 -- @return the new surrounded component
-function astronvim.status.utils.surround(separator, color, component)
+function astronvim.status.utils.surround(separator, color, component, condition)
   local function surround_color(self)
     local colors = type(color) == "function" and color(self) or color
     return type(colors) == "string" and { main = colors } or colors
   end
 
   separator = type(separator) == "string" and astronvim.status.env.separators[separator] or separator
-  local surrounded = {}
+  local surrounded = { condition = condition }
   if separator[1] ~= "" then
     table.insert(surrounded, {
       provider = separator[1],
