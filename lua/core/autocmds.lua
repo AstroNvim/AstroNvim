@@ -108,8 +108,10 @@ cmd({ "VimEnter", "ColorScheme" }, {
   group = "astronvim_highlights",
   callback = function()
     if vim.g.colors_name then
-      for group, spec in pairs(user_plugin_opts("highlights." .. vim.g.colors_name)) do
-        vim.api.nvim_set_hl(0, group, spec)
+      for _, module in ipairs { "init", vim.g.colors_name } do
+        for group, spec in pairs(user_plugin_opts("highlights." .. module)) do
+          vim.api.nvim_set_hl(0, group, spec)
+        end
       end
     end
   end,
