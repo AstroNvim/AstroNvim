@@ -162,6 +162,12 @@ local astro_plugins = {
   ["neovim/nvim-lspconfig"] = {},
 
   -- LSP manager
+  ["jayp0521/mason-null-ls.nvim"] = {
+    after = { "mason.nvim", "null-ls.nvim" },
+    config = function() require "configs.mason-null-ls" end,
+  },
+
+  -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
     after = { "mason.nvim", "nvim-lspconfig" },
     config = function() require "configs.lsp" end,
