@@ -103,7 +103,7 @@ function astronvim.status.init.breadcrumbs(opts)
     -- create a child for each level
     for i, d in ipairs(data) do
       local child = {
-        { provider = d.name }, -- add symbol name
+        { provider = string.gsub(d.name, "%%", "%%%%") }, -- add symbol name
         on_click = { -- add on click function
           callback = function() vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { d.lnum, d.col }) end,
           name = string.format("goto_symbol_%d_%d", d.lnum, d.col),
