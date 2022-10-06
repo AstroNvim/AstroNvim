@@ -102,11 +102,16 @@ function astronvim.status.init.breadcrumbs(opts)
     local children = {}
     -- create a child for each level
     for i, d in ipairs(data) do
+      local pos = astronvim.status.utils.encode_pos(d.lnum, d.col, self.winnr)
       local child = {
-        { provider = string.gsub(d.name, "%%", "%%%%") }, -- add symbol name
+        { provider = string.gsub(d.name, "%%", "%%%%"):gsub("%s*->%s*", "") }, -- add symbol name
         on_click = { -- add on click function
-          callback = function() vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { d.lnum, d.col }) end,
-          name = string.format("goto_symbol_%d_%d", d.lnum, d.col),
+          minwid = pos,
+          callback = function(_, minwid)
+            local lnum, col, winnr = astronvim.status.utils.decode_pos(minwid)
+            vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { lnum, col })
+          end,
+          name = "heirline_breadcrumbs",
         },
       }
       if opts.icon.enabled then -- add icon and highlight if enabled
@@ -181,6 +186,16 @@ function astronvim.status.provider.scrollbar(opts)
   end
 end
 
+--- A provider to simply show a cloes button icon
+-- @param opts options passed to the stylize function and the kind of icon to use
+-- @return return the stylized icon
+-- @usage local heirline_component = { provider = astronvim.status.provider.close_button() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.close_button(opts)
+  opts = astronvim.default_tbl(opts, { kind = "BufferClose" })
+  return astronvim.status.utils.stylize(astronvim.get_icon(opts.kind), opts)
+end
+
 --- A provider function for showing the current filetype
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the filetype
@@ -203,6 +218,59 @@ function astronvim.status.provider.filename(opts)
   return function(self)
     local filename = vim.fn.fnamemodify(opts.fname(self and self.bufnr or 0), opts.modify)
     return astronvim.status.utils.stylize((filename == "" and "[No Name]" or filename), opts)
+  end
+end
+
+--- Get a unique filepath between all buffers
+-- @param opts options for function to get the buffer name, a buffer number, max length, and options passed to the stylize function
+-- @return path to file that uniquely identifies each buffer
+-- @usage local heirline_component = { provider = astronvim.status.provider.unique_path() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.unique_path(opts)
+  opts = astronvim.default_tbl(opts, {
+    buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t") end,
+    bufnr = 0,
+    max_length = 16,
+  })
+  return function(self)
+    opts.bufnr = self and self.bufnr or opts.bufnr
+    local name = opts.buf_name(opts.bufnr)
+    local unique_path = ""
+    -- check for same buffer names under different dirs
+    for _, value in ipairs(astronvim.status.utils.get_valid_buffers()) do
+      if name == opts.buf_name(value) and value ~= opts.bufnr then
+        local other = {}
+        for match in (vim.api.nvim_buf_get_name(value) .. "/"):gmatch("(.-)" .. "/") do
+          table.insert(other, match)
+        end
+
+        local current = {}
+        for match in (vim.api.nvim_buf_get_name(opts.bufnr) .. "/"):gmatch("(.-)" .. "/") do
+          table.insert(current, match)
+        end
+
+        unique_path = ""
+
+        for i = #current - 1, 1, -1 do
+          local value_current = current[i]
+          local other_current = other[i]
+
+          if value_current ~= other_current then
+            unique_path = value_current .. "/"
+            break
+          end
+        end
+        break
+      end
+    end
+    return astronvim.status.utils.stylize(
+      (
+        opts.max_length > 0
+        and #unique_path > opts.max_length
+        and string.sub(unique_path, 1, opts.max_length - 2) .. astronvim.get_icon "Ellipsis" .. "/"
+      ) or unique_path,
+      opts
+    )
   end
 end
 
@@ -765,66 +833,34 @@ function astronvim.status.utils.surround(separator, color, component, condition)
   return surrounded
 end
 
+--- Check if a buffer is valid
+-- @param bufnr the buffer to check
+-- @return true if the buffer is valid or false
 function astronvim.status.utils.is_valid_buffer(bufnr)
   if not bufnr or bufnr < 1 then return false end
   return vim.bo[bufnr].buflisted and vim.api.nvim_buf_is_valid(bufnr)
 end
 
+--- Get all valid buffers
+-- @return array-like table of valid buffer numbers
 function astronvim.status.utils.get_valid_buffers()
   return vim.tbl_filter(astronvim.status.utils.is_valid_buffer, vim.api.nvim_list_bufs())
 end
 
-function astronvim.status.provider.unique_path(opts)
-  opts = astronvim.default_tbl(opts, {
-    buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t") end,
-    bufnr = 0,
-    max_length = 16,
-  })
-  return function(self)
-    opts.bufnr = self and self.bufnr or opts.bufnr
-    local name = opts.buf_name(opts.bufnr)
-    local unique_path = ""
-    -- check for same buffer names under different dirs
-    for _, value in ipairs(astronvim.status.utils.get_valid_buffers()) do
-      if name == opts.buf_name(value) and value ~= opts.bufnr then
-        local other = {}
-        for match in (vim.api.nvim_buf_get_name(value) .. "/"):gmatch("(.-)" .. "/") do
-          table.insert(other, match)
-        end
-
-        local current = {}
-        for match in (vim.api.nvim_buf_get_name(opts.bufnr) .. "/"):gmatch("(.-)" .. "/") do
-          table.insert(current, match)
-        end
-
-        unique_path = ""
-
-        for i = #current - 1, 1, -1 do
-          local value_current = current[i]
-          local other_current = other[i]
-
-          if value_current ~= other_current then
-            unique_path = value_current .. "/"
-            break
-          end
-        end
-        break
-      end
-    end
-    return astronvim.status.utils.stylize(
-      (
-        opts.max_length > 0
-        and #unique_path > opts.max_length
-        and string.sub(unique_path, 1, opts.max_length - 2) .. astronvim.get_icon "Ellipsis" .. "/"
-      ) or unique_path,
-      opts
-    )
-  end
+--- Encode a position to a single value that can be decoded later
+-- @param line line number of position
+-- @param col column number of position
+-- @param winnr a window number
+-- @return the encoded position
+function astronvim.status.utils.encode_pos(line, col, winnr)
+  return bit.bor(bit.lshift(line, 16), bit.lshift(col, 6), winnr)
 end
 
-function astronvim.status.provider.close_button(opts)
-  opts = astronvim.default_tbl(opts, { kind = "BufferClose" })
-  return astronvim.status.utils.stylize(astronvim.get_icon(opts.kind), opts)
+--- Decode a previously encoded position to it's sub parts
+-- @param c the encoded position
+-- @return line number, column number, window id
+function astronvim.status.utils.decode_pos(c)
+  return bit.rshift(c, 16), bit.band(bit.rshift(c, 6), 1023), bit.band(c, 63)
 end
 
 return astronvim.status

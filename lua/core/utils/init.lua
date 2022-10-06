@@ -40,7 +40,7 @@ local function load_module_file(module)
     -- if successful at loading, set the return variable
     if status_ok then
       found_module = loaded_module
-    -- if unsuccessful, throw an error
+      -- if unsuccessful, throw an error
     else
       vim.api.nvim_err_writeln("Error loading file: " .. found_module)
     end
@@ -71,11 +71,11 @@ local function func_or_extend(overrides, default, extend)
     -- if the override is a table, use vim.tbl_deep_extend
     if type(overrides) == "table" then
       default = astronvim.default_tbl(overrides, default)
-    -- if the override is  a function, call it with the default and overwrite default with the return value
+      -- if the override is  a function, call it with the default and overwrite default with the return value
     elseif type(overrides) == "function" then
       default = overrides(default)
     end
-  -- if extend is set to false and we have a provided override, simply override the default
+    -- if extend is set to false and we have a provided override, simply override the default
   elseif overrides ~= nil then
     default = overrides
   end
@@ -243,7 +243,7 @@ function astronvim.initialize_packer()
     -- if the file loads, run the compiled function
     if run_me then
       run_me()
-    -- if there is no compiled file, prompt the user to run :PackerSync
+      -- if there is no compiled file, prompt the user to run :PackerSync
     else
       astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
     end
@@ -286,10 +286,10 @@ function astronvim.url_opener()
   -- if mac use the open command
   if vim.fn.has "mac" == 1 then
     vim.fn.jobstart({ "open", vim.fn.expand "<cfile>" }, { detach = true })
-  -- if unix then use xdg-open
+    -- if unix then use xdg-open
   elseif vim.fn.has "unix" == 1 then
     vim.fn.jobstart({ "xdg-open", vim.fn.expand "<cfile>" }, { detach = true })
-  -- if any other operating system notify the user that there is currently no support
+    -- if any other operating system notify the user that there is currently no support
   else
     astronvim.notify("gx is not supported on this OS!", "error")
   end
