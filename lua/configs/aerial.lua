@@ -4,7 +4,7 @@ aerial.setup(astronvim.user_plugin_opts("plugins.aerial", {
   attach_mode = "global",
   backends = { "lsp", "treesitter", "markdown" },
   layout = {
-        min_width = 28,
+    min_width = 28,
   },
   show_guides = true,
   filter_kind = false,
