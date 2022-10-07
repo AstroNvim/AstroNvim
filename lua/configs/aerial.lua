@@ -3,7 +3,9 @@ if not status_ok then return end
 aerial.setup(astronvim.user_plugin_opts("plugins.aerial", {
   attach_mode = "global",
   backends = { "lsp", "treesitter", "markdown" },
-  min_width = 28,
+  layout = {
+    min_width = 28,
+  },
   show_guides = true,
   filter_kind = false,
   guides = {
