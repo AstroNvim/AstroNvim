@@ -27,7 +27,7 @@ for _, sign in ipairs(signs) do
   sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
 end
 
-astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { disabled = {} })
+astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { format_on_save = true, disabled = {} })
 
 astronvim.lsp.format_opts = vim.deepcopy(astronvim.lsp.formatting)
 astronvim.lsp.format_opts.disabled = nil
@@ -126,13 +126,15 @@ astronvim.lsp.on_attach = function(client, bufnr)
       function() vim.lsp.buf.format(astronvim.default_tbl({ async = true }, astronvim.lsp.format_opts)) end,
       { desc = "Format file with LSP" }
     )
-    vim.api.nvim_create_augroup("auto_format", { clear = true })
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = "auto_format",
-      desc = "Auto format before save",
-      pattern = "<buffer>",
-      callback = function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
-    })
+    if astronvim.lsp.formatting.format_on_save then
+      vim.api.nvim_create_augroup("auto_format", { clear = true })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = "auto_format",
+        desc = "Auto format before save",
+        pattern = "<buffer>",
+        callback = function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
+      })
+    end
   end
 
   if capabilities.documentHighlightProvider then
