@@ -108,7 +108,7 @@ end
 -- @param versions a list of versions to search (defaults to all versions available)
 -- @return the latest version from the array
 function git.latest_version(versions, ...)
-  versions = versions and versions or git.get_versions(...)
+  if not versions then versions = git.get_versions(...) end
   return versions[#versions]
 end
 
