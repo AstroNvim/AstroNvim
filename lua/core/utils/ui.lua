@@ -58,13 +58,8 @@ end
 --- Toggle cmp entrirely
 function astronvim.ui.toggle_cmp()
   vim.g.cmp_enabled = not vim.g.cmp_enabled
-  local ok, cmp = pcall(require, "cmp")
-  if ok then
-    cmp.setup { enabled = vim.g.cmp_enabled }
-    astronvim.notify(string.format("completion %s", bool2str(vim.g.cmp_enabled)))
-  else
-    astronvim.notify "completion not available"
-  end
+  local ok, _ = pcall(require, "cmp")
+  astronvim.notify(ok and string.format("completion %s", bool2str(vim.g.cmp_enabled)) or "completion not available")
 end
 
 --- Toggle signcolumn="auto"|"no"

@@ -12,7 +12,10 @@ local function has_words_before()
 end
 
 setup(astronvim.user_plugin_opts("plugins.cmp", {
-  enabled = vim.g.cmp_enabled,
+  enabled = function()
+    if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+    return vim.g.cmp_enabled
+  end,
   preselect = cmp.PreselectMode.None,
   formatting = {
     fields = { "kind", "abbr", "menu" },
