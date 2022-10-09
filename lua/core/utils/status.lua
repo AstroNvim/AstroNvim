@@ -134,6 +134,29 @@ function astronvim.status.init.breadcrumbs(opts)
   end
 end
 
+--- An `init` function to build multiple update events which is not supported yet by Heirline's update field
+-- @param opts an array like table of autocmd events as either just a string or a table with custom patterns and callbacks.
+-- @return The Heirline init function
+-- @usage local heirline_component = { init = astronvim.status.init.update_events { "BufEnter", { "User", pattern = "LspProgressUpdate" } } }
+function astronvim.status.init.update_events(opts)
+  return function(self)
+    if not rawget(self, "once") then
+      local clear_cache = function() self._win_cache = nil end
+      for _, event in ipairs(opts) do
+        local event_opts = { callback = clear_cache }
+        if type(event) == "table" then
+          event_opts.pattern = event.pattern
+          event_opts.callback = event.callback or clear_cache
+          event.pattern = nil
+          event.callback = nil
+        end
+        vim.api.nvim_create_autocmd(event, event_opts)
+      end
+      self.once = true
+    end
+  end
+end
+
 --- A provider function for the fill string
 -- @return the statusline string for filling the empty space
 -- @usage local heirline_component = { provider = astronvim.status.provider.fill }
@@ -565,6 +588,7 @@ function astronvim.status.component.nav(opts)
     scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
     surround = { separator = "right", color = "nav_bg" },
     hl = { fg = "nav_fg" },
+    update = { "CursorMoved", "BufEnter" },
   })
   for i, key in ipairs { "ruler", "percentage", "scrollbar" } do
     opts[i] = opts[key] and { provider = key, opts = opts[key], hl = opts[key].hl } or false
@@ -577,10 +601,12 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.mode { mode_text = true }
 function astronvim.status.component.mode(opts)
-  opts = astronvim.default_tbl(
-    opts,
-    { mode_text = false, surround = { separator = "left", color = astronvim.status.hl.mode_bg }, hl = { fg = "bg" } }
-  )
+  opts = astronvim.default_tbl(opts, {
+    mode_text = false,
+    surround = { separator = "left", color = astronvim.status.hl.mode_bg },
+    hl = { fg = "bg" },
+    update = "ModeChanged",
+  })
   opts[1] = opts.mode_text and { provider = "mode_text", opts = opts.mode_text }
     or { provider = "str", opts = { str = " " } }
   return astronvim.status.component.builder(opts)
@@ -591,8 +617,10 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.breadcumbs()
 function astronvim.status.component.breadcrumbs(opts)
-  opts =
-    astronvim.default_tbl(opts, { padding = { left = 1 }, condition = astronvim.status.condition.aerial_available })
+  opts = astronvim.default_tbl(
+    opts,
+    { padding = { left = 1 }, condition = astronvim.status.condition.aerial_available, update = "CursorMoved" }
+  )
   opts.init = astronvim.status.init.breadcrumbs(opts)
   return opts
 end
@@ -614,6 +642,8 @@ function astronvim.status.component.git_branch(opts)
         end
       end,
     },
+    update = { "User", pattern = "GitSignsUpdate" },
+    init = astronvim.status.init.update_events { "BufEnter" },
   })
   opts[1] = opts.git_branch and { provider = "git_branch", opts = opts.git_branch } or false
   return astronvim.status.component.builder(opts)
@@ -638,6 +668,8 @@ function astronvim.status.component.git_diff(opts)
       end,
     },
     surround = { separator = "left", color = "git_diff_bg", condition = astronvim.status.condition.git_changed },
+    update = { "User", pattern = "GitSignsUpdate" },
+    init = astronvim.status.init.update_events { "BufEnter" },
   })
   for i, kind in ipairs { "added", "changed", "removed" } do
     if type(opts[kind]) == "table" then opts[kind].type = kind end
@@ -666,6 +698,7 @@ function astronvim.status.component.diagnostics(opts)
         end
       end,
     },
+    update = { "DiagnosticChanged", "BufEnter" },
   })
   for i, kind in ipairs { "ERROR", "WARN", "INFO", "HINT" } do
     if type(opts[kind]) == "table" then opts[kind].severity = kind end
@@ -687,6 +720,8 @@ function astronvim.status.component.treesitter(opts)
       condition = astronvim.status.condition.treesitter_available,
     },
     hl = { fg = "treesitter_fg" },
+    update = { "OptionSet", pattern = "syntax" },
+    init = astronvim.status.init.update_events { "BufEnter" },
   })
   opts[1] = opts.str and { provider = "str", opts = opts.str } or false
   return astronvim.status.component.builder(opts)
@@ -712,16 +747,16 @@ function astronvim.status.component.lsp(opts)
   opts[1] = {}
   for i, provider in ipairs { "lsp_progress", "lsp_client_names" } do
     if type(opts[provider]) == "table" then
-      table.insert(
-        opts[1],
-        opts[provider].str
-            and astronvim.status.utils.make_flexible(
-              i,
-              { provider = astronvim.status.provider[provider](opts[provider]) },
-              { provider = astronvim.status.provider.str(opts[provider]) }
-            )
-          or { provider = provider, opts = opts[provider] }
-      )
+      local new_provider = opts[provider].str
+          and astronvim.status.utils.make_flexible(
+            i,
+            { provider = astronvim.status.provider[provider](opts[provider]) },
+            { provider = astronvim.status.provider.str(opts[provider]) }
+          )
+        or { provider = provider, opts = opts[provider] }
+      new_provider.update = provider == "lsp_progress" and { "User", pattern = "LspProgressUpdate,LspRequest" }
+        or { "LspAttach", "LspDetach", "BufEnter" }
+      table.insert(opts[1], new_provider)
     end
   end
   return astronvim.status.component.builder(opts)
