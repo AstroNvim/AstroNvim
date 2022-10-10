@@ -184,11 +184,8 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" }
   maps.n["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
-  maps.n["<C-n>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" }
-  maps.t["<C-n>"] = maps.n["<C-n>"]
-  -- REMOVE BELOW ON NEXT MAJOR RELEASE FOR NOT BREAKING CHANGE
-  maps.n["<C-'>"] = maps.n["<C-n>"]
-  maps.t["<C-'>"] = maps.n["<C-n>"]
+  maps.n["<C-'>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" }
+  maps.t["<C-'>"] = maps.n["<C-'>"]
 end
 
 -- Stay in indent mode
