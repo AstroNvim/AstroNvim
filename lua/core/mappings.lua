@@ -25,6 +25,7 @@ maps.n["<leader>pu"] = { "<cmd>PackerUpdate<cr>", desc = "Packer Update" }
 -- AstroNvim
 maps.n["<leader>pA"] = { "<cmd>AstroUpdate<cr>", desc = "AstroNvim Update" }
 maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
+maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
 
 -- Alpha
 if is_available "alpha-nvim" then maps.n["<leader>d"] = { "<cmd>Alpha<cr>", desc = "Alpha Dashboard" } end
