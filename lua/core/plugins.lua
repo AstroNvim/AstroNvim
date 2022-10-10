@@ -13,7 +13,7 @@ local astro_plugins = {
 
   -- Indent detection
   ["Darazaki/indent-o-matic"] = {
-    event = "BufReadPost",
+    event = "BufEnter",
     config = function() require "configs.indent-o-matic" end,
   },
 
@@ -87,7 +87,7 @@ local astro_plugins = {
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
     run = ":TSUpdate",
-    event = { "BufRead", "BufNewFile" },
+    event = "BufEnter",
     cmd = {
       "TSInstall",
       "TSInstallInfo",
@@ -168,7 +168,7 @@ local astro_plugins = {
 
   -- Formatting and linting
   ["jose-elias-alvarez/null-ls.nvim"] = {
-    event = { "BufRead", "BufNewFile" },
+    event = "BufEnter",
     config = function() require "configs.null-ls" end,
   },
 
@@ -201,7 +201,7 @@ local astro_plugins = {
 
   -- Color highlighting
   ["NvChad/nvim-colorizer.lua"] = {
-    event = { "BufRead", "BufNewFile" },
+    event = "BufEnter",
     config = function() require "configs.colorizer" end,
   },
 
@@ -227,7 +227,7 @@ local astro_plugins = {
 
   -- Indentation
   ["lukas-reineke/indent-blankline.nvim"] = {
-    event = "BufRead",
+    event = "BufEnter",
     config = function() require "configs.indent-line" end,
   },
 
