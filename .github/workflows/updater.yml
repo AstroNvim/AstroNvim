@@ -20,7 +20,7 @@ jobs:
             const user = src.user.login
             const tab = "  "
             let settings = tab + "updater = {\n" + tab + tab + `channel = "nightly",\n`
-            if (src.ref != "main") {
+            if (src.ref != "nightly") {
               settings += tab + tab + `branch = "${src.ref}",\n`
             }
             if (user != "AstroNvim") {
