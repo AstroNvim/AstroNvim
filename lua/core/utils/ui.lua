@@ -62,6 +62,12 @@ function astronvim.ui.toggle_cmp()
   astronvim.notify(ok and string.format("completion %s", bool2str(vim.g.cmp_enabled)) or "completion not available")
 end
 
+--- Toggle showtabline=2|0
+function astronvim.ui.toggle_tabline()
+  vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
+  astronvim.notify(string.format("tabline ", bool2str(vim.opt.showtabline:get() == 2)))
+end
+
 --- Toggle signcolumn="auto"|"no"
 function astronvim.ui.toggle_signcolumn()
   if vim.wo.signcolumn == "no" then
