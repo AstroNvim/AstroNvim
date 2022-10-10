@@ -754,8 +754,7 @@ function astronvim.status.component.lsp(opts)
             { provider = astronvim.status.provider.str(opts[provider]) }
           )
         or { provider = provider, opts = opts[provider] }
-      new_provider.update = provider == "lsp_progress" and { "User", pattern = "LspProgressUpdate,LspRequest" }
-        or { "LspAttach", "LspDetach", "BufEnter" }
+      if provider == "lsp_client_names" then new_provider.update = { "LspAttach", "LspDetach", "BufEnter" } end
       table.insert(opts[1], new_provider)
     end
   end
