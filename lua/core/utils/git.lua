@@ -92,7 +92,9 @@ function git.tag_commit(tag, ...) return astronvim.trim_or_nil(git.cmd("rev-list
 -- @param end_hash the end commit hash
 -- @return an array like table of commit messages
 function git.get_commit_range(start_hash, end_hash, ...)
-  local log = git.cmd("log --no-merges --pretty='format:[%h] %s' " .. start_hash .. ".." .. end_hash, ...)
+  local range = ""
+  if start_hash and end_hash then range = start_hash .. ".." .. end_hash end
+  local log = git.cmd("log --no-merges --pretty='format:[%h] %s' " .. range, ...)
   return log and vim.fn.split(log, "\n") or {}
 end
 
@@ -121,15 +123,15 @@ function git.parse_remote_url(str)
     or str
 end
 
+--- Check if a Conventional Commit commit message is breaking or not
+-- @param commit a commit message
+-- @return boolean true if the message is breaking, false if the commit message is not breaking
+function git.is_breaking(commit) return vim.fn.match(commit, "\\[.*\\]\\s\\+\\w\\+\\((\\w\\+)\\)\\?!:") ~= -1 end
+
 --- Get a list of breaking commits from commit messages using Conventional Commit standard
 -- @param commits an array like table of commit messages
 -- @return an array like table of commits that are breaking
-function git.breaking_changes(commits)
-  return vim.tbl_filter(
-    function(v) return vim.fn.match(v, "\\[.*\\]\\s\\+\\w\\+\\((\\w\\+)\\)\\?!:") ~= -1 end,
-    commits
-  )
-end
+function git.breaking_changes(commits) return vim.tbl_filter(git.is_breaking, commits) end
 
 --- Generate a table of commit messages for neovim's echo API with highlighting
 -- @param commits an array like table of commit messages
@@ -139,7 +141,10 @@ function git.pretty_changelog(commits)
   for _, commit in ipairs(commits) do
     local hash, type, msg = commit:match "(%[.*%])(.*:)(.*)"
     if hash and type and msg then
-      vim.list_extend(changelog, { { hash, "DiffText" }, { type, "Typedef" }, { msg }, { "\n" } })
+      vim.list_extend(
+        changelog,
+        { { hash, "DiffText" }, { type, git.is_breaking(commit) and "DiffDelete" or "DiffChange" }, { msg }, { "\n" } }
+      )
     end
   end
   return changelog
