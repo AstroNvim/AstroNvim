@@ -352,8 +352,10 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_modified(opts)
   return function(self)
-    local buffer = vim.bo[self and self.bufnr or 0]
-    return astronvim.status.utils.stylize(buffer.modified and astronvim.get_icon "FileModified" or "", opts)
+    return astronvim.status.utils.stylize(
+      astronvim.status.condition.file_modified((self or {}).bufnr) and astronvim.get_icon "FileModified" or "",
+      opts
+    )
   end
 end
 
@@ -364,9 +366,8 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_read_only(opts)
   return function(self)
-    local buffer = vim.bo[self and self.bufnr or 0]
     return astronvim.status.utils.stylize(
-      (not buffer.modifiable or buffer.readonly) and astronvim.get_icon "FileReadOnly" or "",
+      astronvim.status.condition.file_read_only((self or {}).bufnr) and astronvim.get_icon "FileReadOnly" or "",
       opts
     )
   end
@@ -539,6 +540,19 @@ function astronvim.status.condition.is_git_repo() return vim.b.gitsigns_head or 
 function astronvim.status.condition.git_changed()
   local git_status = vim.b.gitsigns_status_dict
   return git_status and (git_status.added or 0) + (git_status.removed or 0) + (git_status.changed or 0) > 0
+end
+
+--- A condition function if the current buffer is modified
+-- @return boolean of wether or not the current buffer is modified
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.file_modified }
+function astronvim.status.condition.file_modified(bufnr) return vim.bo[bufnr or 0].modified end
+
+--- A condition function if the current buffer is read only
+-- @return boolean of wether or not the current buffer is read only or not modifiable
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.file_read_only }
+function astronvim.status.condition.file_read_only(bufnr)
+  local buffer = vim.bo[bufnr or 0]
+  return not buffer.modifiable or buffer.readonly
 end
 
 --- A condition function if the current file has any diagnostics
