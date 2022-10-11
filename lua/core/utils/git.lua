@@ -141,7 +141,10 @@ function git.pretty_changelog(commits)
   for _, commit in ipairs(commits) do
     local hash, type, msg = commit:match "(%[.*%])(.*:)(.*)"
     if hash and type and msg then
-      vim.list_extend(changelog, { { hash, "DiffText" }, { type, git.is_breaking(commit) and "DiffDelete" or "DiffChange" }, { msg }, { "\n" } })
+      vim.list_extend(
+        changelog,
+        { { hash, "DiffText" }, { type, git.is_breaking(commit) and "DiffDelete" or "DiffChange" }, { msg }, { "\n" } }
+      )
     end
   end
   return changelog

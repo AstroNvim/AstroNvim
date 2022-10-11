@@ -656,7 +656,11 @@ end
 function astronvim.status.component.macro_recording(opts)
   opts = astronvim.default_tbl(opts, {
     macro_recording = { icon = { kind = "MacroRecording", padding = { right = 1 } } },
-    surround = { separator = "center", color = "macro_recording_bg", condition = astronvim.status.condition.is_macro_recording },
+    surround = {
+      separator = "center",
+      color = "macro_recording_bg",
+      condition = astronvim.status.condition.is_macro_recording,
+    },
     hl = { fg = "macro_recording_fg", bold = true },
     update = { "RecordingEnter", "RecordingLeave" },
   })
