@@ -12,18 +12,31 @@ local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
 
 astronvim.status.env.modes = {
   ["n"] = { "NORMAL", "normal" },
-  ["no"] = { "N-PENDING", "normal" },
+  ["no"] = { "OP", "normal" },
+  ["nov"] = { "OP", "normal" },
+  ["noV"] = { "OP", "normal" },
+  ["no"] = { "OP", "normal" },
+  ["niI"] = { "NORMAL", "normal" },
+  ["niR"] = { "NORMAL", "normal" },
+  ["niV"] = { "NORMAL", "normal" },
   ["i"] = { "INSERT", "insert" },
   ["ic"] = { "INSERT", "insert" },
-  ["t"] = { "TERMINAL", "insert" },
+  ["ix"] = { "INSERT", "insert" },
+  ["t"] = { "TERM", "insert" },
+  ["nt"] = { "TERM", "insert" },
   ["v"] = { "VISUAL", "visual" },
-  ["V"] = { "V-LINE", "visual" },
-  [""] = { "V-BLOCK", "visual" },
+  ["vs"] = { "VISUAL", "visual" },
+  ["V"] = { "LINES", "visual" },
+  ["Vs"] = { "LINES", "visual" },
+  [""] = { "BLOCK", "visual" },
+  ["s"] = { "BLOCK", "visual" },
   ["R"] = { "REPLACE", "replace" },
+  ["Rc"] = { "REPLACE", "replace" },
+  ["Rx"] = { "REPLACE", "replace" },
   ["Rv"] = { "V-REPLACE", "replace" },
   ["s"] = { "SELECT", "visual" },
-  ["S"] = { "S-LINE", "visual" },
-  [""] = { "S-BLOCK", "visual" },
+  ["S"] = { "SELECT", "visual" },
+  [""] = { "BLOCK", "visual" },
   ["c"] = { "COMMAND", "command" },
   ["cv"] = { "COMMAND", "command" },
   ["ce"] = { "COMMAND", "command" },
@@ -31,6 +44,7 @@ astronvim.status.env.modes = {
   ["rm"] = { "MORE", "inactive" },
   ["r?"] = { "CONFIRM", "inactive" },
   ["!"] = { "SHELL", "inactive" },
+  ["null"] = { "null", "inactive" },
 }
 
 local function pattern_match(str, pattern_list)
@@ -162,8 +176,28 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.fill }
 function astronvim.status.provider.fill() return "%=" end
 
+--- A provider function for showing the text of the current vim mode
+-- @param opts options for padding the text and options passed to the stylize function
+-- @return the function for displaying the text of the current vim mode
+-- @usage local heirline_component = { provider = astronvim.status.provider.mode_text() }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.mode_text(opts)
-  return function() return astronvim.status.utils.stylize(astronvim.status.env.modes[vim.fn.mode()][1], opts) end
+  local max_length =
+    math.max(unpack(vim.tbl_map(function(str) return #str[1] end, vim.tbl_values(astronvim.status.env.modes))))
+  return function()
+    local text = astronvim.status.env.modes[vim.fn.mode()][1]
+    if opts.pad_text then
+      local padding = max_length - #text
+      if opts.pad_text == "right" then
+        text = string.rep(" ", padding) .. text
+      elseif opts.pad_text == "left" then
+        text = text .. string.rep(" ", padding)
+      elseif opts.pad_text == "center" then
+        text = string.rep(" ", math.floor(padding / 2)) .. text .. string.rep(" ", math.ceil(padding / 2))
+      end
+    end
+    return astronvim.status.utils.stylize(text, opts)
+  end
 end
 
 --- A provider function for showing the percentage of the current location in a document
