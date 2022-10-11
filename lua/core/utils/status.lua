@@ -176,6 +176,20 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.fill }
 function astronvim.status.provider.fill() return "%=" end
 
+--- A provider function for displaying if a macro is currently being recorded
+-- @param opts a prefix before the recording register and options passed to the stylize function
+-- @return a function that returns a string of the current recording status
+-- @usage local heirline_component = { provider = astronvim.status.provider.macro_recording() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.macro_recording(opts)
+  opts = astronvim.default_tbl(opts, { prefix = "@" })
+  return function()
+    local register = vim.fn.reg_recording()
+    if register ~= "" then register = opts.prefix .. register end
+    return astronvim.status.utils.stylize(register, opts)
+  end
+end
+
 --- A provider function for showing the text of the current vim mode
 -- @param opts options for padding the text and options passed to the stylize function
 -- @return the function for displaying the text of the current vim mode
@@ -509,6 +523,11 @@ function astronvim.status.condition.buffer_matches(patterns)
   return false
 end
 
+--- A condition function if a macro is being recorded
+-- @return boolean of wether or not a macro is currently being recorded
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.is_macro_recording }
+function astronvim.status.condition.is_macro_recording() return vim.fn.reg_recording() ~= "" end
+
 --- A condition function if the current file is in a git repo
 -- @return boolean of wether or not the current file is in a git repo
 -- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.is_git_repo }
@@ -627,6 +646,25 @@ function astronvim.status.component.nav(opts)
   for i, key in ipairs { "ruler", "percentage", "scrollbar" } do
     opts[i] = opts[key] and { provider = key, opts = opts[key], hl = opts[key].hl } or false
   end
+  return astronvim.status.component.builder(opts)
+end
+
+--- A function to build a set of children components for a macro recording section
+-- @param opts options for configuring macro recording and the overall padding
+-- @return The Heirline component table
+-- @usage local heirline_component = astronvim.status.component.macro_recording()
+function astronvim.status.component.macro_recording(opts)
+  opts = astronvim.default_tbl(opts, {
+    macro_recording = { icon = { kind = "MacroRecording", padding = { right = 1 } } },
+    surround = {
+      separator = "center",
+      color = "macro_recording_bg",
+      condition = astronvim.status.condition.is_macro_recording,
+    },
+    hl = { fg = "macro_recording_fg", bold = true },
+    update = { "RecordingEnter", "RecordingLeave" },
+  })
+  opts[1] = opts.macro_recording and { provider = "macro_recording", opts = opts.macro_recording } or false
   return astronvim.status.component.builder(opts)
 end
 
