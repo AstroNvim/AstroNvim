@@ -49,7 +49,16 @@ local function setup_colors()
     winbarnc_bg = WinBarNC.bg,
   })
 
-  for _, section in ipairs { "git_branch", "file_info", "git_diff", "diagnostics", "lsp", "treesitter", "nav" } do
+  for _, section in ipairs {
+    "git_branch",
+    "file_info",
+    "git_diff",
+    "diagnostics",
+    "lsp",
+    "macro_recording",
+    "treesitter",
+    "nav",
+  } do
     if not colors[section .. "_bg"] then colors[section .. "_bg"] = colors["section_bg"] end
     if not colors[section .. "_fg"] then colors[section .. "_fg"] = colors["section_fg"] end
   end
@@ -67,6 +76,8 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     ),
     astronvim.status.component.git_diff(),
     astronvim.status.component.diagnostics(),
+    astronvim.status.component.fill(),
+    astronvim.status.component.macro_recording(),
     astronvim.status.component.fill(),
     astronvim.status.component.lsp(),
     astronvim.status.component.treesitter(),
