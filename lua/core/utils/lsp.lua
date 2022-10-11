@@ -96,7 +96,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
 
   if capabilities.codeActionProvider then
     lsp_mappings.n["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" }
-    lsp_mappings.v["<leader>la"] = { function() vim.lsp.buf.range_code_action() end, desc = "Range LSP code action" }
+    lsp_mappings.v["<leader>la"] = lsp_mappings.n["<leader>la"]
   end
 
   if capabilities.declarationProvider then
@@ -112,13 +112,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
       function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       desc = "Format code",
     }
-    lsp_mappings.v["<leader>lf"] = {
-      function()
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, true, true), "n", false)
-        vim.lsp.buf.range_formatting(astronvim.lsp.format_opts)
-      end,
-      desc = "Range format code",
-    }
+    lsp_mappings.v["<leader>lf"] = lsp_mappings.n["<leader>lf"]
 
     vim.api.nvim_buf_create_user_command(
       bufnr,
