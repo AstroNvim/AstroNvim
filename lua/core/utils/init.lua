@@ -125,6 +125,7 @@ end
 --- Initialize icons used throughout the user interface
 function astronvim.initialize_icons()
   astronvim.icons = astronvim.user_plugin_opts("icons", {
+    MacroRecording = "",
     ActiveLSP = "",
     ActiveTS = "綠",
     BufferClose = "",
