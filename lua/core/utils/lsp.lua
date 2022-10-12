@@ -121,12 +121,13 @@ astronvim.lsp.on_attach = function(client, bufnr)
       { desc = "Format file with LSP" }
     )
     if astronvim.lsp.formatting.format_on_save then
-      vim.api.nvim_create_augroup("auto_format", { clear = true })
+      local autocmd_group = "auto_format_" .. bufnr
+      vim.api.nvim_create_augroup(autocmd_group, { clear = true })
       vim.api.nvim_create_autocmd("BufWritePre", {
-        group = "auto_format",
-        desc = "Auto format before save",
-        pattern = "<buffer>",
-        callback = function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
+        group = autocmd_group,
+        buffer = bufnr,
+        desc = "Auto format buffer " .. bufnr .. " before save",
+        callback = function() vim.lsp.buf.format(astronvim.default_tbl({ bufnr = bufnr }, astronvim.lsp.format_opts)) end,
       })
     end
   end
