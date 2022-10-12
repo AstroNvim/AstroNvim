@@ -35,7 +35,7 @@ local astro_plugins = {
   -- Icons
   ["kyazdani42/nvim-web-devicons"] = {
     module = "nvim-web-devicons",
-    config = function() require "configs.icons" end,
+    config = function() require "configs.nvim-web-devicons" end,
   },
 
   -- LSP Icons
