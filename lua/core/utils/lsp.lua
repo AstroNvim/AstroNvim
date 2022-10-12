@@ -117,7 +117,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
     vim.api.nvim_buf_create_user_command(
       bufnr,
       "Format",
-      function() vim.lsp.buf.format(astronvim.default_tbl({ async = true }, astronvim.lsp.format_opts)) end,
+      function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       { desc = "Format file with LSP" }
     )
     if astronvim.lsp.formatting.format_on_save then
