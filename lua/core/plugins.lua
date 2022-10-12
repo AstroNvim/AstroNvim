@@ -8,9 +8,6 @@ local astro_plugins = {
   -- Lua functions
   ["nvim-lua/plenary.nvim"] = { module = "plenary" },
 
-  -- Popup API
-  ["nvim-lua/popup.nvim"] = {},
-
   -- Indent detection
   ["Darazaki/indent-o-matic"] = {
     event = "BufEnter",
