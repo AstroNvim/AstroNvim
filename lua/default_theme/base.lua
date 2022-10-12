@@ -1,5 +1,6 @@
 local base = {
   Normal = { fg = C.fg, bg = C.bg },
+  NormalNC = { fg = C.fg, bg = C.black },
   Comment = { fg = C.grey_2, bg = C.none },
   Constant = { fg = C.yellow, bg = C.none },
   String = { fg = C.green, bg = C.none },
@@ -67,7 +68,7 @@ local base = {
   StatusLineTerm = { fg = C.fg, bg = C.grey_4 },
   StatusLineTermNC = { fg = C.grey_4, bg = C.none },
   WinBar = { fg = C.grey_2, bg = C.bg },
-  WinBarNC = { fg = C.grey, bg = C.bg },
+  WinBarNC = { fg = C.grey, bg = C.black },
   TabLine = { fg = C.grey, bg = C.none },
   TabLineSel = { fg = C.fg, bg = C.none },
   TabLineFill = { fg = C.none, bg = C.grey_3 },
