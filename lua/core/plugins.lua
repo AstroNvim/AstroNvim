@@ -53,10 +53,8 @@ local astro_plugins = {
   -- Better buffer closing
   ["famiu/bufdelete.nvim"] = { cmd = { "Bdelete", "Bwipeout" } },
 
-  ["mehalter/nvim-window-picker"] = {
-    -- UNCOMMENT WHEN MOVE BACK TO ORIGINAL REPO
-    -- ["s1n7ax/nvim-window-picker"] = {
-    --  tag = "v1.*",
+  ["s1n7ax/nvim-window-picker"] = {
+    tag = "v1.*",
     module = "window-picker",
     config = function() require "configs.window-picker" end,
   },
