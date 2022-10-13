@@ -501,6 +501,7 @@ end
 -- @param show_error boolean of whether or not to show an unsuccessful command as an error to the user
 -- @return the result of a successfully executed command or nil
 function astronvim.cmd(cmd, show_error)
+  if vim.fn.has "win32" == 1 then cmd = { "cmd.exe", "/C", cmd } end
   local result = vim.fn.system(cmd)
   local success = vim.api.nvim_get_vvar "shell_error" == 0
   if not success and (show_error == nil and true or show_error) then
