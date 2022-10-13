@@ -94,7 +94,7 @@ function git.tag_commit(tag, ...) return astronvim.trim_or_nil(git.cmd("rev-list
 function git.get_commit_range(start_hash, end_hash, ...)
   local range = ""
   if start_hash and end_hash then range = start_hash .. ".." .. end_hash end
-  local log = git.cmd("log --no-merges --pretty='format:[%h] %s' " .. range, ...)
+  local log = git.cmd('log --no-merges --pretty="format:[%h] %s" ' .. range, ...)
   return log and vim.fn.split(log, "\n") or {}
 end
 
@@ -102,7 +102,7 @@ end
 -- @param search a regex to search the tags with (defaults to "v*" for version tags)
 -- @return an array like table of tags that match the search
 function git.get_versions(search, ...)
-  local tags = git.cmd("tag -l --sort=version:refname '" .. (search == "latest" and "v*" or search) .. "'", ...)
+  local tags = git.cmd('tag -l --sort=version:refname "' .. (search == "latest" and "v*" or search) .. '"', ...)
   return tags and vim.fn.split(tags, "\n") or {}
 end
 

@@ -159,7 +159,12 @@ function astronvim.updater.update()
   local source = git.local_head() -- calculate current commit
   local target -- calculate target commit
   if is_stable then -- if stable get tag commit
-    options.version = git.latest_version(git.get_versions(options.version or "latest"))
+    local version_search = options.version or "latest"
+    options.version = git.latest_version(git.get_versions(version_search))
+    if not options.version then -- continue only if stable version is found
+      vim.api.nvim_err_writeln("Error finding version: " .. version_search)
+      return
+    end
     target = git.tag_commit(options.version)
   elseif options.commit then -- if commit specified use it
     target = git.branch_contains(options.remote, options.branch, options.commit) and options.commit or nil
