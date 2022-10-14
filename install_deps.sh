@@ -17,12 +17,14 @@ if [ "$platform" = "linux" ]; then
     sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go \
       typescript ghc perl shellcheck ripgrep fd lazygit ncdu nvm \
       checkmake postgresql github-cli sqlite openssl readline xz zlib gum \
-      rust-analyzer
-    yay -S rebar3 hadolint rbenv
+      rust-analyzer iniparser fftw ncurses base-devel
+    yay -S rebar3 hadolint rbenv cava
   elif [ "$distro" = "Ubuntu Linux" ]; then
     sudo apt-get update
     sudo apt-get upgrade
-    sudo apt-get install git curl gum rust-analyzer
+    sudo apt-get install git curl gum rust-analyzer libfftw3-dev \
+      libasound2-dev libncursesw5-dev libpulse-dev libtool automake \
+      cava
   fi
 elif [ "$platform" = "darwin" ]; then
   echo "Determined platform: $platform" 
@@ -30,7 +32,12 @@ elif [ "$platform" = "darwin" ]; then
   brew install git curl node python erlang elixir ruby rust lua go \
     typescript ghc perl rebar3 shellcheck ripgrep fd lazygit ncdu \
     nvm hadolint checkmake postgresql gh openssl readline sqlite3 \
-    xz zlib rbenv gum rust-analyzer
+    xz zlib rbenv gum rust-analyzer fftw ncurses libtool automake \
+    portaudio cava
+  export LIBTOOL='which glibtool'
+  export LIBTOOLIZE='which glibtoolize'
+  ln -s 'which glibtoolize' /usr/local/bin/libtoolize
+  ln -s /usr/lib/libncurses.dylib /usr/local/lib/libncursesw.dylib
 fi
 
 curl https://pyenv.run | bash

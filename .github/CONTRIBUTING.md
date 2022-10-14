@@ -35,6 +35,12 @@ If you wish to contribute to AstroNvim, you should:
 
 ## Things to know before contributing
 
+- Development happens on the `nightly` branch, so please make sure of a couple things
+
+  - all branches are rebased on the `nightly` branch to get the latest updates.
+
+  - all pull requests are made to merge into `nightly`
+
 - When making a PR (pull request), please be very descriptive about what you've done!
 
 - Commit messages must follow [Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/)

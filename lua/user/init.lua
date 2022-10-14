@@ -1,5 +1,5 @@
 return {
-  colorscheme = "duskfox",
+  colorscheme = "dawnfox",
   -- Set dashboard header
   header = {
     "           ██████ ██████    ███    ██████  ██      ██████  ██████  ██████            ",
@@ -43,7 +43,8 @@ return {
       {
         "windwp/windline.nvim",
         config = function ()
-          require('configs.fearless')
+          --require('configs.fearless')
+          require('wlsample.airline_anim')
         end
       },
       {

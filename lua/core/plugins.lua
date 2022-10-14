@@ -8,31 +8,22 @@ local astro_plugins = {
   -- Lua functions
   ["nvim-lua/plenary.nvim"] = { module = "plenary" },
 
-  -- Popup API
-  ["nvim-lua/popup.nvim"] = {},
-
   -- Indent detection
   ["Darazaki/indent-o-matic"] = {
-    event = "BufReadPost",
+    event = "BufEnter",
     config = function() require "configs.indent-o-matic" end,
   },
 
   -- Notification Enhancer
   ["rcarriga/nvim-notify"] = {
-    event = "VimEnter",
+    event = "UIEnter",
     config = function() require "configs.notify" end,
   },
 
   -- Neovim UI Enhancer
   ["stevearc/dressing.nvim"] = {
-    event = "VimEnter",
+    event = "UIEnter",
     config = function() require "configs.dressing" end,
-  },
-
-  -- Cursorhold fix
-  ["antoinemadec/FixCursorHold.nvim"] = {
-    event = { "BufRead", "BufNewFile" },
-    config = function() vim.g.cursorhold_updatetime = 100 end,
   },
 
   -- Smarter Splits
@@ -43,8 +34,8 @@ local astro_plugins = {
 
   -- Icons
   ["kyazdani42/nvim-web-devicons"] = {
-    event = "VimEnter",
-    config = function() require "configs.icons" end,
+    module = "nvim-web-devicons",
+    config = function() require "configs.nvim-web-devicons" end,
   },
 
   -- LSP Icons
@@ -55,7 +46,7 @@ local astro_plugins = {
 
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
-    after = "nvim-web-devicons",
+    event = "UIEnter",
     config = function() require "configs.bufferline" end,
   },
 
@@ -78,11 +69,7 @@ local astro_plugins = {
     config = function() require "configs.neo-tree" end,
   },
 
-  -- Statusline
-  --["feline-nvim/feline.nvim"] = {
-  --  after = "nvim-web-devicons",
-  --  config = function() require "configs.feline" end,
-  --},
+  ["rebelot/heirline.nvim"] = { config = function() require "configs.heirline" end },
 
   -- Parenthesis highlighting
   ["p00f/nvim-ts-rainbow"] = { after = "nvim-treesitter" },
@@ -96,7 +83,7 @@ local astro_plugins = {
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
     run = ":TSUpdate",
-    event = { "BufRead", "BufNewFile" },
+    event = "BufEnter",
     cmd = {
       "TSInstall",
       "TSInstallInfo",
@@ -150,27 +137,28 @@ local astro_plugins = {
     config = function() astronvim.add_user_cmp_source "nvim_lsp" end,
   },
 
+  -- Built-in LSP
+  ["neovim/nvim-lspconfig"] = { config = function() require "configs.lspconfig" end },
+
+  -- Formatting and linting
+  ["jose-elias-alvarez/null-ls.nvim"] = {
+    event = "BufEnter",
+    config = function() require "configs.null-ls" end,
+  },
+
   -- Package Manager
   ["williamboman/mason.nvim"] = { config = function() require "configs.mason" end },
-
-  ["WhoIsSethDaniel/mason-tool-installer.nvim"] = {
-    after = "mason.nvim",
-    config = function() require "configs.mason-tool-installer" end,
-  },
-
-  -- Built-in LSP
-  ["neovim/nvim-lspconfig"] = {},
-
-  -- LSP manager
-  ["jayp0521/mason-null-ls.nvim"] = {
-    after = { "mason.nvim", "null-ls.nvim" },
-    config = function() require "configs.mason-null-ls" end,
-  },
 
   -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
     after = { "mason.nvim", "nvim-lspconfig" },
-    config = function() require "configs.lsp" end,
+    config = function() require "configs.mason-lspconfig" end,
+  },
+
+  -- null-ls manager
+  ["jayp0521/mason-null-ls.nvim"] = {
+    after = { "mason.nvim", "null-ls.nvim" },
+    config = function() require "configs.mason-null-ls" end,
   },
 
   -- LSP symbols
@@ -178,12 +166,6 @@ local astro_plugins = {
     module = "aerial",
     cmd = { "AerialToggle", "AerialOpen", "AerialInfo" },
     config = function() require "configs.aerial" end,
-  },
-
-  -- Formatting and linting
-  ["jose-elias-alvarez/null-ls.nvim"] = {
-    event = { "BufRead", "BufNewFile" },
-    config = function() require "configs.null-ls" end,
   },
 
   -- Fuzzy finder
@@ -215,7 +197,7 @@ local astro_plugins = {
 
   -- Color highlighting
   ["NvChad/nvim-colorizer.lua"] = {
-    event = { "BufRead", "BufNewFile" },
+    event = "BufEnter",
     config = function() require "configs.colorizer" end,
   },
 
@@ -241,7 +223,7 @@ local astro_plugins = {
 
   -- Indentation
   ["lukas-reineke/indent-blankline.nvim"] = {
-    event = "BufRead",
+    event = "BufEnter",
     config = function() require "configs.indent-line" end,
   },
 
@@ -249,12 +231,6 @@ local astro_plugins = {
   ["folke/which-key.nvim"] = {
     module = "which-key",
     config = function() require "configs.which-key" end,
-  },
-
-  -- Smooth scrolling
-  ["declancm/cinnamon.nvim"] = {
-    event = { "BufRead", "BufNewFile" },
-    config = function() require "configs.cinnamon" end,
   },
 
   -- Smooth escaping
