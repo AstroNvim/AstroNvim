@@ -29,9 +29,9 @@ cmd("BufEnter", {
       end
     end
     if #vim.api.nvim_list_tabpages() > 1 then
-      vim.cmd "tabclose"
+      vim.cmd.tabclose()
     else
-      vim.cmd "qall"
+      vim.cmd.qall()
     end
   end,
 })
@@ -102,26 +102,16 @@ if is_available "neo-tree.nvim" then
   })
 end
 
-if is_available "feline.nvim" then
-  augroup("feline_setup", { clear = true })
-  cmd("ColorScheme", {
-    desc = "Reload feline on colorscheme change",
-    group = "feline_setup",
-    callback = function()
-      package.loaded["configs.feline"] = nil
-      require "configs.feline"
-    end,
-  })
-end
-
 augroup("astronvim_highlights", { clear = true })
 cmd({ "VimEnter", "ColorScheme" }, {
   desc = "Load custom highlights from user configuration",
   group = "astronvim_highlights",
   callback = function()
     if vim.g.colors_name then
-      for group, spec in pairs(user_plugin_opts("highlights." .. vim.g.colors_name)) do
-        vim.api.nvim_set_hl(0, group, spec)
+      for _, module in ipairs { "init", vim.g.colors_name } do
+        for group, spec in pairs(user_plugin_opts("highlights." .. module)) do
+          vim.api.nvim_set_hl(0, group, spec)
+        end
       end
     end
   end,
@@ -130,4 +120,5 @@ cmd({ "VimEnter", "ColorScheme" }, {
 create_command("AstroUpdate", function() astronvim.updater.update() end, { desc = "Update AstroNvim" })
 create_command("AstroReload", function() astronvim.updater.reload() end, { desc = "Reload AstroNvim" })
 create_command("AstroVersion", function() astronvim.updater.version() end, { desc = "Check AstroNvim Version" })
-create_command("ToggleHighlightURL", astronvim.toggle_url_match, { desc = "Toggle URL Highlights" })
+create_command("AstroChangelog", function() astronvim.updater.changelog() end, { desc = "Check AstroNvim Changelog" })
+create_command("ToggleHighlightURL", function() astronvim.ui.toggle_url_match() end, { desc = "Toggle URL Highlights" })
