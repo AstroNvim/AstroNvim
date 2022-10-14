@@ -62,6 +62,12 @@ function astronvim.ui.toggle_cmp()
   astronvim.notify(ok and string.format("completion %s", bool2str(vim.g.cmp_enabled)) or "completion not available")
 end
 
+--- Toggle auto format
+function astronvim.ui.toggle_autoformat()
+  vim.g.autoformat_enabled = not vim.g.autoformat_enabled
+  astronvim.notify(string.format("Autoformatting ", bool2str(vim.g.autoformat_enabled)))
+end
+
 --- Toggle showtabline=2|0
 function astronvim.ui.toggle_tabline()
   vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0

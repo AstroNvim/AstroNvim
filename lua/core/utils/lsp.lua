@@ -27,7 +27,8 @@ for _, sign in ipairs(signs) do
   sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
 end
 
-astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { format_on_save = true, disabled = {} })
+astronvim.lsp.formatting =
+  astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 
 astronvim.lsp.format_opts = vim.deepcopy(astronvim.lsp.formatting)
 astronvim.lsp.format_opts.disabled = nil
@@ -120,15 +121,31 @@ astronvim.lsp.on_attach = function(client, bufnr)
       function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       { desc = "Format file with LSP" }
     )
-    if astronvim.lsp.formatting.format_on_save then
+    local format_on_save = astronvim.lsp.formatting.format_on_save
+    if
+      format_on_save == true
+      or (
+        type(format_on_save) == "table"
+        and format_on_save.enabled == true
+        and not vim.tbl_contains(format_on_save.ignore_filetypes or {}, vim.api.nvim_buf_get_option(bufnr, "filetype"))
+      )
+    then
       local autocmd_group = "auto_format_" .. bufnr
       vim.api.nvim_create_augroup(autocmd_group, { clear = true })
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = autocmd_group,
         buffer = bufnr,
         desc = "Auto format buffer " .. bufnr .. " before save",
-        callback = function() vim.lsp.buf.format(astronvim.default_tbl({ bufnr = bufnr }, astronvim.lsp.format_opts)) end,
+        callback = function()
+          if vim.g.autoformat_enabled then
+            vim.lsp.buf.format(astronvim.default_tbl({ bufnr = bufnr }, astronvim.lsp.format_opts))
+          end
+        end,
       })
+      lsp_mappings.n["<leader>uf"] = {
+        function() astronvim.ui.toggle_autoformat() end,
+        desc = "Toggle autoformatting",
+      }
     end
   end
 
