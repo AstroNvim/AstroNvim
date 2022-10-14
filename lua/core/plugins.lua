@@ -34,12 +34,14 @@ local astro_plugins = {
 
   -- Icons
   ["kyazdani42/nvim-web-devicons"] = {
+    disable = not vim.g.icons_enabled,
     module = "nvim-web-devicons",
     config = function() require "configs.nvim-web-devicons" end,
   },
 
   -- LSP Icons
   ["onsails/lspkind.nvim"] = {
+    disable = not vim.g.icons_enabled,
     module = "lspkind",
     config = function() require "configs.lspkind" end,
   },
