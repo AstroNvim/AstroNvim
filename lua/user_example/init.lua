@@ -140,6 +140,7 @@ local config = {
       disabled = { -- disable formatting capabilities for the listed clients
         -- "sumneko_lua",
       },
+      timeout_ms = 1000, -- default format timeout
       -- filter = function(client) -- fully override the default formatting function
       --   return true
       -- end
