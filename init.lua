@@ -6,6 +6,7 @@ for _, source in ipairs {
   "core.options",
   "core.bootstrap",
   "core.plugins",
+  "core.diagnostics",
   "core.autocmds",
   "core.mappings",
   "configs.which-key-register",
