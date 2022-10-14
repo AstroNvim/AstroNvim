@@ -124,48 +124,17 @@ end
 
 --- Initialize icons used throughout the user interface
 function astronvim.initialize_icons()
-  astronvim.icons = astronvim.user_plugin_opts("icons", {
-    MacroRecording = "",
-    ActiveLSP = "",
-    ActiveTS = "綠",
-    BufferClose = "",
-    NeovimClose = "",
-    DefaultFile = "",
-    Diagnostic = "裂",
-    DiagnosticError = "",
-    DiagnosticHint = "",
-    DiagnosticInfo = "",
-    DiagnosticWarn = "",
-    Ellipsis = "…",
-    FileModified = "",
-    FileReadOnly = "",
-    FolderClosed = "",
-    FolderEmpty = "",
-    FolderOpen = "",
-    Git = "",
-    GitAdd = "",
-    GitBranch = "",
-    GitChange = "",
-    GitConflict = "",
-    GitDelete = "",
-    GitIgnored = "◌",
-    GitRenamed = "➜",
-    GitStaged = "✓",
-    GitUnstaged = "✗",
-    GitUntracked = "★",
-    LSPLoaded = "",
-    LSPLoading1 = "",
-    LSPLoading2 = "",
-    LSPLoading3 = "",
-  })
+  astronvim.icons = astronvim.user_plugin_opts("icons", require "core.icons.nerd_font")
+  astronvim.text_icons = astronvim.user_plugin_opts("text_icons", require "core.icons.text")
 end
 
 --- Get an icon from `lspkind` if it is available and return it
 -- @param kind the kind of icon in `lspkind` to retrieve
 -- @return the icon
 function astronvim.get_icon(kind)
-  if not astronvim.icons then astronvim.initialize_icons() end
-  return astronvim.icons and astronvim.icons[kind] or ""
+  local icon_pack = vim.g.icons_enabled and "icons" or "text_icons"
+  if not astronvim[icon_pack] then astronvim.initialize_icons() end
+  return astronvim[icon_pack] and astronvim[icon_pack][kind] or ""
 end
 
 --- Serve a notification with a title of AstroNvim
