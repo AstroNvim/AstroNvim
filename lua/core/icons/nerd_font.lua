@@ -1,9 +1,7 @@
 return {
-  MacroRecording = "",
   ActiveLSP = "",
   ActiveTS = "綠",
   BufferClose = "",
-  NeovimClose = "",
   DefaultFile = "",
   Diagnostic = "裂",
   DiagnosticError = "",
@@ -31,4 +29,8 @@ return {
   LSPLoading1 = "",
   LSPLoading2 = "",
   LSPLoading3 = "",
+  MacroRecording = "",
+  NeovimClose = "",
+  Paste = "",
+  Spellcheck = "暈",
 }

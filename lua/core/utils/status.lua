@@ -176,6 +176,26 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.fill }
 function astronvim.status.provider.fill() return "%=" end
 
+--- A provider function for showing if spellcheck is on
+-- @param opts options passed to the stylize function
+-- @return the function for outputting if spell is enabled
+-- @usage local heirline_component = { provider = astronvim.status.provider.spell() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.spell(opts)
+  opts = astronvim.default_tbl(opts, { str = "", icon = { kind = "Spellcheck" }, show_empty = true })
+  return function() return astronvim.status.utils.stylize(vim.wo.spell and opts.str, opts) end
+end
+
+--- A provider function for showing if paste is enabled
+-- @param opts options passed to the stylize function
+-- @return the function for outputting if paste is enabled
+-- @usage local heirline_component = { provider = astronvim.status.provider.paste() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.paste(opts)
+  opts = astronvim.default_tbl(opts, { str = "", icon = { kind = "Paste" }, show_empty = true })
+  return function() return astronvim.status.utils.stylize(vim.opt.paste:get() and opts.str, opts) end
+end
+
 --- A provider function for displaying if a macro is currently being recorded
 -- @param opts a prefix before the recording register and options passed to the stylize function
 -- @return a function that returns a string of the current recording status
@@ -351,9 +371,10 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_modified() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_modified(opts)
+  opts = astronvim.default_tbl(opts, { str = "", icon = { kind = "FileModified" }, show_empty = true })
   return function(self)
     return astronvim.status.utils.stylize(
-      astronvim.status.condition.file_modified((self or {}).bufnr) and astronvim.get_icon "FileModified" or "",
+      astronvim.status.condition.file_modified((self or {}).bufnr) and opts.str,
       opts
     )
   end
@@ -365,9 +386,10 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_read_only() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_read_only(opts)
+  opts = astronvim.default_tbl(opts, { str = "", icon = { kind = "FileReadOnly" }, show_empty = true })
   return function(self)
     return astronvim.status.utils.stylize(
-      astronvim.status.condition.file_read_only((self or {}).bufnr) and astronvim.get_icon "FileReadOnly" or "",
+      astronvim.status.condition.file_read_only((self or {}).bufnr) and opts.str,
       opts
     )
   end
@@ -589,18 +611,19 @@ end
 
 --- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding
 -- @param str the string to stylize
--- @param opts options of `{ padding = { left = 0, right = 0 }, separator = { left = "|", right = "|" }, icon = { kind = "NONE", padding = { left = 0, right = 0 } } }`
+-- @param opts options of `{ padding = { left = 0, right = 0 }, separator = { left = "|", right = "|" }, show_empty = false, icon = { kind = "NONE", padding = { left = 0, right = 0 } } }`
 -- @return the stylized string
 -- @usage local string = astronvim.status.utils.stylize("Hello", { padding = { left = 1, right = 1 }, icon = { kind = "String" } })
 function astronvim.status.utils.stylize(str, opts)
   opts = astronvim.default_tbl(opts, {
     padding = { left = 0, right = 0 },
     separator = { left = "", right = "" },
+    show_empty = false,
     icon = { kind = "NONE", padding = { left = 0, right = 0 } },
   })
   local icon = astronvim.pad_string(astronvim.get_icon(opts.icon.kind), opts.icon.padding)
   return str
-      and str ~= ""
+      and (str ~= "" or opts.show_empty)
       and opts.separator.left .. astronvim.pad_string(icon .. str, opts.padding) .. opts.separator.right
     or ""
 end
@@ -683,18 +706,25 @@ function astronvim.status.component.macro_recording(opts)
 end
 
 --- A function to build a set of children components for a mode section
--- @param opts options for configuring mode text and the overall padding
+-- @param opts options for configuring mode_text, paste, spell, and the overall padding
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.mode { mode_text = true }
 function astronvim.status.component.mode(opts)
   opts = astronvim.default_tbl(opts, {
     mode_text = false,
+    paste = false,
+    spell = false,
     surround = { separator = "left", color = astronvim.status.hl.mode_bg },
     hl = { fg = "bg" },
     update = "ModeChanged",
   })
-  opts[1] = opts.mode_text and { provider = "mode_text", opts = opts.mode_text }
-    or { provider = "str", opts = { str = " " } }
+  for i, key in ipairs { "mode_text", "paste", "spell" } do
+    if key == "mode_text" and not opts[key] then
+      opts[i] = { provider = "str", opts = { str = " " } }
+    else
+      opts[i] = opts[key] and { provider = key, opts = opts[key], hl = opts[key].hl } or false
+    end
+  end
   return astronvim.status.component.builder(opts)
 end
 
