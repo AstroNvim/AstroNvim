@@ -129,20 +129,26 @@ function astronvim.ui.change_number()
     vim.wo.relativenumber = false
   end
   astronvim.notify(
-    string.format("number=%s, relativenumber=%s", bool2str(vim.wo.number), bool2str(vim.wo.relativenumber))
+    string.format("number %s, relativenumber %s", bool2str(vim.wo.number), bool2str(vim.wo.relativenumber))
   )
 end
 
 --- Toggle spell
 function astronvim.ui.toggle_spell()
   vim.wo.spell = not vim.wo.spell -- local to window
-  astronvim.notify(string.format("spell=%s", bool2str(vim.wo.spell)))
+  astronvim.notify(string.format("spell %s", bool2str(vim.wo.spell)))
+end
+
+--- Toggle paste
+function astronvim.ui.toggle_paste()
+  vim.opt.paste = not vim.opt.paste:get() -- local to window
+  astronvim.notify(string.format("paste %s", bool2str(vim.opt.paste:get())))
 end
 
 --- Toggle wrap
 function astronvim.ui.toggle_wrap()
   vim.wo.wrap = not vim.wo.wrap -- local to window
-  astronvim.notify(string.format("wrap=%s", bool2str(vim.wo.wrap)))
+  astronvim.notify(string.format("wrap %s", bool2str(vim.wo.wrap)))
 end
 
 --- Toggle syntax highlighting and treesitter
