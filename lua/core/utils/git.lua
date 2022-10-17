@@ -13,6 +13,10 @@ local git = { url = "https://github.com/" }
 -- @return the result of the command or nil if unsuccessful
 function git.cmd(args, ...) return astronvim.cmd("git -C " .. astronvim.install.home .. " " .. args, ...) end
 
+--- Check if the AstroNvim is able to reach the `git` command
+-- @return the result of running `git --help`
+function git.available() return git.cmd("--help", false) end
+
 --- Check if the AstroNvim home is a git repo
 -- @return the result of the command
 function git.is_repo() return git.cmd("rev-parse --is-inside-work-tree", false) end
