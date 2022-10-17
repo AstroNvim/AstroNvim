@@ -218,6 +218,7 @@ maps.n["<leader>ui"] = { function() astronvim.ui.set_indent() end, desc = "Chang
 maps.n["<leader>ul"] = { function() astronvim.ui.toggle_statusline() end, desc = "Toggle statusline" }
 maps.n["<leader>un"] = { function() astronvim.ui.change_number() end, desc = "Change line numbering" }
 maps.n["<leader>up"] = { function() astronvim.ui.toggle_spell() end, desc = "Toggle spellcheck" }
+maps.n["<leader>uP"] = { function() astronvim.ui.toggle_paste() end, desc = "Toggle paste mode" }
 maps.n["<leader>ut"] = { function() astronvim.ui.toggle_tabline() end, desc = "Toggle tabline" }
 maps.n["<leader>uu"] = { function() astronvim.ui.toggle_url_match() end, desc = "Toggle URL highlight" }
 maps.n["<leader>uw"] = { function() astronvim.ui.toggle_wrap() end, desc = "Toggle wrap" }
