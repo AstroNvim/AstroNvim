@@ -42,7 +42,7 @@ local function load_module_file(module)
       found_module = loaded_module
       -- if unsuccessful, throw an error
     else
-      vim.api.nvim_err_writeln("Error loading file: " .. found_module)
+      vim.api.nvim_err_writeln("Error loading file: " .. found_module .. "\n\n" .. loaded_module)
     end
   end
   -- return the loaded module or nil if no file found
