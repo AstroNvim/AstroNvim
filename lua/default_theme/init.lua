@@ -10,7 +10,7 @@ C = require "default_theme.colors"
 
 local highlights = {}
 
-for _, module in ipairs { "base", "treesitter", "lsp" } do
+for _, module in ipairs { "base", "lsp" } do
   highlights = vim.tbl_deep_extend("force", highlights, require("default_theme." .. module))
 end
 
@@ -19,6 +19,7 @@ for plugin, enabled in
     aerial = true,
     beacon = false,
     bufferline = true,
+    cmp = true,
     dashboard = true,
     gitsigns = true,
     highlighturl = true,
@@ -32,6 +33,7 @@ for plugin, enabled in
     rainbow = true,
     symbols_outline = false,
     telescope = true,
+    treesitter = true,
     vimwiki = false,
     ["which-key"] = true,
   }))
