@@ -3,10 +3,17 @@ local signs = {
   { name = "DiagnosticSignWarn", text = astronvim.get_icon "DiagnosticWarn" },
   { name = "DiagnosticSignHint", text = astronvim.get_icon "DiagnosticHint" },
   { name = "DiagnosticSignInfo", text = astronvim.get_icon "DiagnosticInfo" },
+  { name = "DiagnosticSignError", text = astronvim.get_icon "DiagnosticError" },
+  { name = "DapStopped", text = astronvim.get_icon "DapStopped", texthl = "DiagnosticWarn" },
+  { name = "DapBreakpoint", text = astronvim.get_icon "DapBreakpoint", texthl = "DiagnosticInfo" },
+  { name = "DapBreakpointRejected", text = astronvim.get_icon "DapBreakpointRejected", texthl = "DiagnosticError" },
+  { name = "DapBreakpointCondition", text = astronvim.get_icon "DapBreakpointCondition", texthl = "DiagnosticInfo" },
+  { name = "DapLogPoint", text = astronvim.get_icon "DapLogPoint", texthl = "DiagnosticInfo" },
 }
 
 for _, sign in ipairs(signs) do
-  vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
+  if not sign.texthl then sign.texthl = sign.name end
+  vim.fn.sign_define(sign.name, sign)
 end
 
 astronvim.lsp.diagnostics = {
