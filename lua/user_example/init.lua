@@ -143,7 +143,10 @@ local config = {
       -- control auto formatting on save
       format_on_save = {
         enabled = true, -- enable or disable format on save globally
-        disable_filetypes = { -- disable format on save for specified filetypes
+        allow_filetypes = { -- enable format on save for specified filetypes only
+          -- "go",
+        },
+        ignore_filetypes = { -- disable format on save for specified filetypes
           -- "python",
         },
       },
