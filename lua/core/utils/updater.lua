@@ -94,6 +94,15 @@ end
 
 --- AstroNvim's updater function
 function astronvim.updater.update()
+  -- if the git command is not available, then throw an error
+  if not git.available() then
+    astronvim.notify(
+      "git command is not available, please verify it is accessible in a command line. This may be an issue with your PATH",
+      "error"
+    )
+    return
+  end
+
   -- if installed with an external package manager, disable the internal updater
   if not git.is_repo() then
     astronvim.notify("Updater not available for non-git installations", "error")

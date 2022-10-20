@@ -1,5 +1,5 @@
 return {
-  colorscheme = "dawnfox",
+  colorscheme = "carbonfox",
   -- Set dashboard header
   header = {
     "           ██████ ██████    ███    ██████  ██      ██████  ██████  ██████            ",
@@ -38,14 +38,19 @@ return {
     "                                                                                     ",
     "                                        NVIM                                         ",
   },
+  lsp = {
+    formatting = {
+      format_on_save = false, -- enable or disable automatic formatting on save
+    },
+  },
   plugins = {
     init = {
       {
         "windwp/windline.nvim",
-        config = function ()
+        config = function()
           --require('configs.fearless')
-          require('wlsample.airline_anim')
-        end
+          require "wlsample.airline_anim"
+        end,
       },
       {
         "EdenEast/nightfox.nvim",
@@ -89,15 +94,9 @@ return {
           dapui.setup {}
 
           local dap = require "dap"
-          dap.listeners.after.event_initialized["dapui_config"] = function()
-            dapui.open()
-          end
-          dap.listeners.before.event_terminated["dapui_config"] = function()
-            dapui.close()
-          end
-          dap.listeners.before.event_exited["dapui_config"] = function()
-            dapui.close()
-          end
+          dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+          dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+          dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
           -- DAP mappings:
           local map = vim.api.nvim_set_keymap
@@ -106,8 +105,18 @@ return {
           map("n", "<F11>", ":lua require('dap').step_into()<cr>", { desc = "Step into" })
           map("n", "<F12>", ":lua require('dap').step_out()<cr>", { desc = "Step out" })
           map("n", "<leader>Dt", ":lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle breakpoint" })
-          map("n", "<leader>DP", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", { desc = "Set conditional breakpoint" })
-          map("n", "<leader>DB", ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Logpoint message: '))<cr>", { desc = "Set logpoint" })
+          map(
+            "n",
+            "<leader>DP",
+            ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+            { desc = "Set conditional breakpoint" }
+          )
+          map(
+            "n",
+            "<leader>DB",
+            ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Logpoint message: '))<cr>",
+            { desc = "Set logpoint" }
+          )
           map("n", "<leader>Dp", ":lua require('dap').repl.open()<cr>", { desc = "Open REPL" })
           map("n", "<leader>DR", ":lua require('dap').run_last()<cr>", { desc = "Run last debugged program" })
           map("n", "<leader>DX", ":lua require('dap').terminate()<cr>", { desc = "Terminate program being debugged" })
@@ -138,7 +147,7 @@ return {
       --{
       --  "nvim-neorg/neorg",
       --  after = { "nvim-treesitter" },
-        -- Is configured via the server_registration_override installed below!
+      -- Is configured via the server_registration_override installed below!
       --  config = function()
       --    require("neorg").setup {
       --      load = {
@@ -215,7 +224,7 @@ return {
         null_ls.builtins.code_actions.gitsigns,
         null_ls.builtins.code_actions.shellcheck,
         -- Hover
-        null_ls.builtins.hover.dictionary
+        null_ls.builtins.hover.dictionary,
       }
       -- set up null-ls's on_attach function
       return config -- return final config table
@@ -250,7 +259,7 @@ return {
         "go",
         "erlang",
         "elixir",
-        "dockerfile"
+        "dockerfile",
       },
     },
     ["nvim-lsp-installer"] = {
@@ -269,44 +278,36 @@ return {
         "intelephense",
         "pyright",
         "solargraph",
-        "rust_analyzer"
+        "rust_analyzer",
       },
     },
     ["neo-tree"] = {
       window = {
-        width = 50
-      }
-    }
+        width = 50,
+      },
+    },
   },
   mappings = {
     n = {
       -- NeoTest
-      ["<leader>n"] = {"Tests"},
+      ["<leader>n"] = { "Tests" },
       ["<leader>nn"] = {
-        function()
-          require("neotest").run.run()
-        end,
-        desc = "Run nearest test"
+        function() require("neotest").run.run() end,
+        desc = "Run nearest test",
       },
       ["<leader>nf"] = {
-        function()
-          require("neotest").run.run(vim.fn.expand("%"))
-        end,
-        desc = "Run tests in current file"
+        function() require("neotest").run.run(vim.fn.expand "%") end,
+        desc = "Run tests in current file",
       },
       ["<leader>no"] = {
-        function()
-          require("neotest").output.open()
-        end,
-        desc = "Display output of tests"
+        function() require("neotest").output.open() end,
+        desc = "Display output of tests",
       },
       ["<leader>ns"] = {
-        function()
-          require("neotest").summary.toggle()
-        end,
-        desc = "Open the summary window"
-      }
-    }
+        function() require("neotest").summary.toggle() end,
+        desc = "Open the summary window",
+      },
+    },
   },
   --polish = function ()
   --  vim.opt.laststatus = 2
