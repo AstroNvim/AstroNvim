@@ -94,7 +94,8 @@ astronvim.lsp.on_attach = function(client, bufnr)
         type(format_on_save) == "table"
         and format_on_save.enabled == true
         and (
-          next(format_on_save.allow_filetypes or {}) and vim.tbl_contains(format_on_save.allow_filetypes, filetype)
+          next(format_on_save.allow_filetypes or {}) ~= nil
+            and vim.tbl_contains(format_on_save.allow_filetypes, filetype)
           or not vim.tbl_contains(format_on_save.ignore_filetypes or {}, filetype)
         )
       )
