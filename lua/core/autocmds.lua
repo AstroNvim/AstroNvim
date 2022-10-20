@@ -46,6 +46,7 @@ if is_available "alpha-nvim" then
       callback = function()
         local prev_showtabline = vim.opt.showtabline
         vim.opt.showtabline = 0
+        vim.opt_local.winbar = nil
         cmd("BufUnload", {
           pattern = "<buffer>",
           callback = function() vim.opt.showtabline = prev_showtabline end,
