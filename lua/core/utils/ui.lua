@@ -65,13 +65,13 @@ end
 --- Toggle auto format
 function astronvim.ui.toggle_autoformat()
   vim.g.autoformat_enabled = not vim.g.autoformat_enabled
-  astronvim.notify(string.format("Autoformatting ", bool2str(vim.g.autoformat_enabled)))
+  astronvim.notify(string.format("Autoformatting %s", bool2str(vim.g.autoformat_enabled)))
 end
 
 --- Toggle showtabline=2|0
 function astronvim.ui.toggle_tabline()
   vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
-  astronvim.notify(string.format("tabline ", bool2str(vim.opt.showtabline:get() == 2)))
+  astronvim.notify(string.format("tabline %s", bool2str(vim.opt.showtabline:get() == 2)))
 end
 
 --- Toggle laststatus=3|2|0
