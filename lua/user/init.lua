@@ -290,20 +290,20 @@ return {
   mappings = {
     n = {
       -- NeoTest
-      ["<leader>n"] = { "Tests" },
-      ["<leader>nn"] = {
+      ["<leader>T"] = { "Tests" },
+      ["<leader>Tn"] = {
         function() require("neotest").run.run() end,
         desc = "Run nearest test",
       },
-      ["<leader>nf"] = {
+      ["<leader>Tf"] = {
         function() require("neotest").run.run(vim.fn.expand "%") end,
         desc = "Run tests in current file",
       },
-      ["<leader>no"] = {
+      ["<leader>To"] = {
         function() require("neotest").output.open() end,
         desc = "Display output of tests",
       },
-      ["<leader>ns"] = {
+      ["<leader>Ts"] = {
         function() require("neotest").summary.toggle() end,
         desc = "Open the summary window",
       },
