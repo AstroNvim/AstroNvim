@@ -11,25 +11,25 @@
 
 astronvim.lsp = {}
 local tbl_contains = vim.tbl_contains
+local tbl_isempty = vim.tbl_isempty
 local user_plugin_opts = astronvim.user_plugin_opts
 local conditional_func = astronvim.conditional_func
 local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
 local skip_setup = user_plugin_opts "lsp.skip_setup"
 
-astronvim.lsp.formatting =
-  astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
+astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true } })
+if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
+  astronvim.lsp.formatting.format_on_save = { enabled = astronvim.lsp.formatting.format_on_save }
+end
 
 astronvim.lsp.format_opts = vim.deepcopy(astronvim.lsp.formatting)
 astronvim.lsp.format_opts.disabled = nil
+astronvim.lsp.format_opts.format_on_save = nil
 astronvim.lsp.format_opts.filter = function(client)
   local filter = astronvim.lsp.formatting.filter
-  local disabled = astronvim.lsp.formatting.disabled
-  -- if client is fully disabled, return false
-  if vim.tbl_contains(disabled, client.name) then return false end
-  -- if filter function is defined and client is filtered out, return false
-  if type(filter) == "function" and not filter(client) then return false end
-  -- client has passed all checks, enable it for formatting
-  return true
+  local disabled = astronvim.lsp.formatting.disabled or {}
+  -- check if client is fully disabled or filtered by function
+  return not (vim.tbl_contains(disabled, client.name) or (type(filter) == "function" and not filter(client)))
 end
 
 --- Helper function to set up a given server with the Neovim LSP client
@@ -86,18 +86,12 @@ astronvim.lsp.on_attach = function(client, bufnr)
       function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       { desc = "Format file with LSP" }
     )
-    local format_on_save = astronvim.lsp.formatting.format_on_save
+    local autoformat = astronvim.lsp.formatting.format_on_save
     local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
     if
-      format_on_save == true
-      or (
-        type(format_on_save) == "table"
-        and format_on_save.enabled == true
-        and (
-          next(format_on_save.allow_filetypes or {}) and vim.tbl_contains(format_on_save.allow_filetypes, filetype)
-          or not vim.tbl_contains(format_on_save.ignore_filetypes or {}, filetype)
-        )
-      )
+      autoformat.enabled
+      and (tbl_isempty(autoformat.allow_filetypes or {}) or tbl_contains(autoformat.allow_filetypes, filetype))
+      and (tbl_isempty(autoformat.ignore_filetypes or {}) or not tbl_contains(autoformat.ignore_filetypes, filetype))
     then
       local autocmd_group = "auto_format_" .. bufnr
       vim.api.nvim_create_augroup(autocmd_group, { clear = true })
