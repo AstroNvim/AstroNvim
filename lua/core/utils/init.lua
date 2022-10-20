@@ -83,6 +83,10 @@ local function func_or_extend(overrides, default, extend)
   return default
 end
 
+--- Merge extended options with a default table of options
+-- @param opts the new options that should be merged with the default table
+-- @param default the default table that you want to merge into
+-- @return the merged table
 function astronvim.default_tbl(opts, default)
   opts = opts or {}
   return default and vim.tbl_deep_extend("force", default, opts) or opts
