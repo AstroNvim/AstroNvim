@@ -62,6 +62,12 @@ function astronvim.ui.toggle_cmp()
   astronvim.notify(ok and string.format("completion %s", bool2str(vim.g.cmp_enabled)) or "completion not available")
 end
 
+--- Toggle auto format
+function astronvim.ui.toggle_autoformat()
+  vim.g.autoformat_enabled = not vim.g.autoformat_enabled
+  astronvim.notify(string.format("Autoformatting ", bool2str(vim.g.autoformat_enabled)))
+end
+
 --- Toggle showtabline=2|0
 function astronvim.ui.toggle_tabline()
   vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
@@ -123,20 +129,26 @@ function astronvim.ui.change_number()
     vim.wo.relativenumber = false
   end
   astronvim.notify(
-    string.format("number=%s, relativenumber=%s", bool2str(vim.wo.number), bool2str(vim.wo.relativenumber))
+    string.format("number %s, relativenumber %s", bool2str(vim.wo.number), bool2str(vim.wo.relativenumber))
   )
 end
 
 --- Toggle spell
 function astronvim.ui.toggle_spell()
   vim.wo.spell = not vim.wo.spell -- local to window
-  astronvim.notify(string.format("spell=%s", bool2str(vim.wo.spell)))
+  astronvim.notify(string.format("spell %s", bool2str(vim.wo.spell)))
+end
+
+--- Toggle paste
+function astronvim.ui.toggle_paste()
+  vim.opt.paste = not vim.opt.paste:get() -- local to window
+  astronvim.notify(string.format("paste %s", bool2str(vim.opt.paste:get())))
 end
 
 --- Toggle wrap
 function astronvim.ui.toggle_wrap()
   vim.wo.wrap = not vim.wo.wrap -- local to window
-  astronvim.notify(string.format("wrap=%s", bool2str(vim.wo.wrap)))
+  astronvim.notify(string.format("wrap %s", bool2str(vim.wo.wrap)))
 end
 
 --- Toggle syntax highlighting and treesitter

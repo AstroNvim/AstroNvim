@@ -34,12 +34,14 @@ local astro_plugins = {
 
   -- Icons
   ["kyazdani42/nvim-web-devicons"] = {
+    disable = not vim.g.icons_enabled,
     module = "nvim-web-devicons",
     config = function() require "configs.nvim-web-devicons" end,
   },
 
   -- LSP Icons
   ["onsails/lspkind.nvim"] = {
+    disable = not vim.g.icons_enabled,
     module = "lspkind",
     config = function() require "configs.lspkind" end,
   },
@@ -176,10 +178,13 @@ local astro_plugins = {
   },
 
   -- Fuzzy finder syntax support
-  [("nvim-telescope/telescope-%s-native.nvim"):format(vim.fn.has "win32" == 1 and "fzy" or "fzf")] = {
+  ["nvim-telescope/telescope-fzf-native.nvim"] = {
     after = "telescope.nvim",
-    run = vim.fn.has "win32" ~= 1 and "make" or nil,
-    config = function() require("telescope").load_extension(vim.fn.has "win32" == 1 and "fzy_native" or "fzf") end,
+    disable = vim.fn.executable "make" + vim.fn.executable "cmake" == 0,
+    run = vim.fn.executable "cmake" == 1
+        and "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
+      or "make",
+    config = function() require("telescope").load_extension "fzf" end,
   },
 
   -- Git integration

@@ -28,10 +28,10 @@ body:
   - type: input
     id: nvim-version
     attributes:
-      label: Neovim version (>= 0.7)
+      label: Neovim version (>= 0.8)
       description: "Output of `nvim --version`"
       placeholder: |
-        NVIM v0.7.2
+        NVIM v0.8.0
     validations:
       required: true
   - type: input

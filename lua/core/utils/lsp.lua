@@ -10,24 +10,14 @@
 -- @license GNU General Public License v3.0
 
 astronvim.lsp = {}
-local sign_define = vim.fn.sign_define
 local tbl_contains = vim.tbl_contains
 local user_plugin_opts = astronvim.user_plugin_opts
 local conditional_func = astronvim.conditional_func
 local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
 local skip_setup = user_plugin_opts "lsp.skip_setup"
 
-local signs = {
-  { name = "DiagnosticSignError", text = astronvim.get_icon "DiagnosticError" },
-  { name = "DiagnosticSignWarn", text = astronvim.get_icon "DiagnosticWarn" },
-  { name = "DiagnosticSignHint", text = astronvim.get_icon "DiagnosticHint" },
-  { name = "DiagnosticSignInfo", text = astronvim.get_icon "DiagnosticInfo" },
-}
-for _, sign in ipairs(signs) do
-  sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-end
-
-astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { format_on_save = true, disabled = {} })
+astronvim.lsp.formatting =
+  astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 
 astronvim.lsp.format_opts = vim.deepcopy(astronvim.lsp.formatting)
 astronvim.lsp.format_opts.disabled = nil
@@ -41,30 +31,6 @@ astronvim.lsp.format_opts.filter = function(client)
   -- client has passed all checks, enable it for formatting
   return true
 end
-
-astronvim.lsp.diagnostics = {
-  off = {
-    underline = false,
-    virtual_text = false,
-    signs = false,
-    update_in_insert = false,
-  },
-  on = user_plugin_opts("diagnostics", {
-    virtual_text = true,
-    signs = { active = signs },
-    update_in_insert = true,
-    underline = true,
-    severity_sort = true,
-    float = {
-      focused = false,
-      style = "minimal",
-      border = "rounded",
-      source = "always",
-      header = "",
-      prefix = "",
-    },
-  }),
-}
 
 --- Helper function to set up a given server with the Neovim LSP client
 -- @param server the name of the server to be setup
@@ -120,15 +86,35 @@ astronvim.lsp.on_attach = function(client, bufnr)
       function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       { desc = "Format file with LSP" }
     )
-    if astronvim.lsp.formatting.format_on_save then
+    local format_on_save = astronvim.lsp.formatting.format_on_save
+    local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    if
+      format_on_save == true
+      or (
+        type(format_on_save) == "table"
+        and format_on_save.enabled == true
+        and (
+          next(format_on_save.allow_filetypes or {}) and vim.tbl_contains(format_on_save.allow_filetypes, filetype)
+          or not vim.tbl_contains(format_on_save.ignore_filetypes or {}, filetype)
+        )
+      )
+    then
       local autocmd_group = "auto_format_" .. bufnr
       vim.api.nvim_create_augroup(autocmd_group, { clear = true })
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = autocmd_group,
         buffer = bufnr,
         desc = "Auto format buffer " .. bufnr .. " before save",
-        callback = function() vim.lsp.buf.format(astronvim.default_tbl({ bufnr = bufnr }, astronvim.lsp.format_opts)) end,
+        callback = function()
+          if vim.g.autoformat_enabled then
+            vim.lsp.buf.format(astronvim.default_tbl({ bufnr = bufnr }, astronvim.lsp.format_opts))
+          end
+        end,
       })
+      lsp_mappings.n["<leader>uf"] = {
+        function() astronvim.ui.toggle_autoformat() end,
+        desc = "Toggle autoformatting",
+      }
     end
   end
 
