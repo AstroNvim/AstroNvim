@@ -68,7 +68,7 @@ end
 heirline.load_colors(setup_colors())
 local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
   {
-    hl = { fg = "fg", bg = "bg" },
+    hl = function() return astronvim.get_hlgroup "StatusLine" end,
     astronvim.status.component.mode(),
     astronvim.status.component.git_branch(),
     astronvim.status.component.file_info(
@@ -97,11 +97,11 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     },
     {
       condition = astronvim.status.condition.is_active,
-      astronvim.status.component.breadcrumbs { hl = { fg = "winbar_fg", bg = "winbar_bg" } },
+      astronvim.status.component.breadcrumbs { hl = function() return astronvim.get_hlgroup "WinBar" end },
     },
     astronvim.status.component.file_info {
       file_icon = { highlight = false },
-      hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
+      hl = function() return astronvim.get_hlgroup "WinBarNC" end,
       surround = false,
     },
   },
