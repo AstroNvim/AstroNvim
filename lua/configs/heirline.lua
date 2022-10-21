@@ -106,14 +106,11 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     },
   },
 })
-heirline.setup(heirline_opts[1], heirline_opts[2])
+heirline.setup(heirline_opts[1], heirline_opts[2], heirline_opts[3])
 
 vim.api.nvim_create_augroup("Heirline", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = "Heirline",
   desc = "Refresh heirline colors",
-  callback = function()
-    heirline.reset_highlights()
-    heirline.load_colors(setup_colors())
-  end,
+  callback = function() require("heirline.utils").on_colorscheme(setup_colors()) end,
 })
