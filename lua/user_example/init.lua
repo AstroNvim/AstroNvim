@@ -38,7 +38,7 @@ local config = {
     -- },
   },
 
-  -- set vim options here (vim.<first_key>.<second_key> =  value)
+  -- set vim options here (vim.<first_key>.<second_key> = value)
   options = {
     opt = {
       -- set to true or false etc.
