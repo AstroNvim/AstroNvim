@@ -255,6 +255,11 @@ local astro_plugins = {
     event = "BufWritePost",
     config = function() require "configs.session_manager" end,
   },
+
+  -- Code action menu
+  ["weilbith/nvim-code-action-menu"] = {
+    cmd = "CodeActionMenu"
+  },
 }
 
 if astronvim.updater.snapshot then
