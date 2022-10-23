@@ -4,6 +4,9 @@ local astro_plugins = {
 
   -- Auto Save
   ["Pocco81/auto-save.nvim"] = {},
+
+  -- Github Autopilot
+  ["github/copilot.vim"] = {},
   -- Symbols outline
   ["simrat39/symbols-outline.nvim"] = {
     event = "BufEnter",
