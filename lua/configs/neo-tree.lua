@@ -1,6 +1,7 @@
 local status_ok, neotree = pcall(require, "neo-tree")
 if not status_ok then return end
 neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
+  hide_hidden = false,
   close_if_last_window = true,
   enable_diagnostics = false,
   source_selector = {
@@ -44,6 +45,11 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     },
   },
   filesystem = {
+    filtered_items = {
+      visible = true, 
+      hide_dotfiles = false,
+      hide_gitignored = true,
+    },
     follow_current_file = true,
     hijack_netrw_behavior = "open_current",
     use_libuv_file_watcher = true,

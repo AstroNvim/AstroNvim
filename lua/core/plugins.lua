@@ -3,8 +3,10 @@ local astro_plugins = {
   ["wbthomason/packer.nvim"] = {},
 
   -- Auto Save
-  ["Pocco81/auto-save.nvim"] = {},
-
+  ["Pocco81/auto-save.nvim"] = {
+    event = "BufEnter",
+    config = function() require "configs.auto-save" end,
+  },
   -- Github Autopilot
   ["github/copilot.vim"] = {},
   -- Symbols outline

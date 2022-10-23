@@ -76,6 +76,11 @@ if is_available "neo-tree.nvim" then
   maps.n["<leader>o"] = { "<cmd>Neotree focus<cr>", desc = "Focus Explorer" }
 end
 
+-- Symbols Outline
+if is_available "symbols-outline.nvim" then
+  maps.n["<leader>sf"] = { "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" }
+end
+
 -- Session Manager
 if is_available "neovim-session-manager" then
   maps.n["<leader>Sl"] = { "<cmd>SessionManager! load_last_session<cr>", desc = "Load last session" }
