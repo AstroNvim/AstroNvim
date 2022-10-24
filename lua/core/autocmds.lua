@@ -24,8 +24,15 @@ cmd("BufEnter", {
     for _, winid in ipairs(wins) do
       if vim.api.nvim_win_is_valid(winid) then
         local bufnr = vim.api.nvim_win_get_buf(winid)
+        local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
         -- If any visible windows are not sidebars, early return
-        if not sidebar_fts[vim.api.nvim_buf_get_option(bufnr, "filetype")] then return end
+        if not sidebar_fts[filetype] then
+          return
+        -- If the visible window is a sidebar
+        else
+          -- only count filetypes once, so remove a found sidebar from the detection
+          sidebar_fts[filetype] = nil
+        end
       end
     end
     if #vim.api.nvim_list_tabpages() > 1 then
