@@ -220,7 +220,7 @@ local astro_plugins = {
   -- Commenting
   ["numToStr/Comment.nvim"] = {
     module = { "Comment", "Comment.api" },
-    keys = { "gc", "gb", "g<", "g>" },
+    keys = { "gc", "gb" },
     config = function() require "configs.Comment" end,
   },
 
