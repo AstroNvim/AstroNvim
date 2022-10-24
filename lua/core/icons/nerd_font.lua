@@ -37,5 +37,7 @@ return {
   MacroRecording = "",
   NeovimClose = "",
   Paste = "",
+  Search = "",
+  Selected = "❯",
   Spellcheck = "暈",
 }

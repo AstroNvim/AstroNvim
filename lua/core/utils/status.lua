@@ -86,6 +86,7 @@ function astronvim.status.hl.mode() return { bg = astronvim.status.hl.mode_bg() 
 --- Get the foreground color group for the current mode, good for usage with Heirline surround utility
 -- @return the highlight group for the current mode foreground
 -- @usage local heirline_component = require("heirline.utils").surround({ "|", "|" }, astronvim.status.hl.mode_bg, heirline_component),
+
 function astronvim.status.hl.mode_bg() return astronvim.status.env.modes[vim.fn.mode()][2] end
 
 --- Get the foreground color group for the current filetype
@@ -189,6 +190,7 @@ end
 --- A provider function for showing if paste is enabled
 -- @param opts options passed to the stylize function
 -- @return the function for outputting if paste is enabled
+
 -- @usage local heirline_component = { provider = astronvim.status.provider.paste() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.paste(opts)
@@ -207,6 +209,23 @@ function astronvim.status.provider.macro_recording(opts)
     local register = vim.fn.reg_recording()
     if register ~= "" then register = opts.prefix .. register end
     return astronvim.status.utils.stylize(register, opts)
+  end
+end
+
+--- A provider function for displaying the current search count
+-- @param opts options for `vim.fn.searchcount` and options passed to the stylize function
+-- @return a function that returns a string of the current search location
+-- @usage local heirline_component = { provider = astronvim.status.provider.search_count() }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.search_count(opts)
+  return function()
+    local search = vim.fn.searchcount(opts)
+    if search.total then
+      return astronvim.status.utils.stylize(
+        string.format("%d/%d", search.current, math.min(search.total, search.maxcount)),
+        opts
+      )
+    end
   end
 end
 
@@ -551,6 +570,11 @@ end
 -- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.is_macro_recording }
 function astronvim.status.condition.is_macro_recording() return vim.fn.reg_recording() ~= "" end
 
+--- A condition function if search is visible
+-- @return boolean of wether or not searching is currently visible
+-- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.is_hlsearch }
+function astronvim.status.condition.is_hlsearch() return vim.v.hlsearch ~= 0 end
+
 --- A condition function if the current file is in a git repo
 -- @return boolean of wether or not the current file is in a git repo
 -- @usage local heirline_component = { provider = "Example Provider", condition = astronvim.status.condition.is_git_repo }
@@ -690,6 +714,7 @@ end
 -- @param opts options for configuring macro recording and the overall padding
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.macro_recording()
+-- TODO: deprecate on next major version release
 function astronvim.status.component.macro_recording(opts)
   opts = astronvim.default_tbl(opts, {
     macro_recording = { icon = { kind = "MacroRecording", padding = { right = 1 } } },
@@ -702,6 +727,38 @@ function astronvim.status.component.macro_recording(opts)
     update = { "RecordingEnter", "RecordingLeave" },
   })
   opts[1] = opts.macro_recording and { provider = "macro_recording", opts = opts.macro_recording } or false
+  return astronvim.status.component.builder(opts)
+end
+
+--- A function to build a set of children components for information shown in the cmdline
+-- @param opts options for configuring macro recording, search count, and the overall padding
+-- @return The Heirline component table
+-- @usage local heirline_component = astronvim.status.component.cmd_info()
+function astronvim.status.component.cmd_info(opts)
+  opts = astronvim.default_tbl(opts, {
+    macro_recording = {
+      icon = { kind = "MacroRecording", padding = { right = 1 } },
+      condition = astronvim.status.condition.is_macro_recording,
+      update = { "RecordingEnter", "RecordingLeave" },
+    },
+    search_count = {
+      icon = { kind = "Search", padding = { right = 1 } },
+      padding = { left = 1 },
+      condition = astronvim.status.condition.is_hlsearch,
+    },
+    surround = {
+      separator = "center",
+      color = "cmd_info_bg",
+      condition = function() return astronvim.status.condition.is_hlsearch() or astronvim.status.condition.is_macro_recording() end,
+    },
+    condition = function() return vim.opt.cmdheight:get() == 0 end,
+    hl = { fg = "cmd_info_fg" },
+  })
+  for i, key in ipairs { "macro_recording", "search_count" } do
+    opts[i] = opts[key]
+        and { provider = key, opts = opts[key], condition = opts[key].condition, update = opts[key].update }
+      or false
+  end
   return astronvim.status.component.builder(opts)
 end
 
