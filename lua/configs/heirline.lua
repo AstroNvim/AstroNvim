@@ -56,6 +56,7 @@ local function setup_colors()
     "diagnostics",
     "lsp",
     "macro_recording",
+    "cmd_info",
     "treesitter",
     "nav",
   } do
@@ -77,7 +78,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     astronvim.status.component.git_diff(),
     astronvim.status.component.diagnostics(),
     astronvim.status.component.fill(),
-    astronvim.status.component.macro_recording(),
+    astronvim.status.component.cmd_info(),
     astronvim.status.component.fill(),
     astronvim.status.component.lsp(),
     astronvim.status.component.treesitter(),
