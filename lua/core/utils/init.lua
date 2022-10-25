@@ -374,15 +374,11 @@ end
 
 --- Register a null-ls source given a name if it has not been manually configured in the null-ls configuration
 -- @param source the source name to register from all builtin types
-function astronvim.null_ls_register(source)
-  -- try to load null-ls
+-- @param types an array like table of null-ls builtin types that the source belongs to
+function astronvim.null_ls_register(source, types)
   local null_ls_avail, null_ls = pcall(require, "null-ls")
-  if null_ls_avail then
-    if null_ls.is_registered(source) then return end
-    for _, type in ipairs { "diagnostics", "formatting", "code_actions", "completion", "hover" } do
-      local builtin = require("null-ls.builtins._meta." .. type)
-      if builtin[source] then null_ls.register(null_ls.builtins[type][source]) end
-    end
+  if null_ls_avail and not null_ls.is_registered(source) then
+    vim.tbl_map(function(type) null_ls.register(null_ls.builtins[type][source]) end, types)
   end
 end
 
