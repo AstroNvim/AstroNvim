@@ -76,6 +76,7 @@ local colors = {
   woff2 = "#abb2bf",
   zip = "#f9d71c",
   md = "#519aba",
+  pkg = "#d39ede",
 }
 
 return astronvim.user_plugin_opts("default_theme.colors", colors)
