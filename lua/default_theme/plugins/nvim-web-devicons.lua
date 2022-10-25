@@ -29,4 +29,6 @@ return {
   DevIconXz = { fg = C.zip },
   DevIconZip = { fg = C.zip },
   DevIconMd = { fg = C.md },
+  DevIconPackageJson = { fg = C.pkg },
+  DevIconPackageLockJson = { fg = C.pkg },
 }
