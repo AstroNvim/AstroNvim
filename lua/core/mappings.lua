@@ -121,7 +121,9 @@ else
 end
 
 -- SymbolsOutline
-if is_available "aerial.nvim" then maps.n["<leader>lS"] = { "<cmd>AerialToggle<cr>", desc = "Symbols outline" } end
+if is_available "aerial.nvim" then
+  maps.n["<leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
+end
 
 -- Telescope
 if is_available "telescope.nvim" then
