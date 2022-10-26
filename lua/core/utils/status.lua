@@ -254,18 +254,21 @@ function astronvim.status.provider.mode_text(opts)
 end
 
 --- A provider function for showing the percentage of the current location in a document
--- @param opts options passed to the stylize function
+-- @param opts options for Top/Bot text, fixed width, and options passed to the stylize function
 -- @return the statusline string for displaying the percentage of current document location
 -- @usage local heirline_component = { provider = astronvim.status.provider.percentage() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.percentage(opts)
+  opts = astronvim.default_tbl(opts, { fixed_width = false, edge_text = true })
   return function()
-    local text = "%p%%"
-    local current_line = vim.fn.line "."
-    if current_line == 1 then
-      text = "Top"
-    elseif current_line == vim.fn.line "$" then
-      text = "Bot"
+    local text = "%" .. (opts.fixed_width and "3" or "") .. "p%%"
+    if opts.edge_text then
+      local current_line = vim.fn.line "."
+      if current_line == 1 then
+        text = (opts.fixed_width and " " or "") .. "Top"
+      elseif current_line == vim.fn.line "$" then
+        text = (opts.fixed_width and " " or "") .. "Bot"
+      end
     end
     return astronvim.status.utils.stylize(text, opts)
   end
