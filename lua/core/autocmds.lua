@@ -122,6 +122,7 @@ cmd({ "VimEnter", "ColorScheme" }, {
         end
       end
     end
+    vim.cmd [[doautocmd User AstroColorScheme]]
   end,
 })
 
