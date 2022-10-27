@@ -110,6 +110,15 @@ if is_available "neo-tree.nvim" then
   })
 end
 
+if is_available "nvim-dap-ui" then
+  vim.api.nvim_create_autocmd("FileType", {
+    desc = "Make q close dap floating windows",
+    group = vim.api.nvim_create_augroup("dapui", { clear = true }),
+    pattern = "dap-float",
+    callback = function() vim.keymap.set("n", "q", "<cmd>close!<cr>") end,
+  })
+end
+
 cmd({ "VimEnter", "ColorScheme" }, {
   desc = "Load custom highlights from user configuration",
   group = augroup("astronvim_highlights", { clear = true }),
