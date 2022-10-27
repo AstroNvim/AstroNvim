@@ -149,6 +149,15 @@ local astro_plugins = {
     config = function() require "configs.null-ls" end,
   },
 
+  -- Debugger
+  ["mfussenegger/nvim-dap"] = {},
+
+  -- Debugger UI
+  ["rcarriga/nvim-dap-ui"] = {
+    after = "nvim-dap",
+    config = function() require "configs.dapui" end,
+  },
+
   -- Package Manager
   ["williamboman/mason.nvim"] = { config = function() require "configs.mason" end },
 
@@ -162,6 +171,12 @@ local astro_plugins = {
   ["jayp0521/mason-null-ls.nvim"] = {
     after = { "mason.nvim", "null-ls.nvim" },
     config = function() require "configs.mason-null-ls" end,
+  },
+
+  -- dap manager
+  ["jayp0521/mason-nvim-dap.nvim"] = {
+    after = { "mason.nvim", "nvim-dap" },
+    config = function() require "configs.mason-nvim-dap" end,
   },
 
   -- LSP symbols
