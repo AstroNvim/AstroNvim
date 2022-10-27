@@ -4,21 +4,28 @@
 
 <h1 align="center">AstroNvim</h1>
 
-<div align="center"><p>
+<h4 align="center">
+  <a href="https://astronvim.github.io/#%EF%B8%8F-installation">Install</a>
+  ·
+  <a href="https://astronvim.github.io/#%EF%B8%8F-configuration">Configure</a>
+  ·
+  <a href="https://astronvim.github.io">Docs</a>
+</h4>
+
+<p align="center">
     <a href="https://github.com/AstroNvim/AstroNvim/pulse">
-      <img src="https://img.shields.io/github/last-commit/AstroNvim/AstroNvim?color=%4dc71f&label=Last%20Commit&logo=github&style=flat-square"/>
+      <img src="https://img.shields.io/github/last-commit/AstroNvim/AstroNvim?style=for-the-badge&logo=github&color=7dc4e4&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://github.com/AstroNvim/AstroNvim/blob/main/LICENSE">
-      <img src="https://img.shields.io/github/license/AstroNvim/AstroNvim?label=License&logo=GNU&style=flat-square"/>
+    <a href="https://github.com/AstroNvim/AstroNvim/releases/latest">
+      <img src="https://img.shields.io/github/v/release/AstroNvim/AstroNvim?style=for-the-badge&logo=gitbook&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
 	</a>
-    <a href="https://neovim.io/">
-      <img src="https://img.shields.io/badge/Neovim-0.8+-blueviolet.svg?style=flat-square&logo=Neovim&logoColor=white"/>
-    </a>
     <a href="https://discord.gg/UcZutyeaFW">
-      <img src="https://img.shields.io/badge/discord-Join-7289da?color=%235865F2%20&label=Discord&logo=discord&logoColor=%23ffffff&style=flat-square"/>
+      <img src="https://img.shields.io/discord/939594913560031363?style=for-the-badge&logo=discord&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
+    </a>
+    <a href="https://github.com/catppuccin/catppuccin/stargazers">
+      <img src="https://img.shields.io/github/stars/AstroNvim/AstroNvim?style=for-the-badge&logo=apachespark&color=eebebe&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
 </p>
-</div>
 
 <p align="center">
 AstroNvim is an aesthetic and feature-rich neovim config that is extensible and easy to use with a great set of plugins
