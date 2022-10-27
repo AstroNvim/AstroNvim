@@ -20,6 +20,7 @@ for plugin, enabled in
     beacon = false,
     bufferline = true,
     cmp = true,
+    dapui = true,
     dashboard = true,
     gitsigns = true,
     highlighturl = true,

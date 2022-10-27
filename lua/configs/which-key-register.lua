@@ -12,6 +12,7 @@ local mappings = {
 }
 
 local extra_sections = {
+  D = "Debugger",
   g = "Git",
   s = "Search",
   S = "Session",
@@ -35,6 +36,8 @@ if is_available "telescope.nvim" then
   init_table("n", "<leader>", "s")
   init_table("n", "<leader>", "g")
 end
+
+if is_available "nvim-dap" then init_table("n", "<leader>", "D") end
 
 if is_available "Comment.nvim" then
   for _, mode in ipairs { "n", "v" } do
