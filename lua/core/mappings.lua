@@ -217,7 +217,7 @@ if is_available "nvim-dap" then
   maps.n["<F11>"] = { function() require("dap").step_into() end, desc = "Debugger: Step Into" }
   maps.n["<F23>"] = { function() require("dap").step_out() end, desc = "Debugger: Step Out" }
   maps.n["<leader>Db"] = { function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint (F9)" }
-  maps.n["<leader>DB"] = { function() require("dap").cleaer_breakpoint() end, desc = "Clear Breakpoints" }
+  maps.n["<leader>DB"] = { function() require("dap").clear_breakpoint() end, desc = "Clear Breakpoints" }
   maps.n["<leader>Dc"] = { function() require("dap").continue() end, desc = "Start/Continue (F5)" }
   maps.n["<leader>Di"] = { function() require("dap").step_into() end, desc = "Step Into (F11)" }
   maps.n["<leader>Do"] = { function() require("dap").step_over() end, desc = "Step Over (F10)" }
