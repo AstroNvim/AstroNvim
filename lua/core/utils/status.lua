@@ -849,8 +849,8 @@ end
 -- @usage local heirline_component = astronvim.status.component.lsp()
 function astronvim.status.component.lsp(opts)
   opts = astronvim.default_tbl(opts, {
-    lsp_progress = { str = "", padding = { right = 1 } },
-    lsp_client_names = { str = "LSP", icon = { kind = "ActiveLSP", padding = { right = 2 } } },
+    lsp_progress = { padding = { right = 1 } },
+    lsp_client_names = { icon = { kind = "ActiveLSP", padding = { right = 2 } } },
     hl = { fg = "lsp_fg" },
     surround = { separator = "right", color = "lsp_bg", condition = astronvim.status.condition.lsp_attached },
     on_click = {
@@ -861,15 +861,17 @@ function astronvim.status.component.lsp(opts)
     },
   })
   opts[1] = {}
-  for i, provider in ipairs { "lsp_progress", "lsp_client_names" } do
+  -- for i, provider in ipairs { "lsp_progress", "lsp_client_names" } do
+  for _, provider in ipairs { "lsp_progress", "lsp_client_names" } do
     if type(opts[provider]) == "table" then
-      local new_provider = opts[provider].str
-          and astronvim.status.utils.make_flexible(
-            i,
-            { provider = astronvim.status.provider[provider](opts[provider]) },
-            { provider = astronvim.status.provider.str(opts[provider]) }
-          )
-        or { provider = provider, opts = opts[provider] }
+      -- local new_provider = opts[provider].str
+      --     and astronvim.status.utils.make_flexible(
+      --       i,
+      --       { provider = astronvim.status.provider[provider](opts[provider]) },
+      --       { provider = astronvim.status.provider.str(opts[provider]) }
+      --     )
+      --   or { provider = provider, opts = opts[provider] }
+      local new_provider = { provider = astronvim.status.provider[provider](opts[provider]) }
       if provider == "lsp_client_names" then new_provider.update = { "LspAttach", "LspDetach", "BufEnter" } end
       table.insert(opts[1], new_provider)
     end
