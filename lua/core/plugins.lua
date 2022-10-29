@@ -33,7 +33,7 @@ local astro_plugins = {
   },
 
   -- Icons
-  ["kyazdani42/nvim-web-devicons"] = {
+  ["nvim-tree/nvim-web-devicons"] = {
     disable = not vim.g.icons_enabled,
     module = "nvim-web-devicons",
     config = function() require "configs.nvim-web-devicons" end,
