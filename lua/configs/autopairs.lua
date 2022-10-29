@@ -7,7 +7,7 @@ npairs.setup(astronvim.user_plugin_opts("plugins.nvim-autopairs", {
     javascript = { "string", "template_string" },
     java = false,
   },
-  disable_filetype = { "TelescopePrompt", "spectre_panel" },
+  disable_filetype = { "spectre_panel" },
   fast_wrap = {
     map = "<M-e>",
     chars = { "{", "[", "(", '"', "'" },
@@ -30,5 +30,5 @@ end
 
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if cmp_status_ok then
-  cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { map_char = { tex = "" } })
+  cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { tex = false })
 end
