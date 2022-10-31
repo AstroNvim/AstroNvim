@@ -666,14 +666,14 @@ function astronvim.status.component.fill() return { provider = astronvim.status.
 -- @usage local heirline_component = astronvim.status.component.file_info()
 function astronvim.status.component.file_info(opts)
   opts = astronvim.default_tbl(opts, {
-    file_icon = { highlight = true, padding = { left = 1, right = 1 } },
+    file_icon = { hl = astronvim.status.hl.filetype_color, padding = { left = 1, right = 1 } },
     filename = {},
     file_modified = { padding = { left = 1 } },
     file_read_only = { padding = { left = 1 } },
     surround = { separator = "left", color = "file_info_bg", condition = astronvim.status.condition.has_filetype },
     hl = { fg = "file_info_fg" },
   })
-  for i, key in ipairs {
+  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, {
     "file_icon",
     "unique_path",
     "filename",
@@ -681,17 +681,7 @@ function astronvim.status.component.file_info(opts)
     "file_modified",
     "file_read_only",
     "close_button",
-  } do
-    opts[i] = opts[key]
-        and {
-          provider = key,
-          opts = opts[key],
-          hl = opts[key].highlight and astronvim.status.hl.filetype_color or opts[key].hl,
-          on_click = opts[key].on_click,
-        }
-      or false
-  end
-  return astronvim.status.component.builder(opts)
+  }))
 end
 
 --- A function to build a set of children components for an entire navigation section
@@ -707,10 +697,9 @@ function astronvim.status.component.nav(opts)
     hl = { fg = "nav_fg" },
     update = { "CursorMoved", "BufEnter" },
   })
-  for i, key in ipairs { "ruler", "percentage", "scrollbar" } do
-    opts[i] = opts[key] and { provider = key, opts = opts[key], hl = opts[key].hl } or false
-  end
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(
+    astronvim.status.utils.setup_providers(opts, { "ruler", "percentage", "scrollbar" })
+  )
 end
 
 --- A function to build a set of children components for a macro recording section
@@ -729,8 +718,7 @@ function astronvim.status.component.macro_recording(opts)
     hl = { fg = "macro_recording_fg", bold = true },
     update = { "RecordingEnter", "RecordingLeave" },
   })
-  opts[1] = opts.macro_recording and { provider = "macro_recording", opts = opts.macro_recording } or false
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "macro_recording" }))
 end
 
 --- A function to build a set of children components for information shown in the cmdline
@@ -757,12 +745,9 @@ function astronvim.status.component.cmd_info(opts)
     condition = function() return vim.opt.cmdheight:get() == 0 end,
     hl = { fg = "cmd_info_fg" },
   })
-  for i, key in ipairs { "macro_recording", "search_count" } do
-    opts[i] = opts[key]
-        and { provider = key, opts = opts[key], condition = opts[key].condition, update = opts[key].update }
-      or false
-  end
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(
+    astronvim.status.utils.setup_providers(opts, { "macro_recording", "search_count" })
+  )
 end
 
 --- A function to build a set of children components for a mode section
@@ -778,14 +763,10 @@ function astronvim.status.component.mode(opts)
     hl = { fg = "bg" },
     update = "ModeChanged",
   })
-  for i, key in ipairs { "mode_text", "paste", "spell" } do
-    if key == "mode_text" and not opts[key] then
-      opts[i] = { provider = "str", opts = { str = " " } }
-    else
-      opts[i] = opts[key] and { provider = key, opts = opts[key], hl = opts[key].hl } or false
-    end
-  end
-  return astronvim.status.component.builder(opts)
+  if not opts["mode_text"] then opts.str = { str = " " } end
+  return astronvim.status.component.builder(
+    astronvim.status.utils.setup_providers(opts, { "mode_text", "str", "paste", "spell" })
+  )
 end
 
 --- A function to build a set of children components for an LSP breadcrumbs section
@@ -821,8 +802,7 @@ function astronvim.status.component.git_branch(opts)
     update = { "User", pattern = "GitSignsUpdate" },
     init = astronvim.status.init.update_events { "BufEnter" },
   })
-  opts[1] = opts.git_branch and { provider = "git_branch", opts = opts.git_branch } or false
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "git_branch" }))
 end
 
 --- A function to build a set of children components for a git difference section
@@ -847,11 +827,17 @@ function astronvim.status.component.git_diff(opts)
     update = { "User", pattern = "GitSignsUpdate" },
     init = astronvim.status.init.update_events { "BufEnter" },
   })
-  for i, kind in ipairs { "added", "changed", "removed" } do
-    if type(opts[kind]) == "table" then opts[kind].type = kind end
-    opts[i] = opts[kind] and { provider = "git_diff", opts = opts[kind], hl = { fg = "git_" .. kind } } or false
-  end
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(
+    astronvim.status.utils.setup_providers(opts, { "added", "changed", "removed" }, function(p_opts, provider)
+      local out = astronvim.status.utils.build_provider(p_opts, provider)
+      if out then
+        out.provider = "git_diff"
+        out.opts.type = provider
+        out.hl = { fg = "git_" .. provider }
+      end
+      return out
+    end)
+  )
 end
 
 --- A function to build a set of children components for a diagnostics section
@@ -876,11 +862,17 @@ function astronvim.status.component.diagnostics(opts)
     },
     update = { "DiagnosticChanged", "BufEnter" },
   })
-  for i, kind in ipairs { "ERROR", "WARN", "INFO", "HINT" } do
-    if type(opts[kind]) == "table" then opts[kind].severity = kind end
-    opts[i] = opts[kind] and { provider = "diagnostics", opts = opts[kind], hl = { fg = "diag_" .. kind } } or false
-  end
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(
+    astronvim.status.utils.setup_providers(opts, { "ERROR", "WARN", "INFO", "HINT" }, function(p_opts, provider)
+      local out = astronvim.status.utils.build_provider(p_opts, provider)
+      if out then
+        out.provider = "diagnostics"
+        out.opts.severity = provider
+        out.hl = { fg = "diag_" .. provider }
+      end
+      return out
+    end)
+  )
 end
 
 --- A function to build a set of children components for a Treesitter section
@@ -899,8 +891,7 @@ function astronvim.status.component.treesitter(opts)
     update = { "OptionSet", pattern = "syntax" },
     init = astronvim.status.init.update_events { "BufEnter" },
   })
-  opts[1] = opts.str and { provider = "str", opts = opts.str } or false
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "str" }))
 end
 
 --- A function to build a set of children components for an LSP section
@@ -924,16 +915,21 @@ function astronvim.status.component.lsp(opts)
       end,
     },
   })
-  for i, provider in ipairs { "lsp_progress", "lsp_client_names" } do
-    opts[i] = opts[provider]
-        and astronvim.status.utils.make_flexible(
-          i,
-          { provider = astronvim.status.provider[provider](opts[provider]), update = opts[provider].update },
-          { provider = astronvim.status.provider.str(opts[provider]), update = opts[provider].update }
-        )
-      or false
-  end
-  return astronvim.status.component.builder(opts)
+  return astronvim.status.component.builder(
+    astronvim.status.utils.setup_providers(
+      opts,
+      { "lsp_progress", "lsp_client_names" },
+      function(p_opts, provider, i)
+        return p_opts
+            and astronvim.status.utils.make_flexible(
+              i,
+              astronvim.status.utils.build_provider(p_opts, astronvim.status.provider[provider](p_opts)),
+              astronvim.status.utils.build_provider(p_opts, astronvim.status.provider.str(p_opts))
+            )
+          or false
+      end
+    )
+  )
 end
 
 --- A general function to build a section of astronvim status providers with highlights, conditions, and section surrounding
@@ -968,6 +964,36 @@ function astronvim.status.component.builder(opts)
         opts.surround.condition
       )
     or children
+end
+
+--- Convert a component parameter table to a table that can be used with the component builder
+-- @param opts a table of provider options
+-- @param provider a provider in `astronvim.status.providers`
+-- @return the provider table that can be used in `astronvim.status.component.builder`
+function astronvim.status.utils.build_provider(opts, provider, _)
+  return opts
+      and {
+        provider = provider,
+        opts = opts,
+        condition = opts.condition,
+        on_click = opts.on_click,
+        update = opts.update,
+        hl = opts.hl,
+      }
+    or false
+end
+
+--- Convert key/value table of options to an array of providers for the component builder
+-- @param opts the table of options for the components
+-- @param providers an ordered list like array of providers that are configured in the options table
+-- @param setup a function that takes provider options table, provider name, provider index and returns the setup provider table, optional, default is `astronvim.status.utils.build_provider`
+-- @return the fully setup options table with the appropriately ordered providers
+function astronvim.status.utils.setup_providers(opts, providers, setup)
+  setup = setup or astronvim.status.utils.build_provider
+  for i, provider in ipairs(providers) do
+    opts[i] = setup(opts[provider], provider, i)
+  end
+  return opts
 end
 
 --- A utility function to get the width of the bar
