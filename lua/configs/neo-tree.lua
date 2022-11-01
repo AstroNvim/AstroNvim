@@ -41,6 +41,8 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     width = 30,
     mappings = {
       ["o"] = "open",
+      ["H"] = "prev_source",
+      ["L"] = "next_source",
     },
   },
   filesystem = {
