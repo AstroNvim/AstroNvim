@@ -253,17 +253,19 @@ function astronvim.user_plugin_opts(module, default, extend, prefix)
   return default
 end
 
---- Open a URL under the cursor with the current operating system
-function astronvim.url_opener()
-  -- if mac use the open command
+--- Open a URL under the cursor with the current operating system (Supports Mac OS X and *nix)
+-- @param path the path of the file to open with the system opener
+function astronvim.system_open(path)
+  path = path or vim.fn.expand "<cfile>"
   if vim.fn.has "mac" == 1 then
-    vim.fn.jobstart({ "open", vim.fn.expand "<cfile>" }, { detach = true })
-    -- if unix then use xdg-open
+    -- if mac use the open command
+    vim.fn.jobstart({ "open", path }, { detach = true })
   elseif vim.fn.has "unix" == 1 then
-    vim.fn.jobstart({ "xdg-open", vim.fn.expand "<cfile>" }, { detach = true })
-    -- if any other operating system notify the user that there is currently no support
+    -- if unix then use xdg-open
+    vim.fn.jobstart({ "xdg-open", path }, { detach = true })
   else
-    astronvim.notify("gx is not supported on this OS!", "error")
+    -- if any other operating system notify the user that there is currently no support
+    astronvim.notify("System open is not supported on this OS!", "error")
   end
 end
 
