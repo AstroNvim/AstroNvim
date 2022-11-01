@@ -53,7 +53,7 @@ local astro_plugins = {
   },
 
   -- Better buffer closing
-  ["famiu/bufdelete.nvim"] = { cmd = { "Bdelete", "Bwipeout" } },
+  ["famiu/bufdelete.nvim"] = { module = "bufdelete", cmd = { "Bdelete", "Bwipeout" } },
 
   ["s1n7ax/nvim-window-picker"] = {
     tag = "v1.*",
