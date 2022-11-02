@@ -48,6 +48,7 @@ local astro_plugins = {
 
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
+    module = "bufferline",
     event = "UIEnter",
     config = function() require "configs.bufferline" end,
   },
