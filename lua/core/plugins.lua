@@ -88,16 +88,6 @@ local astro_plugins = {
   ["nvim-treesitter/nvim-treesitter"] = {
     run = function() require("nvim-treesitter.install").update { with_sync = true } end,
     event = "BufEnter",
-    cmd = {
-      "TSInstall",
-      "TSInstallInfo",
-      "TSInstallSync",
-      "TSUninstall",
-      "TSUpdate",
-      "TSUpdateSync",
-      "TSDisableAll",
-      "TSEnableAll",
-    },
     config = function() require "configs.treesitter" end,
   },
 
