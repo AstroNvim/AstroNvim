@@ -33,8 +33,10 @@ if is_available "alpha-nvim" then maps.n["<leader>d"] = { "<cmd>Alpha<cr>", desc
 -- Bufdelete
 if is_available "bufdelete.nvim" then
   maps.n["<leader>c"] = { "<cmd>Bdelete<cr>", desc = "Close buffer" }
+  maps.n["<leader>C"] = { "<cmd>Bdelete!<cr>", desc = "Force close buffer" }
 else
   maps.n["<leader>c"] = { "<cmd>bdelete<cr>", desc = "Close buffer" }
+  maps.n["<leader>C"] = { "<cmd>bdelete!<cr>", desc = "Force close buffer" }
 end
 
 -- Navigate buffers
