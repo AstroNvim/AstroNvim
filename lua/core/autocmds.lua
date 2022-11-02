@@ -45,32 +45,22 @@ cmd("BufEnter", {
 
 if is_available "alpha-nvim" then
   augroup("alpha_settings", { clear = true })
-  if is_available "bufferline.nvim" then
-    cmd("FileType", {
-      desc = "Disable tabline for alpha",
-      group = "alpha_settings",
-      pattern = "alpha",
-      callback = function()
-        local prev_showtabline = vim.opt.showtabline
-        vim.opt.showtabline = 0
-        vim.opt_local.winbar = nil
-        cmd("BufUnload", {
-          pattern = "<buffer>",
-          callback = function() vim.opt.showtabline = prev_showtabline end,
-        })
-      end,
-    })
-  end
-  cmd("FileType", {
-    desc = "Disable statusline for alpha",
+  cmd("User", {
+    desc = "Disable status and tablines for alpha",
     group = "alpha_settings",
-    pattern = "alpha",
+    pattern = "AlphaReady",
     callback = function()
+      local prev_showtabline = vim.opt.showtabline
       local prev_status = vim.opt.laststatus
       vim.opt.laststatus = 0
+      vim.opt.showtabline = 0
+      vim.opt_local.winbar = nil
       cmd("BufUnload", {
         pattern = "<buffer>",
-        callback = function() vim.opt.laststatus = prev_status end,
+        callback = function()
+          vim.opt.laststatus = prev_status
+          vim.opt.showtabline = prev_showtabline
+        end,
       })
     end,
   })
@@ -78,22 +68,8 @@ if is_available "alpha-nvim" then
     desc = "Start Alpha when vim is opened with no arguments",
     group = "alpha_settings",
     callback = function()
-      -- optimized start check from https://github.com/goolord/alpha-nvim
       local alpha_avail, alpha = pcall(require, "alpha")
-      if alpha_avail then
-        local should_skip = false
-        if vim.fn.argc() > 0 or vim.fn.line2byte "$" ~= -1 or not vim.o.modifiable then
-          should_skip = true
-        else
-          for _, arg in pairs(vim.v.argv) do
-            if arg == "-b" or arg == "-c" or vim.startswith(arg, "+") or arg == "-S" then
-              should_skip = true
-              break
-            end
-          end
-        end
-        if not should_skip then alpha.start(true) end
-      end
+      if alpha_avail then alpha.start(true) end
     end,
   })
 end
