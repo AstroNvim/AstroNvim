@@ -28,12 +28,14 @@ maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
 
 -- Alpha
-if is_available "alpha-nvim" then maps.n["<leader>d"] = { "<cmd>Alpha<cr>", desc = "Alpha Dashboard" } end
+if is_available "alpha-nvim" then
+  maps.n["<leader>d"] = { function() require("alpha").start() end, desc = "Alpha Dashboard" }
+end
 
 -- Bufdelete
 if is_available "bufdelete.nvim" then
-  maps.n["<leader>c"] = { "<cmd>Bdelete<cr>", desc = "Close buffer" }
-  maps.n["<leader>C"] = { "<cmd>Bdelete!<cr>", desc = "Force close buffer" }
+  maps.n["<leader>c"] = { function() require("bufdelete").bufdelete(0, false) end, desc = "Close buffer" }
+  maps.n["<leader>C"] = { function() require("bufdelete").bufdelete(0, true) end, desc = "Force close buffer" }
 else
   maps.n["<leader>c"] = { "<cmd>bdelete<cr>", desc = "Close buffer" }
   maps.n["<leader>C"] = { "<cmd>bdelete!<cr>", desc = "Force close buffer" }

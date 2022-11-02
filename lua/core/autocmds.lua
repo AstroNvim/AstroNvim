@@ -68,9 +68,21 @@ if is_available "alpha-nvim" then
     desc = "Start Alpha when vim is opened with no arguments",
     group = "alpha_settings",
     callback = function()
-      if is_available "bufferline.nvim" then pcall(require, "bufferline") end
-      local alpha_avail, alpha = pcall(require, "alpha")
-      if alpha_avail then alpha.start(true) end
+      local should_skip = false
+      if vim.fn.argc() > 0 or vim.fn.line2byte "$" ~= -1 or not vim.o.modifiable then
+        should_skip = true
+      else
+        for _, arg in pairs(vim.v.argv) do
+          if arg == "-b" or arg == "-c" or vim.startswith(arg, "+") or arg == "-S" then
+            should_skip = true
+            break
+          end
+        end
+      end
+      if not should_skip then
+        if is_available "bufferline.nvim" then pcall(require, "bufferline") end
+        require("alpha").start(true)
+      end
     end,
   })
 end
