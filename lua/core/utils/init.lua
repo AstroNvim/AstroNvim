@@ -374,16 +374,6 @@ function astronvim.null_ls_providers(filetype)
   return registered
 end
 
---- Register a null-ls source given a name if it has not been manually configured in the null-ls configuration
--- @param source the source name to register from all builtin types
--- @param types an array like table of null-ls builtin types that the source belongs to
-function astronvim.null_ls_register(source, types)
-  local null_ls_avail, null_ls = pcall(require, "null-ls")
-  if null_ls_avail and not null_ls.is_registered(source) then
-    vim.tbl_map(function(type) null_ls.register(null_ls.builtins[type][source]) end, types)
-  end
-end
-
 --- Get the null-ls sources for a given null-ls method
 -- @param filetype the filetype to search null-ls for
 -- @param method the null-ls method (check null-ls documentation for available methods)
