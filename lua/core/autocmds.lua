@@ -68,6 +68,7 @@ if is_available "alpha-nvim" then
     desc = "Start Alpha when vim is opened with no arguments",
     group = "alpha_settings",
     callback = function()
+      if is_available "bufferline.nvim" then pcall(require, "bufferline") end
       local alpha_avail, alpha = pcall(require, "alpha")
       if alpha_avail then alpha.start(true) end
     end,
