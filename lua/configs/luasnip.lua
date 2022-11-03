@@ -1,9 +1,16 @@
 local user_settings = astronvim.user_plugin_opts "luasnip"
 local luasnip_avail, luasnip = pcall(require, "luasnip")
-local loader_avail, loader = pcall(require, "luasnip/loaders/from_vscode")
-if not (luasnip_avail and loader_avail) then return end
-if user_settings.vscode_snippet_paths ~= nil then loader.lazy_load { paths = user_settings.vscode_snippet_paths } end
-loader.lazy_load()
+if not luasnip_avail then return end
+if user_settings.config then luasnip.config.setup(user_settings.config) end
+for _, load_type in ipairs { "vscode", "snipmate", "lua" } do
+  local loader = require("luasnip.loaders.from_" .. load_type)
+  loader.lazy_load()
+  -- TODO: DEPRECATE _snippet_paths option in next major version release
+  local paths = user_settings[load_type .. "_snippet_paths"]
+  if paths then loader.lazy_load { paths = paths } end
+  local loader_settings = user_settings[load_type]
+  if loader_settings then loader.lazy_load(loader_settings) end
+end
 if type(user_settings.filetype_extend) == "table" then
   for filetype, snippets in pairs(user_settings.filetype_extend) do
     luasnip.filetype_extend(filetype, snippets)

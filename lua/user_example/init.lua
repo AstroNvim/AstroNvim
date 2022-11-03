@@ -38,7 +38,7 @@ local config = {
     -- },
   },
 
-  -- set vim options here (vim.<first_key>.<second_key> =  value)
+  -- set vim options here (vim.<first_key>.<second_key> = value)
   options = {
     opt = {
       -- set to true or false etc.
@@ -268,11 +268,14 @@ local config = {
 
   -- LuaSnip Options
   luasnip = {
-    -- Add paths for including more VS Code style snippets in luasnip
-    vscode_snippet_paths = {},
     -- Extend filetypes
     filetype_extend = {
       -- javascript = { "javascriptreact" },
+    },
+    -- Configure luasnip loaders (vscode, lua, and/or snipmate)
+    vscode = {
+      -- Add paths for including more VS Code style snippets in luasnip
+      paths = {},
     },
   },
 

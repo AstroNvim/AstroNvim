@@ -15,7 +15,6 @@ treesitter.setup(astronvim.user_plugin_opts("plugins.treesitter", {
     extended_mode = false,
     max_file_lines = nil,
   },
-  autopairs = { enable = true },
   autotag = { enable = true },
   incremental_selection = { enable = true },
   indent = { enable = false },

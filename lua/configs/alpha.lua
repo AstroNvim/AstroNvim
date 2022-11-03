@@ -35,5 +35,5 @@ alpha.setup(astronvim.user_plugin_opts("plugins.alpha", {
       opts = { spacing = 1 },
     },
   },
-  opts = {},
+  opts = { noautocmd = true },
 }))

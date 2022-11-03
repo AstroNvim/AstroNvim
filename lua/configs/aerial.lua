@@ -14,12 +14,14 @@ aerial.setup(astronvim.user_plugin_opts("plugins.aerial", {
     nested_top = "│ ",
     whitespace = "  ",
   },
-  on_attach = function(bufnr)
-    -- Jump forwards/backwards with '[y' and ']y'
-    vim.keymap.set("n", "[y", "<cmd>AerialPrev<cr>", { buffer = bufnr, desc = "Previous Aerial" })
-    vim.keymap.set("n", "]y", "<cmd>AerialNext<cr>", { buffer = bufnr, desc = "Next Aerial" })
-    -- Jump up the tree with '[Y' or ']Y'
-    vim.keymap.set("n", "[Y", "<cmd>AerialPrevUp<cr>", { buffer = bufnr, desc = "Previous and Up in Aerial" })
-    vim.keymap.set("n", "]Y", "<cmd>AerialNextUp<cr>", { buffer = bufnr, desc = "Next and Up in Aerial" })
-  end,
+  keymaps = {
+    ["[y"] = "actions.prev",
+    ["]y"] = "actions.next",
+    ["[Y"] = "actions.prev_up",
+    ["]Y"] = "actions.next_up",
+    ["{"] = false,
+    ["}"] = false,
+    ["[["] = false,
+    ["]]"] = false,
+  },
 }))

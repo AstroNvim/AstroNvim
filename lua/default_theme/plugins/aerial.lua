@@ -25,6 +25,7 @@ return {
   AerialPropertyIcon = { link = "@property" },
   AerialStringIcon = { link = "@string" },
   AerialStructIcon = { link = "@type" },
+  AerialTypeIcon = { link = "@type" },
   AerialTypeParameterIcon = { link = "@parameter" },
   AerialVariableIcon = { link = "@variable" },
 }

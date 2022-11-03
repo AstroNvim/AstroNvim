@@ -33,7 +33,7 @@ local astro_plugins = {
   },
 
   -- Icons
-  ["kyazdani42/nvim-web-devicons"] = {
+  ["nvim-tree/nvim-web-devicons"] = {
     disable = not vim.g.icons_enabled,
     module = "nvim-web-devicons",
     config = function() require "configs.nvim-web-devicons" end,
@@ -48,12 +48,13 @@ local astro_plugins = {
 
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
+    module = "bufferline",
     event = "UIEnter",
     config = function() require "configs.bufferline" end,
   },
 
   -- Better buffer closing
-  ["famiu/bufdelete.nvim"] = { cmd = { "Bdelete", "Bwipeout" } },
+  ["famiu/bufdelete.nvim"] = { module = "bufdelete", cmd = { "Bdelete", "Bwipeout" } },
 
   ["s1n7ax/nvim-window-picker"] = {
     tag = "v1.*",
@@ -84,7 +85,7 @@ local astro_plugins = {
 
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
-    run = ":TSUpdate",
+    run = function() require("nvim-treesitter.install").update { with_sync = true } end,
     event = "BufEnter",
     cmd = {
       "TSInstall",
@@ -166,7 +167,6 @@ local astro_plugins = {
   -- LSP symbols
   ["stevearc/aerial.nvim"] = {
     module = "aerial",
-    cmd = { "AerialToggle", "AerialOpen", "AerialInfo" },
     config = function() require "configs.aerial" end,
   },
 
@@ -180,10 +180,8 @@ local astro_plugins = {
   -- Fuzzy finder syntax support
   ["nvim-telescope/telescope-fzf-native.nvim"] = {
     after = "telescope.nvim",
-    disable = vim.fn.executable "make" + vim.fn.executable "cmake" == 0,
-    run = vim.fn.executable "cmake" == 1
-        and "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
-      or "make",
+    disable = vim.fn.executable "make" == 0,
+    run = "make",
     config = function() require("telescope").load_extension "fzf" end,
   },
 
@@ -222,7 +220,7 @@ local astro_plugins = {
   -- Commenting
   ["numToStr/Comment.nvim"] = {
     module = { "Comment", "Comment.api" },
-    keys = { "gc", "gb", "g<", "g>" },
+    keys = { "gc", "gb" },
     config = function() require "configs.Comment" end,
   },
 
