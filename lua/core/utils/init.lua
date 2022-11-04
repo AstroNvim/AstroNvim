@@ -104,14 +104,10 @@ end
 -- @param name highlight group name
 -- @return table of highlight group properties
 function astronvim.get_hlgroup(name, fallback)
-  fallback = fallback or {}
   if vim.fn.hlexists(name) == 1 then
     local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
-    --  remove below to --- after discussion with  Heirline dev
-    local fallback_hl = vim.api.nvim_get_hl_by_name("Normal", vim.o.termguicolors)
-    if not hl["foreground"] then hl["foreground"] = fallback_hl["foreground"] or fallback.fg end
-    if not hl["background"] then hl["background"] = fallback_hl["background"] or fallback.bg end
-    ---
+    if not hl["foreground"] then hl["foreground"] = "NONE" end
+    if not hl["background"] then hl["background"] = "NONE" end
     hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
     hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
     return hl
