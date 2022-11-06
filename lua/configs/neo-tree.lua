@@ -44,6 +44,7 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
       O = function(state) astronvim.system_open(state.tree:get_node():get_id()) end,
       H = "prev_source",
       L = "next_source",
+      h = "toggle_hidden",
     },
   },
   filesystem = {

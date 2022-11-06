@@ -921,11 +921,11 @@ function astronvim.status.component.lsp(opts)
       { "lsp_progress", "lsp_client_names" },
       function(p_opts, provider, i)
         return p_opts
-            and astronvim.status.utils.make_flexible(
-              i,
+            and {
+              flexible = i,
               astronvim.status.utils.build_provider(p_opts, astronvim.status.provider[provider](p_opts)),
-              astronvim.status.utils.build_provider(p_opts, astronvim.status.provider.str(p_opts))
-            )
+              astronvim.status.utils.build_provider(p_opts, astronvim.status.provider.str(p_opts)),
+            }
           or false
       end
     )
@@ -1001,29 +1001,6 @@ end
 -- @return the width of the specified bar
 function astronvim.status.utils.width(is_winbar)
   return vim.o.laststatus == 3 and not is_winbar and vim.o.columns or vim.api.nvim_win_get_width(0)
-end
-
-local function insert(destination, ...)
-  local new = astronvim.default_tbl({}, destination)
-  for _, child in ipairs { ... } do
-    table.insert(new, astronvim.default_tbl({}, child))
-  end
-  return new
-end
-
---- Create a flexible statusline component
--- @param priority the priority of the element
--- @return the flexible component that switches between components to fit the width
-function astronvim.status.utils.make_flexible(priority, ...)
-  local new = insert({}, ...)
-  new.static = { _priority = priority }
-  new.init = function(self)
-    if not vim.tbl_contains(self._flexible_components, self) then table.insert(self._flexible_components, self) end
-    self:set_win_attr("_win_child_index", nil, 1)
-    self.pick_child = { self:get_win_attr "_win_child_index" }
-  end
-  new.restrict = { _win_child_index = true }
-  return new
 end
 
 --- Surround component with separator and color adjustment

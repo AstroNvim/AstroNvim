@@ -229,5 +229,6 @@ maps.n["<leader>ut"] = { function() astronvim.ui.toggle_tabline() end, desc = "T
 maps.n["<leader>uu"] = { function() astronvim.ui.toggle_url_match() end, desc = "Toggle URL highlight" }
 maps.n["<leader>uw"] = { function() astronvim.ui.toggle_wrap() end, desc = "Toggle wrap" }
 maps.n["<leader>uy"] = { function() astronvim.ui.toggle_syntax() end, desc = "Toggle syntax highlight" }
+maps.n["<leader>uN"] = { function() astronvim.ui.toggle_ui_notifications() end, desc = "Toggle UI notifications" }
 
 astronvim.set_mappings(astronvim.user_plugin_opts("mappings", maps))
