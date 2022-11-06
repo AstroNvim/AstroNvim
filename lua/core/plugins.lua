@@ -255,6 +255,12 @@ local astro_plugins = {
     event = "BufWritePost",
     config = function() require "configs.session_manager" end,
   },
+
+  -- Remove trailing whitespace
+  ["lewis6991/spaceless.nvim"] = { 
+    module = "spaceless",
+    config = function() require "spaceless".setup() end,
+  },
 }
 
 if astronvim.updater.snapshot then
