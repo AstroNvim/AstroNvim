@@ -1,5 +1,3 @@
-local status_ok, bufferline = pcall(require, "bufferline")
-if not status_ok then return end
 local close_func = function(bufnum)
   local bufdelete_avail, bufdelete = pcall(require, "bufdelete")
   if bufdelete_avail then
@@ -8,7 +6,7 @@ local close_func = function(bufnum)
     vim.cmd["bdelete!"] { args = { bufnum } }
   end
 end
-bufferline.setup(astronvim.user_plugin_opts("plugins.bufferline", {
+require("bufferline").setup(astronvim.user_plugin_opts("plugins.bufferline", {
   options = {
     offsets = {
       { filetype = "NvimTree", text = "", padding = 1 },

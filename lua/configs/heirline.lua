@@ -1,5 +1,5 @@
-local status_ok, heirline = pcall(require, "heirline")
-if not status_ok or not astronvim.status then return end
+local heirline = require "heirline"
+if not astronvim.status then return end
 local C = require "default_theme.colors"
 
 local function setup_colors()

@@ -1,5 +1,4 @@
-local status_ok, npairs = pcall(require, "nvim-autopairs")
-if not status_ok then return end
+local npairs = require "nvim-autopairs"
 npairs.setup(astronvim.user_plugin_opts("plugins.nvim-autopairs", {
   check_ts = true,
   ts_config = {
