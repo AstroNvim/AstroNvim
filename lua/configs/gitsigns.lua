@@ -7,5 +7,6 @@ gitsigns.setup(astronvim.user_plugin_opts("plugins.gitsigns", {
     delete = { text = "▎" },
     topdelete = { text = "契" },
     changedelete = { text = "▎" },
+    untracked = { text = "▎" },
   },
 }))
