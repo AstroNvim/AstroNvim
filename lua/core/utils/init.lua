@@ -280,22 +280,16 @@ end
 
 --- Toggle a user terminal if it exists, if not then create a new one and save it
 -- @param term_details a terminal command string or a table of options for Terminal:new() (Check toggleterm.nvim documentation for table format)
-function astronvim.toggle_term_cmd(term_details)
+function astronvim.toggle_term_cmd(opts)
+  local terms = astronvim.user_terminals
   -- if a command string is provided, create a basic table for Terminal:new() options
-  if type(term_details) == "string" then term_details = { cmd = term_details, hidden = true } end
-  -- use the command as the key for the table
-  local term_key = term_details.cmd
-  -- set the count in the term details
-  if vim.v.count > 0 and term_details.count == nil then
-    term_details.count = vim.v.count
-    term_key = term_key .. vim.v.count
-  end
+  if type(opts) == "string" then opts = { cmd = opts, hidden = true } end
+  local num = vim.v.count > 0 and vim.v.count or 1
   -- if terminal doesn't exist yet, create it
-  if astronvim.user_terminals[term_key] == nil then
-    astronvim.user_terminals[term_key] = require("toggleterm.terminal").Terminal:new(term_details)
-  end
+  if not terms[opts.cmd] then terms[opts.cmd] = {} end
+  if not terms[opts.cmd][num] then terms[opts.cmd][num] = require("toggleterm.terminal").Terminal:new(opts) end
   -- toggle the terminal
-  astronvim.user_terminals[term_key]:toggle()
+  astronvim.user_terminals[opts.cmd][num]:toggle()
 end
 
 --- Add a source to cmp
