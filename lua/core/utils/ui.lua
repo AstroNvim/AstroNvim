@@ -84,6 +84,12 @@ function astronvim.ui.toggle_tabline()
   ui_notify(string.format("tabline %s", bool2str(vim.opt.showtabline:get() == 2)))
 end
 
+--- Toggle conceal=2|0
+function astronvim.ui.toggle_conceal()
+  vim.opt.conceallevel = vim.opt.conceallevel:get() == 0 and 2 or 0
+  ui_notify(string.format("conceal %s", bool2str(vim.opt.conceallevel:get() == 2)))
+end
+
 --- Toggle laststatus=3|2|0
 function astronvim.ui.toggle_statusline()
   local laststatus = vim.opt.laststatus:get()
