@@ -1,14 +1,14 @@
 return {
   settings = {
     Lua = {
-      diagnostics = {
-        globals = { "vim", "astronvim", "bit" },
-      },
+      telemetry = { enable = false },
+      runtime = { version = "LuaJIT" },
+      diagnostics = { globals = { "vim", "astronvim", "astronvim_installation", "packer_plugins", "bit" } },
       workspace = {
         library = {
-          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-          [astronvim.install.home .. "/lua"] = true,
-          [astronvim.install.config .. "/lua"] = true,
+          vim.fn.expand "$VIMRUNTIME/lua",
+          astronvim.install.home .. "/lua",
+          astronvim.install.config .. "/lua",
         },
       },
     },
