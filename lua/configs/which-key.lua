@@ -7,7 +7,5 @@ require("which-key").setup(astronvim.user_plugin_opts("plugins.which-key", {
     border = "rounded",
     padding = { 2, 2, 2, 2 },
   },
-  disable = {
-    filetypes = { "TelescopePrompt", "neo-tree" },
-  },
+  disable = { filetypes = { "TelescopePrompt" } },
 }))
