@@ -12,6 +12,12 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   callback = function() astronvim.set_url_match() end,
 })
 
+cmd({ "BufWritePre" }, {
+  desc = "removing trailing spaces"
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
+
 augroup("auto_quit", { clear = true })
 cmd("BufEnter", {
   desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
