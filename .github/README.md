@@ -117,7 +117,12 @@ Run `:AstroUpdate` to get the latest updates from the repository<br>
 - [Default Plugin Configuration](https://astronvim.github.io/configuration/plugin_defaults) more about the provided plugin defaults
 - [Advanced Configuration](https://astronvim.github.io/configuration/config_options) more about advanced configuration
 
-[Watch](https://www.youtube.com/watch?v=JQLZ7NJRTEo&t=4s&ab_channel=JohnCodes) a review video to know about the out of the box experience
+### 📹 Videos
+
+There have been some great review videos released by members of the community! Here are a few:
+
+- [Why I'm quitting VIM by Carlos Mafla](https://www.youtube.com/watch?v=71GDopdc9rw) (Content By: [@gigo6000](https://github.com/gigo6000))
+- [Astro Vim - All in one Nvim config!! by John McBride](https://www.youtube.com/watch?v=JQLZ7NJRTEo) (Content By: [@jpmcb](https://github.com/jpmcb))
 
 ## ⭐ Credits
 
