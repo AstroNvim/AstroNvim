@@ -5,7 +5,6 @@ for _, source in ipairs {
   "core.utils",
   "core.options",
   "core.bootstrap",
-  "core.plugins",
   "core.diagnostics",
   "core.autocmds",
   "core.mappings",
