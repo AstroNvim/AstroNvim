@@ -4,18 +4,16 @@ local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
 
-augroup("highlighturl", { clear = true })
 cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
-  group = "highlighturl",
+  group = augroup("highlighturl", { clear = true }),
   pattern = "*",
   callback = function() astronvim.set_url_match() end,
 })
 
-augroup("auto_quit", { clear = true })
 cmd("BufEnter", {
   desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
-  group = "auto_quit",
+  group = augroup("auto_quit", { clear = true }),
   callback = function()
     local wins = vim.api.nvim_tabpage_list_wins(0)
     -- Both neo-tree and aerial will auto-quit if there is only a single window left
@@ -44,10 +42,10 @@ cmd("BufEnter", {
 })
 
 if is_available "alpha-nvim" then
-  augroup("alpha_settings", { clear = true })
+  local group_name = augroup("alpha_settings", { clear = true })
   cmd("User", {
     desc = "Disable status and tablines for alpha",
-    group = "alpha_settings",
+    group = group_name,
     pattern = "AlphaReady",
     callback = function()
       local prev_showtabline = vim.opt.showtabline
@@ -66,7 +64,7 @@ if is_available "alpha-nvim" then
   })
   cmd("VimEnter", {
     desc = "Start Alpha when vim is opened with no arguments",
-    group = "alpha_settings",
+    group = group_name,
     callback = function()
       local should_skip = false
       if vim.fn.argc() > 0 or vim.fn.line2byte "$" ~= -1 or not vim.o.modifiable then
@@ -88,10 +86,9 @@ if is_available "alpha-nvim" then
 end
 
 if is_available "neo-tree.nvim" then
-  augroup("neotree_start", { clear = true })
   cmd("BufEnter", {
     desc = "Open Neo-Tree on startup with directory",
-    group = "neotree_start",
+    group = augroup("neotree_start", { clear = true }),
     callback = function()
       local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
       if stats and stats.type == "directory" then require("neo-tree.setup.netrw").hijack() end
@@ -99,10 +96,9 @@ if is_available "neo-tree.nvim" then
   })
 end
 
-augroup("astronvim_highlights", { clear = true })
 cmd({ "VimEnter", "ColorScheme" }, {
   desc = "Load custom highlights from user configuration",
-  group = "astronvim_highlights",
+  group = augroup("astronvim_highlights", { clear = true }),
   callback = function()
     if vim.g.colors_name then
       for _, module in ipairs { "init", vim.g.colors_name } do
@@ -112,6 +108,17 @@ cmd({ "VimEnter", "ColorScheme" }, {
       end
     end
     vim.cmd [[doautocmd User AstroColorScheme]]
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufRead", {
+  group = vim.api.nvim_create_augroup("git_plugin_lazy_load", { clear = true }),
+  callback = function()
+    vim.fn.system("git -C " .. vim.fn.expand "%:p:h" .. " rev-parse")
+    if vim.v.shell_error == 0 then
+      vim.api.nvim_del_augroup_by_name "git_plugin_lazy_load"
+      vim.schedule(function() vim.tbl_map(require("packer").loader, astronvim.git_plugins) end)
+    end
   end,
 })
 

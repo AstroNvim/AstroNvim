@@ -178,7 +178,9 @@ local astro_plugins = {
 
   -- Git integration
   ["lewis6991/gitsigns.nvim"] = {
-    event = "BufEnter",
+    disable = vim.fn.executable "git" == 0,
+    ft = "gitcommit",
+    setup = function() table.insert(astronvim.git_plugins, "gitsigns.nvim") end,
     config = function() require "configs.gitsigns" end,
   },
 
