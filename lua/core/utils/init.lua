@@ -287,7 +287,10 @@ function astronvim.toggle_term_cmd(opts)
   local num = vim.v.count > 0 and vim.v.count or 1
   -- if terminal doesn't exist yet, create it
   if not terms[opts.cmd] then terms[opts.cmd] = {} end
-  if not terms[opts.cmd][num] then terms[opts.cmd][num] = require("toggleterm.terminal").Terminal:new(opts) end
+  if not terms[opts.cmd][num] then
+    if not opts.count then opts.count = vim.tbl_count(terms) * 100 + num end
+    terms[opts.cmd][num] = require("toggleterm.terminal").Terminal:new(opts)
+  end
   -- toggle the terminal
   astronvim.user_terminals[opts.cmd][num]:toggle()
 end
