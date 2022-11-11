@@ -255,6 +255,7 @@ function astronvim.updater.update()
     -- if the user wants to reload and sync packer
     if options.auto_reload then
       -- perform a reload
+      vim.opt.modifiable = true
       astronvim.updater.reload(true) -- run quiet to not show notification on reload
       -- sync packer if it is available
       local packer_avail, _ = pcall(require, "packer")
