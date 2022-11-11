@@ -1,3 +1,5 @@
+local on_file_open = { "BufRead", "BufWinEnter", "BufNewFile" }
+
 local astro_plugins = {
   -- Plugin manager
   ["wbthomason/packer.nvim"] = {
@@ -25,7 +27,7 @@ local astro_plugins = {
 
   -- Indent detection
   ["Darazaki/indent-o-matic"] = {
-    event = "BufEnter",
+    event = on_file_open,
     config = function() require "configs.indent-o-matic" end,
   },
 
@@ -90,6 +92,13 @@ local astro_plugins = {
   -- Statusline
   ["rebelot/heirline.nvim"] = { config = function() require "configs.heirline" end },
 
+  -- Syntax highlighting
+  ["nvim-treesitter/nvim-treesitter"] = {
+    run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
+    event = on_file_open,
+    config = function() require "configs.treesitter" end,
+  },
+
   -- Parenthesis highlighting
   ["p00f/nvim-ts-rainbow"] = { after = "nvim-treesitter" },
 
@@ -98,13 +107,6 @@ local astro_plugins = {
 
   -- Context based commenting
   ["JoosepAlviste/nvim-ts-context-commentstring"] = { after = "nvim-treesitter" },
-
-  -- Syntax highlighting
-  ["nvim-treesitter/nvim-treesitter"] = {
-    run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
-    event = "BufEnter",
-    config = function() require "configs.treesitter" end,
-  },
 
   -- Snippet collection
   ["rafamadriz/friendly-snippets"] = { opt = true },
@@ -151,22 +153,25 @@ local astro_plugins = {
 
   -- Formatting and linting
   ["jose-elias-alvarez/null-ls.nvim"] = {
-    event = "BufEnter",
+    event = on_file_open,
     config = function() require "configs.null-ls" end,
   },
 
   -- Package Manager
-  ["williamboman/mason.nvim"] = { config = function() require "configs.mason" end },
+  ["williamboman/mason.nvim"] = {
+    module = "mason",
+    config = function() require "configs.mason" end,
+  },
 
   -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
-    after = { "mason.nvim", "nvim-lspconfig" },
+    after = "nvim-lspconfig",
     config = function() require "configs.mason-lspconfig" end,
   },
 
   -- null-ls manager
   ["jayp0521/mason-null-ls.nvim"] = {
-    after = { "mason.nvim", "null-ls.nvim" },
+    after = "null-ls.nvim",
     config = function() require "configs.mason-null-ls" end,
   },
 
@@ -208,7 +213,7 @@ local astro_plugins = {
 
   -- Color highlighting
   ["NvChad/nvim-colorizer.lua"] = {
-    event = "BufEnter",
+    event = on_file_open,
     config = function() require "configs.colorizer" end,
   },
 
@@ -234,7 +239,7 @@ local astro_plugins = {
 
   -- Indentation
   ["lukas-reineke/indent-blankline.nvim"] = {
-    event = "BufEnter",
+    event = on_file_open,
     config = function() require "configs.indent-line" end,
   },
 
