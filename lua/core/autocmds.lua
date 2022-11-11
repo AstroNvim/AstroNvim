@@ -11,6 +11,13 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   callback = function() astronvim.set_url_match() end,
 })
 
+cmd("FileType", {
+  desc = "Unlist quickfist buffers",
+  group = augroup("unlist_quickfist", { clear = true }),
+  pattern = "qf",
+  callback = function() vim.opt_local.buflisted = false end,
+})
+
 cmd("BufEnter", {
   desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
   group = augroup("auto_quit", { clear = true }),
