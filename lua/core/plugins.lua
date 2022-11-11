@@ -1,6 +1,21 @@
 local astro_plugins = {
   -- Plugin manager
-  ["wbthomason/packer.nvim"] = {},
+  ["wbthomason/packer.nvim"] = {
+    cmd = {
+      "PackerSnapshot",
+      "PackerSnapshotRollback",
+      "PackerSnapshotDelete",
+      "PackerInstall",
+      "PackerUpdate",
+      "PackerSync",
+      "PackerClean",
+      "PackerCompile",
+      "PackerStatus",
+      "PackerProfile",
+      "PackerLoad",
+    },
+    config = function() require "core.plugins" end,
+  },
 
   -- Optimiser
   ["lewis6991/impatient.nvim"] = {},

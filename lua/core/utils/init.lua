@@ -191,11 +191,11 @@ end
 --- Check if packer is installed and loadable, if not then install it and make sure it loads
 function astronvim.initialize_packer()
   -- try loading packer
-  local packer_avail, _ = pcall(require, "packer")
+  local packer_path = stdpath "data" .. "/site/pack/packer/opt/packer.nvim"
+  local packer_avail = vim.fn.empty(vim.fn.glob(packer_path)) == 0
   -- if packer isn't availble, reinstall it
   if not packer_avail then
     -- set the location to install packer
-    local packer_path = stdpath "data" .. "/site/pack/packer/start/packer.nvim"
     -- delete the old packer install if one exists
     vim.fn.delete(packer_path, "rf")
     -- clone packer
@@ -207,10 +207,10 @@ function astronvim.initialize_packer()
       "https://github.com/wbthomason/packer.nvim",
       packer_path,
     }
-    astronvim.echo { { "Initializing Packer...\n\n" } }
     -- add packer and try loading it
     vim.cmd.packadd "packer.nvim"
-    packer_avail, _ = pcall(require, "packer")
+    local packer_loaded, _ = pcall(require, "packer")
+    packer_avail = packer_loaded
     -- if packer didn't load, print error
     if not packer_avail then vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path) end
   end
@@ -220,11 +220,12 @@ function astronvim.initialize_packer()
     local run_me, _ = loadfile(
       astronvim.user_plugin_opts("plugins.packer", { compile_path = astronvim.default_compile_path }).compile_path
     )
-    -- if the file loads, run the compiled function
     if run_me then
+      -- if the file loads, run the compiled function
       run_me()
-      -- if there is no compiled file, prompt the user to run :PackerSync
     else
+      -- if there is no compiled file, ask user to sync packer
+      require "core.plugins"
       astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
     end
   end

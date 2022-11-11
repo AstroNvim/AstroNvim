@@ -257,14 +257,15 @@ function astronvim.updater.update()
       -- perform a reload
       astronvim.updater.reload(true) -- run quiet to not show notification on reload
       -- sync packer if it is available
-      local packer_avail, packer = pcall(require, "packer")
+      local packer_avail, _ = pcall(require, "packer")
       if packer_avail then
         -- on a successful packer sync send user event
         vim.api.nvim_create_autocmd(
           "User",
-          { pattern = "PackerComplete", command = "doautocmd User AstroUpdateComplete" }
+          { once = true, pattern = "PackerComplete", command = "doautocmd User AstroUpdateComplete" }
         )
-        packer.sync()
+        require "core.plugins"
+        vim.cmd "PackerSync"
         -- if packer isn't available send successful update event
       else
         vim.cmd [[doautocmd User AstroUpdateComplete]]
