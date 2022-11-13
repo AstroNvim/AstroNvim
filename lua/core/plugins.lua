@@ -149,7 +149,7 @@ local astro_plugins = {
   },
 
   -- Built-in LSP
-  ["neovim/nvim-lspconfig"] = { config = function() require "configs.lspconfig" end },
+  ["nntndfrk/nvim-lspconfig"] = { config = function() require "configs.lspconfig" end },
 
   -- Formatting and linting
   ["jose-elias-alvarez/null-ls.nvim"] = {
