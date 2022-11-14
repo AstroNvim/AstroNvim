@@ -153,6 +153,12 @@ end
 -- @param opts table of nvim-notify options to use (:help notify-options)
 function astronvim.notify(msg, type, opts) vim.notify(msg, type, astronvim.default_tbl(opts, { title = "AstroNvim" })) end
 
+--- Trigger an AstroNvim user event
+-- @param event the event name to be appended to Astro
+function astronvim.event(event)
+  vim.schedule(function() vim.api.nvim_exec_autocmds("User", { pattern = "Astro" .. event }) end)
+end
+
 --- Wrapper function for neovim echo API
 -- @param messages an array like table where each item is an array like table of strings to echo
 function astronvim.echo(messages)
