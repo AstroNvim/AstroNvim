@@ -114,7 +114,7 @@ cmd({ "VimEnter", "ColorScheme" }, {
         end
       end
     end
-    vim.cmd [[doautocmd User AstroColorScheme]]
+    astronvim.event "ColorScheme"
   end,
 })
 

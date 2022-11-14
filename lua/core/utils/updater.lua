@@ -263,17 +263,17 @@ function astronvim.updater.update()
         -- on a successful packer sync send user event
         vim.api.nvim_create_autocmd(
           "User",
-          { once = true, pattern = "PackerComplete", command = "doautocmd User AstroUpdateComplete" }
+          { once = true, pattern = "PackerComplete", callback = function() astronvim.event "UpdateComplete" end }
         )
         require "core.plugins"
         vim.cmd "PackerSync"
         -- if packer isn't available send successful update event
       else
-        vim.cmd [[doautocmd User AstroUpdateComplete]]
+        astronvim.event "UpdateComplete"
       end
     else
       -- send user event of successful update
-      vim.cmd [[doautocmd User AstroUpdateComplete]]
+      astronvim.event "UpdateComplete"
     end
   end
 end
