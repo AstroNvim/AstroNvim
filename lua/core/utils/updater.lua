@@ -92,6 +92,29 @@ function astronvim.updater.reload(quiet)
   if reloaded and not quiet then astronvim.notify "Reloaded AstroNvim" end
 end
 
+--- Sync Packer and then update Mason
+function astronvim.updater.update_packages()
+  vim.api.nvim_create_autocmd("User", {
+    once = true,
+    desc = "Update Mason with Packer",
+    group = vim.api.nvim_create_augroup("astro_sync", { clear = true }),
+    pattern = "PackerComplete",
+    callback = function()
+      if astronvim.is_available "mason.nvim" then
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "AstroMasonUpdateComplete",
+          once = true,
+          callback = function() astronvim.event "UpdatePackagesComplete" end,
+        })
+        astronvim.mason.update_all()
+      else
+        astronvim.event "UpdatePackagesComplete"
+      end
+    end,
+  })
+  vim.cmd "PackerSync"
+end
+
 --- AstroNvim's updater function
 function astronvim.updater.update()
   -- if the git command is not available, then throw an error
@@ -257,20 +280,14 @@ function astronvim.updater.update()
       -- perform a reload
       vim.opt.modifiable = true
       astronvim.updater.reload(true) -- run quiet to not show notification on reload
-      -- sync packer if it is available
-      local packer_avail, _ = pcall(require, "packer")
-      if packer_avail then
-        -- on a successful packer sync send user event
-        vim.api.nvim_create_autocmd(
-          "User",
-          { once = true, pattern = "PackerComplete", callback = function() astronvim.event "UpdateComplete" end }
-        )
-        require "core.plugins"
-        vim.cmd "PackerSync"
-        -- if packer isn't available send successful update event
-      else
-        astronvim.event "UpdateComplete"
-      end
+      vim.api.nvim_create_autocmd("User", {
+        once = true,
+        pattern = "AstroUpdatePackagesComplete",
+        callback = function() astronvim.event "UpdateComplete" end,
+      })
+      require "core.plugins"
+      astronvim.updater.update_packages()
+      -- if packer isn't available send successful update event
     else
       -- send user event of successful update
       astronvim.event "UpdateComplete"

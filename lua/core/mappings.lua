@@ -23,6 +23,7 @@ maps.n["<leader>pS"] = { "<cmd>PackerStatus<cr>", desc = "Packer Status" }
 maps.n["<leader>pu"] = { "<cmd>PackerUpdate<cr>", desc = "Packer Update" }
 
 -- AstroNvim
+maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Packer and Mason" }
 maps.n["<leader>pA"] = { "<cmd>AstroUpdate<cr>", desc = "AstroNvim Update" }
 maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
@@ -91,10 +92,9 @@ if is_available "neovim-session-manager" then
 end
 
 -- Package Manager
-if is_available "mason.nvim" then maps.n["<leader>pI"] = { "<cmd>Mason<cr>", desc = "Mason Installer" } end
-
-if is_available "mason-tool-installer.nvim" then
-  maps.n["<leader>pU"] = { "<cmd>MasonToolsUpdate<cr>", desc = "Mason Update" }
+if is_available "mason.nvim" then
+  maps.n["<leader>pI"] = { "<cmd>Mason<cr>", desc = "Mason Installer" }
+  maps.n["<leader>pU"] = { "<cmd>MasonUpdateAll<cr>", desc = "Mason Update" }
 end
 
 -- LSP Installer
