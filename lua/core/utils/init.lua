@@ -484,6 +484,7 @@ end
 require "core.utils.ui"
 require "core.utils.status"
 require "core.utils.updater"
+require "core.utils.mason"
 require "core.utils.lsp"
 
 return astronvim
