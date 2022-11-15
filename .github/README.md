@@ -73,15 +73,16 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🛠️ Installation
 
-#### Make a backup of your current nvim folder
+#### Make a backup of your current nvim and shared folder
 
-```
-mv ~/.config/nvim ~/.config/nvimbackup
+```shell
+mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.local/share/nvim ~/.local/share/nvim.bak
 ```
 
 #### Clone the repository
 
-```
+```shell
 git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 nvim +PackerSync
 ```
