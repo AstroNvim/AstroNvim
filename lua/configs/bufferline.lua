@@ -3,7 +3,7 @@ local close_func = function(bufnum)
   if bufdelete_avail then
     bufdelete.bufdelete(bufnum, true)
   else
-    vim.cmd["bdelete!"] { args = { bufnum } }
+    vim.cmd.bdelete { args = { bufnum }, bang = true }
   end
 end
 require("bufferline").setup(astronvim.user_plugin_opts("plugins.bufferline", {

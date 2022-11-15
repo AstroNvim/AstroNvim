@@ -76,7 +76,7 @@ local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 -- @param quiet boolean to quietly execute or send a notification
 function astronvim.updater.reload(quiet)
   -- stop LSP if it is running
-  if vim.fn.exists ":LspStop" ~= 0 then vim.cmd "LspStop" end
+  if vim.fn.exists ":LspStop" ~= 0 then vim.cmd.LspStop() end
   local reload_module = require("plenary.reload").reload_module
   -- unload AstroNvim configuration files
   reload_module "user"
@@ -112,7 +112,7 @@ function astronvim.updater.update_packages()
       end
     end,
   })
-  vim.cmd "PackerSync"
+  vim.cmd.PackerSync()
 end
 
 --- AstroNvim's updater function
