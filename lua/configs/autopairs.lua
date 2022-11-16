@@ -1,12 +1,7 @@
 local npairs = require "nvim-autopairs"
 npairs.setup(astronvim.user_plugin_opts("plugins.nvim-autopairs", {
   check_ts = true,
-  ts_config = {
-    lua = { "string", "source" },
-    javascript = { "string", "template_string" },
-    java = false,
-  },
-  disable_filetype = { "spectre_panel" },
+  ts_config = { java = false },
   fast_wrap = {
     map = "<M-e>",
     chars = { "{", "[", "(", '"', "'" },
