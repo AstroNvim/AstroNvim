@@ -90,7 +90,7 @@ local astro_plugins = {
   },
 
   -- Statusline
-  ["rebelot/heirline.nvim"] = { config = function() require "configs.heirline" end },
+  ["rebelot/heirline.nvim"] = { event = "VimEnter", config = function() require "configs.heirline" end },
 
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
@@ -149,7 +149,7 @@ local astro_plugins = {
   },
 
   -- Built-in LSP
-  ["neovim/nvim-lspconfig"] = { config = function() require "configs.lspconfig" end },
+  ["neovim/nvim-lspconfig"] = { event = on_file_open, config = function() require "configs.lspconfig" end },
 
   -- Formatting and linting
   ["jose-elias-alvarez/null-ls.nvim"] = {
