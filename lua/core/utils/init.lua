@@ -151,7 +151,9 @@ end
 -- @param msg the notification body
 -- @param type the type of the notification (:help vim.log.levels)
 -- @param opts table of nvim-notify options to use (:help notify-options)
-function astronvim.notify(msg, type, opts) vim.notify(msg, type, astronvim.default_tbl(opts, { title = "AstroNvim" })) end
+function astronvim.notify(msg, type, opts)
+  vim.schedule(function() vim.notify(msg, type, astronvim.default_tbl(opts, { title = "AstroNvim" })) end)
+end
 
 --- Trigger an AstroNvim user event
 -- @param event the event name to be appended to Astro
