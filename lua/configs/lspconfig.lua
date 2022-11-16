@@ -6,3 +6,4 @@ if astronvim.is_available "mason-lspconfig.nvim" then
 else
   setup_servers()
 end
+vim.schedule(function() vim.cmd "silent! do FileType" end)
