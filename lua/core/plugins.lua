@@ -128,7 +128,11 @@ local astro_plugins = {
   ["hrsh7th/cmp-nvim-lsp"] = { after = "nvim-cmp", config = function() astronvim.add_user_cmp_source "nvim_lsp" end },
 
   -- Built-in LSP
-  ["neovim/nvim-lspconfig"] = { event = on_file_open, config = function() require "configs.lspconfig" end },
+  ["neovim/nvim-lspconfig"] = {
+    module = "lspconfig",
+    event = on_file_open,
+    config = function() require "configs.lspconfig" end,
+  },
 
   -- Formatting and linting
   ["jose-elias-alvarez/null-ls.nvim"] = { event = on_file_open, config = function() require "configs.null-ls" end },
