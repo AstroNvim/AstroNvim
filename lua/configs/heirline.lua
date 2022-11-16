@@ -101,6 +101,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
       astronvim.status.component.breadcrumbs { hl = { fg = "winbar_fg", bg = "winbar_bg" } },
     },
     astronvim.status.component.file_info {
+      unique_path = {},
       file_icon = { hl = false },
       hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
       surround = false,
