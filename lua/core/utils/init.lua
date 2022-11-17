@@ -57,6 +57,8 @@ astronvim.default_compile_path = stdpath "data" .. "/packer_compiled.lua"
 astronvim.user_terminals = {}
 --- table of plugins to load with git
 astronvim.git_plugins = {}
+--- table of plugins to load when file opened
+astronvim.file_plugins = {}
 --- regex used for matching a valid URL/URI string
 astronvim.url_matcher =
   "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
@@ -234,7 +236,8 @@ function astronvim.initialize_packer()
     else
       -- if there is no compiled file, ask user to sync packer
       require "core.plugins"
-      astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
+      astronvim.updater.update_packages()
+      -- astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
     end
   end
 end

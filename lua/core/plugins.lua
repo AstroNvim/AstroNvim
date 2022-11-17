@@ -1,5 +1,3 @@
-local on_file_open = { "BufRead", "BufWinEnter", "BufNewFile" }
-
 local astro_plugins = {
   -- Plugin manager
   ["wbthomason/packer.nvim"] = {
@@ -26,7 +24,11 @@ local astro_plugins = {
   ["nvim-lua/plenary.nvim"] = { module = "plenary" },
 
   -- Indent detection
-  ["Darazaki/indent-o-matic"] = { event = on_file_open, config = function() require "configs.indent-o-matic" end },
+  ["Darazaki/indent-o-matic"] = {
+    opt = true,
+    setup = function() table.insert(astronvim.file_plugins, "indent-o-matic") end,
+    config = function() require "configs.indent-o-matic" end,
+  },
 
   -- Notification Enhancer
   ["rcarriga/nvim-notify"] = { event = "UIEnter", config = function() require "configs.notify" end },
@@ -85,8 +87,24 @@ local astro_plugins = {
 
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
+    module = "nvim-treesitter",
+    cmd = {
+      "TSBufDisable",
+      "TSBufEnable",
+      "TSBufToggle",
+      "TSDisable",
+      "TSEnable",
+      "TSToggle",
+      "TSInstall",
+      "TSInstallInfo",
+      "TSInstallSync",
+      "TSModuleInfo",
+      "TSUninstall",
+      "TSUpdate",
+      "TSUpdateSync",
+    },
+    setup = function() table.insert(astronvim.file_plugins, "nvim-treesitter") end,
     run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
-    event = on_file_open,
     config = function() require "configs.treesitter" end,
   },
 
@@ -130,15 +148,34 @@ local astro_plugins = {
   -- Built-in LSP
   ["neovim/nvim-lspconfig"] = {
     module = "lspconfig",
-    event = on_file_open,
+    setup = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
     config = function() require "configs.lspconfig" end,
   },
 
   -- Formatting and linting
-  ["jose-elias-alvarez/null-ls.nvim"] = { event = on_file_open, config = function() require "configs.null-ls" end },
+  ["jose-elias-alvarez/null-ls.nvim"] = {
+    module = "null-ls",
+    setup = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
+    config = function() require "configs.null-ls" end,
+  },
 
   -- Package Manager
-  ["williamboman/mason.nvim"] = { module = "mason", config = function() require "configs.mason" end },
+  ["williamboman/mason.nvim"] = {
+    module = "mason",
+    cmd = {
+      "Mason",
+      "MasonInstall",
+      "MasonUninstall",
+      "MasonUninstallAll",
+      "MasonLog",
+      "MasonUpdate", -- astronvim command
+      "MasonUpdateAll", -- astronvim command
+    },
+    config = function()
+      vim.tbl_map(function(plugin) pcall(require, plugin) end, { "lspconfig", "null-ls" })
+      require "configs.mason"
+    end,
+  },
 
   -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
@@ -150,7 +187,12 @@ local astro_plugins = {
   ["jayp0521/mason-null-ls.nvim"] = { after = "null-ls.nvim", config = function() require "configs.mason-null-ls" end },
 
   -- LSP symbols
-  ["stevearc/aerial.nvim"] = { module = "aerial", config = function() require "configs.aerial" end },
+  ["stevearc/aerial.nvim"] = {
+    module = "aerial",
+    after = { "nvim-treesitter", "nvim-lspconfig" },
+    ft = { "man", "markdown" },
+    config = function() require "configs.aerial" end,
+  },
 
   -- Fuzzy finder
   ["nvim-telescope/telescope.nvim"] = {
@@ -183,7 +225,11 @@ local astro_plugins = {
   },
 
   -- Color highlighting
-  ["NvChad/nvim-colorizer.lua"] = { event = on_file_open, config = function() require "configs.colorizer" end },
+  ["NvChad/nvim-colorizer.lua"] = {
+    opt = true,
+    setup = function() table.insert(astronvim.file_plugins, "nvim-colorizer.lua") end,
+    config = function() require "configs.colorizer" end,
+  },
 
   -- Autopairs
   ["windwp/nvim-autopairs"] = { event = "InsertEnter", config = function() require "configs.autopairs" end },
@@ -204,7 +250,8 @@ local astro_plugins = {
 
   -- Indentation
   ["lukas-reineke/indent-blankline.nvim"] = {
-    event = on_file_open,
+    opt = true,
+    setup = function() table.insert(astronvim.file_plugins, "indent-blankline.nvim") end,
     config = function() require "configs.indent-line" end,
   },
 
@@ -241,8 +288,17 @@ local status_ok, packer = pcall(require, "packer")
 if status_ok then
   packer.startup {
     function(use)
-      for key, plugin in pairs(user_plugin_opts("plugins.init", astro_plugins)) do
+      local plugins = user_plugin_opts("plugins.init", astro_plugins)
+      for key, plugin in pairs(plugins) do
         if type(key) == "string" and not plugin[1] then plugin[1] = key end
+        if key == "williamboman/mason.nvim" and plugin.cmd then
+          for mason_plugin, commands in pairs { -- lazy load mason plugin commands with Mason
+            ["jayp0521/mason-null-ls.nvim"] = { "NullLsInstall", "NullLsUninstall" },
+            ["williamboman/mason-lspconfig.nvim"] = { "LspInstall", "LspUninstall" },
+          } do
+            if plugins[mason_plugin] then vim.list_extend(plugin.cmd, commands) end
+          end
+        end
         use(plugin)
       end
     end,
