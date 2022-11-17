@@ -236,8 +236,18 @@ function astronvim.initialize_packer()
     else
       -- if there is no compiled file, ask user to sync packer
       require "core.plugins"
-      astronvim.updater.update_packages()
-      -- astronvim.echo { { "Please run " }, { ":PackerSync", "Title" } }
+      vim.api.nvim_create_autocmd("User", {
+        once = true,
+        pattern = "PackerComplete",
+        callback = function()
+          vim.cmd.bw()
+          vim.tbl_map(require, { "nvim-treesitter", "mason" })
+          astronvim.notify "Mason is installing packages if configured, check status with :Mason"
+        end,
+      })
+      vim.opt.cmdheight = 1
+      vim.notify "Please wait while plugins are installed..."
+      vim.cmd.PackerSync()
     end
   end
 end
