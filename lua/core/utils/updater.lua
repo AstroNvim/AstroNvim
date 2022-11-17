@@ -76,7 +76,7 @@ local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 -- @param quiet boolean to quietly execute or send a notification
 function astronvim.updater.reload(quiet)
   -- stop LSP if it is running
-  if vim.fn.exists ":LspStop" ~= 0 then vim.cmd "LspStop" end
+  if vim.fn.exists ":LspStop" ~= 0 then vim.cmd.LspStop() end
   local reload_module = require("plenary.reload").reload_module
   -- unload AstroNvim configuration files
   reload_module "user"
@@ -90,6 +90,29 @@ function astronvim.updater.reload(quiet)
   local reloaded, _ = pcall(dofile, vim.fn.expand "$MYVIMRC")
   -- if successful reload and not quiet, display a notification
   if reloaded and not quiet then astronvim.notify "Reloaded AstroNvim" end
+end
+
+--- Sync Packer and then update Mason
+function astronvim.updater.update_packages()
+  vim.api.nvim_create_autocmd("User", {
+    once = true,
+    desc = "Update Mason with Packer",
+    group = vim.api.nvim_create_augroup("astro_sync", { clear = true }),
+    pattern = "PackerComplete",
+    callback = function()
+      if astronvim.is_available "mason.nvim" then
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "AstroMasonUpdateComplete",
+          once = true,
+          callback = function() astronvim.event "UpdatePackagesComplete" end,
+        })
+        astronvim.mason.update_all()
+      else
+        astronvim.event "UpdatePackagesComplete"
+      end
+    end,
+  })
+  vim.cmd.PackerSync()
 end
 
 --- AstroNvim's updater function
@@ -255,23 +278,19 @@ function astronvim.updater.update()
     -- if the user wants to reload and sync packer
     if options.auto_reload then
       -- perform a reload
+      vim.opt.modifiable = true
       astronvim.updater.reload(true) -- run quiet to not show notification on reload
-      -- sync packer if it is available
-      local packer_avail, packer = pcall(require, "packer")
-      if packer_avail then
-        -- on a successful packer sync send user event
-        vim.api.nvim_create_autocmd(
-          "User",
-          { pattern = "PackerComplete", command = "doautocmd User AstroUpdateComplete" }
-        )
-        packer.sync()
-        -- if packer isn't available send successful update event
-      else
-        vim.cmd [[doautocmd User AstroUpdateComplete]]
-      end
+      vim.api.nvim_create_autocmd("User", {
+        once = true,
+        pattern = "AstroUpdatePackagesComplete",
+        callback = function() astronvim.event "UpdateComplete" end,
+      })
+      require "core.plugins"
+      astronvim.updater.update_packages()
+      -- if packer isn't available send successful update event
     else
       -- send user event of successful update
-      vim.cmd [[doautocmd User AstroUpdateComplete]]
+      astronvim.event "UpdateComplete"
     end
   end
 end

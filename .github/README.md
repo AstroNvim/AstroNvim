@@ -58,7 +58,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads) (_Optional with manual intervention:_ See [Documentation on customizing icons](https://astronvim.github.io/Recipes/icons))
 - [Neovim 0.8 (_Not_ including nightly)](https://github.com/neovim/neovim/releases/tag/v0.8.0)
-- [Tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md) (_Note:_ Most package managers will handle this dependency on installation)
+- [Tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md) (_Note:_ This is only necessary if you want to use `auto_install` feature with Treesitter)
 - A clipboard tool is necessary for the integration with the system clipboard (see [`:help clipboard-tool`](https://neovim.io/doc/user/provider.html#clipboard-tool) for supported solutions)
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 - Optional Requirements:
@@ -73,15 +73,16 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🛠️ Installation
 
-#### Make a backup of your current nvim folder
+#### Make a backup of your current nvim and shared folder
 
-```
-mv ~/.config/nvim ~/.config/nvimbackup
+```shell
+mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.local/share/nvim ~/.local/share/nvim.bak
 ```
 
 #### Clone the repository
 
-```
+```shell
 git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 nvim +PackerSync
 ```
@@ -123,7 +124,12 @@ Run `:AstroUpdate` to get the latest updates from the repository<br>
 - [Default Plugin Configuration](https://astronvim.github.io/configuration/plugin_defaults) more about the provided plugin defaults
 - [Advanced Configuration](https://astronvim.github.io/configuration/config_options) more about advanced configuration
 
-[Watch](https://www.youtube.com/watch?v=JQLZ7NJRTEo&t=4s&ab_channel=JohnCodes) a review video to know about the out of the box experience
+### 📹 Videos
+
+There have been some great review videos released by members of the community! Here are a few:
+
+- [Why I'm quitting VIM by Carlos Mafla](https://www.youtube.com/watch?v=71GDopdc9rw) (Content By: [@gigo6000](https://github.com/gigo6000))
+- [Astro Vim - All in one Nvim config!! by John McBride](https://www.youtube.com/watch?v=JQLZ7NJRTEo) (Content By: [@jpmcb](https://github.com/jpmcb))
 
 ## ⭐ Credits
 

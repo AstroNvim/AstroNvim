@@ -9,6 +9,8 @@ local lsp = {
   DiagnosticUnderlineHint = { sp = C.red_2, undercurl = true },
   DiagnosticUnderlineInfo = { sp = C.red_2, undercurl = true },
   DiagnosticUnderlineWarn = { sp = C.red_2, undercurl = true },
+  LspCodeLens = { fg = C.grey_2 },
+  LspCodeLensSeparator = { fg = C.grey },
   LspDiagnosticsFloatingError = { fg = C.red_1 },
   LspDiagnosticsFloatingHint = { fg = C.yellow_1 },
   LspDiagnosticsFloatingInfor = { fg = C.white_2 },

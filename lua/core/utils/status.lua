@@ -219,7 +219,7 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.search_count(opts)
   return function()
-    local search = vim.fn.searchcount(opts)
+    local search = (opts and not vim.tbl_isempty(opts)) and vim.fn.searchcount(opts) or vim.fn.searchcount()
     if search.total then
       return astronvim.status.utils.stylize(
         string.format("%d/%d", search.current, math.min(search.total, search.maxcount)),
@@ -911,7 +911,7 @@ function astronvim.status.component.lsp(opts)
     on_click = {
       name = "heirline_lsp",
       callback = function()
-        vim.defer_fn(function() vim.cmd "LspInfo" end, 100)
+        vim.defer_fn(function() vim.cmd.LspInfo() end, 100)
       end,
     },
   })

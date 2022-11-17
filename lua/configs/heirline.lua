@@ -1,5 +1,5 @@
-local status_ok, heirline = pcall(require, "heirline")
-if not status_ok or not astronvim.status then return end
+local heirline = require "heirline"
+if not astronvim.status then return end
 local C = require "default_theme.colors"
 
 local function setup_colors()
@@ -101,6 +101,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
       astronvim.status.component.breadcrumbs { hl = { fg = "winbar_fg", bg = "winbar_bg" } },
     },
     astronvim.status.component.file_info {
+      unique_path = {},
       file_icon = { hl = false },
       hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
       surround = false,

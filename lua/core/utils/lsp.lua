@@ -36,6 +36,11 @@ end
 -- @param server the name of the server to be setup
 astronvim.lsp.setup = function(server)
   if not tbl_contains(skip_setup, server) then
+    -- if server doesn't exist, set it up from user server definition
+    if not pcall(require, "lspconfig.server_configurations." .. server) then
+      local server_definition = user_plugin_opts("lsp.server-settings." .. server)
+      if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
+    end
     local opts = astronvim.lsp.server_settings(server)
     if type(user_registration) == "function" then
       user_registration(server, opts)
@@ -63,6 +68,11 @@ astronvim.lsp.on_attach = function(client, bufnr)
   if capabilities.codeActionProvider then
     lsp_mappings.n["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" }
     lsp_mappings.v["<leader>la"] = lsp_mappings.n["<leader>la"]
+  end
+
+  if capabilities.codeLensProvider then
+    lsp_mappings.n["<leader>ll"] = { function() vim.lsp.codelens.refresh() end, desc = "LSP codelens refresh" }
+    lsp_mappings.n["<leader>lL"] = { function() vim.lsp.codelens.run() end, desc = "LSP codelens run" }
   end
 
   if capabilities.declarationProvider then

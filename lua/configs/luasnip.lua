@@ -1,6 +1,5 @@
 local user_settings = astronvim.user_plugin_opts "luasnip"
-local luasnip_avail, luasnip = pcall(require, "luasnip")
-if not luasnip_avail then return end
+local luasnip = require "luasnip"
 if user_settings.config then luasnip.config.setup(user_settings.config) end
 for _, load_type in ipairs { "vscode", "snipmate", "lua" } do
   local loader = require("luasnip.loaders.from_" .. load_type)

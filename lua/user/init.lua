@@ -42,6 +42,14 @@ return {
     formatting = {
       format_on_save = false, -- enable or disable automatic formatting on save
     },
+    skip_setup = { "clangd" },
+    ["server-settings"] = {
+      clangd = {
+        capabilities = {
+          offsetEncoding = "utf-8",
+        },
+      },
+    },
   },
   plugins = {
     init = {
@@ -262,7 +270,7 @@ return {
         "dockerfile",
       },
     },
-    ["nvim-lsp-installer"] = {
+    ["mason-lspconfig"] = {
       ensure_installed = {
         "sumneko_lua",
         "clangd",
@@ -310,6 +318,7 @@ return {
     },
   },
   --polish = function ()
+  --  vim.lsp.get_client_by_id(1)
   --  vim.opt.laststatus = 2
   --end,
 }

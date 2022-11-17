@@ -1,7 +1,7 @@
-local cmp_status_ok, cmp = pcall(require, "cmp")
+local cmp = require "cmp"
 local snip_status_ok, luasnip = pcall(require, "luasnip")
 local lspkind_status_ok, lspkind = pcall(require, "lspkind")
-if not (cmp_status_ok and snip_status_ok) then return end
+if not snip_status_ok then return end
 local setup = cmp.setup
 local border_opts =
   { border = "single", winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None" }

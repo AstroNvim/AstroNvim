@@ -23,6 +23,7 @@ maps.n["<leader>pS"] = { "<cmd>PackerStatus<cr>", desc = "Packer Status" }
 maps.n["<leader>pu"] = { "<cmd>PackerUpdate<cr>", desc = "Packer Update" }
 
 -- AstroNvim
+maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Packer and Mason" }
 maps.n["<leader>pA"] = { "<cmd>AstroUpdate<cr>", desc = "AstroNvim Update" }
 maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
@@ -91,10 +92,9 @@ if is_available "neovim-session-manager" then
 end
 
 -- Package Manager
-if is_available "mason.nvim" then maps.n["<leader>pI"] = { "<cmd>Mason<cr>", desc = "Mason Installer" } end
-
-if is_available "mason-tool-installer.nvim" then
-  maps.n["<leader>pU"] = { "<cmd>MasonToolsUpdate<cr>", desc = "Mason Update" }
+if is_available "mason.nvim" then
+  maps.n["<leader>pI"] = { "<cmd>Mason<cr>", desc = "Mason Installer" }
+  maps.n["<leader>pU"] = { "<cmd>MasonUpdateAll<cr>", desc = "Mason Update" }
 end
 
 -- LSP Installer
@@ -157,11 +157,13 @@ if is_available "telescope.nvim" then
   maps.n["<leader>sb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
   maps.n["<leader>sh"] = { function() require("telescope.builtin").help_tags() end, desc = "Search help" }
   maps.n["<leader>sm"] = { function() require("telescope.builtin").man_pages() end, desc = "Search man" }
-  maps.n["<leader>sn"] =
-    { function() require("telescope").extensions.notify.notify() end, desc = "Search notifications" }
   maps.n["<leader>sr"] = { function() require("telescope.builtin").registers() end, desc = "Search registers" }
   maps.n["<leader>sk"] = { function() require("telescope.builtin").keymaps() end, desc = "Search keymaps" }
   maps.n["<leader>sc"] = { function() require("telescope.builtin").commands() end, desc = "Search commands" }
+  if astronvim.is_available "nvim-notify" then
+    maps.n["<leader>sn"] =
+      { function() require("telescope").extensions.notify.notify() end, desc = "Search notifications" }
+  end
   maps.n["<leader>ls"] = {
     function()
       local aerial_avail, _ = pcall(require, "aerial")
@@ -182,12 +184,22 @@ end
 -- Terminal
 if is_available "toggleterm.nvim" then
   local toggle_term_cmd = astronvim.toggle_term_cmd
-  maps.n["<leader>gg"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
-  maps.n["<leader>tn"] = { function() toggle_term_cmd "node" end, desc = "ToggleTerm node" }
-  maps.n["<leader>tu"] = { function() toggle_term_cmd "gdu" end, desc = "ToggleTerm gdu" }
-  maps.n["<leader>tt"] = { function() toggle_term_cmd "btm" end, desc = "ToggleTerm btm" }
-  maps.n["<leader>tp"] = { function() toggle_term_cmd "python" end, desc = "ToggleTerm python" }
-  maps.n["<leader>tl"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+  if vim.fn.executable "lazygit" == 1 then
+    maps.n["<leader>gg"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+    maps.n["<leader>tl"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+  end
+  if vim.fn.executable "node" == 1 then
+    maps.n["<leader>tn"] = { function() toggle_term_cmd "node" end, desc = "ToggleTerm node" }
+  end
+  if vim.fn.executable "gdu" == 1 then
+    maps.n["<leader>tu"] = { function() toggle_term_cmd "gdu" end, desc = "ToggleTerm gdu" }
+  end
+  if vim.fn.executable "btm" == 1 then
+    maps.n["<leader>tt"] = { function() toggle_term_cmd "btm" end, desc = "ToggleTerm btm" }
+  end
+  if vim.fn.executable "python" == 1 then
+    maps.n["<leader>tp"] = { function() toggle_term_cmd "python" end, desc = "ToggleTerm python" }
+  end
   maps.n["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" }
   maps.n["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
@@ -218,6 +230,7 @@ end
 if is_available "nvim-colorizer.lua" then
   maps.n["<leader>uC"] = { "<cmd>ColorizerToggle<cr>", desc = "Toggle color highlight" }
 end
+maps.n["<leader>uS"] = { function() astronvim.ui.toggle_conceal() end, desc = "Toggle conceal" }
 maps.n["<leader>ud"] = { function() astronvim.ui.toggle_diagnostics() end, desc = "Toggle diagnostics" }
 maps.n["<leader>ug"] = { function() astronvim.ui.toggle_signcolumn() end, desc = "Toggle signcolumn" }
 maps.n["<leader>ui"] = { function() astronvim.ui.set_indent() end, desc = "Change indent setting" }
