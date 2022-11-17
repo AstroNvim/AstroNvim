@@ -4,21 +4,32 @@
 
 <h1 align="center">AstroNvim</h1>
 
-<div align="center"><p>
+<h4 align="center">
+  <a href="https://astronvim.github.io/#%EF%B8%8F-installation">Install</a>
+  ·
+  <a href="https://astronvim.github.io/#%EF%B8%8F-configuration">Configure</a>
+  ·
+  <a href="https://astronvim.github.io">Docs</a>
+</h4>
+
+<p align="center">
     <a href="https://github.com/AstroNvim/AstroNvim/pulse">
-      <img src="https://img.shields.io/github/last-commit/AstroNvim/AstroNvim?color=%4dc71f&label=Last%20Commit&logo=github&style=flat-square"/>
+      <img src="https://img.shields.io/github/last-commit/AstroNvim/AstroNvim?style=for-the-badge&logo=github&color=7dc4e4&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://github.com/AstroNvim/AstroNvim/blob/main/LICENSE">
-      <img src="https://img.shields.io/github/license/AstroNvim/AstroNvim?label=License&logo=GNU&style=flat-square"/>
+    <a href="https://github.com/AstroNvim/AstroNvim/releases/latest">
+      <img src="https://img.shields.io/github/v/release/AstroNvim/AstroNvim?style=for-the-badge&logo=gitbook&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
 	</a>
-    <a href="https://neovim.io/">
-      <img src="https://img.shields.io/badge/Neovim-0.8+-blueviolet.svg?style=flat-square&logo=Neovim&logoColor=white"/>
+    <a href="https://github.com/catppuccin/catppuccin/stargazers">
+      <img src="https://img.shields.io/github/stars/AstroNvim/AstroNvim?style=for-the-badge&logo=apachespark&color=eed49f&logoColor=D9E0EE&labelColor=302D41"/>
+    </a>
+    <br>
+    <a href="https://www.reddit.com/r/AstroNvim/">
+      <img src="https://img.shields.io/reddit/subreddit-subscribers/AstroNvim?style=for-the-badge&logo=reddit&color=ee99a0&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
     <a href="https://discord.gg/UcZutyeaFW">
-      <img src="https://img.shields.io/badge/discord-Join-7289da?color=%235865F2%20&label=Discord&logo=discord&logoColor=%23ffffff&style=flat-square"/>
+      <img src="https://img.shields.io/discord/939594913560031363?style=for-the-badge&logo=discord&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
 </p>
-</div>
 
 <p align="center">
 AstroNvim is an aesthetic and feature-rich neovim config that is extensible and easy to use with a great set of plugins
@@ -28,7 +39,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ![Preview1](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dashboard.png)
 ![Preview2](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/overview.png)
-![Preview33](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/lsp_hover.png)
+![Preview33](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/vertsplit.png)
 
 ## ✨ Features
 
@@ -47,6 +58,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads) (_Optional with manual intervention:_ See [Documentation on customizing icons](https://astronvim.github.io/Recipes/icons))
 - [Neovim 0.8 (_Not_ including nightly)](https://github.com/neovim/neovim/releases/tag/v0.8.0)
+- [Tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md) (_Note:_ This is only necessary if you want to use `auto_install` feature with Treesitter)
 - A clipboard tool is necessary for the integration with the system clipboard (see [`:help clipboard-tool`](https://neovim.io/doc/user/provider.html#clipboard-tool) for supported solutions)
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
 - Optional Requirements:
@@ -61,15 +73,16 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🛠️ Installation
 
-#### Make a backup of your current nvim folder
+#### Make a backup of your current nvim and shared folder
 
-```
-mv ~/.config/nvim ~/.config/nvimbackup
+```shell
+mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.local/share/nvim ~/.local/share/nvim.bak
 ```
 
 #### Clone the repository
 
-```
+```shell
 git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 nvim +PackerSync
 ```
@@ -111,7 +124,12 @@ Run `:AstroUpdate` to get the latest updates from the repository<br>
 - [Default Plugin Configuration](https://astronvim.github.io/configuration/plugin_defaults) more about the provided plugin defaults
 - [Advanced Configuration](https://astronvim.github.io/configuration/config_options) more about advanced configuration
 
-[Watch](https://www.youtube.com/watch?v=JQLZ7NJRTEo&t=4s&ab_channel=JohnCodes) a review video to know about the out of the box experience
+### 📹 Videos
+
+There have been some great review videos released by members of the community! Here are a few:
+
+- [Why I'm quitting VIM by Carlos Mafla](https://www.youtube.com/watch?v=71GDopdc9rw) (Content By: [@gigo6000](https://github.com/gigo6000))
+- [Astro Vim - All in one Nvim config!! by John McBride](https://www.youtube.com/watch?v=JQLZ7NJRTEo) (Content By: [@jpmcb](https://github.com/jpmcb))
 
 ## ⭐ Credits
 

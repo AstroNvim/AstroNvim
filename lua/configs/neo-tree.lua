@@ -1,6 +1,4 @@
-local status_ok, neotree = pcall(require, "neo-tree")
-if not status_ok then return end
-neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
+require("neo-tree").setup(astronvim.user_plugin_opts("plugins.neo-tree", {
   close_if_last_window = true,
   enable_diagnostics = false,
   source_selector = {
@@ -14,9 +12,7 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     },
   },
   default_component_configs = {
-    indent = {
-      padding = 0,
-    },
+    indent = { padding = 0 },
     icon = {
       folder_closed = astronvim.get_icon "FolderClosed",
       folder_open = astronvim.get_icon "FolderOpen",
@@ -40,13 +36,18 @@ neotree.setup(astronvim.user_plugin_opts("plugins.neo-tree", {
   window = {
     width = 30,
     mappings = {
-      ["o"] = "open",
+      ["<space>"] = false, -- disable space until we figure out which-key disabling
+      o = "open",
+      O = function(state) astronvim.system_open(state.tree:get_node():get_id()) end,
+      H = "prev_source",
+      L = "next_source",
     },
   },
   filesystem = {
     follow_current_file = true,
     hijack_netrw_behavior = "open_current",
     use_libuv_file_watcher = true,
+    window = { mappings = { h = "toggle_hidden" } },
   },
   event_handlers = {
     { event = "neo_tree_buffer_enter", handler = function(_) vim.opt_local.signcolumn = "auto" end },

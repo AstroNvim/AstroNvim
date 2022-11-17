@@ -29,5 +29,7 @@ return {
   MacroRecording = "Recording:",
   NeovimClose = "X",
   Paste = "[PASTE]",
+  Search = "?",
+  Selected = "*",
   Spellcheck = "[SPELL]",
 }
