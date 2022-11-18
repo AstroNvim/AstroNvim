@@ -1,4 +1,5 @@
 astronvim.lspkind = astronvim.user_plugin_opts("plugins.lspkind", {
+  mode = "symbol",
   symbol_map = {
     NONE = "",
     Array = "",
