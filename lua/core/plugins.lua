@@ -85,7 +85,7 @@ local astro_plugins = {
 
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
-    run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
+    run = function() require("nvim-treesitter.install").update { with_sync = true } () end,
     event = on_file_open,
     config = function() require "configs.treesitter" end,
   },

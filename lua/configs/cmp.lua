@@ -4,7 +4,7 @@ local lspkind_status_ok, lspkind = pcall(require, "lspkind")
 if not snip_status_ok then return end
 local setup = cmp.setup
 local border_opts =
-  { border = "single", winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None" }
+{ border = "single", winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None" }
 
 local function has_words_before()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -19,7 +19,7 @@ setup(astronvim.user_plugin_opts("plugins.cmp", {
   preselect = cmp.PreselectMode.None,
   formatting = {
     fields = { "kind", "abbr", "menu" },
-    format = lspkind_status_ok and lspkind.cmp_format(astronvim.lspkind) or nil,
+    format = lspkind_status_ok and lspkind.cmp_format { with_text = false } or nil,
   },
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
