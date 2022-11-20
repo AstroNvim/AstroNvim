@@ -66,13 +66,6 @@ local astro_plugins = {
     config = function() require "configs.lspkind" end,
   },
 
-  -- Bufferline
-  ["akinsho/bufferline.nvim"] = {
-    module = "bufferline",
-    event = "UIEnter",
-    config = function() require "configs.bufferline" end,
-  },
-
   -- Better buffer closing
   ["famiu/bufdelete.nvim"] = {
     module = "bufdelete",

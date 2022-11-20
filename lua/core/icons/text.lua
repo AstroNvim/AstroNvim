@@ -1,5 +1,7 @@
 return {
   ActiveLSP = "LSP:",
+  ArrowLeft = "<",
+  ArrowRight = ">",
   BufferClose = "x",
   DapBreakpoint = "B",
   DapBreakpointCondition = "C",
@@ -27,9 +29,9 @@ return {
   GitUnstaged = "[U]",
   GitUntracked = "[?]",
   MacroRecording = "Recording:",
-  NeovimClose = "X",
   Paste = "[PASTE]",
   Search = "?",
   Selected = "*",
   Spellcheck = "[SPELL]",
+  TabClose = "X",
 }
