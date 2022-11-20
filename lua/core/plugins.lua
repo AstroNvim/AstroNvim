@@ -67,7 +67,8 @@ local astro_plugins = {
   },
 
   -- Bufferline
-  ["akinsho/bufferline.nvim"] = {
+  ["akinsho/bufferline.nvim"] = { -- TODO v3: remove this plugin
+    disable = vim.g.heirline_bufferline,
     module = "bufferline",
     event = "UIEnter",
     config = function() require "configs.bufferline" end,

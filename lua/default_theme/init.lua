@@ -18,7 +18,7 @@ for plugin, enabled in
   pairs(user_plugin_opts("default_theme.plugins", {
     aerial = true,
     beacon = false,
-    bufferline = true,
+    bufferline = true, -- TODO v3: make this false
     cmp = true,
     dapui = true,
     dashboard = true,
