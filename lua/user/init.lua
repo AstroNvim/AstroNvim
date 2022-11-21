@@ -190,6 +190,7 @@ return {
       config.sources = {
         null_ls.builtins.formatting.astyle, -- C/C++
         null_ls.builtins.formatting.erlfmt, -- Erlang
+        null_ls.builtins.formatting.mix, -- Mix
         null_ls.builtins.formatting.stylua, -- Lua
         null_ls.builtins.formatting.shfmt, -- Shell
         null_ls.builtins.formatting.black, -- Python
@@ -287,6 +288,19 @@ return {
         "pyright",
         "solargraph",
         "rust_analyzer",
+      },
+    },
+    ["mason-null-ls"] = { -- overrides `require("mason-null-ls").setup(...)`
+      ensure_installed = {
+        "prettier",
+        "stylua",
+        "clang_format",
+        "hadolint",
+        "djlint",
+        "fixjson",
+        "write_good",
+        "black",
+        "shfmt",
       },
     },
     ["neo-tree"] = {
