@@ -82,7 +82,6 @@ return {
               pounce = false,
               sneak = false,
               symbols_outline = false,
-              luasnip = true,
             },
             groups = {
               all = {
