@@ -1,3 +1,4 @@
+require("nvim-web-devicons").set_default_icon(astronvim.get_icon "DefaultFile", "#6d8086", "66")
 require("nvim-web-devicons").set_icon(astronvim.user_plugin_opts("plugins.nvim-web-devicons", {
   deb = { icon = "", name = "Deb" },
   lock = { icon = "", name = "Lock" },
