@@ -15,7 +15,7 @@ function git.cmd(args, ...) return astronvim.cmd("git -C " .. astronvim.install.
 
 --- Check if the AstroNvim is able to reach the `git` command
 -- @return the result of running `git --help`
-function git.available() return git.cmd("--help", false) end
+function git.available() return vim.fn.executable "git" == 1 end
 
 --- Check if the AstroNvim home is a git repo
 -- @return the result of the command
