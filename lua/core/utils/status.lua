@@ -8,7 +8,6 @@
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 astronvim.status = { hl = {}, init = {}, provider = {}, condition = {}, component = {}, utils = {}, env = {} }
-local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
 
 astronvim.status.env.modes = {
   ["n"] = { "NORMAL", "normal" },
@@ -93,6 +92,7 @@ function astronvim.status.hl.mode_bg() return astronvim.status.env.modes[vim.fn.
 -- @return the highlight group for the current filetype foreground
 -- @usage local heirline_component = { provider = astronvim.status.provider.fileicon(), hl = astronvim.status.hl.filetype_color },
 function astronvim.status.hl.filetype_color(self)
+  local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
   if not devicons_avail then return {} end
   local _, color = devicons.get_icon_color(
     vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ":t"),
@@ -326,10 +326,13 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.filename() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.filename(opts)
-  opts = astronvim.default_tbl(opts, { fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ":t" })
+  opts = astronvim.default_tbl(
+    opts,
+    { fallback = "[No Name]", fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ":t" }
+  )
   return function(self)
     local filename = vim.fn.fnamemodify(opts.fname(self and self.bufnr or 0), opts.modify)
-    return astronvim.status.utils.stylize((filename == "" and "[No Name]" or filename), opts)
+    return astronvim.status.utils.stylize((filename == "" and opts.fallback or filename), opts)
   end
 end
 
@@ -422,8 +425,9 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_icon() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_icon(opts)
-  if not devicons_avail then return "" end
   return function(self)
+    local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
+    if not devicons_avail then return "" end
     local ft_icon, _ = devicons.get_icon(
       vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ":t"),
       nil,

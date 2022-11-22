@@ -7,7 +7,7 @@ return {
   DapBreakpointRejected = "",
   DapLogPoint = ".>",
   DapStopped = "",
-  DefaultFile = "",
+  DefaultFile = "",
   Diagnostic = "裂",
   DiagnosticError = "",
   DiagnosticHint = "",
