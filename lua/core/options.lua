@@ -1,3 +1,4 @@
+vim.opt.shortmess:append { s = true, I = true } -- disable startup message
 astronvim.vim_opts(astronvim.user_plugin_opts("options", {
   opt = {
     backspace = vim.opt.backspace + { "nostop" }, -- Don't stop backspace at insert
@@ -20,7 +21,6 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
     relativenumber = true, -- Show relative numberline
     scrolloff = 8, -- Number of lines to keep above and below the cursor
     shiftwidth = 2, -- Number of space inserted for indentation
-    shortmess = vim.opt.shortmess + { s = true, I = true },
     showmode = false, -- Disable showing modes in command line
     showtabline = 2, -- always display tabline
     sidescrolloff = 8, -- Number of columns to keep at the sides of the cursor
