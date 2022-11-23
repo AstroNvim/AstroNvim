@@ -33,7 +33,8 @@ elif [ "$platform" = "darwin" ]; then
     typescript ghc perl rebar3 shellcheck ripgrep fd lazygit ncdu \
     nvm hadolint checkmake postgresql gh openssl readline sqlite3 \
     xz zlib rbenv gum rust-analyzer fftw ncurses libtool automake \
-    portaudio cava astyle shfmt cppcheck gitlint golangci-lint
+    portaudio cava astyle shfmt cppcheck gitlint golangci-lint \
+    lua-language-server
   sudo gem update
   sudo gem install rubocop
   export LIBTOOL='which glibtool'
