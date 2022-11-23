@@ -61,6 +61,9 @@ return {
         end,
       },
       {
+        "psliwka/vim-smoothie",
+      },
+      {
         "EdenEast/nightfox.nvim",
         config = function()
           require("nightfox").setup {

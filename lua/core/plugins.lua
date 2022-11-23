@@ -291,7 +291,7 @@ local astro_plugins = {
     config = function()
       require "configs.neotest"
     end,
-  }
+  },
 }
 
 if astronvim.updater.snapshot then
