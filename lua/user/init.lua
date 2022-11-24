@@ -41,6 +41,7 @@ return {
   lsp = {
     formatting = {
       format_on_save = false, -- enable or disable automatic formatting on save
+      timeout_ms = 10000,
     },
     skip_setup = { "clangd" },
     ["server-settings"] = {
@@ -49,6 +50,16 @@ return {
           offsetEncoding = "utf-8",
         },
       },
+      elixirLS = {
+        -- I choose to disable dialyzer for personal reasons, but
+        -- I would suggest you also disable it unless you are well
+        -- aquainted with dialzyer and know how to use it.
+        dialyzerEnabled = false,
+        -- I also choose to turn off the auto dep fetching feature.
+        -- It often get's into a weird state that requires deleting
+        -- the .elixir_ls directory and restarting your editor.
+        fetchDeps = false
+      }
     },
   },
   plugins = {
