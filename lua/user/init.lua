@@ -36,7 +36,7 @@ return {
     "                           ▒▒██▒▒        ▒▒        ▒▒██▒▒                            ",
     "                             ▒▒                      ▒▒                              ",
     "                                                                                     ",
-    "                                        NVIM                                         ",
+    "            Spiders are the only web developers that enjoy finding bugs.             ",
   },
   lsp = {
     formatting = {
