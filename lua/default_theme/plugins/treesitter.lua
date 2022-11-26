@@ -12,7 +12,7 @@ local treesitter = {
   ["@error"] = { fg = C.red },
   ["@exception"] = { fg = C.purple },
   ["@field"] = { fg = C.red },
-  ["@float"] = { fg = C.green },
+  ["@float"] = { fg = C.orange },
   ["@function"] = { fg = C.blue },
   ["@function.builtin"] = { fg = C.blue },
   ["@function.macro"] = { fg = C.yellow },
