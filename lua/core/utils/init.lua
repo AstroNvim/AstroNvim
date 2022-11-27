@@ -110,14 +110,18 @@ end
 function astronvim.get_hlgroup(name, fallback)
   if vim.fn.hlexists(name) == 1 then
     local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
-    if not hl["foreground"] then hl["foreground"] = "NONE" end
-    if not hl["background"] then hl["background"] = "NONE" end
-    hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
-    hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
-    return hl
-  else
-    return fallback
+    local old_true_val = hl[true]
+    hl[true] = nil
+    if not vim.tbl_isempty(hl) then
+      hl[true] = old_true_val
+      if not hl["foreground"] then hl["foreground"] = "NONE" end
+      if not hl["background"] then hl["background"] = "NONE" end
+      hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
+      hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
+      return hl
+    end
   end
+  return fallback
 end
 
 --- Trim a string or return nil
