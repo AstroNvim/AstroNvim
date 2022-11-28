@@ -228,7 +228,7 @@ return {
         null_ls.builtins.diagnostics.checkmake, -- Makefile
         null_ls.builtins.diagnostics.tsc, -- Typescript
         null_ls.builtins.diagnostics.cppcheck, -- C/C++
-        null_ls.builtins.diagnostics.credo, -- Elixir
+        --null_ls.builtins.diagnostics.credo, -- Elixir
         null_ls.builtins.diagnostics.eslint, -- JavaScript
         null_ls.builtins.diagnostics.flake8, -- Python
         null_ls.builtins.diagnostics.gitlint, -- Git
