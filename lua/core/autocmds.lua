@@ -124,9 +124,8 @@ vim.api.nvim_create_autocmd("BufRead", {
     vim.fn.system("git -C " .. vim.fn.expand "%:p:h" .. " rev-parse")
     if vim.v.shell_error == 0 then
       vim.api.nvim_del_augroup_by_name "git_plugin_lazy_load"
-      for _, plugin in ipairs(astronvim.git_plugins) do
-        vim.schedule(function() require("packer").loader(plugin) end)
-      end
+      local packer = require "packer"
+      vim.tbl_map(function(plugin) packer.loader(plugin) end, astronvim.git_plugins)
     end
   end,
 })
@@ -136,13 +135,8 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
     local title = vim.fn.expand "%"
     if not (title == "" or title == "[packer]" or title:match "^neo%-tree%s+filesystem") then
       vim.api.nvim_del_augroup_by_name "file_plugin_lazy_load"
-      for _, plugin in ipairs(astronvim.file_plugins) do
-        if plugin == "nvim-treesitter" then
-          require("packer").loader(plugin)
-        else
-          vim.schedule(function() require("packer").loader(plugin) end)
-        end
-      end
+      local packer = require "packer"
+      vim.tbl_map(function(plugin) packer.loader(plugin) end, astronvim.file_plugins)
     end
   end,
 })
