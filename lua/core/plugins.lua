@@ -180,8 +180,8 @@ local astro_plugins = {
       "MasonUpdateAll", -- astronvim command
     },
     config = function()
-      vim.tbl_map(function(plugin) pcall(require, plugin) end, { "lspconfig", "null-ls" })
       require "configs.mason"
+      vim.tbl_map(function(plugin) pcall(require, plugin) end, { "lspconfig", "null-ls" })
     end,
   },
 
