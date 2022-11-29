@@ -49,8 +49,6 @@ local function load_module_file(module)
   return found_module
 end
 
---- user settings from the base `user/init.lua` file
-astronvim.user_settings = load_module_file "user.init"
 --- default packer compilation location to be used in bootstrapping and packer setup call
 astronvim.default_compile_path = stdpath "data" .. "/packer_compiled.lua"
 --- table of user created terminals
@@ -188,10 +186,14 @@ end
 
 --- Search the user settings (user/init.lua table) for a table with a module like path string
 -- @param module the module path like string to look up in the user settings table
+-- @param prefix a module prefix for where to search (default: "user")
 -- @return the value of the table entry if exists or nil
-local function user_setting_table(module)
+local function user_setting_table(module, prefix)
+  prefix = prefix or "user"
+
   -- get the user settings table
-  local settings = astronvim.user_settings or {}
+  local settings = load_module_file(prefix .. ".init") or {}
+
   -- iterate over the path string split by '.' to look up the table value
   for tbl in string.gmatch(module, "([^%.]+)") do
     settings = settings[tbl]
@@ -270,20 +272,29 @@ end
 -- @param module the module path of the override setting
 -- @param default the default settings that will be overridden
 -- @param extend boolean value to either extend the default settings or overwrite them with the user settings entirely (default: true)
--- @param prefix a module prefix for where to search (default: user)
+-- @param prefixes a module prefixes for where to search (default: { "user" })
 -- @return the new configuration settings with the user overrides applied
-function astronvim.user_plugin_opts(module, default, extend, prefix)
+function astronvim.user_plugin_opts(module, default, extend, prefixes)
   -- default to extend = true
   if extend == nil then extend = true end
   -- if no default table is provided set it to an empty table
   default = default or {}
-  -- try to load a module file if it exists
-  local user_settings = load_module_file((prefix or "user") .. "." .. module)
-  -- if no user module file is found, try to load an override from the user settings table from user/init.lua
-  if user_settings == nil and prefix == nil then user_settings = user_setting_table(module) end
-  -- if a user override was found call the configuration engine
-  if user_settings ~= nil then default = func_or_extend(user_settings, default, extend) end
-  -- return the final configuration table with any overrides applied
+
+  -- if nil, then default to { "user" }
+  prefixes = prefixes or { "user" }
+
+  -- TODO: Remove when MV Bump. For backwards compatiblity purposes.
+  if type(prefixes) == "string" then prefixes = { prefixes } end
+
+  for _, prefix in ipairs(prefixes) do
+    -- try to load a module file if it exists
+    local user_settings = load_module_file((prefix or "user") .. "." .. module)
+    -- if no user module file is found, try to load an override from the user settings table from user/init.lua
+    if user_settings == nil and prefix == nil then user_settings = user_setting_table(module, prefix) end
+    -- if a user override was found call the configuration engine
+    if user_settings ~= nil then default = func_or_extend(user_settings, default, extend) end
+    -- return the final configuration table with any overrides applied
+  end
   return default
 end
 
