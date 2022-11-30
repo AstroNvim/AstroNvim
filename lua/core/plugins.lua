@@ -245,13 +245,13 @@ local astro_plugins = {
   -- Terminal
   ["akinsho/toggleterm.nvim"] = {
     cmd = "ToggleTerm",
-    module = { "toggleterm", "toggleterm.terminal" },
+    module = "toggleterm",
     config = function() require "configs.toggleterm" end,
   },
 
   -- Commenting
   ["numToStr/Comment.nvim"] = {
-    module = { "Comment", "Comment.api" },
+    module = "Comment",
     keys = { "gc", "gb" },
     config = function() require "configs.Comment" end,
   },
