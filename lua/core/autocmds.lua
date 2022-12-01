@@ -11,6 +11,13 @@ cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   callback = function() astronvim.set_url_match() end,
 })
 
+cmd("TextYankPost", {
+  desc = "Highlight yanked text",
+  group = augroup("highlightyank", { clear = true }),
+  pattern = "*",
+  callback = function() vim.highlight.on_yank() end,
+})
+
 cmd("FileType", {
   desc = "Unlist quickfist buffers",
   group = augroup("unlist_quickfist", { clear = true }),
