@@ -9,12 +9,6 @@ local function setup_colors()
   local Conditional = astronvim.get_hlgroup("Conditional", { fg = C.purple_1, bg = C.grey_4 })
   local String = astronvim.get_hlgroup("String", { fg = C.green, bg = C.grey_4 })
   local TypeDef = astronvim.get_hlgroup("TypeDef", { fg = C.yellow, bg = C.grey_4 })
-  local HeirlineNormal = astronvim.get_hlgroup("HerlineNormal", { fg = C.blue, bg = C.grey_4 })
-  local HeirlineInsert = astronvim.get_hlgroup("HeirlineInsert", { fg = C.green, bg = C.grey_4 })
-  local HeirlineVisual = astronvim.get_hlgroup("HeirlineVisual", { fg = C.purple, bg = C.grey_4 })
-  local HeirlineReplace = astronvim.get_hlgroup("HeirlineReplace", { fg = C.red_1, bg = C.grey_4 })
-  local HeirlineCommand = astronvim.get_hlgroup("HeirlineCommand", { fg = C.yellow_1, bg = C.grey_4 })
-  local HeirlineInactive = astronvim.get_hlgroup("HeirlineInactive", { fg = C.grey_7, bg = C.grey_4 })
   local GitSignsAdd = astronvim.get_hlgroup("GitSignsAdd", { fg = C.green, bg = C.grey_4 })
   local GitSignsChange = astronvim.get_hlgroup("GitSignsChange", { fg = C.orange_1, bg = C.grey_4 })
   local GitSignsDelete = astronvim.get_hlgroup("GitSignsDelete", { fg = C.red_1, bg = C.grey_4 })
@@ -22,6 +16,18 @@ local function setup_colors()
   local DiagnosticWarn = astronvim.get_hlgroup("DiagnosticWarn", { fg = C.orange_1, bg = C.grey_4 })
   local DiagnosticInfo = astronvim.get_hlgroup("DiagnosticInfo", { fg = C.white_2, bg = C.grey_4 })
   local DiagnosticHint = astronvim.get_hlgroup("DiagnosticHint", { fg = C.yellow_1, bg = C.grey_4 })
+  local HeirlineInactive = astronvim.get_hlgroup("HeirlineInactive", { fg = C.grey_7, bg = C.grey_4 })
+  local HeirlineNormal = astronvim.get_hlgroup("HeirlineNormal", { fg = nil }).fg
+    or astronvim.status.hl.lualine_mode("normal", C.blue)
+  local HeirlineInsert = astronvim.get_hlgroup("HeirlineInsert", { fg = nil }).fg
+    or astronvim.status.hl.lualine_mode("insert", C.green)
+  local HeirlineVisual = astronvim.get_hlgroup("HeirlineVisual", { fg = nil }).fg
+    or astronvim.status.hl.lualine_mode("visual", C.purple)
+  local HeirlineReplace = astronvim.get_hlgroup("HeirlineReplace", { fg = nil }).fg
+    or astronvim.status.hl.lualine_mode("replace", C.red_1)
+  local HeirlineCommand = astronvim.get_hlgroup("HeirlineCommand", { fg = nil }).fg
+    or astronvim.status.hl.lualine_mode("command", C.yellow_1)
+
   local colors = astronvim.user_plugin_opts("heirline.colors", {
     fg = StatusLine.fg,
     bg = StatusLine.bg,
@@ -37,16 +43,16 @@ local function setup_colors()
     diag_WARN = DiagnosticWarn.fg,
     diag_INFO = DiagnosticInfo.fg,
     diag_HINT = DiagnosticHint.fg,
-    normal = astronvim.status.hl.lualine_mode("normal", HeirlineNormal.fg),
-    insert = astronvim.status.hl.lualine_mode("insert", HeirlineInsert.fg),
-    visual = astronvim.status.hl.lualine_mode("visual", HeirlineVisual.fg),
-    replace = astronvim.status.hl.lualine_mode("replace", HeirlineReplace.fg),
-    command = astronvim.status.hl.lualine_mode("command", HeirlineCommand.fg),
-    inactive = HeirlineInactive.fg,
     winbar_fg = WinBar.fg,
     winbar_bg = WinBar.bg,
     winbarnc_fg = WinBarNC.fg,
     winbarnc_bg = WinBarNC.bg,
+    inactive = HeirlineInactive.fg,
+    normal = HeirlineNormal,
+    insert = HeirlineInsert,
+    visual = HeirlineVisual,
+    replace = HeirlineReplace,
+    command = HeirlineCommand,
   })
 
   for _, section in ipairs {
@@ -88,15 +94,6 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
   {
     fallthrough = false,
     {
-      condition = function()
-        return astronvim.status.condition.buffer_matches {
-          buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-          filetype = { "NvimTree", "neo-tree", "dashboard", "Outline", "aerial" },
-        }
-      end,
-      init = function() vim.opt_local.winbar = nil end,
-    },
-    {
       condition = astronvim.status.condition.is_active,
       astronvim.status.component.breadcrumbs { hl = { fg = "winbar_fg", bg = "winbar_bg" } },
     },
@@ -110,10 +107,25 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
 })
 heirline.setup(heirline_opts[1], heirline_opts[2], heirline_opts[3])
 
-vim.api.nvim_create_augroup("Heirline", { clear = true })
+local augroup = vim.api.nvim_create_augroup("Heirline", { clear = true })
 vim.api.nvim_create_autocmd("User", {
   pattern = "AstroColorScheme",
-  group = "Heirline",
+  group = augroup,
   desc = "Refresh heirline colors",
   callback = function() require("heirline.utils").on_colorscheme(setup_colors()) end,
+})
+vim.api.nvim_create_autocmd("User", {
+  pattern = "HeirlineInitWinbar",
+  group = augroup,
+  desc = "Disable winbar for some filetypes",
+  callback = function()
+    if
+      astronvim.status.condition.buffer_matches {
+        buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
+        filetype = { "NvimTree", "neo-tree", "dashboard", "Outline", "aerial" },
+      }
+    then
+      vim.opt_local.winbar = nil
+    end
+  end,
 })

@@ -1,4 +1,5 @@
 return {
+  NotifyBackground = { bg = C.bg },
   NotifyERRORBorder = { fg = C.red },
   NotifyWARNBorder = { fg = C.orange_1 },
   NotifyINFOBorder = { fg = C.green },

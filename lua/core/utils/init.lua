@@ -110,14 +110,18 @@ end
 function astronvim.get_hlgroup(name, fallback)
   if vim.fn.hlexists(name) == 1 then
     local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
-    if not hl["foreground"] then hl["foreground"] = "NONE" end
-    if not hl["background"] then hl["background"] = "NONE" end
-    hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
-    hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
-    return hl
-  else
-    return fallback
+    local old_true_val = hl[true]
+    hl[true] = nil
+    if not vim.tbl_isempty(hl) then
+      hl[true] = old_true_val
+      if not hl["foreground"] then hl["foreground"] = "NONE" end
+      if not hl["background"] then hl["background"] = "NONE" end
+      hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
+      hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
+      return hl
+    end
   end
+  return fallback
 end
 
 --- Trim a string or return nil
@@ -248,6 +252,23 @@ function astronvim.initialize_packer()
       vim.opt.cmdheight = 1
       vim.notify "Please wait while plugins are installed..."
       vim.cmd.PackerSync()
+    end
+  end
+end
+
+function astronvim.lazy_load_commands(plugin, commands)
+  if type(commands) == "string" then commands = { commands } end
+  if astronvim.is_available(plugin) and not packer_plugins[plugin].loaded then
+    for _, command in ipairs(commands) do
+      pcall(
+        vim.cmd,
+        string.format(
+          'command -nargs=* -range -bang -complete=file %s lua require("packer.load")({"%s"}, { cmd = "%s", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)',
+          command,
+          plugin,
+          command
+        )
+      )
     end
   end
 end
