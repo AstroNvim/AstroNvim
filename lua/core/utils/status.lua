@@ -217,9 +217,11 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.search_count() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.search_count(opts)
+  local search_func = vim.tbl_isempty(opts or {}) and function() return vim.fn.searchcount() end
+    or function() return vim.fn.searchcount(opts) end
   return function()
-    local search = (opts and not vim.tbl_isempty(opts)) and vim.fn.searchcount(opts) or vim.fn.searchcount()
-    if search.total then
+    local search_ok, search = pcall(search_func)
+    if search_ok and type(search) == "table" and search.total then
       return astronvim.status.utils.stylize(
         string.format("%d/%d", search.current, math.min(search.total, search.maxcount)),
         opts
