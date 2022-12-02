@@ -223,7 +223,13 @@ function astronvim.status.provider.search_count(opts)
     local search_ok, search = pcall(search_func)
     if search_ok and type(search) == "table" and search.total then
       return astronvim.status.utils.stylize(
-        string.format("%d/%d", search.current, math.min(search.total, search.maxcount)),
+        string.format(
+          "%s%d/%s%d",
+          search.current > search.maxcount and ">" or "",
+          math.min(search.current, search.maxcount),
+          search.incomplete == 2 and ">" or "",
+          math.min(search.total, search.maxcount)
+        ),
         opts
       )
     end
