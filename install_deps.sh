@@ -17,14 +17,14 @@ if [ "$platform" = "linux" ]; then
     sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go \
       typescript ghc perl shellcheck ripgrep fd lazygit ncdu nvm \
       checkmake postgresql github-cli sqlite openssl readline xz zlib gum \
-      rust-analyzer iniparser fftw ncurses base-devel
-    yay -S rebar3 hadolint rbenv cava
+      rust-analyzer iniparser fftw ncurses base-devel espeak-ng
+    yay -S rebar3 hadolint rbenv cava tetris-terminal-git
   elif [ "$distro" = "Ubuntu Linux" ]; then
     sudo apt-get update
     sudo apt-get upgrade
     sudo apt-get install git curl gum rust-analyzer libfftw3-dev \
       libasound2-dev libncursesw5-dev libpulse-dev libtool automake \
-      cava
+      cava espeak-ng
   fi
 elif [ "$platform" = "darwin" ]; then
   echo "Determined platform: $platform" 
@@ -34,7 +34,9 @@ elif [ "$platform" = "darwin" ]; then
     nvm hadolint checkmake postgresql gh openssl readline sqlite3 \
     xz zlib rbenv gum rust-analyzer fftw ncurses libtool automake \
     portaudio cava astyle shfmt cppcheck gitlint golangci-lint \
-    lua-language-server elixir-ls
+    lua-language-server elixir-ls samtay/tui/tetris espeak autoconf-archive \
+    Code-Hex/tap/neo-cowsay youtube-dl achannarasappa/tap/ticker \
+    circumflex hledger
   sudo gem update
   sudo gem install rubocop
   export LIBTOOL='which glibtool'
@@ -46,7 +48,17 @@ fi
 curl https://pyenv.run | bash
 sudo luarocks install luacheck
 cargo install selene stylua macchina
+
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
+go install github.com/maaslalani/nap@main
+go install github.com/DyegoCosta/snake-game@latest
+go install github.com/maaslalani/typer@latest
+go install github.com/mritd/gitflow-toolkit/v2@latest
+
+gitflow-toolkit install
+
+gh extension install dlvhdr/gh-dash
+
 pip install flake8 black isort
 npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
   fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
