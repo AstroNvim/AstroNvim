@@ -179,17 +179,15 @@ local astro_plugins = {
   -- Package Manager
   ["williamboman/mason.nvim"] = {
     module = "mason",
-    setup = function()
-      astronvim.lazy_load_commands("mason.nvim", {
-        "Mason",
-        "MasonInstall",
-        "MasonUninstall",
-        "MasonUninstallAll",
-        "MasonLog",
-        "MasonUpdate", -- astronvim command
-        "MasonUpdateAll", -- astronvim command
-      })
-    end,
+    cmd = {
+      "Mason",
+      "MasonInstall",
+      "MasonUninstall",
+      "MasonUninstallAll",
+      "MasonLog",
+      "MasonUpdate", -- astronvim command
+      "MasonUpdateAll", -- astronvim command
+    },
     config = function()
       require "configs.mason"
       vim.tbl_map(function(plugin) pcall(require, plugin) end, { "lspconfig", "null-ls" })
