@@ -41,7 +41,7 @@ return {
   lsp = {
     formatting = {
       format_on_save = false, -- enable or disable automatic formatting on save
-      timeout_ms = 10000,
+      timeout_ms = 20000,
     },
     skip_setup = { "clangd" },
     ["server-settings"] = {
@@ -198,6 +198,7 @@ return {
     },
     ["null-ls"] = function(config)
       local null_ls = require "null-ls"
+      config.default_timeout = 20000
       -- Check supported formatters and linters
       -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
       -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
@@ -233,6 +234,7 @@ return {
           },
         },
         -- Linters
+        null_ls.builtins.diagnostics.credo, -- Elixir
         null_ls.builtins.diagnostics.rubocop, -- Ruby
         null_ls.builtins.diagnostics.checkmake, -- Makefile
         null_ls.builtins.diagnostics.tsc, -- Typescript
