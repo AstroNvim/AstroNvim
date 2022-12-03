@@ -209,6 +209,8 @@ return {
         null_ls.builtins.formatting.shfmt, -- Shell
         null_ls.builtins.formatting.black, -- Python
         null_ls.builtins.formatting.isort, -- Python
+        null_ls.builtins.formatting.gofmt, -- GO
+        null_ls.builtins.formatting.surface, -- Phoenix
         null_ls.builtins.formatting.prettierd.with {
           filetypes = {
             "javascript",
@@ -228,7 +230,6 @@ return {
         null_ls.builtins.diagnostics.checkmake, -- Makefile
         null_ls.builtins.diagnostics.tsc, -- Typescript
         null_ls.builtins.diagnostics.cppcheck, -- C/C++
-        --null_ls.builtins.diagnostics.credo, -- Elixir
         null_ls.builtins.diagnostics.eslint, -- JavaScript
         null_ls.builtins.diagnostics.flake8, -- Python
         null_ls.builtins.diagnostics.gitlint, -- Git
@@ -297,6 +298,7 @@ return {
         "elixirls",
         "erlangls",
         "golangci_lint_ls",
+        "gopls",
         "graphql",
         "html",
         "jsonls",

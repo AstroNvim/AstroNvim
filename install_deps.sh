@@ -36,9 +36,10 @@ elif [ "$platform" = "darwin" ]; then
     portaudio cava astyle shfmt cppcheck gitlint golangci-lint \
     lua-language-server elixir-ls samtay/tui/tetris espeak autoconf-archive \
     Code-Hex/tap/neo-cowsay youtube-dl achannarasappa/tap/ticker \
-    circumflex hledger
+    circumflex hledger clang-format bash-language-server haskell-language-server \
+    efm-langserver gopls 
   sudo gem update
-  sudo gem install rubocop
+  sudo gem install rubocop neovim
   export LIBTOOL='which glibtool'
   export LIBTOOLIZE='which glibtoolize'
   ln -s 'which glibtoolize' /usr/local/bin/libtoolize
@@ -46,8 +47,10 @@ elif [ "$platform" = "darwin" ]; then
 fi
 
 curl https://pyenv.run | bash
+
 sudo luarocks install luacheck
-cargo install selene stylua macchina
+
+cargo install selene stylua macchina efmt
 
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 go install github.com/maaslalani/nap@main
@@ -60,11 +63,14 @@ gitflow-toolkit install
 
 gh extension install dlvhdr/gh-dash
 
-pip install flake8 black isort
+pip install flake8 black isort cmake-language-server djlint pynvim
+
 npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
   fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
-  sass serverless npm-run-all nativescript
-curl -s "https://get.sdkman.io" | bash
+  sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
+  neovim
+
+  curl -s "https://get.sdkman.io" | bash
 
 if [ -n "$ZSH_VERSION" ]; then
   zsh_shell=true
