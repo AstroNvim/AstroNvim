@@ -204,7 +204,14 @@ return {
       config.sources = {
         null_ls.builtins.formatting.astyle, -- C/C++
         null_ls.builtins.formatting.erlfmt, -- Erlang
-        null_ls.builtins.formatting.mix, -- Mix
+        null_ls.builtins.formatting.mix.with {
+          filetypes = {
+            "elixir",
+            "ex",
+            "exs",
+            "heex",
+          },
+        }, -- Mix
         null_ls.builtins.formatting.stylua, -- Lua
         null_ls.builtins.formatting.shfmt, -- Shell
         null_ls.builtins.formatting.black, -- Python
@@ -297,7 +304,6 @@ return {
         "eslint",
         "elixirls",
         "erlangls",
-        "golangci_lint_ls",
         "gopls",
         "graphql",
         "html",
