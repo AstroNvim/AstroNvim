@@ -54,6 +54,7 @@ go install github.com/maaslalani/nap@main
 go install github.com/DyegoCosta/snake-game@latest
 go install github.com/maaslalani/typer@latest
 go install github.com/mritd/gitflow-toolkit/v2@latest
+go install github.com/ntk148v/goignore@latest
 
 gitflow-toolkit install
 
