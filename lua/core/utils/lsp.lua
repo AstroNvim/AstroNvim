@@ -192,7 +192,7 @@ astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
   local opts = user_plugin_opts( -- get user server-settings
-    "lsp.server-settings." .. server_name,
+    "lsp.server-settings." .. server_name, -- TODO: RENAME lsp.server-settings to lsp.config in v3
     user_plugin_opts("server-settings." .. server_name, { -- get default server-settings
       capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
       flags = vim.tbl_deep_extend("force", astronvim.lsp.flags, server.flags or {}),
