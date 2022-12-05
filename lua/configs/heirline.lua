@@ -16,7 +16,8 @@ local function setup_colors()
   local DiagnosticWarn = astronvim.get_hlgroup("DiagnosticWarn", { fg = C.orange_1, bg = C.grey_4 })
   local DiagnosticInfo = astronvim.get_hlgroup("DiagnosticInfo", { fg = C.white_2, bg = C.grey_4 })
   local DiagnosticHint = astronvim.get_hlgroup("DiagnosticHint", { fg = C.yellow_1, bg = C.grey_4 })
-  local HeirlineInactive = astronvim.get_hlgroup("HeirlineInactive", { fg = C.grey_7, bg = C.grey_4 })
+  local HeirlineInactive = astronvim.get_hlgroup("HeirlineInactive", { fg = nil }).fg
+    or astronvim.status.hl.lualine_mode("inactive", C.grey_7)
   local HeirlineNormal = astronvim.get_hlgroup("HeirlineNormal", { fg = nil }).fg
     or astronvim.status.hl.lualine_mode("normal", C.blue)
   local HeirlineInsert = astronvim.get_hlgroup("HeirlineInsert", { fg = nil }).fg
@@ -27,6 +28,8 @@ local function setup_colors()
     or astronvim.status.hl.lualine_mode("replace", C.red_1)
   local HeirlineCommand = astronvim.get_hlgroup("HeirlineCommand", { fg = nil }).fg
     or astronvim.status.hl.lualine_mode("command", C.yellow_1)
+  local HeirlineTerminal = astronvim.get_hlgroup("HeirlineTerminal", { fg = nil }).fg
+    or astronvim.status.hl.lualine_mode("inactive", HeirlineInsert)
 
   local colors = astronvim.user_plugin_opts("heirline.colors", {
     fg = StatusLine.fg,
@@ -47,12 +50,13 @@ local function setup_colors()
     winbar_bg = WinBar.bg,
     winbarnc_fg = WinBarNC.fg,
     winbarnc_bg = WinBarNC.bg,
-    inactive = HeirlineInactive.fg,
+    inactive = HeirlineInactive,
     normal = HeirlineNormal,
     insert = HeirlineInsert,
     visual = HeirlineVisual,
     replace = HeirlineReplace,
     command = HeirlineCommand,
+    terminal = HeirlineTerminal,
   })
 
   for _, section in ipairs {
