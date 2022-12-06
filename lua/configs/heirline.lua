@@ -97,16 +97,15 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
   },
   {
     fallthrough = false,
-    {
-      condition = astronvim.status.condition.is_active,
-      astronvim.status.component.breadcrumbs { hl = { fg = "winbar_fg", bg = "winbar_bg" } },
-    },
     astronvim.status.component.file_info {
+      condition = function() return not astronvim.status.condition.is_active() end,
       unique_path = {},
       file_icon = { hl = false },
       hl = { fg = "winbarnc_fg", bg = "winbarnc_bg" },
       surround = false,
+      update = "BufEnter",
     },
+    astronvim.status.component.breadcrumbs { hl = { fg = "winbar_fg", bg = "winbar_bg" } },
   },
 })
 heirline.setup(heirline_opts[1], heirline_opts[2], heirline_opts[3])
