@@ -908,7 +908,11 @@ end
 -- @usage local heirline_component = astronvim.status.component.lsp()
 function astronvim.status.component.lsp(opts)
   opts = astronvim.default_tbl(opts, {
-    lsp_progress = { str = "", padding = { right = 1 } },
+    lsp_progress = {
+      str = "",
+      padding = { right = 1 },
+      update = { "User", pattern = { "LspProgressUpdate", "LspRequest" } },
+    },
     lsp_client_names = {
       str = "LSP",
       update = { "LspAttach", "LspDetach", "BufEnter" },
