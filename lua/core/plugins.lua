@@ -177,10 +177,18 @@ local astro_plugins = {
   },
 
   -- Debugger
-  ["mfussenegger/nvim-dap"] = { module = "dap", config = function() require "configs.dap" end },
+  ["mfussenegger/nvim-dap"] = {
+    disable = vim.fn.has "win32" == 1,
+    module = "dap",
+    config = function() require "configs.dap" end,
+  },
 
   -- Debugger UI
-  ["rcarriga/nvim-dap-ui"] = { after = "nvim-dap", config = function() require "configs.dapui" end },
+  ["rcarriga/nvim-dap-ui"] = {
+    disable = vim.fn.has "win32" == 1,
+    after = "nvim-dap",
+    config = function() require "configs.dapui" end,
+  },
 
   -- Package Manager
   ["williamboman/mason.nvim"] = {
@@ -210,7 +218,11 @@ local astro_plugins = {
   ["jayp0521/mason-null-ls.nvim"] = { after = "null-ls.nvim", config = function() require "configs.mason-null-ls" end },
 
   -- dap manager
-  ["jayp0521/mason-nvim-dap.nvim"] = { after = "nvim-dap", config = function() require "configs.mason-nvim-dap" end },
+  ["jayp0521/mason-nvim-dap.nvim"] = {
+    disable = vim.fn.has "win32" == 1,
+    after = "nvim-dap",
+    config = function() require "configs.mason-nvim-dap" end,
+  },
 
   -- LSP symbols
   ["stevearc/aerial.nvim"] = {
@@ -323,7 +335,7 @@ if status_ok then
             ["williamboman/mason-lspconfig.nvim"] = { "LspInstall", "LspUninstall" },
             ["jayp0521/mason-nvim-dap.nvim"] = { "DapInstall", "DapUninstall" },
           } do
-            if plugins[mason_plugin] and not plugins[mason_plugin].disabled then
+            if plugins[mason_plugin] and not plugins[mason_plugin].disable then
               vim.list_extend(plugin.cmd, commands)
             end
           end
