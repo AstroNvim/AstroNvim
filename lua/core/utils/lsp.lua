@@ -18,7 +18,8 @@ local is_available = astronvim.is_available
 local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
 local skip_setup = user_plugin_opts "lsp.skip_setup"
 
-astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true } })
+astronvim.lsp.formatting =
+  astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
   astronvim.lsp.formatting.format_on_save = { enabled = astronvim.lsp.formatting.format_on_save }
 end
@@ -84,7 +85,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
     lsp_mappings.n["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol" }
   end
 
-  if capabilities.documentFormattingProvider then
+  if capabilities.documentFormattingProvider and not tbl_contains(astronvim.lsp.formatting.disabled, client.name) then
     lsp_mappings.n["<leader>lf"] = {
       function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       desc = "Format code",
