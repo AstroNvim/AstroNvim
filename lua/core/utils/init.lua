@@ -530,7 +530,7 @@ function astronvim.cmd(cmd, show_error)
   if not success and (show_error == nil and true or show_error) then
     vim.api.nvim_err_writeln("Error running command: " .. cmd .. "\nError message:\n" .. result)
   end
-  return success and result or nil
+  return success and result:gsub("[\27\155][][()#;?%d]*[A-PRZcf-ntqry=><~]", "") or nil
 end
 
 require "core.utils.ui"
