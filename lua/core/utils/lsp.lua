@@ -67,6 +67,14 @@ astronvim.lsp.on_attach = function(client, bufnr)
     v = {},
   }
 
+  if is_available "mason-lspconfig.nvim" then
+    lsp_mappings.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" }
+  end
+
+  if is_available "null-ls.nvim" then
+    lsp_mappings.n["<leader>lI"] = { "<cmd>NullLsInfo<cr>", desc = "Null-ls information" }
+  end
+
   if capabilities.codeActionProvider then
     lsp_mappings.n["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" }
     lsp_mappings.v["<leader>la"] = lsp_mappings.n["<leader>la"]
