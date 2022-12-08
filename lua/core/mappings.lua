@@ -97,9 +97,6 @@ if is_available "mason.nvim" then
   maps.n["<leader>pU"] = { "<cmd>MasonUpdateAll<cr>", desc = "Mason Update" }
 end
 
--- LSP Installer
-if is_available "mason-lspconfig.nvim" then maps.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" } end
-
 -- Smart Splits
 if is_available "smart-splits.nvim" then
   -- Better window navigation
