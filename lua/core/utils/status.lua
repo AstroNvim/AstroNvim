@@ -56,7 +56,9 @@ end
 astronvim.status.env.buf_matchers = {
   filetype = function(pattern_list) return pattern_match(vim.bo.filetype, pattern_list) end,
   buftype = function(pattern_list) return pattern_match(vim.bo.buftype, pattern_list) end,
-  bufname = function(pattern_list) return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t"), pattern_list) end,
+  bufname = function(pattern_list)
+    return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t"), pattern_list)
+  end,
 }
 
 astronvim.status.env.separators = astronvim.user_plugin_opts("heirline.separators", {
@@ -548,7 +550,9 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.treesitter_status() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.treesitter_status(opts)
-  return function() return astronvim.status.utils.stylize(require("nvim-treesitter.parser").has_parser() and "TS" or "", opts) end
+  return function()
+    return astronvim.status.utils.stylize(require("nvim-treesitter.parser").has_parser() and "TS" or "", opts)
+  end
 end
 
 --- A provider function for displaying a single string
@@ -748,7 +752,9 @@ function astronvim.status.component.cmd_info(opts)
     surround = {
       separator = "center",
       color = "cmd_info_bg",
-      condition = function() return astronvim.status.condition.is_hlsearch() or astronvim.status.condition.is_macro_recording() end,
+      condition = function()
+        return astronvim.status.condition.is_hlsearch() or astronvim.status.condition.is_macro_recording()
+      end,
     },
     condition = function() return vim.opt.cmdheight:get() == 0 end,
     hl = { fg = "cmd_info_fg" },
