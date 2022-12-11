@@ -96,6 +96,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     astronvim.status.component.mode { surround = { separator = "right" } },
   },
   {
+    init = function(self) self.bufnr = vim.api.nvim_get_current_buf() end,
     fallthrough = false,
     astronvim.status.component.file_info {
       condition = function() return not astronvim.status.condition.is_active() end,
