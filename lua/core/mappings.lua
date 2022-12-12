@@ -53,6 +53,10 @@ else
   maps.n["<S-h>"] = { "<cmd>bprevious<cr>", desc = "Previous buffer" }
 end
 
+-- Navigate tabs
+maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
+maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
+
 -- Comment
 if is_available "Comment.nvim" then
   maps.n["<leader>/"] = { function() require("Comment.api").toggle.linewise.current() end, desc = "Comment line" }
