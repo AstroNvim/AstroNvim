@@ -19,4 +19,11 @@ return {
   DapUIBreakpointsCurrentLine = { fg = C.yellow_1, bold = true },
   DapUIBreakpointsLine = { link = "DapUILineNumber" },
   DapUIBreakpointsDisabledLine = { link = "Comment" },
+  DapUIPlayPause = { fg = C.green },
+  DapUIStop = { fg = C.red },
+  DapUIRestart = { fg = C.yellow },
+  DapUIStepOver = { fg = C.blue },
+  DapUIStepInto = { fg = C.blue },
+  DapUIStepBack = { fg = C.blue },
+  DapUIStepOut = { fg = C.blue },
 }
