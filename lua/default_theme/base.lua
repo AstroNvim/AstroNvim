@@ -48,6 +48,7 @@ local base = {
   Folded = { fg = C.grey, bg = C.none },
   FoldColumn = { fg = C.none, bg = C.none },
   IncSearch = { fg = C.yellow, bg = C.grey },
+  CurSearch = { link = "IncSearch" },
   LineNr = { fg = C.grey_1, bg = C.none },
   NonText = { fg = C.grey_1, bg = C.none },
   Pmenu = { fg = C.fg, bg = C.bg },
