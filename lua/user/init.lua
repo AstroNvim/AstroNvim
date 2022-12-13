@@ -117,46 +117,6 @@ return {
           }
         end,
       },
-      -- DAP:
-      { "mfussenegger/nvim-dap" },
-      {
-        "rcarriga/nvim-dap-ui",
-        requires = { "nvim-dap", "rust-tools.nvim" },
-        config = function()
-          local dapui = require "dapui"
-          dapui.setup {}
-
-          local dap = require "dap"
-          dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-          dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-          dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
-
-          -- DAP mappings:
-          local map = vim.api.nvim_set_keymap
-          map("n", "<F5>", ":lua require('dap').continue()<cr>", { desc = "Continue" })
-          map("n", "<F10>", ":lua require('dap').step_over()<cr>", { desc = "Step over" })
-          map("n", "<F11>", ":lua require('dap').step_into()<cr>", { desc = "Step into" })
-          map("n", "<F12>", ":lua require('dap').step_out()<cr>", { desc = "Step out" })
-          map("n", "<leader>Dt", ":lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle breakpoint" })
-          map(
-            "n",
-            "<leader>DP",
-            ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
-            { desc = "Set conditional breakpoint" }
-          )
-          map(
-            "n",
-            "<leader>DB",
-            ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Logpoint message: '))<cr>",
-            { desc = "Set logpoint" }
-          )
-          map("n", "<leader>Dp", ":lua require('dap').repl.open()<cr>", { desc = "Open REPL" })
-          map("n", "<leader>DR", ":lua require('dap').run_last()<cr>", { desc = "Run last debugged program" })
-          map("n", "<leader>DX", ":lua require('dap').terminate()<cr>", { desc = "Terminate program being debugged" })
-          map("n", "<leader>Du", ":lua require('dap').up()<cr>", { desc = "Up one frame" })
-          map("n", "<leader>Dd", ":lua require('dap').down()<cr>", { desc = "Down one frame" })
-        end,
-      },
       {
         "mfussenegger/nvim-dap-python",
       },
