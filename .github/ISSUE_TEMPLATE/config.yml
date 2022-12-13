@@ -1,9 +1,8 @@
-blank_issues_enabled: true
-
+blank_issues_enabled: false
 contact_links:
-  - name: Reddit community
+  - name: r/AstroNvim (Reddit)
     url: https://www.reddit.com/r/AstroNvim
-    about: Ask questions about AstroNvim on Reddit
-  - name: Discord community
+    about: Ask questions about AstroNvim on the official Subreddit
+  - name: Discord Chat
     url: https://discord.gg/UcZutyeaFW
-    about: Discussions about AstroNvim on Discord
+    about: Ask questions and have discussions about AstroNvim on Discord

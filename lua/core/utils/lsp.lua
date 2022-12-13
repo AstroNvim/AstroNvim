@@ -14,10 +14,12 @@ local tbl_contains = vim.tbl_contains
 local tbl_isempty = vim.tbl_isempty
 local user_plugin_opts = astronvim.user_plugin_opts
 local conditional_func = astronvim.conditional_func
+local is_available = astronvim.is_available
 local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
 local skip_setup = user_plugin_opts "lsp.skip_setup"
 
-astronvim.lsp.formatting = astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true } })
+astronvim.lsp.formatting =
+  astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
   astronvim.lsp.formatting.format_on_save = { enabled = astronvim.lsp.formatting.format_on_save }
 end
@@ -83,7 +85,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
     lsp_mappings.n["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol" }
   end
 
-  if capabilities.documentFormattingProvider then
+  if capabilities.documentFormattingProvider and not tbl_contains(astronvim.lsp.formatting.disabled, client.name) then
     lsp_mappings.n["<leader>lf"] = {
       function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
       desc = "Format code",
@@ -147,6 +149,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
 
   if capabilities.referencesProvider then
     lsp_mappings.n["gr"] = { function() vim.lsp.buf.references() end, desc = "References of current symbol" }
+    lsp_mappings.n["<leader>lR"] = { function() vim.lsp.buf.references() end, desc = "Search references" }
   end
 
   if capabilities.renameProvider then
@@ -159,6 +162,27 @@ astronvim.lsp.on_attach = function(client, bufnr)
 
   if capabilities.typeDefinitionProvider then
     lsp_mappings.n["gT"] = { function() vim.lsp.buf.type_definition() end, desc = "Definition of current type" }
+  end
+
+  if capabilities.workspaceSymbolProvider then
+    lsp_mappings.n["<leader>lG"] = { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols" }
+  end
+
+  if is_available "telescope.nvim" then -- setup telescope mappings if available
+    if lsp_mappings.n.gd then lsp_mappings.n.gd[1] = function() require("telescope.builtin").lsp_definitions() end end
+    if lsp_mappings.n.gI then
+      lsp_mappings.n.gI[1] = function() require("telescope.builtin").lsp_implementations() end
+    end
+    if lsp_mappings.n.gr then lsp_mappings.n.gr[1] = function() require("telescope.builtin").lsp_references() end end
+    if lsp_mappings.n["<leader>lR"] then
+      lsp_mappings.n["<leader>lR"][1] = function() require("telescope.builtin").lsp_references() end
+    end
+    if lsp_mappings.n.gT then
+      lsp_mappings.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end
+    end
+    if lsp_mappings.n["<leader>lG"] then
+      lsp_mappings.n["<leader>lG"][1] = function() require("telescope.builtin").lsp_workspace_symbols() end
+    end
   end
 
   astronvim.set_mappings(user_plugin_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
@@ -192,7 +216,7 @@ astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
   local opts = user_plugin_opts( -- get user server-settings
-    "lsp.server-settings." .. server_name,
+    "lsp.server-settings." .. server_name, -- TODO: RENAME lsp.server-settings to lsp.config in v3
     user_plugin_opts("server-settings." .. server_name, { -- get default server-settings
       capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
       flags = vim.tbl_deep_extend("force", astronvim.lsp.flags, server.flags or {}),

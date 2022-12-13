@@ -1,14 +1,29 @@
 local is_available = astronvim.is_available
 local user_plugin_opts = astronvim.user_plugin_opts
+local namespace = vim.api.nvim_create_namespace
 local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
+
+vim.on_key(function(char)
+  if vim.fn.mode() == "n" then
+    local new_hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
+    if vim.opt.hlsearch:get() ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
+  end
+end, namespace "auto_hlsearch")
 
 cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
   group = augroup("highlighturl", { clear = true }),
   pattern = "*",
   callback = function() astronvim.set_url_match() end,
+})
+
+cmd("TextYankPost", {
+  desc = "Highlight yanked text",
+  group = augroup("highlightyank", { clear = true }),
+  pattern = "*",
+  callback = function() vim.highlight.on_yank() end,
 })
 
 cmd("FileType", {
@@ -100,6 +115,15 @@ if is_available "neo-tree.nvim" then
       local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
       if stats and stats.type == "directory" then require("neo-tree.setup.netrw").hijack() end
     end,
+  })
+end
+
+if is_available "nvim-dap-ui" then
+  vim.api.nvim_create_autocmd("FileType", {
+    desc = "Make q close dap floating windows",
+    group = vim.api.nvim_create_augroup("dapui", { clear = true }),
+    pattern = "dap-float",
+    callback = function() vim.keymap.set("n", "q", "<cmd>close!<cr>") end,
   })
 end
 

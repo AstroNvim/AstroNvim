@@ -8,7 +8,7 @@ maps[""]["<Space>"] = "<Nop>"
 -- Standard Operations
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>q<cr>", desc = "Quit" }
-maps.n["<leader>h"] = { "<cmd>nohlsearch<cr>", desc = "No Highlight" }
+maps.n["<leader>h"] = { "<cmd>nohlsearch<cr>", desc = "No Highlight" } -- TODO: REMOVE IN v3
 maps.n["<leader>fn"] = { "<cmd>enew<cr>", desc = "New File" }
 maps.n["gx"] = { function() astronvim.system_open() end, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
@@ -175,9 +175,6 @@ if is_available "telescope.nvim" then
     end,
     desc = "Search symbols",
   }
-  maps.n["<leader>lG"] =
-    { function() require("telescope.builtin").lsp_workspace_symbols() end, desc = "Search workspace symbols" }
-  maps.n["<leader>lR"] = { function() require("telescope.builtin").lsp_references() end, desc = "Search references" }
   maps.n["<leader>lD"] = { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
 end
 
@@ -207,6 +204,34 @@ if is_available "toggleterm.nvim" then
   maps.t["<F7>"] = maps.n["<F7>"]
   maps.n["<C-'>"] = maps.n["<F7>"]
   maps.t["<C-'>"] = maps.n["<F7>"]
+end
+
+if is_available "nvim-dap" then
+  -- modified function keys found with `showkey -a` in the terminal to get key code
+  -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
+  maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
+  maps.n["<F17>"] = { function() require("dap").terminate() end, desc = "Debugger: Stop" } -- Shift+F5
+  maps.n["<F29>"] = { function() require("dap").restart_frame() end, desc = "Debugger: Restart" } -- Control+F5
+  maps.n["<F6>"] = { function() require("dap").pause() end, desc = "Debugger: Pause" }
+  maps.n["<F9>"] = { function() require("dap").toggle_breakpoint() end, desc = "Debugger: Toggle Breakpoint" }
+  maps.n["<F10>"] = { function() require("dap").step_over() end, desc = "Debugger: Step Over" }
+  maps.n["<F11>"] = { function() require("dap").step_into() end, desc = "Debugger: Step Into" }
+  maps.n["<F23>"] = { function() require("dap").step_out() end, desc = "Debugger: Step Out" } -- Shift+F11
+  maps.n["<leader>Db"] = { function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint (F9)" }
+  maps.n["<leader>DB"] = { function() require("dap").clear_breakpoints() end, desc = "Clear Breakpoints" }
+  maps.n["<leader>Dc"] = { function() require("dap").continue() end, desc = "Start/Continue (F5)" }
+  maps.n["<leader>Di"] = { function() require("dap").step_into() end, desc = "Step Into (F11)" }
+  maps.n["<leader>Do"] = { function() require("dap").step_over() end, desc = "Step Over (F10)" }
+  maps.n["<leader>DO"] = { function() require("dap").step_out() end, desc = "Step Out (S-F11)" }
+  maps.n["<leader>Dq"] = { function() require("dap").close() end, desc = "Close Session" }
+  maps.n["<leader>DQ"] = { function() require("dap").terminate() end, desc = "Terminate Session (S-F5)" }
+  maps.n["<leader>Dp"] = { function() require("dap").pause() end, desc = "Pause (F6)" }
+  maps.n["<leader>Dr"] = { function() require("dap").restart_frame() end, desc = "Restart (C-F5)" }
+  maps.n["<leader>DR"] = { function() require("dap").repl.toggle() end, desc = "Toggle REPL" }
+  if is_available "nvim-dap-ui" then
+    maps.n["<leader>Du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
+    maps.n["<leader>Dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
+  end
 end
 
 -- Stay in indent mode
