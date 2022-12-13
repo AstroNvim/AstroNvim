@@ -75,6 +75,9 @@ return {
         "psliwka/vim-smoothie",
       },
       {
+        "ThePrimeagen/vim-be-good",
+      },
+      {
         "folke/tokyonight.nvim",
         config = function()
           require("tokyonight").setup {
