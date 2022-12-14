@@ -317,7 +317,10 @@ local astro_plugins = {
 if astronvim.updater.snapshot then
   for plugin, options in pairs(astro_plugins) do
     local pin = astronvim.updater.snapshot[plugin:match "/([^/]*)$"]
-    options.commit = pin and pin.commit or options.commit
+    if pin and pin.commit then
+      options.commit = pin.commit
+      options.tag = nil
+    end
   end
 end
 
