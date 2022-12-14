@@ -19,7 +19,7 @@
     <a href="https://github.com/AstroNvim/AstroNvim/releases/latest">
       <img src="https://img.shields.io/github/v/release/AstroNvim/AstroNvim?style=for-the-badge&logo=gitbook&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
 	</a>
-    <a href="https://github.com/catppuccin/catppuccin/stargazers">
+    <a href="https://github.com/AstroNvim/AstroNvim/stargazers">
       <img src="https://img.shields.io/github/stars/AstroNvim/AstroNvim?style=for-the-badge&logo=apachespark&color=eed49f&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
     <br>
