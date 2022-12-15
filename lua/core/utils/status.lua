@@ -46,6 +46,29 @@ astronvim.status.env.modes = {
   ["null"] = { "null", "inactive" },
 }
 
+astronvim.status.env.separators = astronvim.user_plugin_opts("heirline.separators", {
+  none = { "", "" },
+  left = { "", "  " },
+  right = { "  ", "" },
+  center = { "  ", "  " },
+  tab = { "", " " },
+})
+
+astronvim.status.env.attributes = astronvim.user_plugin_opts("heirline.attributes", {
+  buffer_active = { bold = true, italic = true },
+  buffer_picker = { bold = true },
+  macro_recording = { bold = true },
+  git_branch = { bold = true },
+  git_diff = { bold = true },
+})
+
+astronvim.status.env.icon_highlights = astronvim.user_plugin_opts("heirline.icon_highlights", {
+  file_icon = {
+    tabline = function(self) return self.is_active or self.is_visible end,
+    statusline = true,
+  },
+})
+
 local function pattern_match(str, pattern_list)
   for _, pattern in ipairs(pattern_list) do
     if str:find(pattern) then return true end
@@ -54,20 +77,12 @@ local function pattern_match(str, pattern_list)
 end
 
 astronvim.status.env.buf_matchers = {
-  filetype = function(pattern_list) return pattern_match(vim.bo.filetype, pattern_list) end,
-  buftype = function(pattern_list) return pattern_match(vim.bo.buftype, pattern_list) end,
-  bufname = function(pattern_list)
-    return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t"), pattern_list)
+  filetype = function(pattern_list, bufnr) return pattern_match(vim.bo[bufnr or 0].filetype, pattern_list) end,
+  buftype = function(pattern_list, bufnr) return pattern_match(vim.bo[bufnr or 0].buftype, pattern_list) end,
+  bufname = function(pattern_list, bufnr)
+    return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr or 0), ":t"), pattern_list)
   end,
 }
-
-astronvim.status.env.separators = astronvim.user_plugin_opts("heirline.separators", {
-  none = { "", "" },
-  left = { "", "  " },
-  right = { "  ", "" },
-  center = { "  ", "  " },
-  tab = { "", " " },
-})
 
 --- Get the highlight background color of the lualine theme for the current colorscheme
 -- @param  mode the neovim mode to get the color of
@@ -104,15 +119,40 @@ function astronvim.status.hl.filetype_color(self)
   return { fg = color }
 end
 
+--- Merge the color and attributes from user settings for a given name
+-- @param name string, the name of the element to get the attributes and colors for
+-- @param include_bg boolean whether or not to include background color (Default: false)
+-- @return a table of highlight information
+-- @usage local heirline_component = { provider = "Example Provider", hl = astronvim.status.hl.get_attributes("treesitter") },
+function astronvim.status.hl.get_attributes(name, include_bg)
+  local hl = astronvim.status.env.attributes[name] or {}
+  hl.fg = name .. "_fg"
+  if include_bg then hl.bg = name .. "_bg" end
+  return hl
+end
+
+--- Enable filetype color highlight if enabled in icon_highlights.file_icon options
+-- @param name string of the icon_highlights.file_icon table element
+-- @return function for setting hl property in a component
+-- @usage local heirline_component = { provider = "Example Provider", hl = astronvim.status.hl.file_icon("winbar") },
+function astronvim.status.hl.file_icon(name)
+  return function(self)
+    local hl_enabled = astronvim.status.env.icon_highlights.file_icon[name]
+    if type(hl_enabled) == "function" then hl_enabled = hl_enabled(self) end
+    if hl_enabled then return astronvim.status.hl.filetype_color(self) end
+  end
+end
+
 --- An `init` function to build a set of children components for LSP breadcrumbs
 -- @param opts options for configuring the breadcrumbs (default: `{ separator = " > ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
 -- @return The Heirline init function
 -- @usage local heirline_component = { init = astronvim.status.init.breadcrumbs { padding = { left = 1 } } }
 function astronvim.status.init.breadcrumbs(opts)
-  opts = astronvim.default_tbl(
-    opts,
-    { separator = " > ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }
-  )
+  opts = astronvim.default_tbl(opts, {
+    separator = " > ",
+    icon = { enabled = true, hl = astronvim.status.env.icon_highlights.breadcrumbs },
+    padding = { left = 0, right = 0 },
+  })
   return function(self)
     local data = require("aerial").get_location(true) or {}
     local children = {}
@@ -131,9 +171,11 @@ function astronvim.status.init.breadcrumbs(opts)
         },
       }
       if opts.icon.enabled then -- add icon and highlight if enabled
+        local hl = opts.icon.hl
+        if type(hl) == "function" then hl = hl(self) end
         table.insert(child, 1, {
           provider = string.format("%s ", d.icon),
-          hl = opts.icon.hl and string.format("Aerial%sIcon", d.kind) or nil,
+          hl = hl and string.format("Aerial%sIcon", d.kind) or nil,
         })
       end
       if #data > 1 and i < #data then table.insert(child, { provider = opts.separator }) end -- add a separator only if needed
@@ -579,11 +621,13 @@ end
 function astronvim.status.condition.is_active() return vim.api.nvim_get_current_win() == tonumber(vim.g.actual_curwin) end
 
 --- A condition function if the buffer filetype,buftype,bufname match a pattern
+-- @param patterns the table of patterns to match
+-- @param bufnr number of the buffer to match (Default: 0 [current])
 -- @return boolean of wether or not LSP is attached
 -- @usage local heirline_component = { provider = "Example Provider", condition = function() return astronvim.status.condition.buffer_matches { buftype = { "terminal" } } end }
-function astronvim.status.condition.buffer_matches(patterns)
+function astronvim.status.condition.buffer_matches(patterns, bufnr)
   for kind, pattern_list in pairs(patterns) do
-    if astronvim.status.env.buf_matchers[kind](pattern_list) then return true end
+    if astronvim.status.env.buf_matchers[kind](pattern_list, bufnr) then return true end
   end
   return false
 end
@@ -713,12 +757,15 @@ end
 -- @usage local heirline_component = astronvim.status.component.file_info()
 function astronvim.status.component.file_info(opts)
   opts = astronvim.default_tbl(opts, {
-    file_icon = { hl = astronvim.status.hl.filetype_color, padding = { left = 1, right = 1 } },
+    file_icon = {
+      hl = astronvim.status.hl.file_icon "statusline",
+      padding = { left = 1, right = 1 },
+    }, -- TODO: REWORK THIS
     filename = {},
     file_modified = { padding = { left = 1 } },
     file_read_only = { padding = { left = 1 } },
     surround = { separator = "left", color = "file_info_bg", condition = astronvim.status.condition.has_filetype },
-    hl = { fg = "file_info_fg" },
+    hl = astronvim.status.hl.get_attributes "file_info",
   })
   return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, {
     "file_icon",
@@ -737,9 +784,15 @@ end
 -- @usage local heirline_component = astronvim.status.component.tabline_file_info()
 function astronvim.status.component.tabline_file_info(opts)
   return astronvim.status.component.file_info(astronvim.default_tbl(opts, {
-    unique_path = { hl = function(self) return { fg = self.tab_type .. "_path_fg" } end },
+    file_icon = {
+      condition = function(self) return not self._show_picker end,
+      hl = astronvim.status.hl.file_icon "tabline",
+    },
+    unique_path = {
+      hl = function(self) return astronvim.status.hl.get_attributes(self.tab_type .. "_path") end,
+    },
     close_button = {
-      hl = function(self) return { fg = self.tab_type .. "_close_fg" } end,
+      hl = function(self) return astronvim.status.hl.get_attributes(self.tab_type .. "_close") end,
       padding = { left = 1, right = 1 },
       on_click = {
         callback = function(_, minwid) astronvim.close_buf(minwid) end,
@@ -749,11 +802,9 @@ function astronvim.status.component.tabline_file_info(opts)
     },
     padding = { left = 1, right = 1 },
     hl = function(self)
-      return {
-        fg = self.tab_type .. "_fg",
-        bold = self.is_active,
-        italic = self.is_active,
-      }
+      local tab_type = self.tab_type
+      if self._show_picker and self.tab_type ~= "buffer_active" then tab_type = "buffer_visible" end
+      return astronvim.status.hl.get_attributes(tab_type)
     end,
     surround = false,
   }))
@@ -769,7 +820,7 @@ function astronvim.status.component.nav(opts)
     percentage = { padding = { left = 1 } },
     scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
     surround = { separator = "right", color = "nav_bg" },
-    hl = { fg = "nav_fg" },
+    hl = astronvim.status.hl.get_attributes "nav",
     update = { "CursorMoved", "BufEnter" },
   })
   return astronvim.status.component.builder(
@@ -790,7 +841,7 @@ function astronvim.status.component.macro_recording(opts)
       color = "macro_recording_bg",
       condition = astronvim.status.condition.is_macro_recording,
     },
-    hl = { fg = "macro_recording_fg", bold = true },
+    hl = astronvim.status.hl.get_attributes "macro_recording",
     update = { "RecordingEnter", "RecordingLeave" },
   })
   return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "macro_recording" }))
@@ -820,7 +871,7 @@ function astronvim.status.component.cmd_info(opts)
       end,
     },
     condition = function() return vim.opt.cmdheight:get() == 0 end,
-    hl = { fg = "cmd_info_fg" },
+    hl = astronvim.status.hl.get_attributes "cmd_info",
   })
   return astronvim.status.component.builder(
     astronvim.status.utils.setup_providers(opts, { "macro_recording", "search_count" })
@@ -837,7 +888,7 @@ function astronvim.status.component.mode(opts)
     paste = false,
     spell = false,
     surround = { separator = "left", color = astronvim.status.hl.mode_bg },
-    hl = { fg = "bg" },
+    hl = astronvim.status.hl.get_attributes "mode",
     update = "ModeChanged",
   })
   if not opts["mode_text"] then opts.str = { str = " " } end
@@ -867,7 +918,7 @@ function astronvim.status.component.git_branch(opts)
   opts = astronvim.default_tbl(opts, {
     git_branch = { icon = { kind = "GitBranch", padding = { right = 1 } } },
     surround = { separator = "left", color = "git_branch_bg", condition = astronvim.status.condition.is_git_repo },
-    hl = { fg = "git_branch_fg", bold = true },
+    hl = astronvim.status.hl.get_attributes "git_branch",
     on_click = {
       name = "heirline_branch",
       callback = function()
@@ -891,7 +942,7 @@ function astronvim.status.component.git_diff(opts)
     added = { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } },
     changed = { icon = { kind = "GitChange", padding = { left = 1, right = 1 } } },
     removed = { icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } },
-    hl = { fg = "git_diff_fg", bold = true },
+    hl = astronvim.status.hl.get_attributes "git_diff",
     on_click = {
       name = "heirline_git",
       callback = function()
@@ -910,7 +961,7 @@ function astronvim.status.component.git_diff(opts)
       if out then
         out.provider = "git_diff"
         out.opts.type = provider
-        out.hl = { fg = "git_" .. provider }
+        if out.hl == nil then out.hl = { fg = "git_" .. provider } end
       end
       return out
     end)
@@ -928,7 +979,7 @@ function astronvim.status.component.diagnostics(opts)
     INFO = { icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } } },
     HINT = { icon = { kind = "DiagnosticHint", padding = { left = 1, right = 1 } } },
     surround = { separator = "left", color = "diagnostics_bg", condition = astronvim.status.condition.has_diagnostics },
-    hl = { fg = "diagnostics_fg" },
+    hl = astronvim.status.hl.get_attributes "diagnostics",
     on_click = {
       name = "heirline_diagnostic",
       callback = function()
@@ -945,7 +996,7 @@ function astronvim.status.component.diagnostics(opts)
       if out then
         out.provider = "diagnostics"
         out.opts.severity = provider
-        out.hl = { fg = "diag_" .. provider }
+        if out.hl == nil then out.hl = { fg = "diag_" .. provider } end
       end
       return out
     end)
@@ -964,7 +1015,7 @@ function astronvim.status.component.treesitter(opts)
       color = "treesitter_bg",
       condition = astronvim.status.condition.treesitter_available,
     },
-    hl = { fg = "treesitter_fg" },
+    hl = astronvim.status.hl.get_attributes "treesitter",
     update = { "OptionSet", pattern = "syntax" },
     init = astronvim.status.init.update_events { "BufEnter" },
   })
@@ -987,7 +1038,7 @@ function astronvim.status.component.lsp(opts)
       update = { "LspAttach", "LspDetach", "BufEnter" },
       icon = { kind = "ActiveLSP", padding = { right = 2 } },
     },
-    hl = { fg = "lsp_fg" },
+    hl = astronvim.status.hl.get_attributes "lsp",
     surround = { separator = "right", color = "lsp_bg", condition = astronvim.status.condition.lsp_attached },
     on_click = {
       name = "heirline_lsp",
