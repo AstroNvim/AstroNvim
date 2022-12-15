@@ -126,6 +126,7 @@ end
 ---@param component table
 ---@return table
 astronvim.status.heirline.make_buflist = function(component)
+  local overflow_hl = astronvim.status.hl.get_attributes("buffer_overflow", true)
   return require("heirline.utils").make_buflist(
     astronvim.status.utils.surround(
       "tab",
@@ -158,15 +159,17 @@ astronvim.status.heirline.make_buflist = function(component)
             self._picker_labels[label] = self.bufnr
             self.label = label
           end,
-          provider = function(self) return astronvim.status.provider.str { str = self.label, padding = { left = 1 } } end,
-          hl = { fg = "buffer_picker_fg", bold = true },
+          provider = function(self)
+            return astronvim.status.provider.str { str = self.label, padding = { left = 1, right = 1 } }
+          end,
+          hl = astronvim.status.hl.get_attributes "buffer_picker",
         },
         component, -- create buffer component
       },
       false -- disable surrounding
     ),
-    { provider = astronvim.get_icon "ArrowLeft" .. " ", hl = { fg = "buffer_overflow_fg", bg = "buffer_overflow_bg" } },
-    { provider = astronvim.get_icon "ArrowRight" .. " ", hl = { fg = "buffer_overflow_fg", bg = "buffer_overflow_bg" } },
+    { provider = astronvim.get_icon "ArrowLeft" .. " ", hl = overflow_hl },
+    { provider = astronvim.get_icon "ArrowRight" .. " ", hl = overflow_hl },
     function() return vim.t.bufs end, -- use astronvim bufs variable
     false -- disable internal caching
   )
@@ -222,7 +225,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     static = {
       disabled = {
         buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-        filetype = { "NvimTree", "neo-tree", "dashboard", "Outline", "aerial" },
+        filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
       },
     },
     init = function(self) self.bufnr = vim.api.nvim_get_current_buf() end,
@@ -250,7 +253,10 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
         { -- file tree padding
           condition = function(self)
             self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
-            return vim.tbl_contains({ "neo-tree", "NvimTree" }, vim.bo[vim.api.nvim_win_get_buf(self.winid)].filetype)
+            return astronvim.status.condition.buffer_matches(
+              { filetype = { "neo%-tree", "NvimTree" } },
+              vim.api.nvim_win_get_buf(self.winid)
+            )
           end,
           provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) end,
           hl = { bg = "tabline_bg" },
@@ -262,13 +268,12 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
           astronvim.status.heirline.make_tablist { -- component for each tab
             provider = astronvim.status.provider.tabnr(),
             hl = function(self)
-              local tab_type = astronvim.status.heirline.tab_type(self, "tab")
-              return { fg = tab_type .. "_fg", bg = tab_type .. "_bg" }
+              return astronvim.status.hl.get_attributes(astronvim.status.heirline.tab_type(self, "tab"), true)
             end,
           },
           { -- close button for current tab
             provider = astronvim.status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
-            hl = { fg = "tab_close_fg", bg = "tab_close_bg" },
+            hl = astronvim.status.hl.get_attributes("tab_close", true),
             on_click = { callback = astronvim.close_tab, name = "heirline_tabline_close_tab_callback" },
           },
         },
@@ -293,7 +298,7 @@ vim.api.nvim_create_autocmd("User", {
       vim.opt.diff:get()
       or astronvim.status.condition.buffer_matches(require("heirline").winbar.disabled or {
         buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-        filetype = { "NvimTree", "neo-tree", "dashboard", "Outline", "aerial" },
+        filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
       }) -- TODO v3: remove the default fallback here
     then
       vim.opt_local.winbar = nil
