@@ -51,8 +51,6 @@ end
 
 --- user settings from the base `user/init.lua` file
 astronvim.user_settings = load_module_file "user.init"
---- default packer compilation location to be used in bootstrapping and packer setup call
-astronvim.default_compile_path = stdpath "data" .. "/packer_compiled.lua"
 --- table of user created terminals
 astronvim.user_terminals = {}
 --- table of plugins to load with git
@@ -101,7 +99,7 @@ end
 -- @param condition a boolean value of whether to run the function or not
 function astronvim.conditional_func(func, condition, ...)
   -- if the condition is true or no condition is provided, evaluate the function with the rest of the parameters and return the result
-  if (condition == nil or condition) and type(func) == "function" then return func(...) end
+  if condition and type(func) == "function" then return func(...) end
 end
 
 --- Get highlight properties for a given highlight name
@@ -197,77 +195,6 @@ local function user_setting_table(module)
   return settings
 end
 
---- Check if packer is installed and loadable, if not then install it and make sure it loads
-function astronvim.initialize_packer()
-  -- try loading packer
-  local packer_path = stdpath "data" .. "/site/pack/packer/opt/packer.nvim"
-  local packer_avail = vim.fn.empty(vim.fn.glob(packer_path)) == 0
-  -- if packer isn't availble, reinstall it
-  if not packer_avail then
-    -- set the location to install packer
-    -- delete the old packer install if one exists
-    vim.fn.delete(packer_path, "rf")
-    -- clone packer
-    vim.fn.system {
-      "git",
-      "clone",
-      "--depth",
-      "1",
-      "https://github.com/wbthomason/packer.nvim",
-      packer_path,
-    }
-    -- add packer and try loading it
-    vim.cmd.packadd "packer.nvim"
-    local packer_loaded, _ = pcall(require, "packer")
-    packer_avail = packer_loaded
-    -- if packer didn't load, print error
-    if not packer_avail then vim.api.nvim_err_writeln("Failed to load packer at:" .. packer_path) end
-  end
-  -- if packer is available, check if there is a compiled packer file
-  if packer_avail then
-    -- try to load the packer compiled file
-    local run_me, _ = loadfile(
-      astronvim.user_plugin_opts("plugins.packer", { compile_path = astronvim.default_compile_path }).compile_path
-    )
-    if run_me then
-      -- if the file loads, run the compiled function
-      run_me()
-    else
-      -- if there is no compiled file, ask user to sync packer
-      require "core.plugins"
-      vim.api.nvim_create_autocmd("User", {
-        once = true,
-        pattern = "PackerComplete",
-        callback = function()
-          vim.cmd.bw()
-          vim.tbl_map(require, { "nvim-treesitter", "mason" })
-          astronvim.notify "Mason is installing packages if configured, check status with :Mason"
-        end,
-      })
-      vim.opt.cmdheight = 1
-      vim.notify "Please wait while plugins are installed..."
-      vim.cmd.PackerSync()
-    end
-  end
-end
-
-function astronvim.lazy_load_commands(plugin, commands)
-  if type(commands) == "string" then commands = { commands } end
-  if astronvim.is_available(plugin) and not packer_plugins[plugin].loaded then
-    for _, command in ipairs(commands) do
-      pcall(
-        vim.cmd,
-        string.format(
-          'command -nargs=* -range -bang -complete=file %s lua require("packer.load")({"%s"}, { cmd = "%s", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)',
-          command,
-          plugin,
-          command
-        )
-      )
-    end
-  end
-end
-
 --- Set vim options with a nested table like API with the format vim.<first_key>.<second_key>.<value>
 -- @param options the nested table of vim options
 function astronvim.vim_opts(options)
@@ -288,7 +215,7 @@ function astronvim.user_plugin_opts(module, default, extend, prefix)
   -- default to extend = true
   if extend == nil then extend = true end
   -- if no default table is provided set it to an empty table
-  default = default or {}
+  if default == nil then default = {} end
   -- try to load a module file if it exists
   local user_settings = load_module_file((prefix or "user") .. "." .. module)
   -- if no user module file is found, try to load an override from the user settings table from user/init.lua
@@ -334,44 +261,6 @@ function astronvim.toggle_term_cmd(opts)
   -- toggle the terminal
   astronvim.user_terminals[opts.cmd][num]:toggle()
 end
-
---- Add a source to cmp
--- @param source the cmp source string or table to add (see cmp documentation for source table format)
-function astronvim.add_cmp_source(source)
-  -- load cmp if available
-  local cmp_avail, cmp = pcall(require, "cmp")
-  if cmp_avail then
-    -- get the current cmp config
-    local config = cmp.get_config()
-    -- add the source to the list of sources
-    tbl_insert(config.sources, source)
-    -- call the setup function again
-    cmp.setup(config)
-  end
-end
-
---- Get the priority of a cmp source
--- @param  source the cmp source string or table (see cmp documentation for source table format)
--- @return a cmp source table with the priority set from the user configuration
-function astronvim.get_user_cmp_source(source)
-  -- if the source is a string, convert it to a cmp source table
-  source = type(source) == "string" and { name = source } or source
-  -- get the priority of the source name from the user configuration
-  local priority = astronvim.user_plugin_opts("cmp.source_priority", {
-    nvim_lsp = 1000,
-    luasnip = 750,
-    buffer = 500,
-    path = 250,
-  })[source.name]
-  -- if a priority is found, set it in the source
-  if priority then source.priority = priority end
-  -- return the source table
-  return source
-end
-
---- add a source to cmp with the user configured priority
--- @param source a cmp source string or table (see cmp documentation for source table format)
-function astronvim.add_user_cmp_source(source) astronvim.add_cmp_source(astronvim.get_user_cmp_source(source)) end
 
 --- register mappings table with which-key
 -- @param mappings nested table of mappings where the first key is the mode, the second key is the prefix, and the value is the mapping table for which-key
@@ -456,13 +345,16 @@ function astronvim.alpha_button(sc, txt)
   }
 end
 
---- Check if a plugin is defined in packer. Useful with lazy loading when a plugin is not necessarily loaded yet
+--- Check if a plugin is defined in lazy. Useful with lazy loading when a plugin is not necessarily loaded yet
 -- @param plugin the plugin string to search for
 -- @return boolean value if the plugin is available
-function astronvim.is_available(plugin) return packer_plugins ~= nil and packer_plugins[plugin] ~= nil end
+function astronvim.is_available(plugin)
+  local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
+  return lazy_config_avail and lazy_config.plugins and lazy_config.plugins[plugin]
+end
 
 --- A helper function to wrap a module function to require a plugin before running
--- @param plugin the plugin string to call `require("packer").laoder` with
+-- @param plugin the plugin string to call `require("lazy").laod` with
 -- @param module the system module where the functions live (e.g. `vim.ui`)
 -- @param func_names a string or a list like table of strings for functions to wrap in the given moduel (e.g. `{ "ui", "select }`)
 function astronvim.load_plugin_with_func(plugin, module, func_names)
@@ -471,7 +363,7 @@ function astronvim.load_plugin_with_func(plugin, module, func_names)
     local old_func = module[func]
     module[func] = function(...)
       module[func] = old_func
-      require("packer").loader(plugin)
+      require("lazy").load { plugins = { plugin } }
       module[func](...)
     end
   end
