@@ -193,8 +193,7 @@ vim.api.nvim_create_autocmd("BufRead", {
     vim.fn.system("git -C " .. vim.fn.expand "%:p:h" .. " rev-parse")
     if vim.v.shell_error == 0 then
       vim.api.nvim_del_augroup_by_name "git_plugin_lazy_load"
-      local packer = require "packer"
-      vim.tbl_map(function(plugin) packer.loader(plugin) end, astronvim.git_plugins)
+      if #astronvim.git_plugins > 0 then require("lazy").load { plugins = astronvim.git_plugins } end
     end
   end,
 })
@@ -203,8 +202,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_buf_get_option(args.buf, "buftype") == "nofile") then
       vim.api.nvim_del_augroup_by_name "file_plugin_lazy_load"
-      local packer = require "packer"
-      vim.tbl_map(function(plugin) packer.loader(plugin) end, astronvim.file_plugins)
+      if #astronvim.file_plugins > 0 then require("lazy").load { plugins = astronvim.file_plugins } end
     end
   end,
 })
@@ -212,7 +210,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
 create_command(
   "AstroUpdatePackages",
   function() astronvim.updater.update_packages() end,
-  { desc = "Update Packer and Mason" }
+  { desc = "Update Plugins and Mason" }
 )
 create_command("AstroUpdate", function() astronvim.updater.update() end, { desc = "Update AstroNvim" })
 create_command("AstroReload", function() astronvim.updater.reload() end, { desc = "Reload AstroNvim" })
