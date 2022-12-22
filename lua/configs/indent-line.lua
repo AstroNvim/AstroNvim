@@ -9,7 +9,7 @@ require("indent_blankline").setup(astronvim.user_plugin_opts("plugins.indent_bla
     "aerial",
     "alpha",
     "dashboard",
-    "packer",
+    "lazy",
     "neogitstatus",
     "NvimTree",
     "neo-tree",
