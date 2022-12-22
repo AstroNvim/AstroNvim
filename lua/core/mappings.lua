@@ -15,15 +15,14 @@ maps.n["Q"] = "<Nop>"
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
 maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
 
--- Packer
-maps.n["<leader>pc"] = { "<cmd>PackerCompile<cr>", desc = "Packer Compile" }
-maps.n["<leader>pi"] = { "<cmd>PackerInstall<cr>", desc = "Packer Install" }
-maps.n["<leader>ps"] = { "<cmd>PackerSync<cr>", desc = "Packer Sync" }
-maps.n["<leader>pS"] = { "<cmd>PackerStatus<cr>", desc = "Packer Status" }
-maps.n["<leader>pu"] = { "<cmd>PackerUpdate<cr>", desc = "Packer Update" }
+-- Plugin Manager
+maps.n["<leader>pi"] = { function() require("lazy").install() end, desc = "Plugins Install" }
+maps.n["<leader>ps"] = { function() require("lazy").sync() end, desc = "Plugins Sync" }
+maps.n["<leader>pS"] = { function() require("lazy").home() end, desc = "Plugins Status" }
+maps.n["<leader>pu"] = { function() require("lazy").check() end, desc = "Plugins Check Updates" }
 
 -- AstroNvim
-maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Packer and Mason" }
+maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Plugins and Mason" }
 maps.n["<leader>pA"] = { "<cmd>AstroUpdate<cr>", desc = "AstroNvim Update" }
 maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }

@@ -28,7 +28,7 @@ astronvim.updater = { options = options }
 -- if the channel is stable or the user has chosen to pin the system plugins
 if options.pin_plugins == nil and options.channel == "stable" or options.pin_plugins then
   -- load the current packer snapshot from the installation home location
-  local loaded, snapshot = pcall(fn.readfile, astronvim.install.home .. "/packer_snapshot")
+  local loaded, snapshot = pcall(fn.readfile, astronvim.install.home .. "/lazy-snapshot.json")
   if loaded then
     -- decode the snapshot JSON and save it to a variable
     loaded, snapshot = pcall(fn.json_decode, snapshot)
