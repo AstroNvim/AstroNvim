@@ -200,9 +200,8 @@ vim.api.nvim_create_autocmd("BufRead", {
 })
 vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("file_plugin_lazy_load", { clear = true }),
-  callback = function()
-    local title = vim.fn.expand "%"
-    if not (title == "" or title == "[packer]" or title:match "^neo%-tree%s+filesystem") then
+  callback = function(args)
+    if not (vim.fn.expand "%" == "" or vim.api.nvim_buf_get_option(args.buf, "buftype") == "nofile") then
       vim.api.nvim_del_augroup_by_name "file_plugin_lazy_load"
       local packer = require "packer"
       vim.tbl_map(function(plugin) packer.loader(plugin) end, astronvim.file_plugins)
