@@ -16,7 +16,6 @@ local options = astronvim.user_plugin_opts("updater", {
   remote = "origin",
   channel = "stable",
   show_changelog = true,
-  auto_reload = true,
   auto_quit = true,
 })
 
@@ -72,47 +71,10 @@ end
 --- Cancelled update message
 local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 
---- Reload the AstroNvim configuration live (Experimental)
--- @param quiet boolean to quietly execute or send a notification
-function astronvim.updater.reload(quiet)
-  -- stop LSP if it is running
-  if vim.fn.exists ":LspStop" ~= 0 then vim.cmd.LspStop() end
-  local reload_module = require("plenary.reload").reload_module
-  -- unload AstroNvim configuration files
-  reload_module "user"
-  reload_module "configs"
-  reload_module "default_theme"
-  reload_module "core"
-  -- manual unload some plugins that need it if they exist
-  reload_module "cmp"
-  reload_module "which-key"
-  -- source the AstroNvim configuration
-  local reloaded, _ = pcall(dofile, vim.fn.expand "$MYVIMRC")
-  -- if successful reload and not quiet, display a notification
-  if reloaded and not quiet then astronvim.notify "Reloaded AstroNvim" end
-end
-
 --- Sync Packer and then update Mason
 function astronvim.updater.update_packages()
-  vim.api.nvim_create_autocmd("User", {
-    once = true,
-    desc = "Update Mason with Packer",
-    group = vim.api.nvim_create_augroup("astro_sync", { clear = true }),
-    pattern = "PackerComplete",
-    callback = function()
-      if astronvim.is_available "mason.nvim" then
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "AstroMasonUpdateComplete",
-          once = true,
-          callback = function() astronvim.event "UpdatePackagesComplete" end,
-        })
-        astronvim.mason.update_all()
-      else
-        astronvim.event "UpdatePackagesComplete"
-      end
-    end,
-  })
-  vim.cmd.PackerSync()
+  require("lazy").sync { wait = true }
+  astronvim.mason.update_all()
 end
 
 --- AstroNvim's updater function
@@ -259,8 +221,7 @@ function astronvim.updater.update()
       { git.current_version(), "String" },
       { "!\n", "Title" },
       {
-        options.auto_reload and "AstroNvim will now sync packer and quit.\n\n"
-          or "Please restart and run :PackerSync.\n\n",
+        options.auto_quit and "AstroNvim will now quit.\n\n" or "Please restart.\n\n",
         "WarningMsg",
       },
     }
@@ -275,22 +236,6 @@ function astronvim.updater.update()
       vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
     end
 
-    -- if the user wants to reload and sync packer
-    if options.auto_reload then
-      -- perform a reload
-      vim.opt.modifiable = true
-      astronvim.updater.reload(true) -- run quiet to not show notification on reload
-      vim.api.nvim_create_autocmd("User", {
-        once = true,
-        pattern = "AstroUpdatePackagesComplete",
-        callback = function() astronvim.event "UpdateComplete" end,
-      })
-      require "core.plugins"
-      astronvim.updater.update_packages()
-      -- if packer isn't available send successful update event
-    else
-      -- send user event of successful update
-      astronvim.event "UpdateComplete"
-    end
+    astronvim.event "UpdateComplete"
   end
 end
