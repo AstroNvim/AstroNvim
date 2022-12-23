@@ -276,7 +276,7 @@ local astro_plugins = {
   -- Terminal
   ["akinsho/toggleterm.nvim"] = {
     module = "toggleterm",
-    setup = function() astronvim.lazy_load_commands("toggleterm.nvim", "ToggleTerm") end,
+    setup = function() astronvim.lazy_load_commands("toggleterm.nvim", { "ToggleTerm", "TermExec" }) end,
     config = function() require "configs.toggleterm" end,
   },
 
