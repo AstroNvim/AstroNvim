@@ -416,8 +416,7 @@ function astronvim.status.provider.unique_path(opts)
     local name = opts.buf_name(opts.bufnr)
     local unique_path = ""
     -- check for same buffer names under different dirs
-    -- TODO v3: remove get_valid_buffers
-    for _, value in ipairs(vim.g.heirline_bufferline and vim.t.bufs or astronvim.status.utils.get_valid_buffers()) do
+    for _, value in ipairs(vim.t.bufs) do
       if name == opts.buf_name(value) and value ~= opts.bufnr then
         local other = {}
         for match in (vim.api.nvim_buf_get_name(value) .. "/"):gmatch("(.-)" .. "/") do
@@ -1181,20 +1180,6 @@ function astronvim.status.utils.surround(separator, color, component, condition)
     })
   end
   return surrounded
-end
-
---- Check if a buffer is valid
--- @param bufnr the buffer to check
--- @return true if the buffer is valid or false
-function astronvim.status.utils.is_valid_buffer(bufnr) -- TODO v3: remove this function
-  if not bufnr or bufnr < 1 then return false end
-  return vim.bo[bufnr].buflisted and vim.api.nvim_buf_is_valid(bufnr)
-end
-
---- Get all valid buffers
--- @return array-like table of valid buffer numbers
-function astronvim.status.utils.get_valid_buffers() -- TODO v3: remove this function
-  return vim.tbl_filter(astronvim.status.utils.is_valid_buffer, vim.api.nvim_list_bufs())
 end
 
 --- Encode a position to a single value that can be decoded later
