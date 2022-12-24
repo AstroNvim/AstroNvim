@@ -29,7 +29,6 @@ return {
   GitUnstaged = "[U]",
   GitUntracked = "[?]",
   MacroRecording = "Recording:",
-  NeovimClose = "X", -- TODO v3: remove this icon
   Paste = "[PASTE]",
   Search = "?",
   Selected = "*",
