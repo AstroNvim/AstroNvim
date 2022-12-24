@@ -4,7 +4,7 @@ if vim.g.lsp_handlers_enabled then
 end
 local setup_servers = function()
   vim.tbl_map(astronvim.lsp.setup, astronvim.user_plugin_opts "lsp.servers")
-  vim.cmd "silent! do FileType"
+  vim.api.nvim_exec_autocmds("FileType", {})
 end
 if astronvim.is_available "mason-lspconfig.nvim" then
   vim.api.nvim_create_autocmd("User", { pattern = "AstroLspSetup", once = true, callback = setup_servers })
