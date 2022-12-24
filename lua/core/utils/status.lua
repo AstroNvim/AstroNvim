@@ -762,10 +762,7 @@ end
 -- @usage local heirline_component = astronvim.status.component.file_info()
 function astronvim.status.component.file_info(opts)
   opts = astronvim.default_tbl(opts, {
-    file_icon = {
-      hl = astronvim.status.hl.file_icon "statusline",
-      padding = { left = 1, right = 1 },
-    }, -- TODO: REWORK THIS
+    file_icon = { hl = astronvim.status.hl.file_icon "statusline", padding = { left = 1, right = 1 } },
     filename = {},
     file_modified = { padding = { left = 1 } },
     file_read_only = { padding = { left = 1 } },
