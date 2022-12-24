@@ -46,7 +46,6 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
     status_diagnostics_enabled = true, -- enable diagnostics in statusline
     icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
     ui_notifications_enabled = true, -- disable notifications when toggling UI elements
-    heirline_bufferline = false, -- enable heirline bufferline (TODO v3: remove this option and make it default)
   },
   t = {
     bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.api.nvim_list_bufs()), -- buffers in tab

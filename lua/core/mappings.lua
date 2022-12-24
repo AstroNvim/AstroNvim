@@ -6,7 +6,6 @@ local maps = { i = {}, n = {}, v = {}, t = {} }
 -- Standard Operations
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>q<cr>", desc = "Quit" }
-maps.n["<leader>h"] = { "<cmd>nohlsearch<cr>", desc = "No Highlight" } -- TODO: REMOVE IN v3
 maps.n["<leader>fn"] = { "<cmd>enew<cr>", desc = "New File" }
 maps.n["gx"] = { function() astronvim.system_open() end, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
@@ -32,69 +31,47 @@ if is_available "alpha-nvim" then
   maps.n["<leader>d"] = { function() require("alpha").start() end, desc = "Alpha Dashboard" }
 end
 
-if vim.g.heirline_bufferline then
-  -- Manage Buffers
-  maps.n["<leader>c"] = { function() astronvim.close_buf(0) end, desc = "Close buffer" }
-  maps.n["<leader>C"] = { function() astronvim.close_buf(0, true) end, desc = "Force close buffer" }
-  maps.n["<S-l>"] = { function() astronvim.nav_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
-  maps.n["<S-h>"] =
-    { function() astronvim.nav_buf(-(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Previous buffer" }
-  maps.n[">b"] =
-    { function() astronvim.move_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Move buffer tab right" }
-  maps.n["<b"] =
-    { function() astronvim.move_buf(-(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Move buffer tab left" }
+-- Manage Buffers
+maps.n["<leader>c"] = { function() astronvim.close_buf(0) end, desc = "Close buffer" }
+maps.n["<leader>C"] = { function() astronvim.close_buf(0, true) end, desc = "Force close buffer" }
+maps.n["<S-l>"] = { function() astronvim.nav_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
+maps.n["<S-h>"] =
+  { function() astronvim.nav_buf(-(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Previous buffer" }
+maps.n[">b"] =
+  { function() astronvim.move_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Move buffer tab right" }
+maps.n["<b"] =
+  { function() astronvim.move_buf(-(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Move buffer tab left" }
 
-  maps.n["<leader>bb"] = {
-    function()
-      astronvim.status.heirline.buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
-    end,
-    desc = "Select buffer from tabline",
-  }
-  maps.n["<leader>bd"] = {
-    function()
-      astronvim.status.heirline.buffer_picker(function(bufnr) astronvim.close_buf(bufnr) end)
-    end,
-    desc = "Delete buffer from tabline",
-  }
-  maps.n["<leader>b\\"] = {
-    function()
-      astronvim.status.heirline.buffer_picker(function(bufnr)
-        vim.cmd.split()
-        vim.api.nvim_win_set_buf(0, bufnr)
-      end)
-    end,
-    desc = "Horizontal split buffer from tabline",
-  }
-  maps.n["<leader>b|"] = {
-    function()
-      astronvim.status.heirline.buffer_picker(function(bufnr)
-        vim.cmd.vsplit()
-        vim.api.nvim_win_set_buf(0, bufnr)
-      end)
-    end,
-    desc = "Vertical split buffer from tabline",
-  }
-else -- TODO v3: remove this else block
-  -- Bufdelete
-  if is_available "bufdelete.nvim" then
-    maps.n["<leader>c"] = { function() require("bufdelete").bufdelete(0, false) end, desc = "Close buffer" }
-    maps.n["<leader>C"] = { function() require("bufdelete").bufdelete(0, true) end, desc = "Force close buffer" }
-  else
-    maps.n["<leader>c"] = { "<cmd>bdelete<cr>", desc = "Close buffer" }
-    maps.n["<leader>C"] = { "<cmd>bdelete!<cr>", desc = "Force close buffer" }
-  end
-
-  -- Navigate buffers
-  if is_available "bufferline.nvim" then
-    maps.n["<S-l>"] = { "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer tab" }
-    maps.n["<S-h>"] = { "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer tab" }
-    maps.n[">b"] = { "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer tab right" }
-    maps.n["<b"] = { "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer tab left" }
-  else
-    maps.n["<S-l>"] = { "<cmd>bnext<cr>", desc = "Next buffer" }
-    maps.n["<S-h>"] = { "<cmd>bprevious<cr>", desc = "Previous buffer" }
-  end
-end
+maps.n["<leader>bb"] = {
+  function()
+    astronvim.status.heirline.buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
+  end,
+  desc = "Select buffer from tabline",
+}
+maps.n["<leader>bd"] = {
+  function()
+    astronvim.status.heirline.buffer_picker(function(bufnr) astronvim.close_buf(bufnr) end)
+  end,
+  desc = "Delete buffer from tabline",
+}
+maps.n["<leader>b\\"] = {
+  function()
+    astronvim.status.heirline.buffer_picker(function(bufnr)
+      vim.cmd.split()
+      vim.api.nvim_win_set_buf(0, bufnr)
+    end)
+  end,
+  desc = "Horizontal split buffer from tabline",
+}
+maps.n["<leader>b|"] = {
+  function()
+    astronvim.status.heirline.buffer_picker(function(bufnr)
+      vim.cmd.vsplit()
+      vim.api.nvim_win_set_buf(0, bufnr)
+    end)
+  end,
+  desc = "Vertical split buffer from tabline",
+}
 
 -- Navigate tabs
 maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }

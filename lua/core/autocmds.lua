@@ -12,42 +12,40 @@ vim.on_key(function(char)
   end
 end, namespace "auto_hlsearch")
 
-if vim.g.heirline_bufferline then
-  local bufferline_group = augroup("bufferline", { clear = true })
-  cmd({ "BufAdd", "BufEnter" }, {
-    desc = "Update buffers when adding new buffers",
-    group = bufferline_group,
-    callback = function(args)
-      if not vim.t.bufs then vim.t.bufs = {} end
-      local bufs = vim.t.bufs
-      if not vim.tbl_contains(bufs, args.buf) then
-        table.insert(bufs, args.buf)
-        vim.t.bufs = bufs
-      end
-      vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
-    end,
-  })
-  cmd("BufDelete", {
-    desc = "Update buffers when deleting buffers",
-    group = bufferline_group,
-    callback = function(args)
-      for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
-        local bufs = vim.t[tab].bufs
-        if bufs then
-          for i, bufnr in ipairs(bufs) do
-            if bufnr == args.buf then
-              table.remove(bufs, i)
-              vim.t[tab].bufs = bufs
-              break
-            end
+local bufferline_group = augroup("bufferline", { clear = true })
+cmd({ "BufAdd", "BufEnter" }, {
+  desc = "Update buffers when adding new buffers",
+  group = bufferline_group,
+  callback = function(args)
+    if not vim.t.bufs then vim.t.bufs = {} end
+    local bufs = vim.t.bufs
+    if not vim.tbl_contains(bufs, args.buf) then
+      table.insert(bufs, args.buf)
+      vim.t.bufs = bufs
+    end
+    vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
+  end,
+})
+cmd("BufDelete", {
+  desc = "Update buffers when deleting buffers",
+  group = bufferline_group,
+  callback = function(args)
+    for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+      local bufs = vim.t[tab].bufs
+      if bufs then
+        for i, bufnr in ipairs(bufs) do
+          if bufnr == args.buf then
+            table.remove(bufs, i)
+            vim.t[tab].bufs = bufs
+            break
           end
         end
       end
-      vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
-      vim.cmd.redrawtabline()
-    end,
-  })
-end
+    end
+    vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
+    vim.cmd.redrawtabline()
+  end,
+})
 
 cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
@@ -136,10 +134,7 @@ if is_available "alpha-nvim" then
           end
         end
       end
-      if not should_skip then
-        if is_available "bufferline.nvim" then pcall(require, "bufferline") end -- TODO v3: remove this line
-        require("alpha").start(true)
-      end
+      if not should_skip then require("alpha").start(true) end
     end,
   })
 end

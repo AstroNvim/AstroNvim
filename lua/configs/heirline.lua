@@ -206,13 +206,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     hl = { fg = "fg", bg = "bg" },
     astronvim.status.component.mode(),
     astronvim.status.component.git_branch(),
-    -- TODO: REMOVE THIS WITH v3
-    astronvim.status.component.file_info(
-      (astronvim.is_available "bufferline.nvim" or vim.g.heirline_bufferline)
-          and { filetype = {}, filename = false, file_modified = false }
-        or nil
-    ),
-    -- astronvim.status.component.file_info { filetype = {}, filename = false, file_modified = false },
+    astronvim.status.component.file_info { filetype = {}, filename = false, file_modified = false },
     astronvim.status.component.git_diff(),
     astronvim.status.component.diagnostics(),
     astronvim.status.component.fill(),
@@ -250,37 +244,35 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
     },
     astronvim.status.component.breadcrumbs { hl = astronvim.status.hl.get_attributes("winbar", true) },
   },
-  vim.g.heirline_bufferline -- TODO v3: remove this option and make bufferline default
-      and { -- bufferline
-        { -- file tree padding
-          condition = function(self)
-            self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
-            return astronvim.status.condition.buffer_matches(
-              { filetype = { "neo%-tree", "NvimTree" } },
-              vim.api.nvim_win_get_buf(self.winid)
-            )
-          end,
-          provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) end,
-          hl = { bg = "tabline_bg" },
-        },
-        astronvim.status.heirline.make_buflist(astronvim.status.component.tabline_file_info()), -- component for each buffer tab
-        astronvim.status.component.fill { hl = { bg = "tabline_bg" } }, -- fill the rest of the tabline with background color
-        { -- tab list
-          condition = function() return #vim.api.nvim_list_tabpages() >= 2 end, -- only show tabs if there are more than one
-          astronvim.status.heirline.make_tablist { -- component for each tab
-            provider = astronvim.status.provider.tabnr(),
-            hl = function(self)
-              return astronvim.status.hl.get_attributes(astronvim.status.heirline.tab_type(self, "tab"), true)
-            end,
-          },
-          { -- close button for current tab
-            provider = astronvim.status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
-            hl = astronvim.status.hl.get_attributes("tab_close", true),
-            on_click = { callback = astronvim.close_tab, name = "heirline_tabline_close_tab_callback" },
-          },
-        },
-      }
-    or nil,
+  { -- bufferline
+    { -- file tree padding
+      condition = function(self)
+        self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
+        return astronvim.status.condition.buffer_matches(
+          { filetype = { "neo%-tree", "NvimTree" } },
+          vim.api.nvim_win_get_buf(self.winid)
+        )
+      end,
+      provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) end,
+      hl = { bg = "tabline_bg" },
+    },
+    astronvim.status.heirline.make_buflist(astronvim.status.component.tabline_file_info()), -- component for each buffer tab
+    astronvim.status.component.fill { hl = { bg = "tabline_bg" } }, -- fill the rest of the tabline with background color
+    { -- tab list
+      condition = function() return #vim.api.nvim_list_tabpages() >= 2 end, -- only show tabs if there are more than one
+      astronvim.status.heirline.make_tablist { -- component for each tab
+        provider = astronvim.status.provider.tabnr(),
+        hl = function(self)
+          return astronvim.status.hl.get_attributes(astronvim.status.heirline.tab_type(self, "tab"), true)
+        end,
+      },
+      { -- close button for current tab
+        provider = astronvim.status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
+        hl = astronvim.status.hl.get_attributes("tab_close", true),
+        on_click = { callback = astronvim.close_tab, name = "heirline_tabline_close_tab_callback" },
+      },
+    },
+  },
 })
 heirline.setup(heirline_opts[1], heirline_opts[2], heirline_opts[3])
 
@@ -296,13 +288,7 @@ vim.api.nvim_create_autocmd("User", {
   group = augroup,
   desc = "Disable winbar for some filetypes",
   callback = function()
-    if
-      vim.opt.diff:get()
-      or astronvim.status.condition.buffer_matches(require("heirline").winbar.disabled or {
-        buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-        filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
-      }) -- TODO v3: remove the default fallback here
-    then
+    if vim.opt.diff:get() or astronvim.status.condition.buffer_matches(require("heirline").winbar.disabled) then
       vim.opt_local.winbar = nil
     end
   end,
