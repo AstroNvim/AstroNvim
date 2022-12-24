@@ -85,11 +85,6 @@ require("lazy").setup(
         init = function() astronvim.load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
         config = function() require "configs.dressing" end,
       },
-      ["akinsho/bufferline.nvim"] = { -- TODO v3: remove this plugin
-        enabled = not vim.g.heirline_bufferline,
-        event = "UIEnter",
-        config = function() require "configs.bufferline" end,
-      },
       ["nvim-neo-tree/neo-tree.nvim"] = {
         version = "^2",
         dependencies = { ["MunifTanjim/nui.nvim"] = {} },
