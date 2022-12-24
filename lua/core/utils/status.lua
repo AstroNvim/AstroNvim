@@ -833,25 +833,6 @@ function astronvim.status.component.nav(opts)
   )
 end
 
---- A function to build a set of children components for a macro recording section
--- @param opts options for configuring macro recording and the overall padding
--- @return The Heirline component table
--- @usage local heirline_component = astronvim.status.component.macro_recording()
--- TODO: deprecate on next major version release
-function astronvim.status.component.macro_recording(opts)
-  opts = astronvim.default_tbl(opts, {
-    macro_recording = { icon = { kind = "MacroRecording", padding = { right = 1 } } },
-    surround = {
-      separator = "center",
-      color = "macro_recording_bg",
-      condition = astronvim.status.condition.is_macro_recording,
-    },
-    hl = astronvim.status.hl.get_attributes "macro_recording",
-    update = { "RecordingEnter", "RecordingLeave" },
-  })
-  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "macro_recording" }))
-end
-
 --- A function to build a set of children components for information shown in the cmdline
 -- @param opts options for configuring macro recording, search count, and the overall padding
 -- @return The Heirline component table
