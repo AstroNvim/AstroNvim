@@ -223,12 +223,16 @@ astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 -- @return the table of LSP options used when setting up the given language server
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
+  local lsp_settings
+  if server_name == "jsonls" and astronvim.is_available "SchemaStore.nvim" then -- by default add json schemas
+    lsp_settings = { json = { schemas = require("schemastore").json.schemas(), validate = { enable = true } } }
+  end
   local opts = user_plugin_opts( -- get user server-settings
     "lsp.config." .. server_name,
-    user_plugin_opts("lspconfig." .. server_name, { -- get default server-settings
-      capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
-      flags = vim.tbl_deep_extend("force", astronvim.lsp.flags, server.flags or {}),
-    }, true, "configs")
+    astronvim.default_tbl(
+      { settings = lsp_settings, capabilities = astronvim.lsp.capabilities, flags = astronvim.lsp.flags },
+      { capabilities = server.capabilities, flags = server.flags }
+    )
   )
   local old_on_attach = server.on_attach
   local user_on_attach = opts.on_attach
