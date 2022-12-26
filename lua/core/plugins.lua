@@ -62,7 +62,7 @@ require("lazy").setup(
       ["rebelot/heirline.nvim"] = { event = "VimEnter", config = function() require "configs.heirline" end },
       ["famiu/bufdelete.nvim"] = { cmd = { "Bdelete", "Bwipeout" } },
       ["s1n7ax/nvim-window-picker"] = { version = "^1", config = function() require "configs.window-picker" end },
-      ["folke/which-key.nvim"] = { config = function() require "configs.which-key" end },
+      ["folke/which-key.nvim"] = { event = "VeryLazy", config = function() require "configs.which-key" end },
       ["numToStr/Comment.nvim"] = { keys = { "gc", "gb" }, config = function() require "configs.Comment" end },
       ["windwp/nvim-autopairs"] = { event = "InsertEnter", config = function() require "configs.autopairs" end },
       ["akinsho/toggleterm.nvim"] = {
