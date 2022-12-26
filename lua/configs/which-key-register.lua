@@ -12,6 +12,7 @@ local mappings = {
 }
 
 local extra_sections = {
+  b = "Buffers",
   D = "Debugger",
   g = "Git",
   s = "Search",
@@ -22,6 +23,9 @@ local extra_sections = {
 local function init_table(mode, prefix, idx)
   if not mappings[mode][prefix][idx] then mappings[mode][prefix][idx] = { name = extra_sections[idx] } end
 end
+
+-- TODO v3: remove vim.g.heirline_bufferline check
+if is_available "heirline.nvim" and vim.g.heirline_bufferline then init_table("n", "<leader>", "b") end
 
 if is_available "neovim-session-manager" then init_table("n", "<leader>", "S") end
 

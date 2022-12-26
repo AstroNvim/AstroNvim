@@ -1,6 +1,8 @@
 return {
   ActiveLSP = "",
   ActiveTS = "綠",
+  ArrowLeft = "",
+  ArrowRight = "",
   BufferClose = "",
   DapBreakpoint = "",
   DapBreakpointCondition = "",
@@ -35,9 +37,10 @@ return {
   LSPLoading2 = "",
   LSPLoading3 = "",
   MacroRecording = "",
-  NeovimClose = "",
+  NeovimClose = "", -- TODO v3: remove this icon
   Paste = "",
   Search = "",
   Selected = "❯",
   Spellcheck = "暈",
+  TabClose = "",
 }
