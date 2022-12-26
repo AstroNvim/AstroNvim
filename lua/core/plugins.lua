@@ -171,6 +171,7 @@ require("lazy").setup(
         init = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
         config = function() require "configs.lspconfig" end,
         dependencies = {
+          ["folke/neodev.nvim"] = { config = function() require "configs.neodev" end },
           ["williamboman/mason-lspconfig.nvim"] = {
             cmd = { "LspInstall", "LspUninstall" },
             config = function() require "configs.mason-lspconfig" end,
