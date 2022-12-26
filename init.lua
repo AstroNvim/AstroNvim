@@ -5,7 +5,6 @@ for _, source in ipairs {
   "core.diagnostics",
   "core.autocmds",
   "core.mappings",
-  "configs.which-key.register",
 } do
   local status_ok, fault = pcall(require, source)
   if not status_ok then vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault) end
