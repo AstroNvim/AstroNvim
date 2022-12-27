@@ -200,6 +200,8 @@ astronvim.lsp.on_attach = function(client, bufnr)
     astronvim.which_key_register({ v = { ["<leader>"] = { l = { name = "LSP" } } } }, { buffer = bufnr })
   end
 
+  conditional_func(require, client.name == "sumneko_lua" and is_available "neodev.nvim", "neodev")
+
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
   conditional_func(on_attach_override, true, client, bufnr)
 end

@@ -56,6 +56,7 @@ require("lazy").setup(
     pin_plugins {
       ["b0o/SchemaStore.nvim"] = {},
       ["nvim-lua/plenary.nvim"] = {},
+      ["folke/neodev.nvim"] = { config = function() require "configs.neodev" end },
       ["goolord/alpha-nvim"] = { cmd = "Alpha", config = function() require "configs.alpha" end },
       ["mrjones2014/smart-splits.nvim"] = { config = function() require "configs.smart-splits" end },
       ["onsails/lspkind.nvim"] = { enabled = vim.g.icons_enabled, config = function() require "configs.lspkind" end },
@@ -171,7 +172,6 @@ require("lazy").setup(
         init = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
         config = function() require "configs.lspconfig" end,
         dependencies = {
-          ["folke/neodev.nvim"] = { config = function() require "configs.neodev" end },
           ["williamboman/mason-lspconfig.nvim"] = {
             cmd = { "LspInstall", "LspUninstall" },
             config = function() require "configs.mason-lspconfig" end,
