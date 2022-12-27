@@ -34,7 +34,7 @@ local astro_plugins = {
 
   -- Notification Enhancer
   ["rcarriga/nvim-notify"] = {
-    opt = true,
+    module = "notify",
     setup = function() astronvim.load_plugin_with_func("nvim-notify", vim, "notify") end,
     config = function() require "configs.notify" end,
   },
