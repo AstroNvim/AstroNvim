@@ -16,9 +16,10 @@ maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
 
 -- Plugin Manager
 maps.n["<leader>pi"] = { function() require("lazy").install() end, desc = "Plugins Install" }
-maps.n["<leader>ps"] = { function() require("lazy").sync() end, desc = "Plugins Sync" }
-maps.n["<leader>pS"] = { function() require("lazy").home() end, desc = "Plugins Status" }
+maps.n["<leader>ps"] = { function() require("lazy").home() end, desc = "Plugins Status" }
+maps.n["<leader>pS"] = { function() require("lazy").sync() end, desc = "Plugins Sync" }
 maps.n["<leader>pu"] = { function() require("lazy").check() end, desc = "Plugins Check Updates" }
+maps.n["<leader>pU"] = { function() require("lazy").update() end, desc = "Plugins Update" }
 
 -- AstroNvim
 maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Plugins and Mason" }
@@ -117,8 +118,8 @@ end
 
 -- Package Manager
 if is_available "mason.nvim" then
-  maps.n["<leader>pI"] = { "<cmd>Mason<cr>", desc = "Mason Installer" }
-  maps.n["<leader>pU"] = { "<cmd>MasonUpdateAll<cr>", desc = "Mason Update" }
+  maps.n["<leader>pm"] = { "<cmd>Mason<cr>", desc = "Mason Installer" }
+  maps.n["<leader>pM"] = { "<cmd>MasonUpdateAll<cr>", desc = "Mason Update" }
 end
 
 -- Smart Splits
