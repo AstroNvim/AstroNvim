@@ -57,4 +57,4 @@ if is_available "toggleterm.nvim" then
   init_table("n", "<leader>", "t")
 end
 
-astronvim.which_key_register(user_plugin_opts("which-key.register", mappings))
+astronvim.which_key_register(mappings)
