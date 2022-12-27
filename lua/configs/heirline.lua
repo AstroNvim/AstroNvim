@@ -1,6 +1,6 @@
 local heirline = require "heirline"
 if not astronvim.status then return end
-local C = require "default_theme.colors"
+local C = require "astronvim_theme.colors"
 
 local function setup_colors()
   local Normal = astronvim.get_hlgroup("Normal", { fg = C.fg, bg = C.bg })

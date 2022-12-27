@@ -1,4 +1,4 @@
-!colors/default_theme.lua
+!colors/astronvim.lua
 colors/*
 docs
 ginit.vim

@@ -2,20 +2,20 @@ vim.cmd.highlight "clear"
 if vim.fn.exists "syntax_on" then vim.cmd.syntax "reset" end
 vim.o.background = "dark"
 vim.o.termguicolors = true
-vim.g.colors_name = "default_theme"
+vim.g.colors_name = "astronvim"
 
 local user_plugin_opts = astronvim.user_plugin_opts
 
-C = require "default_theme.colors"
+C = require "astronvim_theme.colors"
 
 local highlights = {}
 
 for _, module in ipairs { "base", "lsp" } do
-  highlights = vim.tbl_deep_extend("force", highlights, require("default_theme." .. module))
+  highlights = vim.tbl_deep_extend("force", highlights, require("astronvim_theme." .. module))
 end
 
 for plugin, enabled in
-  pairs(user_plugin_opts("default_theme.plugins", {
+  pairs(user_plugin_opts("astronvim_theme.plugins", {
     aerial = true,
     beacon = false,
     bufferline = false,
@@ -39,10 +39,12 @@ for plugin, enabled in
     ["which-key"] = true,
   }))
 do
-  if enabled then highlights = vim.tbl_deep_extend("force", highlights, require("default_theme.plugins." .. plugin)) end
+  if enabled then
+    highlights = vim.tbl_deep_extend("force", highlights, require("astronvim_theme.plugins." .. plugin))
+  end
 end
 
-for group, spec in pairs(user_plugin_opts("default_theme.highlights", highlights)) do
+for group, spec in pairs(user_plugin_opts("astronvim_theme.highlights", highlights)) do
   vim.api.nvim_set_hl(0, group, spec)
 end
 
