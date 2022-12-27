@@ -91,8 +91,3 @@ setup(astronvim.user_plugin_opts("plugins.cmp", {
     { name = "path", priority = 250 },
   },
 }))
-for setup_opt, setup_table in pairs(astronvim.user_plugin_opts("cmp.setup", {})) do
-  for pattern, options in pairs(setup_table) do
-    setup[setup_opt](pattern, options)
-  end
-end
