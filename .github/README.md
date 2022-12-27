@@ -46,14 +46,13 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 - File explorer with [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim)
 - Autocompletion with [Cmp](https://github.com/hrsh7th/nvim-cmp)
 - Git integration with [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
-- Statusline with [Heirline](https://github.com/rebelot/heirline.nvim)
+- Statusline, Winbar, and Bufferline with [Heirline](https://github.com/rebelot/heirline.nvim)
 - Terminal with [Toggleterm](https://github.com/akinsho/toggleterm.nvim)
 - Fuzzy finding with [Telescope](https://github.com/nvim-telescope/telescope.nvim)
 - Syntax highlighting with [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- Formatting and linting with [Null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
+- Formatting and Linting with [Null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
 - Language Server Protocol with [Native LSP](https://github.com/neovim/nvim-lspconfig)
 - Debug Adapter Protocol with [nvim-dap](https://github.com/mfussenegger/nvim-dap)
-- Buffer Line with [bufferline.nvim](https://github.com/akinsho/bufferline.nvim)
 
 ## ⚡ Requirements
 
