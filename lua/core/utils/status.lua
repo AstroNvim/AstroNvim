@@ -89,7 +89,7 @@ astronvim.status.env.buf_matchers = {
 -- @param  fallback the color to fallback on if a lualine theme is not present
 -- @return The background color of the lualine theme or the fallback parameter if one doesn't exist
 function astronvim.status.hl.lualine_mode(mode, fallback)
-  local lualine_avail, lualine = pcall(require, "lualine.themes." .. (vim.g.colors_name or "default_theme"))
+  local lualine_avail, lualine = pcall(require, "lualine.themes." .. (vim.g.colors_name or "astronvim"))
   local lualine_opts = lualine_avail and lualine[mode]
   return lualine_opts and type(lualine_opts.a) == "table" and lualine_opts.a.bg or fallback
 end

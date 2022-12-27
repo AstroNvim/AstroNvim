@@ -25,7 +25,7 @@ local config = {
   },
 
   -- Set colorscheme to use
-  colorscheme = "default_theme",
+  colorscheme = "astronvim",
 
   -- Add highlight groups in any theme
   highlights = {
@@ -83,15 +83,15 @@ local config = {
     "    ██   ████   ████   ██ ██      ██",
   },
 
-  -- Default theme configuration
-  default_theme = {
+  -- AstroNvim theme configuration
+  astronvim_theme = {
     -- Modify the color palette for the default theme
     colors = {
       fg = "#abb2bf",
       bg = "#1e222a",
     },
     highlights = function(hl) -- or a function that returns a new table of colors to set
-      local C = require "default_theme.colors"
+      local C = require "astronvim_theme.colors"
 
       hl.Normal = { fg = C.fg, bg = C.bg }
 
