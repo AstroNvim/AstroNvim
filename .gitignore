@@ -7,3 +7,4 @@ lua/user
 plugin
 ftplugin
 spell
+.luarc.json
