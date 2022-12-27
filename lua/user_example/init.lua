@@ -168,10 +168,20 @@ local config = {
     -- on_attach = function(client, bufnr)
     -- end,
 
-    -- override the mason server-registration function
-    -- server_registration = function(server, opts)
+    -- override the LSP setup handler function with a single function
+    -- setup_handlers = function(server, opts)
     --   require("lspconfig")[server].setup(opts)
     -- end,
+    -- OR you can override the LSP setup handler function based on server name
+    -- setup_handlers = {
+    --   -- first function changes the default setup handler
+    --   function(server, opts) require("lspconfig")[server].setup(opts) end,
+    --   -- keys for a specific server name will be used for that LSP
+    --   sumneko_lua = function(server, opts)
+    --     -- custom sumneko_lua setup handler
+    --     require("lspconfig")["sumneko_lua"].setup(opts)
+    --   end,
+    -- },
 
     -- Add overrides for LSP server settings, the keys are the name of the server
     config = {
@@ -218,6 +228,44 @@ local config = {
     init = {
       -- You can disable default plugins as follows:
       -- ["goolord/alpha-nvim"] = { disable = true },
+      --
+      -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
+      -- ["L3MON4D3/LuaSnip"] = {
+      --   config = function()
+      --     require "configs.luasnip" -- include the default astronvim config that calls the setup call
+      --     -- add more custom luasnip configuration such as filetype extend or custom snippets
+      --     local luasnip = require "luasnip"
+      --     luasnip.filetype_extend("javascript", { "javascriptreact" })
+      --   end,
+      -- },
+      -- ["windwp/nvim-autopairs"] = {
+      --   config = function()
+      --     require "configs.autopairs" -- include the default astronvim config that calls the setup call
+      --     -- add more custom autopairs configuration such as custom rules
+      --     local npairs = require "nvim-autopairs"
+      --     local Rule = require "nvim-autopairs.rule"
+      --     local cond = require "nvim-autopairs.conds"
+      --     npairs.add_rules(
+      --       {
+      --         Rule("$", "$", { "tex", "latex" })
+      --           -- don't add a pair if the next character is %
+      --           :with_pair(cond.not_after_regex "%%")
+      --           -- don't add a pair if  the previous character is xxx
+      --           :with_pair(
+      --             cond.not_before_regex("xxx", 3)
+      --           )
+      --           -- don't move right when repeat character
+      --           :with_move(cond.none())
+      --           -- don't delete if the next character is xx
+      --           :with_del(cond.not_after_regex "xx")
+      --           -- disable adding a newline when you press <cr>
+      --           :with_cr(cond.none()),
+      --       },
+      --       -- disable for .vim files, but it work for another filetypes
+      --       Rule("a", "a", "-vim")
+      --     )
+      --   end,
+      -- },
 
       -- You can also add new plugins here as well:
       -- Add plugins, the packer syntax without the "use"
@@ -266,19 +314,6 @@ local config = {
     },
     ["mason-nvim-dap"] = { -- overrides `require("mason-nvim-dap").setup(...)`
       -- ensure_installed = { "python" },
-    },
-  },
-
-  -- LuaSnip Options
-  luasnip = {
-    -- Extend filetypes
-    filetype_extend = {
-      -- javascript = { "javascriptreact" },
-    },
-    -- Configure luasnip loaders (vscode, lua, and/or snipmate)
-    vscode = {
-      -- Add paths for including more VS Code style snippets in luasnip
-      paths = {},
     },
   },
 
