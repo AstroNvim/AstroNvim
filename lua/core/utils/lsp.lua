@@ -15,7 +15,7 @@ local tbl_isempty = vim.tbl_isempty
 local user_plugin_opts = astronvim.user_plugin_opts
 local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
-local user_registration = user_plugin_opts("lsp.server_registration", nil, false)
+local setup_handlers = user_plugin_opts("lsp.setup_handlers", nil, false)
 local skip_setup = user_plugin_opts "lsp.skip_setup"
 
 astronvim.lsp.formatting =
@@ -44,8 +44,10 @@ astronvim.lsp.setup = function(server)
       if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
     end
     local opts = astronvim.lsp.server_settings(server)
-    if type(user_registration) == "function" then
-      user_registration(server, opts)
+    if type(setup_handlers) == "function" then
+      setup_handlers(server, opts)
+    elseif type(setup_handlers) == "table" and (setup_handlers[1] or setup_handlers[server]) then
+      (setup_handlers[server] or setup_handlers[1])(server, opts)
     else
       require("lspconfig")[server].setup(opts)
     end
