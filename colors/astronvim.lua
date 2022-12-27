@@ -1,0 +1,1 @@
+require "astronvim_theme"

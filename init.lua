@@ -12,7 +12,7 @@ end
 
 local colorscheme = astronvim.user_plugin_opts("colorscheme", false, false)
 if colorscheme then colorscheme = pcall(vim.cmd.colorscheme, colorscheme) end
-if not colorscheme then vim.cmd.colorscheme "default_theme" end
+if not colorscheme then vim.cmd.colorscheme "astronvim" end
 
 astronvim.conditional_func(astronvim.user_plugin_opts("polish", nil, false), true)
 
