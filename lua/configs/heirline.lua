@@ -150,16 +150,18 @@ astronvim.status.heirline.make_buflist = function(component)
           condition = function(self) return self._show_picker end,
           update = false,
           init = function(self)
-            local bufname = astronvim.status.provider.filename { fallback = "empty_file" }(self)
-            local label = bufname:sub(1, 1)
-            local i = 2
-            while label ~= " " and self._picker_labels[label] do
-              if i > #bufname then break end
-              label = bufname:sub(i, i)
-              i = i + 1
+            if not (self.label and self._picker_labels[self.label]) then
+              local bufname = astronvim.status.provider.filename { fallback = "empty_file" }(self)
+              local label = bufname:sub(1, 1)
+              local i = 2
+              while label ~= " " and self._picker_labels[label] do
+                if i > #bufname then break end
+                label = bufname:sub(i, i)
+                i = i + 1
+              end
+              self._picker_labels[label] = self.bufnr
+              self.label = label
             end
-            self._picker_labels[label] = self.bufnr
-            self.label = label
           end,
           provider = function(self)
             return astronvim.status.provider.str { str = self.label, padding = { left = 1, right = 1 } }
