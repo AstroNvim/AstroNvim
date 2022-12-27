@@ -266,6 +266,17 @@ local config = {
       --     )
       --   end,
       -- },
+      -- By adding to the which-key config and using our helper function you can add more which-key registered bindings
+      -- ["folke/which-key.nvim"] = {
+      --   config = function()
+      --     require "configs.which-key"
+      --     -- Add bindings which show up as group name
+      --     local wk = require "which-key"
+      --     wk.register({
+      --       b = { name = "Buffer" },
+      --     }, { mode = "n", prefix = "<leader>" })
+      --   end,
+      -- },
 
       -- You can also add new plugins here as well:
       -- Add plugins, the packer syntax without the "use"
@@ -341,22 +352,6 @@ local config = {
     --     statusline = true, -- Filetype icon in the statusline
     --   },
     -- },
-  },
-
-  -- Modify which-key registration (Use this with mappings table in the above.)
-  ["which-key"] = {
-    -- Add bindings which show up as group name
-    register = {
-      -- first key is the mode, n == normal mode
-      n = {
-        -- second key is the prefix, <leader> prefixes
-        ["<leader>"] = {
-          -- third key is the key to bring up next level and its displayed
-          -- group name in which-key top level menu
-          ["b"] = { name = "Buffer" },
-        },
-      },
-    },
   },
 
   -- This function is run last and is a good place to configuring
