@@ -58,6 +58,7 @@ astronvim.vim_opts(astronvim.user_plugin_opts("options", {
     loaded_vimball = true, -- disable vimball
     loaded_vimballPlugin = true, -- disable vimball
     autoformat_enabled = true, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled)
+    lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signatureHelp)
     cmp_enabled = true, -- enable completion at start
     autopairs_enabled = true, -- enable autopairs at start
     diagnostics_enabled = true, -- enable diagnostics at start
