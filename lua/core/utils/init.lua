@@ -275,9 +275,6 @@ function astronvim.which_key_register(mappings, opts)
         astronvim.default_tbl(opts, {
           mode = mode,
           prefix = prefix,
-          buffer = nil,
-          silent = true,
-          noremap = true,
           nowait = true,
         })
       )
