@@ -1,8 +1,6 @@
 local is_available = astronvim.is_available
 
-local maps = { i = {}, n = {}, v = {}, t = {}, [""] = {} }
-
-maps[""]["<Space>"] = "<Nop>"
+local maps = { i = {}, n = {}, v = {}, t = {} }
 
 -- Normal --
 -- Standard Operations
