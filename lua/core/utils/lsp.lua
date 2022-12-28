@@ -38,6 +38,8 @@ end
 -- @param server the name of the server to be setup
 astronvim.lsp.setup = function(server)
   if not tbl_contains(skip_setup, server) then
+    -- setup neodev for sumneko_lua
+    conditional_func(require, server == "sumneko_lua" and is_available "neodev.nvim", "neodev")
     -- if server doesn't exist, set it up from user server definition
     if not pcall(require, "lspconfig.server_configurations." .. server) then
       local server_definition = user_plugin_opts("lsp.server-settings." .. server)
@@ -199,8 +201,6 @@ astronvim.lsp.on_attach = function(client, bufnr)
   if not vim.tbl_isempty(lsp_mappings.v) then
     require("which-key").register({ l = { name = "LSP" } }, { mode = "v", prefix = "<leader>", buffer = bufnr })
   end
-
-  conditional_func(require, client.name == "sumneko_lua" and is_available "neodev.nvim", "neodev")
 
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
   conditional_func(on_attach_override, true, client, bufnr)
