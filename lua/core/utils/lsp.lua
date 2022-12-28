@@ -197,7 +197,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
 
   astronvim.set_mappings(user_plugin_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
   if not vim.tbl_isempty(lsp_mappings.v) then
-    astronvim.which_key_register({ v = { ["<leader>"] = { l = { name = "LSP" } } } }, { buffer = bufnr })
+    require("which-key").register({ l = { name = "LSP" } }, { mode = "v", prefix = "<leader>", buffer = bufnr })
   end
 
   conditional_func(require, client.name == "sumneko_lua" and is_available "neodev.nvim", "neodev")
