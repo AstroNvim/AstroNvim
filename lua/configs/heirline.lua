@@ -255,7 +255,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
           vim.api.nvim_win_get_buf(self.winid)
         )
       end,
-      provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid)) end,
+      provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid) + 1) end,
       hl = { bg = "tabline_bg" },
     },
     astronvim.status.heirline.make_buflist(astronvim.status.component.tabline_file_info()), -- component for each buffer tab
