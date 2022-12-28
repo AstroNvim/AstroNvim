@@ -180,7 +180,9 @@ vim.api.nvim_create_autocmd("BufRead", {
     vim.fn.system("git -C " .. vim.fn.expand "%:p:h" .. " rev-parse")
     if vim.v.shell_error == 0 then
       vim.api.nvim_del_augroup_by_name "git_plugin_lazy_load"
-      if #astronvim.git_plugins > 0 then require("lazy").load { plugins = astronvim.git_plugins } end
+      if #astronvim.git_plugins > 0 then
+        vim.schedule(function() require("lazy").load { plugins = astronvim.git_plugins } end)
+      end
     end
   end,
 })
@@ -189,7 +191,12 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_buf_get_option(args.buf, "buftype") == "nofile") then
       vim.api.nvim_del_augroup_by_name "file_plugin_lazy_load"
-      if #astronvim.file_plugins > 0 then require("lazy").load { plugins = astronvim.file_plugins } end
+      if #astronvim.file_plugins > 0 then
+        if vim.tbl_contains(astronvim.file_plugins, "nvim-treesitter") then
+          require("lazy").load { plugins = { "nvim-treesitter" } }
+        end
+        vim.schedule(function() require("lazy").load { plugins = astronvim.file_plugins } end)
+      end
     end
   end,
 })
