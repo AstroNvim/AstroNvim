@@ -64,8 +64,11 @@ require("lazy").setup(
       ["famiu/bufdelete.nvim"] = { cmd = { "Bdelete", "Bwipeout" } },
       ["s1n7ax/nvim-window-picker"] = { version = "^1", config = function() require "configs.window-picker" end },
       ["folke/which-key.nvim"] = { event = "VeryLazy", config = function() require "configs.which-key" end },
-      ["numToStr/Comment.nvim"] = { keys = { "gc", "gb" }, config = function() require "configs.Comment" end },
       ["windwp/nvim-autopairs"] = { event = "InsertEnter", config = function() require "configs.autopairs" end },
+      ["numToStr/Comment.nvim"] = {
+        keys = { { "gc", mode = { "n", "v" } }, { "gb", mode = { "n", "v" } } },
+        config = function() require "configs.Comment" end,
+      },
       ["akinsho/toggleterm.nvim"] = {
         cmd = { "ToggleTerm", "TermExec" },
         config = function() require "configs.toggleterm" end,
