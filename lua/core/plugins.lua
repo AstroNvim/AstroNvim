@@ -157,6 +157,7 @@ require("lazy").setup(
         dependencies = { ["rafamadriz/friendly-snippets"] = {} },
       },
       ["hrsh7th/nvim-cmp"] = {
+        commit = "a9c701fa7e12e9257b3162000e5288a75d280c28", -- https://github.com/hrsh7th/nvim-cmp/issues/1382
         event = "InsertEnter",
         config = function() require "configs.cmp" end,
         dependencies = {
