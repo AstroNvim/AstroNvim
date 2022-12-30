@@ -392,7 +392,7 @@ end
 function astronvim.status.provider.filename(opts)
   opts = astronvim.default_tbl(
     opts,
-    { fallback = "[No Name]", fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ":t" }
+    { fallback = "Empty", fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ":t" }
   )
   return function(self)
     local filename = vim.fn.fnamemodify(opts.fname(self and self.bufnr or 0), opts.modify)

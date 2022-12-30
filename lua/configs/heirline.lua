@@ -151,7 +151,7 @@ astronvim.status.heirline.make_buflist = function(component)
           update = false,
           init = function(self)
             if not (self.label and self._picker_labels[self.label]) then
-              local bufname = astronvim.status.provider.filename { fallback = "empty_file" }(self)
+              local bufname = astronvim.status.provider.filename()(self)
               local label = bufname:sub(1, 1)
               local i = 2
               while label ~= " " and self._picker_labels[label] do
@@ -251,7 +251,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
       condition = function(self)
         self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
         return astronvim.status.condition.buffer_matches(
-          { filetype = { "neo%-tree", "NvimTree" } },
+          { filetype = { "aerial", "dapui_.", "neo%-tree", "NvimTree" } },
           vim.api.nvim_win_get_buf(self.winid)
         )
       end,
