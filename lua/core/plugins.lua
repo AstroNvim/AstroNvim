@@ -1,13 +1,7 @@
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system {
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "--single-branch",
-    "https://github.com/folke/lazy.nvim.git",
-    lazypath,
-  }
+  vim.fn.system { "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath }
+  vim.fn.system { "git", "-C", lazypath, "checkout", "tags/stable" }
   local oldcmdheight = vim.opt.cmdheight:get()
   vim.opt.cmdheight = 1
   vim.notify "Please wait while plugins are installed..."
@@ -22,7 +16,7 @@ if not vim.loop.fs_stat(lazypath) then
     end,
   })
 end
-vim.opt.runtimepath:prepend(lazypath)
+vim.opt.rtp:prepend(lazypath)
 
 local function parse_plugins(plugins)
   local new_plugins = {}
@@ -54,6 +48,7 @@ require("lazy").setup(
   parse_plugins(astronvim.user_plugin_opts(
     "plugins.init",
     pin_plugins {
+      ["folke/lazy.nvim"] = { version = "^7" },
       ["b0o/SchemaStore.nvim"] = {},
       ["nvim-lua/plenary.nvim"] = {},
       ["folke/neodev.nvim"] = { config = function() require "configs.neodev" end },
