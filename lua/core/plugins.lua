@@ -1,5 +1,19 @@
 local astro_plugins = {
   -- Plugin manager
+  ["akinsho/flutter-tools.nvim"] = {
+    -- flutter
+    config = function() 
+      require("flutter-tools").setup{}
+    end,
+  },
+  ["Pocco81/auto-save.nvim"]={
+	  config = function()
+		   require("auto-save").setup {
+			  -- your config goes here
+			  -- or just leave it empty :)
+		   }
+	  end,
+  },
   ["wbthomason/packer.nvim"] = {
     setup = function()
       astronvim.lazy_load_commands("packer.nvim", {
