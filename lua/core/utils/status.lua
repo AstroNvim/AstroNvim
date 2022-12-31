@@ -339,7 +339,12 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.ruler(opts)
   opts = astronvim.default_tbl(opts, { pad_ruler = { line = 0, char = 0 } })
-  return astronvim.status.utils.stylize(string.format("%%%dl:%%%dc", opts.pad_ruler.line, opts.pad_ruler.char), opts)
+  local padding_str = string.format("%%%dd:%%%dd", opts.pad_ruler.line, opts.pad_ruler.char)
+  return function()
+    local line = vim.fn.line "."
+    local char = vim.fn.virtcol "."
+    return astronvim.status.utils.stylize(string.format(padding_str, line, char), opts)
+  end
 end
 
 --- A provider function for showing the current location as a scrollbar
