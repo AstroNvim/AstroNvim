@@ -79,7 +79,7 @@ cmd("BufEnter", {
     for _, winid in ipairs(wins) do
       if vim.api.nvim_win_is_valid(winid) then
         local bufnr = vim.api.nvim_win_get_buf(winid)
-        local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+        local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
         -- If any visible windows are not sidebars, early return
         if not sidebar_fts[filetype] then
           return
@@ -189,7 +189,7 @@ vim.api.nvim_create_autocmd("BufRead", {
 vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("file_plugin_lazy_load", { clear = true }),
   callback = function(args)
-    if not (vim.fn.expand "%" == "" or vim.api.nvim_buf_get_option(args.buf, "buftype") == "nofile") then
+    if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
       vim.api.nvim_del_augroup_by_name "file_plugin_lazy_load"
       if #astronvim.file_plugins > 0 then
         if vim.tbl_contains(astronvim.file_plugins, "nvim-treesitter") then
