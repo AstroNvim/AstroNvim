@@ -110,7 +110,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
       { desc = "Format file with LSP" }
     )
     local autoformat = astronvim.lsp.formatting.format_on_save
-    local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
     if
       autoformat.enabled
       and (tbl_isempty(autoformat.allow_filetypes or {}) or tbl_contains(autoformat.allow_filetypes, filetype))
