@@ -3,7 +3,6 @@ local signs = {
   { name = "DiagnosticSignWarn", text = astronvim.get_icon "DiagnosticWarn" },
   { name = "DiagnosticSignHint", text = astronvim.get_icon "DiagnosticHint" },
   { name = "DiagnosticSignInfo", text = astronvim.get_icon "DiagnosticInfo" },
-  { name = "DiagnosticSignError", text = astronvim.get_icon "DiagnosticError" },
   { name = "DapStopped", text = astronvim.get_icon "DapStopped", texthl = "DiagnosticWarn" },
   { name = "DapBreakpoint", text = astronvim.get_icon "DapBreakpoint", texthl = "DiagnosticInfo" },
   { name = "DapBreakpointRejected", text = astronvim.get_icon "DapBreakpointRejected", texthl = "DiagnosticError" },
