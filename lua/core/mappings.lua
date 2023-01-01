@@ -2,10 +2,24 @@ local is_available = astronvim.is_available
 
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
+local sections = {
+  f = { name = "File" },
+  p = { name = "Packages" },
+  l = { name = "LSP" },
+  u = { name = "UI" },
+  b = { name = "Buffers" },
+  D = { name = "Debugger" },
+  g = { name = "Git" },
+  s = { name = "Search" },
+  S = { name = "Session" },
+  t = { name = "Terminal" },
+}
+
 -- Normal --
 -- Standard Operations
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>q<cr>", desc = "Quit" }
+maps.n["<leader>f"] = sections.f
 maps.n["<leader>fn"] = { "<cmd>enew<cr>", desc = "New File" }
 maps.n["gx"] = { function() astronvim.system_open() end, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
@@ -15,6 +29,7 @@ maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
 maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
 
 -- Plugin Manager
+maps.n["<leader>p"] = sections.p
 maps.n["<leader>pi"] = { function() require("lazy").install() end, desc = "Plugins Install" }
 maps.n["<leader>ps"] = { function() require("lazy").home() end, desc = "Plugins Status" }
 maps.n["<leader>pS"] = { function() require("lazy").sync() end, desc = "Plugins Sync" }
@@ -43,6 +58,7 @@ maps.n[">b"] =
 maps.n["<b"] =
   { function() astronvim.move_buf(-(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Move buffer tab left" }
 
+maps.n["<leader>b"] = sections.b
 maps.n["<leader>bb"] = {
   function()
     astronvim.status.heirline.buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
@@ -89,6 +105,7 @@ end
 
 -- GitSigns
 if is_available "gitsigns.nvim" then
+  maps.n["<leader>g"] = sections.g
   maps.n["<leader>gj"] = { function() require("gitsigns").next_hunk() end, desc = "Next Git hunk" }
   maps.n["<leader>gk"] = { function() require("gitsigns").prev_hunk() end, desc = "Previous Git hunk" }
   maps.n["<leader>gl"] = { function() require("gitsigns").blame_line() end, desc = "View Git blame" }
@@ -108,6 +125,7 @@ end
 
 -- Session Manager
 if is_available "neovim-session-manager" then
+  maps.n["<leader>S"] = sections.S
   maps.n["<leader>Sl"] = { "<cmd>SessionManager! load_last_session<cr>", desc = "Load last session" }
   maps.n["<leader>Ss"] = { "<cmd>SessionManager! save_current_session<cr>", desc = "Save this session" }
   maps.n["<leader>Sd"] = { "<cmd>SessionManager! delete_session<cr>", desc = "Delete session" }
@@ -148,11 +166,13 @@ end
 
 -- SymbolsOutline
 if is_available "aerial.nvim" then
+  maps.n["<leader>l"] = sections.l
   maps.n["<leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
 end
 
 -- Telescope
 if is_available "telescope.nvim" then
+  maps.n["<leader>f"] = sections.f
   maps.n["<leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Search words" }
   maps.n["<leader>fW"] = {
     function()
@@ -162,6 +182,7 @@ if is_available "telescope.nvim" then
     end,
     desc = "Search words in all files",
   }
+  maps.n["<leader>g"] = sections.g
   maps.n["<leader>gt"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" }
   maps.n["<leader>gb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
   maps.n["<leader>gc"] = { function() require("telescope.builtin").git_commits() end, desc = "Git commits" }
@@ -176,6 +197,7 @@ if is_available "telescope.nvim" then
   maps.n["<leader>fo"] = { function() require("telescope.builtin").oldfiles() end, desc = "Search history" }
   maps.n["<leader>fc"] =
     { function() require("telescope.builtin").grep_string() end, desc = "Search for word under cursor" }
+  maps.n["<leader>s"] = sections.s
   maps.n["<leader>sb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
   maps.n["<leader>sh"] = { function() require("telescope.builtin").help_tags() end, desc = "Search help" }
   maps.n["<leader>sm"] = { function() require("telescope.builtin").man_pages() end, desc = "Search man" }
@@ -186,6 +208,7 @@ if is_available "telescope.nvim" then
     maps.n["<leader>sn"] =
       { function() require("telescope").extensions.notify.notify() end, desc = "Search notifications" }
   end
+  maps.n["<leader>l"] = sections.l
   maps.n["<leader>ls"] = {
     function()
       local aerial_avail, _ = pcall(require, "aerial")
@@ -202,8 +225,10 @@ end
 
 -- Terminal
 if is_available "toggleterm.nvim" then
+  maps.n["<leader>t"] = sections.t
   local toggle_term_cmd = astronvim.toggle_term_cmd
   if vim.fn.executable "lazygit" == 1 then
+    maps.n["<leader>g"] = sections.g
     maps.n["<leader>gg"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
     maps.n["<leader>tl"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
   end
@@ -229,6 +254,7 @@ if is_available "toggleterm.nvim" then
 end
 
 if is_available "nvim-dap" then
+  maps.n["<leader>D"] = sections.D
   -- modified function keys found with `showkey -a` in the terminal to get key code
   -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
   maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
@@ -266,6 +292,7 @@ maps.t["<C-j>"] = { "<c-\\><c-n><c-w>j", desc = "Terminal down window navigation
 maps.t["<C-k>"] = { "<c-\\><c-n><c-w>k", desc = "Terminal up window navigation" }
 maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window navigation" }
 
+maps.n["<leader>u"] = sections.u
 -- Custom menu for modification of the user experience
 if is_available "nvim-autopairs" then
   maps.n["<leader>ua"] = { function() astronvim.ui.toggle_autopairs() end, desc = "Toggle autopairs" }
