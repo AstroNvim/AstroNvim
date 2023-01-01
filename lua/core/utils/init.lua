@@ -370,6 +370,7 @@ end
 -- @param map_table A nested table where the first key is the vim mode, the second key is the key to map, and the value is the function to set the mapping to
 -- @param base A base set of options to set on every keybinding
 function astronvim.set_mappings(map_table, base)
+  local wk_avail, wk = pcall(require, "which-key")
   -- iterate over the first keys for each mode
   for mode, maps in pairs(map_table) do
     -- iterate over each keybinding set in the current mode
@@ -383,8 +384,16 @@ function astronvim.set_mappings(map_table, base)
           keymap_opts = vim.tbl_deep_extend("force", options, keymap_opts)
           keymap_opts[1] = nil
         end
-        -- extend the keybinding options with the base provided and set the mapping
-        map(mode, keymap, cmd, keymap_opts)
+        if type(options) == "table" and options.name then
+          if wk_avail then
+            -- if options have name, then use which-key register
+            keymap_opts.mode = mode
+            wk.register({ [keymap] = options }, keymap_opts)
+          end
+        else
+          -- extend the keybinding options with the base provided and set the mapping
+          map(mode, keymap, cmd, keymap_opts)
+        end
       end
     end
   end
