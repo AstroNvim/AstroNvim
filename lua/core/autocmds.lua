@@ -14,23 +14,15 @@ end, namespace "auto_hlsearch")
 
 if vim.g.heirline_bufferline then
   local bufferline_group = augroup("bufferline", { clear = true })
-  cmd({ "BufAdd", "BufEnter", "tabnew" }, {
+  cmd({ "BufAdd", "BufEnter" }, {
     desc = "Update buffers when adding new buffers",
     group = bufferline_group,
     callback = function(args)
-      if vim.t.bufs == nil then
-        vim.t.bufs = vim.api.nvim_get_current_buf() == args.buf and {} or { args.buf }
-      else
-        local bufs = vim.t.bufs
-        if
-          not vim.tbl_contains(bufs, args.buf)
-          and (args.event == "BufEnter" or vim.bo[args.buf].buflisted)
-          and (args.event == "BufEnter" or args.buf ~= vim.api.nvim_get_current_buf())
-          and astronvim.is_valid_buffer(args.buf)
-        then
-          table.insert(bufs, args.buf)
-          vim.t.bufs = bufs
-        end
+      if not vim.t.bufs then vim.t.bufs = {} end
+      local bufs = vim.t.bufs
+      if not vim.tbl_contains(bufs, args.buf) then
+        table.insert(bufs, args.buf)
+        vim.t.bufs = bufs
       end
       vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
     end,
