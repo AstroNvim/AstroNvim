@@ -196,10 +196,8 @@ astronvim.lsp.on_attach = function(client, bufnr)
     end
   end
 
+  if not vim.tbl_isempty(lsp_mappings.v) then lsp_mappings.v["<leader>l"] = { name = "LSP" } end
   astronvim.set_mappings(user_plugin_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
-  if not vim.tbl_isempty(lsp_mappings.v) then
-    require("which-key").register({ l = { name = "LSP" } }, { mode = "v", prefix = "<leader>", buffer = bufnr })
-  end
 
   local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
   conditional_func(on_attach_override, true, client, bufnr)
