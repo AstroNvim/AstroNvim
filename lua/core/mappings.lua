@@ -8,7 +8,7 @@ local sections = {
   l = { name = "LSP" },
   u = { name = "UI" },
   b = { name = "Buffers" },
-  D = { name = "Debugger" },
+  d = { name = "Debugger" },
   g = { name = "Git" },
   s = { name = "Search" },
   S = { name = "Session" },
@@ -254,7 +254,7 @@ if is_available "toggleterm.nvim" then
 end
 
 if is_available "nvim-dap" then
-  maps.n["<leader>D"] = sections.D
+  maps.n["<leader>d"] = sections.d
   -- modified function keys found with `showkey -a` in the terminal to get key code
   -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
   maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
@@ -265,20 +265,20 @@ if is_available "nvim-dap" then
   maps.n["<F10>"] = { function() require("dap").step_over() end, desc = "Debugger: Step Over" }
   maps.n["<F11>"] = { function() require("dap").step_into() end, desc = "Debugger: Step Into" }
   maps.n["<F23>"] = { function() require("dap").step_out() end, desc = "Debugger: Step Out" } -- Shift+F11
-  maps.n["<leader>Db"] = { function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint (F9)" }
-  maps.n["<leader>DB"] = { function() require("dap").clear_breakpoints() end, desc = "Clear Breakpoints" }
-  maps.n["<leader>Dc"] = { function() require("dap").continue() end, desc = "Start/Continue (F5)" }
-  maps.n["<leader>Di"] = { function() require("dap").step_into() end, desc = "Step Into (F11)" }
-  maps.n["<leader>Do"] = { function() require("dap").step_over() end, desc = "Step Over (F10)" }
-  maps.n["<leader>DO"] = { function() require("dap").step_out() end, desc = "Step Out (S-F11)" }
-  maps.n["<leader>Dq"] = { function() require("dap").close() end, desc = "Close Session" }
-  maps.n["<leader>DQ"] = { function() require("dap").terminate() end, desc = "Terminate Session (S-F5)" }
-  maps.n["<leader>Dp"] = { function() require("dap").pause() end, desc = "Pause (F6)" }
-  maps.n["<leader>Dr"] = { function() require("dap").restart_frame() end, desc = "Restart (C-F5)" }
-  maps.n["<leader>DR"] = { function() require("dap").repl.toggle() end, desc = "Toggle REPL" }
+  maps.n["<leader>db"] = { function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint (F9)" }
+  maps.n["<leader>dB"] = { function() require("dap").clear_breakpoints() end, desc = "Clear Breakpoints" }
+  maps.n["<leader>dc"] = { function() require("dap").continue() end, desc = "Start/Continue (F5)" }
+  maps.n["<leader>di"] = { function() require("dap").step_into() end, desc = "Step Into (F11)" }
+  maps.n["<leader>do"] = { function() require("dap").step_over() end, desc = "Step Over (F10)" }
+  maps.n["<leader>dO"] = { function() require("dap").step_out() end, desc = "Step Out (S-F11)" }
+  maps.n["<leader>dq"] = { function() require("dap").close() end, desc = "Close Session" }
+  maps.n["<leader>dQ"] = { function() require("dap").terminate() end, desc = "Terminate Session (S-F5)" }
+  maps.n["<leader>dp"] = { function() require("dap").pause() end, desc = "Pause (F6)" }
+  maps.n["<leader>dr"] = { function() require("dap").restart_frame() end, desc = "Restart (C-F5)" }
+  maps.n["<leader>dR"] = { function() require("dap").repl.toggle() end, desc = "Toggle REPL" }
   if is_available "nvim-dap-ui" then
-    maps.n["<leader>Du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
-    maps.n["<leader>Dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
+    maps.n["<leader>du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
+    maps.n["<leader>dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
   end
 end
 
