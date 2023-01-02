@@ -1,9 +1,8 @@
 local is_available = astronvim.is_available
 local user_plugin_opts = astronvim.user_plugin_opts
 local namespace = vim.api.nvim_create_namespace
-local cmd = vim.api.nvim_create_autocmd
+local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
-local create_command = vim.api.nvim_create_user_command
 
 vim.on_key(function(char)
   if vim.fn.mode() == "n" then
@@ -13,7 +12,7 @@ vim.on_key(function(char)
 end, namespace "auto_hlsearch")
 
 local bufferline_group = augroup("bufferline", { clear = true })
-cmd({ "BufAdd", "BufEnter" }, {
+autocmd({ "BufAdd", "BufEnter" }, {
   desc = "Update buffers when adding new buffers",
   group = bufferline_group,
   callback = function(args)
@@ -26,7 +25,7 @@ cmd({ "BufAdd", "BufEnter" }, {
     vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
   end,
 })
-cmd("BufDelete", {
+autocmd("BufDelete", {
   desc = "Update buffers when deleting buffers",
   group = bufferline_group,
   callback = function(args)
@@ -47,28 +46,28 @@ cmd("BufDelete", {
   end,
 })
 
-cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
+autocmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
   group = augroup("highlighturl", { clear = true }),
   pattern = "*",
   callback = function() astronvim.set_url_match() end,
 })
 
-cmd("TextYankPost", {
+autocmd("TextYankPost", {
   desc = "Highlight yanked text",
   group = augroup("highlightyank", { clear = true }),
   pattern = "*",
   callback = function() vim.highlight.on_yank() end,
 })
 
-cmd("FileType", {
+autocmd("FileType", {
   desc = "Unlist quickfist buffers",
   group = augroup("unlist_quickfist", { clear = true }),
   pattern = "qf",
   callback = function() vim.opt_local.buflisted = false end,
 })
 
-cmd("BufEnter", {
+autocmd("BufEnter", {
   desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
   group = augroup("auto_quit", { clear = true }),
   callback = function()
@@ -100,7 +99,7 @@ cmd("BufEnter", {
 
 if is_available "alpha-nvim" then
   local group_name = augroup("alpha_settings", { clear = true })
-  cmd("User", {
+  autocmd("User", {
     desc = "Disable status and tablines for alpha",
     group = group_name,
     pattern = "AlphaReady",
@@ -110,7 +109,7 @@ if is_available "alpha-nvim" then
       vim.opt.laststatus = 0
       vim.opt.showtabline = 0
       vim.opt_local.winbar = nil
-      cmd("BufUnload", {
+      autocmd("BufUnload", {
         pattern = "<buffer>",
         callback = function()
           vim.opt.laststatus = prev_status
@@ -119,7 +118,7 @@ if is_available "alpha-nvim" then
       })
     end,
   })
-  cmd("VimEnter", {
+  autocmd("VimEnter", {
     desc = "Start Alpha when vim is opened with no arguments",
     group = group_name,
     callback = function()
@@ -140,7 +139,7 @@ if is_available "alpha-nvim" then
 end
 
 if is_available "neo-tree.nvim" then
-  cmd("BufEnter", {
+  autocmd("BufEnter", {
     desc = "Open Neo-Tree on startup with directory",
     group = augroup("neotree_start", { clear = true }),
     callback = function()
@@ -151,15 +150,15 @@ if is_available "neo-tree.nvim" then
 end
 
 if is_available "nvim-dap-ui" then
-  vim.api.nvim_create_autocmd("FileType", {
+  autocmd("FileType", {
     desc = "Make q close dap floating windows",
-    group = vim.api.nvim_create_augroup("dapui", { clear = true }),
+    group = augroup("dapui", { clear = true }),
     pattern = "dap-float",
     callback = function() vim.keymap.set("n", "q", "<cmd>close!<cr>") end,
   })
 end
 
-cmd({ "VimEnter", "ColorScheme" }, {
+autocmd({ "VimEnter", "ColorScheme" }, {
   desc = "Load custom highlights from user configuration",
   group = augroup("astronvim_highlights", { clear = true }),
   callback = function()
@@ -174,8 +173,8 @@ cmd({ "VimEnter", "ColorScheme" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd("BufRead", {
-  group = vim.api.nvim_create_augroup("git_plugin_lazy_load", { clear = true }),
+autocmd("BufRead", {
+  group = augroup("git_plugin_lazy_load", { clear = true }),
   callback = function()
     vim.fn.system("git -C " .. vim.fn.expand "%:p:h" .. " rev-parse")
     if vim.v.shell_error == 0 then
@@ -186,8 +185,8 @@ vim.api.nvim_create_autocmd("BufRead", {
     end
   end,
 })
-vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
-  group = vim.api.nvim_create_augroup("file_plugin_lazy_load", { clear = true }),
+autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
+  group = augroup("file_plugin_lazy_load", { clear = true }),
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
       vim.api.nvim_del_augroup_by_name "file_plugin_lazy_load"
@@ -201,12 +200,9 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
   end,
 })
 
-create_command(
-  "AstroUpdatePackages",
-  function() astronvim.updater.update_packages() end,
-  { desc = "Update Plugins and Mason" }
-)
-create_command("AstroUpdate", function() astronvim.updater.update() end, { desc = "Update AstroNvim" })
-create_command("AstroVersion", function() astronvim.updater.version() end, { desc = "Check AstroNvim Version" })
-create_command("AstroChangelog", function() astronvim.updater.changelog() end, { desc = "Check AstroNvim Changelog" })
-create_command("ToggleHighlightURL", function() astronvim.ui.toggle_url_match() end, { desc = "Toggle URL Highlights" })
+local cmd = vim.api.nvim_create_user_command
+cmd("AstroUpdatePackages", function() astronvim.updater.update_packages() end, { desc = "Update Plugins and Mason" })
+cmd("AstroUpdate", function() astronvim.updater.update() end, { desc = "Update AstroNvim" })
+cmd("AstroVersion", function() astronvim.updater.version() end, { desc = "Check AstroNvim Version" })
+cmd("AstroChangelog", function() astronvim.updater.changelog() end, { desc = "Check AstroNvim Changelog" })
+cmd("ToggleHighlightURL", function() astronvim.ui.toggle_url_match() end, { desc = "Toggle URL Highlights" })
