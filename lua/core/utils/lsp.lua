@@ -96,7 +96,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
   if capabilities.documentFormattingProvider and not tbl_contains(astronvim.lsp.formatting.disabled, client.name) then
     lsp_mappings.n["<leader>lf"] = {
       function() vim.lsp.buf.format(astronvim.lsp.format_opts) end,
-      desc = "Format code",
+      desc = "Format buffer",
     }
     lsp_mappings.v["<leader>lf"] = lsp_mappings.n["<leader>lf"]
 
