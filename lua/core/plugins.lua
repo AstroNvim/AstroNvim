@@ -34,10 +34,9 @@ local function pin_plugins(plugins)
   if not astronvim.updater.snapshot then return plugins end
   for plugin, options in pairs(plugins) do
     local pin = astronvim.updater.snapshot[plugin:match "/([^/]*)$"]
-    if pin and pin.commit then
+    if pin and pin.commit and not (options.version or options.commit) then
       options.commit = pin.commit
       options.branch = pin.branch
-      options.version = nil
       if plugin.dependencies then plugin.dependencies = pin_plugins(plugin.dependencies) end
     end
   end
