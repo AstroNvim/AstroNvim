@@ -211,12 +211,3 @@ create_command("AstroReload", function() astronvim.updater.reload() end, { desc 
 create_command("AstroVersion", function() astronvim.updater.version() end, { desc = "Check AstroNvim Version" })
 create_command("AstroChangelog", function() astronvim.updater.changelog() end, { desc = "Check AstroNvim Changelog" })
 create_command("ToggleHighlightURL", function() astronvim.ui.toggle_url_match() end, { desc = "Toggle URL Highlights" })
-
-if is_available "mason.nvim" then
-  create_command("MasonUpdateAll", function() astronvim.mason.update_all() end, { desc = "Update Mason Packages" })
-  create_command(
-    "MasonUpdate",
-    function(opts) astronvim.mason.update(opts.args) end,
-    { nargs = 1, desc = "Update Mason Package" }
-  )
-end
