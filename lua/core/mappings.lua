@@ -44,7 +44,7 @@ maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog"
 
 -- Alpha
 if is_available "alpha-nvim" then
-  maps.n["<leader>d"] = { function() require("alpha").start() end, desc = "Alpha Dashboard" }
+  maps.n["<leader>h"] = { function() require("alpha").start() end, desc = "Home Screen" }
 end
 
 -- Manage Buffers
