@@ -266,7 +266,13 @@ local astro_plugins = {
   -- Color highlighting
   ["NvChad/nvim-colorizer.lua"] = {
     opt = true,
-    setup = function() table.insert(astronvim.file_plugins, "nvim-colorizer.lua") end,
+    setup = function()
+      astronvim.lazy_load_commands(
+        "nvim-colorizer.lua",
+        { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" }
+      )
+      table.insert(astronvim.file_plugins, "nvim-colorizer.lua")
+    end,
     config = function() require "configs.colorizer" end,
   },
 
