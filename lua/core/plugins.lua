@@ -109,7 +109,6 @@ require("lazy").setup(
           "TSUpdateSync",
         },
         dependencies = {
-          ["p00f/nvim-ts-rainbow"] = {},
           ["windwp/nvim-ts-autotag"] = {},
           ["JoosepAlviste/nvim-ts-context-commentstring"] = {},
         },
