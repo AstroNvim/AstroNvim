@@ -173,34 +173,16 @@ require("lazy").setup(
       ["neovim/nvim-lspconfig"] = {
         init = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
         config = function() require "configs.lspconfig" end,
-        dependencies = {
-          ["williamboman/mason-lspconfig.nvim"] = {
-            cmd = { "LspInstall", "LspUninstall" },
-            config = function() require "configs.mason-lspconfig" end,
-          },
-        },
       },
       ["jose-elias-alvarez/null-ls.nvim"] = {
         init = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
         config = function() require "configs.null-ls" end,
-        dependencies = {
-          ["jayp0521/mason-null-ls.nvim"] = {
-            cmd = { "NullLsInstall", "NullLsUninstall" },
-            config = function() require "configs.mason-null-ls" end,
-          },
-        },
       },
       ["mfussenegger/nvim-dap"] = {
         enabled = vim.fn.has "win32" == 0,
         init = function() table.insert(astronvim.file_plugins, "nvim-dap") end,
         config = function() require "configs.dap" end,
-        dependencies = {
-          ["rcarriga/nvim-dap-ui"] = { config = function() require "configs.dapui" end },
-          ["jayp0521/mason-nvim-dap.nvim"] = {
-            cmd = { "DapInstall", "DapUninstall" },
-            config = function() require "configs.mason-nvim-dap" end,
-          },
-        },
+        dependencies = { ["rcarriga/nvim-dap-ui"] = { config = function() require "configs.dapui" end } },
       },
       ["williamboman/mason.nvim"] = {
         cmd = {
@@ -212,10 +194,28 @@ require("lazy").setup(
           "MasonUpdate", -- astronvim command
           "MasonUpdateAll", -- astronvim command
         },
+        init = function() table.insert(astronvim.file_plugins, "mason.nvim") end,
         config = function()
           require "configs.mason"
-          vim.tbl_map(function(module) pcall(require, module) end, { "nvim-lspconfig", "null-ls", "dap" })
+          for _, module in ipairs { "mason-lspconfig", "mason-null-ls", "mason-nvim-dap" } do
+            pcall(require, module)
+          end
         end,
+      },
+      ["williamboman/mason-lspconfig.nvim"] = {
+        cmd = { "LspInstall", "LspUninstall" },
+        config = function() require "configs.mason-lspconfig" end,
+        dependencies = { ["neovim/nvim-lspconfig"] = {} },
+      },
+      ["jayp0521/mason-null-ls.nvim"] = {
+        cmd = { "NullLsInstall", "NullLsUninstall" },
+        config = function() require "configs.mason-null-ls" end,
+        dependencies = { ["jayp0521/mason-null-ls.nvim"] = {} },
+      },
+      ["jayp0521/mason-nvim-dap.nvim"] = {
+        cmd = { "DapInstall", "DapUninstall" },
+        config = function() require "configs.mason-nvim-dap" end,
+        dependencies = { ["mfussenegger/nvim-dap"] = {} },
       },
     }
   )),
