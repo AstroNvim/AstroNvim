@@ -16,6 +16,8 @@ if not colorscheme then vim.cmd.colorscheme "astronvim" end
 
 astronvim.conditional_func(astronvim.user_plugin_opts("polish", nil, false), true)
 
-if vim.fn.has "nvim-0.8" ~= 1 or vim.version().prerelease then
+-- TODO v3: SWITCH THESE CONDITIONS
+-- if vim.fn.has "nvim-0.9" ~= 1 or vim.version().prerelease then
+if vim.fn.has "nvim-0.8" ~= 1 then
   vim.schedule(function() astronvim.notify("Unsupported Neovim Version! Please check the requirements", "error") end)
 end
