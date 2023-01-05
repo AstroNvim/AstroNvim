@@ -65,7 +65,6 @@ function astronvim.mason.update_all()
   else
     local updated = false
     for _, pkg in ipairs(installed_pkgs) do
-      running = running + 1
       pkg:check_new_version(function(update_available, version)
         if update_available then
           updated = true
