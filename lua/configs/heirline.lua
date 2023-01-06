@@ -290,7 +290,7 @@ vim.api.nvim_create_autocmd("User", {
   group = augroup,
   desc = "Disable winbar for some filetypes",
   callback = function()
-    if vim.opt.diff:get() or astronvim.status.condition.buffer_matches(require("heirline").winbar.disabled) then
+    if vim.opt.diff:get() or astronvim.status.condition.buffer_matches(require("heirline").winbar.disabled or {}) then
       vim.opt_local.winbar = nil
     end
   end,
