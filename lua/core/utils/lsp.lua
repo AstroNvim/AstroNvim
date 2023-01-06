@@ -38,7 +38,6 @@ end
 -- @param server the name of the server to be setup
 astronvim.lsp.setup = function(server)
   if not tbl_contains(skip_setup, server) then
-    conditional_func(require, server == "sumneko_lua" and is_available "neodev.nvim", "neodev") -- setup neodev for sumneko_lua
     -- if server doesn't exist, set it up from user server definition
     if not pcall(require, "lspconfig.server_configurations." .. server) then
       local server_definition = user_plugin_opts("lsp.server-settings." .. server)
@@ -224,17 +223,24 @@ astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 -- @return the table of LSP options used when setting up the given language server
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
-  local lsp_settings
-  if server_name == "jsonls" and astronvim.is_available "SchemaStore.nvim" then -- by default add json schemas
-    lsp_settings = { json = { schemas = require("schemastore").json.schemas(), validate = { enable = true } } }
-  end
-  local opts = user_plugin_opts( -- get user server-settings
-    "lsp.config." .. server_name,
-    astronvim.default_tbl(
-      { settings = lsp_settings, capabilities = astronvim.lsp.capabilities, flags = astronvim.lsp.flags },
-      { capabilities = server.capabilities, flags = server.flags }
-    )
+  local lsp_opts = astronvim.default_tbl(
+    { capabilities = astronvim.lsp.capabilities, flags = astronvim.lsp.flags },
+    { capabilities = server.capabilities, flags = server.flags }
   )
+  if server_name == "jsonls" then -- by default add json schemas
+    local schemastore_avail, schemastore = pcall(require, "schemastore")
+    if schemastore_avail then
+      lsp_opts.settings = { json = { schemas = schemastore.json.schemas(), validate = { enable = true } } }
+    end
+  end
+  if server_name == "sumneko_lua" then -- by default setup neodev for sumneko_lua
+    local neodev_avail, neodev = pcall(require, "neodev.lsp")
+    if neodev_avail then
+      lsp_opts.before_init = neodev.before_init
+      lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
+    end
+  end
+  local opts = user_plugin_opts("lsp.config." .. server_name, lsp_opts)
   local old_on_attach = server.on_attach
   local user_on_attach = opts.on_attach
   opts.on_attach = function(client, bufnr)
