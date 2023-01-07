@@ -34,7 +34,7 @@ local astro_plugins = {
 
   -- Notification Enhancer
   ["rcarriga/nvim-notify"] = {
-    opt = true,
+    module = "notify",
     setup = function() astronvim.load_plugin_with_func("nvim-notify", vim, "notify") end,
     config = function() require "configs.notify" end,
   },
@@ -266,7 +266,13 @@ local astro_plugins = {
   -- Color highlighting
   ["NvChad/nvim-colorizer.lua"] = {
     opt = true,
-    setup = function() table.insert(astronvim.file_plugins, "nvim-colorizer.lua") end,
+    setup = function()
+      astronvim.lazy_load_commands(
+        "nvim-colorizer.lua",
+        { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" }
+      )
+      table.insert(astronvim.file_plugins, "nvim-colorizer.lua")
+    end,
     config = function() require "configs.colorizer" end,
   },
 

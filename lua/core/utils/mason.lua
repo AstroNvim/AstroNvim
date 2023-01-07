@@ -54,42 +54,41 @@ function astronvim.mason.update_all()
     return
   end
 
-  local any_pkgs = false
-  local running = 0
-  local updated = false
+  local installed_pkgs = registry.get_installed_packages()
+  local running = #installed_pkgs
+  local no_pkgs = running == 0
   astronvim.notify "Mason: Checking for package updates..."
 
-  for _, pkg in ipairs(registry.get_installed_packages()) do
-    any_pkgs = true
-    running = running + 1
-    pkg:check_new_version(function(update_available, version)
-      if update_available then
-        updated = true
-        running = running - 1
-        astronvim.notify(("Mason: Updating %s to %s"):format(pkg.name, version.latest_version))
-        pkg:install():on("closed", function()
-          running = running - 1
-          if running == 0 then
-            astronvim.notify "Mason: Update Complete"
-            astronvim.event "MasonUpdateComplete"
-          end
-        end)
-      else
-        running = running - 1
-        if running == 0 then
-          if updated then
-            astronvim.notify "Mason: Update Complete"
-          else
-            astronvim.notify "Mason: No updates available"
-          end
-          astronvim.event "MasonUpdateComplete"
-        end
-      end
-    end)
-  end
-  if not any_pkgs then
+  if no_pkgs then
     astronvim.notify "Mason: No updates available"
     astronvim.event "MasonUpdateComplete"
+  else
+    local updated = false
+    for _, pkg in ipairs(installed_pkgs) do
+      pkg:check_new_version(function(update_available, version)
+        if update_available then
+          updated = true
+          astronvim.notify(("Mason: Updating %s to %s"):format(pkg.name, version.latest_version))
+          pkg:install():on("closed", function()
+            running = running - 1
+            if running == 0 then
+              astronvim.notify "Mason: Update Complete"
+              astronvim.event "MasonUpdateComplete"
+            end
+          end)
+        else
+          running = running - 1
+          if running == 0 then
+            if updated then
+              astronvim.notify "Mason: Update Complete"
+            else
+              astronvim.notify "Mason: No updates available"
+            end
+            astronvim.event "MasonUpdateComplete"
+          end
+        end
+      end)
+    end
   end
 end
 

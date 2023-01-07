@@ -38,7 +38,6 @@ require("neo-tree").setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     mappings = {
       ["<space>"] = false, -- disable space until we figure out which-key disabling
       o = "open",
-      O = function(state) astronvim.system_open(state.tree:get_node():get_id()) end,
       H = "prev_source",
       L = "next_source",
     },
@@ -47,7 +46,15 @@ require("neo-tree").setup(astronvim.user_plugin_opts("plugins.neo-tree", {
     follow_current_file = true,
     hijack_netrw_behavior = "open_current",
     use_libuv_file_watcher = true,
-    window = { mappings = { h = "toggle_hidden" } },
+    window = {
+      mappings = {
+        O = "system_open",
+        h = "toggle_hidden",
+      },
+    },
+    commands = {
+      system_open = function(state) astronvim.system_open(state.tree:get_node():get_id()) end,
+    },
   },
   event_handlers = {
     { event = "neo_tree_buffer_enter", handler = function(_) vim.opt_local.signcolumn = "auto" end },
