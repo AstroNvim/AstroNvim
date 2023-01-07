@@ -143,8 +143,16 @@ if is_available "neo-tree.nvim" then
     desc = "Open Neo-Tree on startup with directory",
     group = augroup("neotree_start", { clear = true }),
     callback = function()
-      local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
-      if stats and stats.type == "directory" then require("neo-tree.setup.netrw").hijack() end
+      if package.loaded["neo-tree"] then
+        vim.api.nvim_del_augroup_by_name "neotree_start"
+      else
+        local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+        if stats and stats.type == "directory" then
+          require "neo-tree"
+          vim.api.nvim_del_augroup_by_name "neotree_start"
+          vim.api.nvim_exec_autocmds("BufEnter", {})
+        end
+      end
     end,
   })
 end
