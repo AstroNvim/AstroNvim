@@ -18,7 +18,8 @@ astronvim.install = astronvim_installation or { home = stdpath "config" }
 --- external astronvim configuration folder
 astronvim.install.config = stdpath("config"):gsub("nvim$", "astronvim")
 vim.opt.rtp:append(astronvim.install.config)
-local supported_configs = { astronvim.install.home, astronvim.install.config }
+--- supported astronvim user conifg folders
+astronvim.supported_configs = { astronvim.install.home, astronvim.install.config }
 
 --- Looks to see if a module path references a lua file in a configuration folder and tries to load it. If there is an error loading the file, write an error and continue
 -- @param module the module path to try and load
@@ -27,7 +28,7 @@ local function load_module_file(module)
   -- placeholder for final return value
   local found_module = nil
   -- search through each of the supported configuration locations
-  for _, config_path in ipairs(supported_configs) do
+  for _, config_path in ipairs(astronvim.supported_configs) do
     -- convert the module path to a file path (example user.init -> user/init.lua)
     local module_path = config_path .. "/lua/" .. module:gsub("%.", "/") .. ".lua"
     -- check if there is a readable file, if so, set it as found
@@ -224,6 +225,24 @@ function astronvim.user_plugin_opts(module, default, extend, prefix)
   if user_settings ~= nil then default = func_or_extend(user_settings, default, extend) end
   -- return the final configuration table with any overrides applied
   return default
+end
+
+--- Helper function to create a plugin with default AstroNvim features such as pinning commit on stable and creating the config function
+-- @param plugin a parameter specification for the Lazy plugin manager
+-- @return the plugin with a commit and branch set if it should be pinned and a config function if it has a default_config
+function astronvim.plugin(plugin)
+  if type(plugin) ~= "table" then plugin = { plugin } end
+  if plugin.default_config and not plugin.config then
+    plugin.config = function(spec, opts) spec.default_config(opts) end
+  end
+  if astronvim.updater.snapshot then
+    local pin = astronvim.updater.snapshot[plugin[1]:match "/([^/]*)$"]
+    if pin and pin.commit and not (plugin.version or plugin.commit) then
+      plugin.commit = pin.commit
+      plugin.branch = pin.branch
+    end
+  end
+  return plugin
 end
 
 --- Open a URL under the cursor with the current operating system (Supports Mac OS X and *nix)
