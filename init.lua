@@ -1,7 +1,7 @@
 for _, source in ipairs {
   "core.utils",
   "core.options",
-  "core.plugins",
+  "core.lazy",
   "core.diagnostics",
   "core.autocmds",
   "core.mappings",

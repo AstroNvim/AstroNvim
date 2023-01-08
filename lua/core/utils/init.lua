@@ -226,6 +226,24 @@ function astronvim.user_plugin_opts(module, default, extend, prefix)
   return default
 end
 
+--- Helper function to create a plugin with default AstroNvim features such as pinning commit on stable and creating the config function
+-- @param plugin a parameter specification for the Lazy plugin manager
+-- @return the plugin with a commit and branch set if it should be pinned and a config function if it has a default_config
+function astronvim.plugin(plugin)
+  if type(plugin) ~= "table" then plugin = { plugin } end
+  if plugin.default_config and not plugin.config then
+    plugin.config = function(spec, opts) spec.default_config(opts) end
+  end
+  if astronvim.updater.snapshot then
+    local pin = astronvim.updater.snapshot[plugin[1]:match "/([^/]*)$"]
+    if pin and pin.commit and not (plugin.version or plugin.commit) then
+      plugin.commit = pin.commit
+      plugin.branch = pin.branch
+    end
+  end
+  return plugin
+end
+
 --- Open a URL under the cursor with the current operating system (Supports Mac OS X and *nix)
 -- @param path the path of the file to open with the system opener
 function astronvim.system_open(path)
