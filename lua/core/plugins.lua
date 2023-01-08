@@ -47,7 +47,7 @@ require("lazy").setup(
   parse_plugins(astronvim.user_plugin_opts(
     "plugins.init",
     pin_plugins {
-      ["folke/lazy.nvim"] = { version = "^7" },
+      ["folke/lazy.nvim"] = { version = "^8" },
       ["b0o/SchemaStore.nvim"] = {},
       ["nvim-lua/plenary.nvim"] = {},
       ["folke/neodev.nvim"] = { version = "^1", config = function() require "configs.neodev" end },
