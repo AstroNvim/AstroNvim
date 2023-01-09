@@ -185,6 +185,24 @@ if is_available "telescope.nvim" then
   maps.n["<leader>gt"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" }
   maps.n["<leader>gb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
   maps.n["<leader>gc"] = { function() require("telescope.builtin").git_commits() end, desc = "Git commits" }
+  maps.n["<leader>f<CR>"] = { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
+  maps.n["<leader>fC"] = {
+    function()
+      local cwd = vim.fn.stdpath "config" .. "/.."
+      local search_dirs = {}
+      for _, dir in ipairs(astronvim.supported_configs) do -- search all supported config locations
+        if dir == astronvim.install.home then dir = dir .. "/lua/user" end -- don't search the astronvim core files
+        if vim.fn.isdirectory(dir) == 1 then table.insert(search_dirs, dir) end -- add directory to search if exists
+      end
+      if vim.tbl_isempty(search_dirs) then -- if no config folders found, show warning
+        astronvim.notify("No user configuration files found", "warn")
+      else
+        if #search_dirs == 1 then cwd = search_dirs[1] end -- if only one directory, focus cwd
+        require("telescope.builtin").find_files { prompt_title = "Config Files", search_dirs = search_dirs, cwd = cwd } -- call telescope
+      end
+    end,
+    desc = "Search config files",
+  }
   maps.n["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Search files" }
   maps.n["<leader>fF"] = {
     function() require("telescope.builtin").find_files { hidden = true, no_ignore = true } end,
