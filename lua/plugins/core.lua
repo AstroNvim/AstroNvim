@@ -59,7 +59,7 @@ return {
   astronvim.plugin {
     "folke/which-key.nvim",
     version = "^1",
-    event = "VeryLazy",
+    event = "UIEnter",
     opts = {
       plugins = {
         spelling = { enabled = true },
