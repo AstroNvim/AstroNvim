@@ -2,11 +2,6 @@ return astronvim.plugin {
   "mfussenegger/nvim-dap",
   enabled = vim.fn.has "win32" == 0,
   init = function() table.insert(astronvim.file_plugins, "nvim-dap") end,
-  default_config = function(_)
-    local dap = require "dap"
-    dap.adapters = astronvim.user_plugin_opts("dap.adapters", dap.adapters)
-    dap.configurations = astronvim.user_plugin_opts("dap.configurations", dap.configurations)
-  end,
   dependencies = {
     astronvim.plugin {
       "rcarriga/nvim-dap-ui",
