@@ -1,5 +1,6 @@
 return astronvim.plugin {
   "rebelot/heirline.nvim",
+  event = "UIEnter",
   opts = function()
     --- a submodule of heirline specific functions and aliases
     astronvim.status.heirline = {}
@@ -169,7 +170,6 @@ return astronvim.plugin {
       },
     }
   end,
-  event = "VimEnter",
   default_config = function(opts)
     local heirline = require "heirline"
     local C = require "astronvim_theme.colors"
