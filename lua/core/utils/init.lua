@@ -210,17 +210,16 @@ end
 -- @param module the module path of the override setting
 -- @param default the default settings that will be overridden
 -- @param extend boolean value to either extend the default settings or overwrite them with the user settings entirely (default: true)
--- @param prefix a module prefix for where to search (default: user)
 -- @return the new configuration settings with the user overrides applied
-function astronvim.user_opts(module, default, extend, prefix)
+function astronvim.user_opts(module, default, extend)
   -- default to extend = true
   if extend == nil then extend = true end
   -- if no default table is provided set it to an empty table
   if default == nil then default = {} end
   -- try to load a module file if it exists
-  local user_settings = load_module_file((prefix or "user") .. "." .. module)
+  local user_settings = load_module_file("user." .. module)
   -- if no user module file is found, try to load an override from the user settings table from user/init.lua
-  if user_settings == nil and prefix == nil then user_settings = user_setting_table(module) end
+  if user_settings == nil then user_settings = user_setting_table(module) end
   -- if a user override was found call the configuration engine
   if user_settings ~= nil then default = func_or_extend(user_settings, default, extend) end
   -- return the final configuration table with any overrides applied
