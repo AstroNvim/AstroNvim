@@ -22,7 +22,7 @@ astronvim.lsp.diagnostics = {
     signs = false,
     update_in_insert = false,
   },
-  on = astronvim.user_plugin_opts("diagnostics", {
+  on = astronvim.user_opts("diagnostics", {
     virtual_text = true,
     signs = { active = signs },
     update_in_insert = true,

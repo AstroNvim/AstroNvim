@@ -46,7 +46,7 @@ astronvim.status.env.modes = {
   ["null"] = { "null", "inactive" },
 }
 
-astronvim.status.env.separators = astronvim.user_plugin_opts("heirline.separators", {
+astronvim.status.env.separators = astronvim.user_opts("heirline.separators", {
   none = { "", "" },
   left = { "", "  " },
   right = { "  ", "" },
@@ -54,7 +54,7 @@ astronvim.status.env.separators = astronvim.user_plugin_opts("heirline.separator
   tab = { "", " " },
 })
 
-astronvim.status.env.attributes = astronvim.user_plugin_opts("heirline.attributes", {
+astronvim.status.env.attributes = astronvim.user_opts("heirline.attributes", {
   buffer_active = { bold = true, italic = true },
   buffer_picker = { bold = true },
   macro_recording = { bold = true },
@@ -62,7 +62,7 @@ astronvim.status.env.attributes = astronvim.user_plugin_opts("heirline.attribute
   git_diff = { bold = true },
 })
 
-astronvim.status.env.icon_highlights = astronvim.user_plugin_opts("heirline.icon_highlights", {
+astronvim.status.env.icon_highlights = astronvim.user_opts("heirline.icon_highlights", {
   file_icon = {
     tabline = function(self) return self.is_active or self.is_visible end,
     statusline = true,

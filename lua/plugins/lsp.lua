@@ -16,7 +16,7 @@ return {
           vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
       end
       local setup_servers = function()
-        vim.tbl_map(astronvim.lsp.setup, astronvim.user_plugin_opts "lsp.servers")
+        vim.tbl_map(astronvim.lsp.setup, astronvim.user_opts "lsp.servers")
         vim.api.nvim_exec_autocmds("FileType", {})
       end
       if astronvim.is_available "mason-lspconfig.nvim" then

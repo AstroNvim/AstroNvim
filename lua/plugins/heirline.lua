@@ -208,7 +208,7 @@ return astronvim.plugin {
       local HeirlineTerminal = astronvim.get_hlgroup("HeirlineTerminal", { fg = nil }).fg
         or astronvim.status.hl.lualine_mode("inactive", HeirlineInsert)
 
-      local colors = astronvim.user_plugin_opts("heirline.colors", {
+      local colors = astronvim.user_opts("heirline.colors", {
         close_fg = Error.fg,
         fg = StatusLine.fg,
         bg = StatusLine.bg,

@@ -1,5 +1,4 @@
 local is_available = astronvim.is_available
-local user_plugin_opts = astronvim.user_plugin_opts
 local namespace = vim.api.nvim_create_namespace
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
@@ -172,7 +171,7 @@ autocmd({ "VimEnter", "ColorScheme" }, {
   callback = function()
     if vim.g.colors_name then
       for _, module in ipairs { "init", vim.g.colors_name } do
-        for group, spec in pairs(user_plugin_opts("highlights." .. module)) do
+        for group, spec in pairs(astronvim.user_opts("highlights." .. module)) do
           vim.api.nvim_set_hl(0, group, spec)
         end
       end
