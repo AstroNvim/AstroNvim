@@ -68,21 +68,6 @@ local config = {
   --   return local_vim
   -- end,
 
-  -- Set dashboard header
-  header = {
-    " █████  ███████ ████████ ██████   ██████",
-    "██   ██ ██         ██    ██   ██ ██    ██",
-    "███████ ███████    ██    ██████  ██    ██",
-    "██   ██      ██    ██    ██   ██ ██    ██",
-    "██   ██ ███████    ██    ██   ██  ██████",
-    " ",
-    "    ███    ██ ██    ██ ██ ███    ███",
-    "    ████   ██ ██    ██ ██ ████  ████",
-    "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
-    "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
-    "    ██   ████   ████   ██ ██      ██",
-  },
-
   -- AstroNvim theme configuration
   astronvim_theme = {
     -- Modify the color palette for the default theme
@@ -295,6 +280,26 @@ local config = {
     -- },
 
     -- Plugin entries can also be used to override the default options for plugins as well
+    {
+      "goolord/alpha-nvim",
+      opts = function(_, opts)
+        -- customize the dashboard header
+        opts.section.header.val = {
+          " █████  ███████ ████████ ██████   ██████",
+          "██   ██ ██         ██    ██   ██ ██    ██",
+          "███████ ███████    ██    ██████  ██    ██",
+          "██   ██      ██    ██    ██   ██ ██    ██",
+          "██   ██ ███████    ██    ██   ██  ██████",
+          " ",
+          "    ███    ██ ██    ██ ██ ███    ███",
+          "    ████   ██ ██    ██ ██ ████  ████",
+          "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
+          "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
+          "    ██   ████   ████   ██ ██      ██",
+        }
+        return opts
+      end,
+    },
     {
       "jose-elias-alvarez/null-ls.nvim",
       opts = function(_, config)
