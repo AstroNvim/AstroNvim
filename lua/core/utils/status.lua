@@ -317,7 +317,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.percentage() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.percentage(opts)
-  opts = astronvim.default_tbl(opts, { fixed_width = false, edge_text = true })
+  opts = astronvim.default_tbl(opts, { escape = false, fixed_width = false, edge_text = true })
   return function()
     local text = "%" .. (opts.fixed_width and "3" or "") .. "p%%"
     if opts.edge_text then
@@ -548,7 +548,6 @@ end
 function astronvim.status.provider.lsp_progress(opts)
   return function()
     local Lsp = vim.lsp.util.get_progress_messages()[1]
-    local function escape(str) return string.gsub(str, "%%2F", "/") end
     return astronvim.status.utils.stylize(
       Lsp
           and string.format(
@@ -558,8 +557,8 @@ function astronvim.status.provider.lsp_progress(opts)
               "Loading2",
               "Loading3",
             })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1]),
-            Lsp.title and escape(Lsp.title) or "",
-            Lsp.message and escape(Lsp.message) or "",
+            Lsp.title and Lsp.title or "",
+            Lsp.message and Lsp.message or "",
             Lsp.percentage or 0
           )
         or "",
@@ -729,9 +728,11 @@ function astronvim.status.condition.treesitter_available(bufnr)
   return parsers.has_parser(parsers.get_buf_lang(bufnr or vim.api.nvim_get_current_buf()))
 end
 
+local function escape(str) return string.gsub(str, "%%2F", "/") end
+
 --- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding
 -- @param str the string to stylize
--- @param opts options of `{ padding = { left = 0, right = 0 }, separator = { left = "|", right = "|" }, show_empty = false, icon = { kind = "NONE", padding = { left = 0, right = 0 } } }`
+-- @param opts options of `{ padding = { left = 0, right = 0 }, separator = { left = "|", right = "|" }, escape = true, show_empty = false, icon = { kind = "NONE", padding = { left = 0, right = 0 } } }`
 -- @return the stylized string
 -- @usage local string = astronvim.status.utils.stylize("Hello", { padding = { left = 1, right = 1 }, icon = { kind = "String" } })
 function astronvim.status.utils.stylize(str, opts)
@@ -739,12 +740,13 @@ function astronvim.status.utils.stylize(str, opts)
     padding = { left = 0, right = 0 },
     separator = { left = "", right = "" },
     show_empty = false,
+    escape = true,
     icon = { kind = "NONE", padding = { left = 0, right = 0 } },
   })
   local icon = astronvim.pad_string(astronvim.get_icon(opts.icon.kind), opts.icon.padding)
   return str
       and (str ~= "" or opts.show_empty)
-      and opts.separator.left .. astronvim.pad_string(icon .. str, opts.padding) .. opts.separator.right
+      and opts.separator.left .. astronvim.pad_string(icon .. (opts.escape and escape(str) or str), opts.padding) .. opts.separator.right
     or ""
 end
 
