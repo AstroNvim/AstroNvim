@@ -343,4 +343,4 @@ maps.n["<leader>uw"] = { function() astronvim.ui.toggle_wrap() end, desc = "Togg
 maps.n["<leader>uy"] = { function() astronvim.ui.toggle_syntax() end, desc = "Toggle syntax highlight" }
 maps.n["<leader>uN"] = { function() astronvim.ui.toggle_ui_notifications() end, desc = "Toggle UI notifications" }
 
-astronvim.set_mappings(astronvim.user_plugin_opts("mappings", maps))
+astronvim.set_mappings(astronvim.user_opts("mappings", maps))

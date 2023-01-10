@@ -10,11 +10,11 @@ for _, source in ipairs {
   if not status_ok then vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault) end
 end
 
-local colorscheme = astronvim.user_plugin_opts("colorscheme", false, false)
+local colorscheme = astronvim.user_opts("colorscheme", false, false)
 if colorscheme then colorscheme = pcall(vim.cmd.colorscheme, colorscheme) end
 if not colorscheme then vim.cmd.colorscheme "astronvim" end
 
-astronvim.conditional_func(astronvim.user_plugin_opts("polish", nil, false), true)
+astronvim.conditional_func(astronvim.user_opts("polish", nil, false), true)
 
 -- TODO v3: SWITCH THESE CONDITIONS
 -- if vim.fn.has "nvim-0.9" ~= 1 or vim.version().prerelease then
