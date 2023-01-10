@@ -47,7 +47,7 @@ return {
     dependencies = { "nvim-lspconfig" },
   },
   astronvim.plugin {
-    "jayp0521/mason-null-ls.nvim",
+    "jay-babu/mason-null-ls.nvim",
     cmd = { "NullLsInstall", "NullLsUninstall" },
     opts = { automatic_setup = true },
     default_config = function(opts)
@@ -58,7 +58,7 @@ return {
     dependencies = { "null-ls.nvim" },
   },
   astronvim.plugin {
-    "jayp0521/mason-nvim-dap.nvim",
+    "jay-babu/mason-nvim-dap.nvim",
     cmd = { "DapInstall", "DapUninstall" },
     opts = { automatic_setup = true },
     default_config = function(opts)
