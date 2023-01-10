@@ -12,7 +12,7 @@
 local fn = vim.fn
 local git = require "core.utils.git"
 --- Updater settings overridden with any user provided configuration
-local options = astronvim.user_plugin_opts("updater", {
+local options = astronvim.user_opts("updater", {
   remote = "origin",
   channel = "stable",
   show_changelog = true,

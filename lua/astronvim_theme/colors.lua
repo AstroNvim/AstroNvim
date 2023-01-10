@@ -1,4 +1,4 @@
-local colors = {
+return astronvim.user_opts("astronvim_theme.colors", {
   none = "NONE",
   fg = "#abb2bf",
   bg = "#1e222a",
@@ -77,6 +77,4 @@ local colors = {
   zip = "#f9d71c",
   md = "#519aba",
   pkg = "#d39ede",
-}
-
-return astronvim.user_plugin_opts("astronvim_theme.colors", colors)
+})

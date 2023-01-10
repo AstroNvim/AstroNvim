@@ -134,8 +134,8 @@ end
 
 --- Initialize icons used throughout the user interface
 function astronvim.initialize_icons()
-  astronvim.icons = astronvim.user_plugin_opts("icons", require "core.icons.nerd_font")
-  astronvim.text_icons = astronvim.user_plugin_opts("text_icons", require "core.icons.text")
+  astronvim.icons = astronvim.user_opts("icons", require "core.icons.nerd_font")
+  astronvim.text_icons = astronvim.user_opts("text_icons", require "core.icons.text")
 end
 
 --- Get an icon from `lspkind` if it is available and return it
@@ -212,7 +212,7 @@ end
 -- @param extend boolean value to either extend the default settings or overwrite them with the user settings entirely (default: true)
 -- @param prefix a module prefix for where to search (default: user)
 -- @return the new configuration settings with the user overrides applied
-function astronvim.user_plugin_opts(module, default, extend, prefix)
+function astronvim.user_opts(module, default, extend, prefix)
   -- default to extend = true
   if extend == nil then extend = true end
   -- if no default table is provided set it to an empty table

@@ -4,7 +4,7 @@ vim.o.background = "dark"
 vim.o.termguicolors = true
 vim.g.colors_name = "astronvim"
 
-local user_plugin_opts = astronvim.user_plugin_opts
+local user_opts = astronvim.user_opts
 
 C = require "astronvim_theme.colors"
 
@@ -15,7 +15,7 @@ for _, module in ipairs { "base", "lsp" } do
 end
 
 for plugin, enabled in
-  pairs(user_plugin_opts("astronvim_theme.plugins", {
+  pairs(user_opts("astronvim_theme.plugins", {
     aerial = true,
     beacon = false,
     bufferline = false,
@@ -44,7 +44,7 @@ do
   end
 end
 
-for group, spec in pairs(user_plugin_opts("astronvim_theme.highlights", highlights)) do
+for group, spec in pairs(user_opts("astronvim_theme.highlights", highlights)) do
   vim.api.nvim_set_hl(0, group, spec)
 end
 

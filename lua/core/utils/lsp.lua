@@ -12,14 +12,13 @@
 astronvim.lsp = {}
 local tbl_contains = vim.tbl_contains
 local tbl_isempty = vim.tbl_isempty
-local user_plugin_opts = astronvim.user_plugin_opts
+local user_opts = astronvim.user_opts
 local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
-local setup_handlers = user_plugin_opts("lsp.setup_handlers", nil, false)
-local skip_setup = user_plugin_opts "lsp.skip_setup"
+local setup_handlers = user_opts("lsp.setup_handlers", nil, false)
+local skip_setup = user_opts "lsp.skip_setup"
 
-astronvim.lsp.formatting =
-  astronvim.user_plugin_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
+astronvim.lsp.formatting = user_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
   astronvim.lsp.formatting.format_on_save = { enabled = astronvim.lsp.formatting.format_on_save }
 end
@@ -40,7 +39,7 @@ astronvim.lsp.setup = function(server)
   if not tbl_contains(skip_setup, server) then
     -- if server doesn't exist, set it up from user server definition
     if not pcall(require, "lspconfig.server_configurations." .. server) then
-      local server_definition = user_plugin_opts("lsp.server-settings." .. server)
+      local server_definition = user_opts("lsp.server-settings." .. server)
       if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
     end
     local opts = astronvim.lsp.server_settings(server)
@@ -196,9 +195,9 @@ astronvim.lsp.on_attach = function(client, bufnr)
   end
 
   if not vim.tbl_isempty(lsp_mappings.v) then lsp_mappings.v["<leader>l"] = { name = "LSP" } end
-  astronvim.set_mappings(user_plugin_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
+  astronvim.set_mappings(user_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
 
-  local on_attach_override = user_plugin_opts("lsp.on_attach", nil, false)
+  local on_attach_override = user_opts("lsp.on_attach", nil, false)
   conditional_func(on_attach_override, true, client, bufnr)
 end
 
@@ -215,8 +214,8 @@ astronvim.lsp.capabilities.textDocument.completion.completionItem.tagSupport = {
 astronvim.lsp.capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = { "documentation", "detail", "additionalTextEdits" },
 }
-astronvim.lsp.capabilities = user_plugin_opts("lsp.capabilities", astronvim.lsp.capabilities)
-astronvim.lsp.flags = user_plugin_opts "lsp.flags"
+astronvim.lsp.capabilities = user_opts("lsp.capabilities", astronvim.lsp.capabilities)
+astronvim.lsp.flags = user_opts "lsp.flags"
 
 --- Get the server settings for a given language server to be provided to the server's `setup()` call
 -- @param  server_name the name of the server
@@ -240,7 +239,7 @@ function astronvim.lsp.server_settings(server_name)
       lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
     end
   end
-  local opts = user_plugin_opts("lsp.config." .. server_name, lsp_opts)
+  local opts = user_opts("lsp.config." .. server_name, lsp_opts)
   local old_on_attach = server.on_attach
   local user_on_attach = opts.on_attach
   opts.on_attach = function(client, bufnr)
