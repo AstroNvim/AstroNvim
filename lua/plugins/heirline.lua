@@ -97,7 +97,7 @@ return astronvim.plugin {
       end
     end
     return {
-      { -- statusline
+      statusline = { -- statusline
         hl = { fg = "fg", bg = "bg" },
         astronvim.status.component.mode(),
         astronvim.status.component.git_branch(),
@@ -112,7 +112,7 @@ return astronvim.plugin {
         astronvim.status.component.nav(),
         astronvim.status.component.mode { surround = { separator = "right" } },
       },
-      { -- winbar
+      winbar = { -- winbar
         static = {
           disabled = {
             buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
@@ -139,7 +139,7 @@ return astronvim.plugin {
         },
         astronvim.status.component.breadcrumbs { hl = astronvim.status.hl.get_attributes("winbar", true) },
       },
-      { -- bufferline
+      tabline = { -- bufferline
         { -- file tree padding
           condition = function(self)
             self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
@@ -280,7 +280,7 @@ return astronvim.plugin {
     end
 
     heirline.load_colors(setup_colors())
-    heirline.setup(opts[1], opts[2], opts[3])
+    heirline.setup(opts)
 
     local augroup = vim.api.nvim_create_augroup("Heirline", { clear = true })
     vim.api.nvim_create_autocmd("User", {
