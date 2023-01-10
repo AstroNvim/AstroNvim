@@ -17,8 +17,10 @@ if [ "$platform" = "linux" ]; then
     sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go \
       typescript ghc perl shellcheck ripgrep fd lazygit ncdu nvm \
       checkmake postgresql github-cli sqlite openssl readline xz zlib gum \
-      rust-analyzer iniparser fftw ncurses base-devel espeak-ng
-    yay -S rebar3 hadolint rbenv cava tetris-terminal-git
+      rust-analyzer iniparser fftw ncurses base-devel espeak-ng prettier \
+      luarocks hledger libtool automake portaudio astyle shfmt cppcheck \
+      lua-language-server bash-language-server haskell-language-server gopls
+    yay -S rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls
   elif [ "$distro" = "Ubuntu Linux" ]; then
     sudo apt-get update
     sudo apt-get upgrade
@@ -59,7 +61,7 @@ go install github.com/maaslalani/typer@latest
 go install github.com/mritd/gitflow-toolkit/v2@latest
 go install github.com/ntk148v/goignore@latest
 
-gitflow-toolkit install
+sudo gitflow-toolkit install
 
 gh extension install dlvhdr/gh-dash
 
