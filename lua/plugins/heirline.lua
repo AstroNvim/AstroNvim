@@ -1,6 +1,6 @@
 return astronvim.plugin {
   "rebelot/heirline.nvim",
-  event = "UIEnter",
+  event = "BufEnter",
   opts = function()
     --- a submodule of heirline specific functions and aliases
     astronvim.status.heirline = {}
