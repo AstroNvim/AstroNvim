@@ -17,6 +17,7 @@ local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
 local setup_handlers = user_opts("lsp.setup_handlers", nil, false)
 local skip_setup = user_opts "lsp.skip_setup"
+local server_config = "lsp.config"
 
 astronvim.lsp.formatting = user_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
@@ -39,7 +40,7 @@ astronvim.lsp.setup = function(server)
   if not tbl_contains(skip_setup, server) then
     -- if server doesn't exist, set it up from user server definition
     if not pcall(require, "lspconfig.server_configurations." .. server) then
-      local server_definition = user_opts("lsp.server-settings." .. server)
+      local server_definition = user_opts(server_config .. server)
       if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
     end
     local opts = astronvim.lsp.server_settings(server)
@@ -239,7 +240,7 @@ function astronvim.lsp.server_settings(server_name)
       lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
     end
   end
-  local opts = user_opts("lsp.config." .. server_name, lsp_opts)
+  local opts = user_opts(server_config .. server_name, lsp_opts)
   local old_on_attach = server.on_attach
   local user_on_attach = opts.on_attach
   opts.on_attach = function(client, bufnr)
