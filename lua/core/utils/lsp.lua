@@ -16,7 +16,6 @@ local user_opts = astronvim.user_opts
 local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
 local setup_handlers = user_opts("lsp.setup_handlers", nil, false)
-local skip_setup = user_opts "lsp.skip_setup"
 local server_config = "lsp.config"
 
 astronvim.lsp.formatting = user_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
@@ -37,20 +36,18 @@ end
 --- Helper function to set up a given server with the Neovim LSP client
 -- @param server the name of the server to be setup
 astronvim.lsp.setup = function(server)
-  if not tbl_contains(skip_setup, server) then
-    -- if server doesn't exist, set it up from user server definition
-    if not pcall(require, "lspconfig.server_configurations." .. server) then
-      local server_definition = user_opts(server_config .. server)
-      if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
-    end
-    local opts = astronvim.lsp.server_settings(server)
-    if type(setup_handlers) == "function" then
-      setup_handlers(server, opts)
-    elseif type(setup_handlers) == "table" and (setup_handlers[1] or setup_handlers[server]) then
-      (setup_handlers[server] or setup_handlers[1])(server, opts)
-    else
-      require("lspconfig")[server].setup(opts)
-    end
+  -- if server doesn't exist, set it up from user server definition
+  if not pcall(require, "lspconfig.server_configurations." .. server) then
+    local server_definition = user_opts(server_config .. server)
+    if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
+  end
+  local opts = astronvim.lsp.server_settings(server)
+  if type(setup_handlers) == "function" then
+    setup_handlers(server, opts)
+  elseif type(setup_handlers) == "table" and (setup_handlers[1] or setup_handlers[server]) then
+    (setup_handlers[server] or setup_handlers[1])(server, opts)
+  else
+    require("lspconfig")[server].setup(opts)
   end
 end
 
