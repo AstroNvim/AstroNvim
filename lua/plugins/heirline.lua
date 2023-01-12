@@ -1,4 +1,4 @@
-return astronvim.plugin {
+return {
   "rebelot/heirline.nvim",
   event = "BufEnter",
   opts = function()
@@ -302,4 +302,5 @@ return astronvim.plugin {
       end,
     })
   end,
+  config = function(plugin, opts) plugin.default_config(opts) end,
 }

@@ -1,5 +1,5 @@
 return {
-  astronvim.plugin {
+  {
     "williamboman/mason.nvim",
     cmd = {
       "Mason",
@@ -34,9 +34,11 @@ return {
         pcall(require, module)
       end
     end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "williamboman/mason-lspconfig.nvim",
+    dependencies = { "nvim-lspconfig" },
     cmd = { "LspInstall", "LspUninstall" },
     default_config = function(opts)
       local mason_lspconfig = require "mason-lspconfig"
@@ -44,10 +46,11 @@ return {
       mason_lspconfig.setup_handlers { function(server) astronvim.lsp.setup(server) end }
       astronvim.event "LspSetup"
     end,
-    dependencies = { "nvim-lspconfig" },
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "jay-babu/mason-null-ls.nvim",
+    dependencies = { "null-ls.nvim" },
     cmd = { "NullLsInstall", "NullLsUninstall" },
     opts = { automatic_setup = true },
     default_config = function(opts)
@@ -55,10 +58,11 @@ return {
       mason_null_ls.setup(opts)
       mason_null_ls.setup_handlers {}
     end,
-    dependencies = { "null-ls.nvim" },
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "jay-babu/mason-nvim-dap.nvim",
+    dependencies = { "nvim-dap" },
     cmd = { "DapInstall", "DapUninstall" },
     opts = { automatic_setup = true },
     default_config = function(opts)
@@ -66,6 +70,6 @@ return {
       mason_nvim_dap.setup(opts)
       mason_nvim_dap.setup_handlers {}
     end,
-    dependencies = { "nvim-dap" },
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
 }

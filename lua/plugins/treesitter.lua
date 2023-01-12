@@ -1,5 +1,6 @@
-return astronvim.plugin {
+return {
   "nvim-treesitter/nvim-treesitter",
+  dependencies = { "windwp/nvim-ts-autotag", "JoosepAlviste/nvim-ts-context-commentstring" },
   init = function() table.insert(astronvim.file_plugins, "nvim-treesitter") end,
   cmd = {
     "TSBufDisable",
@@ -16,10 +17,6 @@ return astronvim.plugin {
     "TSUpdate",
     "TSUpdateSync",
   },
-  dependencies = {
-    astronvim.plugin "windwp/nvim-ts-autotag",
-    astronvim.plugin "JoosepAlviste/nvim-ts-context-commentstring",
-  },
   build = function() require("nvim-treesitter.install").update { with_sync = true }() end,
   opts = {
     highlight = {
@@ -35,4 +32,5 @@ return astronvim.plugin {
     indent = { enable = false },
   },
   default_config = function(opts) require("nvim-treesitter.configs").setup(opts) end,
+  config = function(plugin, opts) plugin.default_config(opts) end,
 }

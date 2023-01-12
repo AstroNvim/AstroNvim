@@ -1,4 +1,4 @@
-return astronvim.plugin {
+return {
   "goolord/alpha-nvim",
   cmd = "Alpha",
   opts = function()
@@ -37,4 +37,5 @@ return astronvim.plugin {
     return dashboard
   end,
   default_config = function(opts) require("alpha").setup(opts.opts) end,
+  config = function(plugin, opts) plugin.default_config(opts) end,
 }

@@ -1,9 +1,8 @@
-return astronvim.plugin {
+return {
   "mfussenegger/nvim-dap",
   enabled = vim.fn.has "win32" == 0,
-  init = function() table.insert(astronvim.file_plugins, "nvim-dap") end,
   dependencies = {
-    astronvim.plugin {
+    {
       "rcarriga/nvim-dap-ui",
       opts = { floating = { border = "rounded" } },
       default_config = function(opts)
@@ -13,6 +12,8 @@ return astronvim.plugin {
         dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
         dapui.setup(opts)
       end,
+      config = function(plugin, opts) plugin.default_config(opts) end,
     },
   },
+  init = function() table.insert(astronvim.file_plugins, "nvim-dap") end,
 }

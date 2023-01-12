@@ -1,6 +1,7 @@
 return {
-  astronvim.plugin {
+  {
     "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
     default_config = function(opts)
       if opts then require("luasnip").config.setup(opts) end
       vim.tbl_map(
@@ -8,11 +9,17 @@ return {
         { "vscode", "snipmate", "lua" }
       )
     end,
-    dependencies = { astronvim.plugin "rafamadriz/friendly-snippets" },
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "hrsh7th/nvim-cmp",
     commit = "a9c701fa7e12e9257b3162000e5288a75d280c28", -- https://github.com/hrsh7th/nvim-cmp/issues/1382
+    dependencies = {
+      "saadparwaiz1/cmp_luasnip",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-nvim-lsp",
+    },
     event = "InsertEnter",
     opts = function()
       local cmp = require "cmp"
@@ -98,11 +105,6 @@ return {
       }
     end,
     default_config = function(opts) require("cmp").setup(opts) end,
-    dependencies = {
-      astronvim.plugin "saadparwaiz1/cmp_luasnip",
-      astronvim.plugin "hrsh7th/cmp-buffer",
-      astronvim.plugin "hrsh7th/cmp-path",
-      astronvim.plugin "hrsh7th/cmp-nvim-lsp",
-    },
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
 }

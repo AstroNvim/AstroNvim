@@ -1,33 +1,31 @@
 return {
-  astronvim.plugin { "folke/lazy.nvim", version = "^9" },
-  astronvim.plugin "nvim-lua/plenary.nvim",
-  astronvim.plugin { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
-  astronvim.plugin {
+  "nvim-lua/plenary.nvim",
+  { "folke/lazy.nvim", version = "^9" },
+  { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
+  {
     "mrjones2014/smart-splits.nvim",
     opts = {
-      ignored_filetypes = {
-        "nofile",
-        "quickfix",
-        "qf",
-        "prompt",
-      },
+      ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" },
       ignored_buftypes = { "nofile" },
     },
     default_config = function(opts) require("smart-splits").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "Shatur/neovim-session-manager",
     event = "BufWritePost",
     cmd = "SessionManager",
     default_config = function(opts) require("session_manager").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "s1n7ax/nvim-window-picker",
     version = "^1",
     opts = function() return { use_winbar = "smart", other_win_hl_color = require("astronvim.colors").grey_4 } end,
     default_config = function(opts) require("window-picker").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     opts = {
@@ -55,25 +53,21 @@ return {
         cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { tex = false })
       end
     end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "folke/which-key.nvim",
     version = "^1",
     event = "UIEnter",
     opts = {
-      plugins = {
-        spelling = { enabled = true },
-        presets = { operators = false },
-      },
-      window = {
-        border = "rounded",
-        padding = { 2, 2, 2, 2 },
-      },
+      plugins = { spelling = { enabled = true }, presets = { operators = false } },
+      window = { border = "rounded", padding = { 2, 2, 2, 2 } },
       disable = { filetypes = { "TelescopePrompt" } },
     },
     default_config = function(opts) require("which-key").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "numToStr/Comment.nvim",
     keys = { { "gc", mode = { "n", "v" } }, { "gb", mode = { "n", "v" } } },
     opts = function()
@@ -95,8 +89,9 @@ return {
       }
     end,
     default_config = function(opts) require("Comment").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm", "TermExec" },
     opts = {
@@ -106,15 +101,13 @@ return {
       direction = "float",
       float_opts = {
         border = "curved",
-        highlights = {
-          border = "Normal",
-          background = "Normal",
-        },
+        highlights = { border = "Normal", background = "Normal" },
       },
     },
     default_config = function(opts) require("toggleterm").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "Darazaki/indent-o-matic",
     init = function() table.insert(astronvim.file_plugins, "indent-o-matic") end,
     default_config = function(opts)
@@ -122,10 +115,12 @@ return {
       indent_o_matic.setup(opts)
       indent_o_matic.detect()
     end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "max397574/better-escape.nvim",
     event = "InsertCharPre",
     default_config = function(opts) require("better_escape").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
 }
