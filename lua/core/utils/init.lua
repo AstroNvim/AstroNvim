@@ -226,16 +226,6 @@ function astronvim.user_opts(module, default, extend)
   return default
 end
 
---- Helper function to create a plugin with default AstroNvim features such as creating the default config function
--- @param plugin a parameter specification for the Lazy plugin manager
--- @return the plugin a config function if it has a default_config
-function astronvim.plugin(plugin)
-  if type(plugin) == "table" and plugin.default_config and not plugin.config then
-    plugin.config = function(spec, opts) spec.default_config(opts) end
-  end
-  return plugin
-end
-
 --- Open a URL under the cursor with the current operating system (Supports Mac OS X and *nix)
 -- @param path the path of the file to open with the system opener
 function astronvim.system_open(path)

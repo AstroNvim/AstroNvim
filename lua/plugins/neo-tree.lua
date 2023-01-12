@@ -1,4 +1,4 @@
-return astronvim.plugin {
+return {
   "nvim-neo-tree/neo-tree.nvim",
   version = "^2",
   dependencies = { "MunifTanjim/nui.nvim" },
@@ -67,4 +67,5 @@ return astronvim.plugin {
     },
   },
   default_config = function(opts) require("neo-tree").setup(opts) end,
+  config = function(plugin, opts) plugin.default_config(opts) end,
 }

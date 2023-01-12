@@ -1,5 +1,5 @@
 return {
-  astronvim.plugin {
+  {
     "nvim-tree/nvim-web-devicons",
     enabled = vim.g.icons_enabled,
     opts = {
@@ -20,8 +20,9 @@ return {
       require("nvim-web-devicons").set_default_icon(astronvim.get_icon "DefaultFile", "#6d8086", "66")
       require("nvim-web-devicons").set_icon(opts)
     end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "onsails/lspkind.nvim",
     opts = {
       mode = "symbol",
@@ -50,8 +51,9 @@ return {
       astronvim.lspkind = opts
       require("lspkind").init(opts)
     end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "rcarriga/nvim-notify",
     version = "^3",
     init = function() astronvim.load_plugin_with_func("nvim-notify", vim, "notify") end,
@@ -61,8 +63,9 @@ return {
       notify.setup(opts)
       vim.notify = notify
     end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "stevearc/dressing.nvim",
     init = function() astronvim.load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
     opts = {
@@ -76,15 +79,17 @@ return {
       },
     },
     default_config = function(opts) require("dressing").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "NvChad/nvim-colorizer.lua",
     init = function() table.insert(astronvim.file_plugins, "nvim-colorizer.lua") end,
     cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
     opts = { user_default_options = { names = false } },
     default_config = function(opts) require("colorizer").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "lukas-reineke/indent-blankline.nvim",
     init = function() table.insert(astronvim.file_plugins, "indent-blankline.nvim") end,
     opts = {
@@ -133,5 +138,6 @@ return {
       show_current_context = true,
     },
     default_config = function(opts) require("indent_blankline").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
 }

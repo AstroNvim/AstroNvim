@@ -1,5 +1,8 @@
-return astronvim.plugin {
+return {
   "nvim-telescope/telescope.nvim",
+  dependencies = {
+    { "nvim-telescope/telescope-fzf-native.nvim", enabled = vim.fn.executable "make" == 1, build = "make" },
+  },
   cmd = "Telescope",
   opts = function()
     local actions = require "telescope.actions"
@@ -43,11 +46,5 @@ return astronvim.plugin {
     astronvim.conditional_func(telescope.load_extension, pcall(require, "aerial"), "aerial")
     astronvim.conditional_func(telescope.load_extension, astronvim.is_available "telescope-fzf-native.nvim", "fzf")
   end,
-  dependencies = {
-    astronvim.plugin {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      enabled = vim.fn.executable "make" == 1,
-      build = "make",
-    },
-  },
+  config = function(plugin, opts) plugin.default_config(opts) end,
 }
