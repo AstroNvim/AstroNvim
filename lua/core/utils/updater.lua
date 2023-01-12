@@ -26,12 +26,10 @@ astronvim.updater = { options = options }
 -- set default pin_plugins for stable branch
 if options.pin_plugins == nil and options.channel == "stable" then options.pin_plugins = true end
 
-astronvim.updater.snapshot = {
-  module = "lazy_snapshot",
-  path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua",
-}
+--- the location of the snapshot of plugin commit pins for stable AstroNvim
+astronvim.updater.snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" }
 
---- Helper function to generate AstroNvim snapshots
+--- Helper function to generate AstroNvim snapshots (For internal use only)
 -- @param write boolean whether or not to write to the snapshot file (default: false)
 -- @return the plugin specification table of the snapshot
 function astronvim.updater.generate_snapshot(write)
