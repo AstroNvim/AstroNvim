@@ -16,8 +16,13 @@ local user_opts = astronvim.user_opts
 local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
 local server_config = "lsp.config"
-local setup_handlers =
-  user_opts("lsp.setup_handlers", { function(server, opts) require("lspconfig")[server].setup(opts) end })
+local setup_handlers = user_opts("lsp.setup_handlers", {
+  function(server, opts) require("lspconfig")[server].setup(opts) end,
+  sumneko_lua = function(server, opts) -- initialize neodev before sumneko_lua if it's available
+    pcall(require, "neodev")
+    require("lspconfig")[server].setup(opts)
+  end,
+})
 
 astronvim.lsp.formatting = user_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
@@ -226,12 +231,8 @@ function astronvim.lsp.server_settings(server_name)
       lsp_opts.settings = { json = { schemas = schemastore.json.schemas(), validate = { enable = true } } }
     end
   end
-  if server_name == "sumneko_lua" then -- by default setup neodev for sumneko_lua
-    local neodev_avail, neodev = pcall(require, "neodev.lsp")
-    if neodev_avail then
-      lsp_opts.before_init = neodev.before_init
-      lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
-    end
+  if server_name == "sumneko_lua" then -- by default initialize neodev and disable third party checking
+    lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
   end
   local opts = user_opts(server_config .. server_name, lsp_opts)
   local old_on_attach = server.on_attach
