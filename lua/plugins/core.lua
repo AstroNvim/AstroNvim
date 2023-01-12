@@ -1,6 +1,5 @@
 return {
   "nvim-lua/plenary.nvim",
-  { "folke/lazy.nvim", version = "^9" },
   { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
   {
     "mrjones2014/smart-splits.nvim",
@@ -20,7 +19,6 @@ return {
   },
   {
     "s1n7ax/nvim-window-picker",
-    version = "^1",
     opts = function() return { use_winbar = "smart", other_win_hl_color = require("astronvim.colors").grey_4 } end,
     default_config = function(opts) require("window-picker").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
@@ -57,7 +55,6 @@ return {
   },
   {
     "folke/which-key.nvim",
-    version = "^1",
     event = "UIEnter",
     opts = {
       plugins = { spelling = { enabled = true }, presets = { operators = false } },

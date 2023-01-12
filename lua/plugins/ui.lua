@@ -55,7 +55,6 @@ return {
   },
   {
     "rcarriga/nvim-notify",
-    version = "^3",
     init = function() astronvim.load_plugin_with_func("nvim-notify", vim, "notify") end,
     opts = { stages = "fade" },
     default_config = function(opts)
