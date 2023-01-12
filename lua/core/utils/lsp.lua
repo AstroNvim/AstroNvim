@@ -15,8 +15,9 @@ local tbl_isempty = vim.tbl_isempty
 local user_opts = astronvim.user_opts
 local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
-local setup_handlers = user_opts("lsp.setup_handlers", nil, false)
 local server_config = "lsp.config"
+local setup_handlers =
+  user_opts("lsp.setup_handlers", { function(server, opts) require("lspconfig")[server].setup(opts) end })
 
 astronvim.lsp.formatting = user_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
@@ -42,13 +43,8 @@ astronvim.lsp.setup = function(server)
     if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
   end
   local opts = astronvim.lsp.server_settings(server)
-  if type(setup_handlers) == "function" then
-    setup_handlers(server, opts)
-  elseif type(setup_handlers) == "table" and (setup_handlers[1] or setup_handlers[server]) then
-    (setup_handlers[server] or setup_handlers[1])(server, opts)
-  else
-    require("lspconfig")[server].setup(opts)
-  end
+  local setup_handler = setup_handlers[server] or setup_handlers[1]
+  if setup_handler then setup_handler(server, opts) end
 end
 
 --- The `on_attach` function used by AstroNvim
