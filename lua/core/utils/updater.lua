@@ -35,16 +35,24 @@ astronvim.updater.snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "
 function astronvim.updater.generate_snapshot(write)
   local file
   local plugins = assert(require("lazy").plugins())
-  local function git_cmd(dir, args)
-    return astronvim.trim_or_nil(assert(astronvim.cmd("git -C " .. dir .. " " .. args, false)))
+  local function git_commit(dir)
+    return astronvim.trim_or_nil(assert(astronvim.cmd("git -C " .. dir .. " rev-parse HEAD", false)))
   end
   if write == true then
     file = assert(io.open(astronvim.updater.snapshot.path, "w"))
     file:write "return {\n"
   end
   local snapshot = vim.tbl_map(function(plugin)
-    plugin = { plugin[1], commit = git_cmd(plugin.dir, "rev-parse HEAD") }
-    if file then file:write(("  { %q, commit = %q },\n"):format(plugin[1], plugin.commit)) end
+    plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
+    if file then
+      file:write(("  { %q, "):format(plugin[1]))
+      if plugin.version then
+        file:write(("version = %q "):format(plugin.version))
+      else
+        file:write(("commit = %q "):format(plugin.commit))
+      end
+      file:write "},\n"
+    end
     return plugin
   end, plugins)
   if file then
