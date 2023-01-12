@@ -1,4 +1,4 @@
-return astronvim.plugin {
+return {
   "lewis6991/gitsigns.nvim",
   enabled = vim.fn.executable "git" == 1,
   ft = "gitcommit",
@@ -14,4 +14,5 @@ return astronvim.plugin {
     },
   },
   default_config = function(opts) require("gitsigns").setup(opts) end,
+  config = function(plugin, opts) plugin.default_config(opts) end,
 }

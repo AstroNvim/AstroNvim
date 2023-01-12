@@ -1,12 +1,13 @@
 return {
-  astronvim.plugin "b0o/SchemaStore.nvim",
-  astronvim.plugin {
+  "b0o/SchemaStore.nvim",
+  {
     "folke/neodev.nvim",
     version = "^1",
     opts = { library = { plugins = false }, lspconfig = false },
     default_config = function(opts) require("neodev").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "neovim/nvim-lspconfig",
     init = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
     default_config = function(_)
@@ -27,21 +28,20 @@ return {
     end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "jose-elias-alvarez/null-ls.nvim",
     init = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
     opts = { on_attach = astronvim.lsp.on_attach },
     default_config = function(opts) require("null-ls").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
   },
-  astronvim.plugin {
+  {
     "stevearc/aerial.nvim",
     init = function() table.insert(astronvim.file_plugins, "aerial.nvim") end,
     opts = {
       attach_mode = "global",
       backends = { "lsp", "treesitter", "markdown", "man" },
-      layout = {
-        min_width = 28,
-      },
+      layout = { min_width = 28 },
       show_guides = true,
       filter_kind = false,
       guides = {
