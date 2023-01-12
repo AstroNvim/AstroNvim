@@ -18,13 +18,17 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local spec = astronvim.updater.options.pin_plugins and { { import = astronvim.updater.snapshot.module } } or {}
+
 local user_plugins = astronvim.user_opts "plugins"
 for _, config_dir in ipairs(astronvim.supported_configs) do
   if vim.fn.isdirectory(config_dir .. "/lua/user/plugins") == 1 then user_plugins = { import = "user.plugins" } end
 end
 
+vim.list_extend(spec, { { import = "plugins" }, user_plugins })
+
 require("lazy").setup(astronvim.user_opts("lazy", {
-  spec = { { import = "plugins" }, user_plugins },
+  spec = spec,
   defaults = { lazy = true },
   install = { colorscheme = { astronvim.user_opts("colorscheme", false, false), "astronvim" } },
   performance = {

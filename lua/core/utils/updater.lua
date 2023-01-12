@@ -9,7 +9,6 @@
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
-local fn = vim.fn
 local git = require "core.utils.git"
 --- Updater settings overridden with any user provided configuration
 local options = astronvim.user_opts("updater", {
@@ -24,17 +23,37 @@ if options.branch and options.branch ~= "main" then options.channel = "nightly" 
 if astronvim.install.is_stable ~= nil then options.channel = astronvim.install.is_stable and "stable" or "nightly" end
 
 astronvim.updater = { options = options }
--- if the channel is stable or the user has chosen to pin the system plugins
-if options.pin_plugins == nil and options.channel == "stable" or options.pin_plugins then
-  -- load the current packer snapshot from the installation home location
-  local loaded, snapshot = pcall(fn.readfile, astronvim.install.home .. "/lazy-snapshot.json")
-  if loaded then
-    -- decode the snapshot JSON and save it to a variable
-    loaded, snapshot = pcall(fn.json_decode, snapshot)
-    astronvim.updater.snapshot = type(snapshot) == "table" and snapshot or nil
+-- set default pin_plugins for stable branch
+if options.pin_plugins == nil and options.channel == "stable" then options.pin_plugins = true end
+
+astronvim.updater.snapshot = {
+  module = "lazy_snapshot",
+  path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua",
+}
+
+--- Helper function to generate AstroNvim snapshots
+-- @param write boolean whether or not to write to the snapshot file (default: false)
+-- @return the plugin specification table of the snapshot
+function astronvim.updater.generate_snapshot(write)
+  local file
+  local plugins = assert(require("lazy").plugins())
+  local function git_cmd(dir, args)
+    return astronvim.trim_or_nil(assert(astronvim.cmd("git -C " .. dir .. " " .. args, false)))
   end
-  -- if there is an error loading the snapshot, print an error
-  if not loaded then vim.api.nvim_err_writeln "Error loading packer snapshot" end
+  if write == true then
+    file = assert(io.open(astronvim.updater.snapshot.path, "w"))
+    file:write "return {\n"
+  end
+  local snapshot = vim.tbl_map(function(plugin)
+    plugin = { plugin[1], commit = git_cmd(plugin.dir, "rev-parse HEAD") }
+    if file then file:write(("  { %q, commit = %q },\n"):format(plugin[1], plugin.commit)) end
+    return plugin
+  end, plugins)
+  if file then
+    file:write "}"
+    file:close()
+  end
+  return snapshot
 end
 
 --- Get the current AstroNvim version
@@ -221,7 +240,8 @@ function astronvim.updater.update()
       { git.current_version(), "String" },
       { "!\n", "Title" },
       {
-        options.auto_quit and "AstroNvim will now quit.\n\n" or "Please restart.\n\n",
+        options.auto_quit and "AstroNvim will now update plugins and quit.\n\n"
+          or "After plugins update, please restart.\n\n",
         "WarningMsg",
       },
     }
@@ -236,6 +256,7 @@ function astronvim.updater.update()
       vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
     end
 
+    require("lazy").sync { wait = true }
     astronvim.event "UpdateComplete"
   end
 end
