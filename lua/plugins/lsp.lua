@@ -2,8 +2,7 @@ return {
   "b0o/SchemaStore.nvim",
   {
     "folke/neodev.nvim",
-    version = "^1",
-    opts = { library = { plugins = false }, lspconfig = false },
+    opts = { lspconfig = false },
     default_config = function(opts) require("neodev").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
