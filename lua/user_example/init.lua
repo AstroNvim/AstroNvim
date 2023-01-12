@@ -153,11 +153,7 @@ local config = {
     -- on_attach = function(client, bufnr)
     -- end,
 
-    -- override the LSP setup handler function with a single function
-    -- setup_handlers = function(server, opts)
-    --   require("lspconfig")[server].setup(opts)
-    -- end,
-    -- OR you can override the LSP setup handler function based on server name
+    -- override the LSP setup handler function based on server name
     -- setup_handlers = {
     --   -- first function changes the default setup handler
     --   function(server, opts) require("lspconfig")[server].setup(opts) end,
