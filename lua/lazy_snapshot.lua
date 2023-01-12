@@ -10,7 +10,7 @@ return {
   { "b0o/SchemaStore.nvim", commit = "2af488a5c74e44215349258a4c9e74bea8e061be" },
   { "Shatur/neovim-session-manager", commit = "f8c85da390c5d1ad3bfd229ac2ed805c5742263d" },
   { "hrsh7th/cmp-buffer", commit = "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
-  { "folke/neodev.nvim", version = "^1" },
+  { "folke/neodev.nvim", version = "^2" },
   { "jay-babu/mason-null-ls.nvim", commit = "c4b4a6fe3cb8d8590b831c22b3475166dc9a894e" },
   { "rebelot/heirline.nvim", commit = "b07ae7e499fecc263f38d1db7feeb2da227df370" },
   { "s1n7ax/nvim-window-picker", version = "^1" },
