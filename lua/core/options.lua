@@ -1,10 +1,10 @@
 vim.opt.shortmess:append { s = true, I = true } -- disable startup message
+vim.opt.backspace:append { "nostop" } -- Don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then -- TODO v3 REMOVE THIS CONDITIONAL
   vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
 end
 astronvim.vim_opts(astronvim.user_opts("options", {
   opt = {
-    backspace = vim.opt.backspace + { "nostop" }, -- Don't stop backspace at insert
     clipboard = "unnamedplus", -- Connection to the system clipboard
     cmdheight = 0, -- hide command line unless needed
     completeopt = { "menuone", "noselect" }, -- Options for insert mode completion
