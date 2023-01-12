@@ -282,7 +282,7 @@ local heirline_opts = astronvim.user_plugin_opts("plugins.heirline", {
       }
     or nil,
 })
-heirline.setup(heirline_opts[1], heirline_opts[2], heirline_opts[3])
+heirline.setup({statusline=heirline_opts[1], winbar=heirline_opts[2], tabline=heirline_opts[3]})
 
 local augroup = vim.api.nvim_create_augroup("Heirline", { clear = true })
 vim.api.nvim_create_autocmd("User", {
