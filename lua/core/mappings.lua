@@ -39,20 +39,6 @@ maps.n["<leader>pA"] = { "<cmd>AstroUpdate<cr>", desc = "AstroNvim Update" }
 maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
 
--- Alpha
-if is_available "alpha-nvim" then
-  maps.n["<leader>h"] = {
-    function()
-      local wins = vim.api.nvim_tabpage_list_wins(0)
-      if #wins > 1 and vim.api.nvim_get_option_value("filetype", { win = wins[1] }) == "neo-tree" then
-        vim.fn.win_gotoid(wins[2]) -- go to non-neo-tree window to toggle alpha
-      end
-      require("alpha").start()
-    end,
-    desc = "Home Screen",
-  }
-end
-
 -- Manage Buffers
 maps.n["<leader>c"] = { function() astronvim.close_buf(0) end, desc = "Close buffer" }
 maps.n["<leader>C"] = { function() astronvim.close_buf(0, true) end, desc = "Force close buffer" }
@@ -98,6 +84,20 @@ maps.n["<leader>b|"] = {
 -- Navigate tabs
 maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
 maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
+
+-- Alpha
+if is_available "alpha-nvim" then
+  maps.n["<leader>h"] = {
+    function()
+      local wins = vim.api.nvim_tabpage_list_wins(0)
+      if #wins > 1 and vim.api.nvim_get_option_value("filetype", { win = wins[1] }) == "neo-tree" then
+        vim.fn.win_gotoid(wins[2]) -- go to non-neo-tree window to toggle alpha
+      end
+      require("alpha").start()
+    end,
+    desc = "Home Screen",
+  }
+end
 
 -- Comment
 if is_available "Comment.nvim" then
