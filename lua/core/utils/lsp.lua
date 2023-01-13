@@ -121,7 +121,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
         desc = "Auto format buffer " .. bufnr .. " before save",
         callback = function()
           if vim.g.autoformat_enabled then
-            vim.lsp.buf.format(astronvim.default_tbl({ bufnr = bufnr }, astronvim.lsp.format_opts))
+            vim.lsp.buf.format(astronvim.default_tbl(astronvim.lsp.format_opts, { bufnr = bufnr }))
           end
         end,
       })
@@ -222,8 +222,8 @@ astronvim.lsp.flags = user_opts "lsp.flags"
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
   local lsp_opts = astronvim.default_tbl(
-    { capabilities = astronvim.lsp.capabilities, flags = astronvim.lsp.flags },
-    { capabilities = server.capabilities, flags = server.flags }
+    { capabilities = server.capabilities, flags = server.flags },
+    { capabilities = astronvim.lsp.capabilities, flags = astronvim.lsp.flags }
   )
   if server_name == "jsonls" then -- by default add json schemas
     local schemastore_avail, schemastore = pcall(require, "schemastore")

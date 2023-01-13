@@ -73,7 +73,7 @@ local function func_or_extend(overrides, default, extend)
   if extend then
     -- if the override is a table, use vim.tbl_deep_extend
     if type(overrides) == "table" then
-      default = astronvim.default_tbl(overrides, default)
+      default = astronvim.default_tbl(default, overrides)
       -- if the override is  a function, call it with the default and overwrite default with the return value
     elseif type(overrides) == "function" then
       default = overrides(default)
@@ -87,10 +87,10 @@ local function func_or_extend(overrides, default, extend)
 end
 
 --- Merge extended options with a default table of options
--- @param opts the new options that should be merged with the default table
 -- @param default the default table that you want to merge into
+-- @param opts the new options that should be merged with the default table
 -- @return the merged table
-function astronvim.default_tbl(opts, default)
+function astronvim.default_tbl(default, opts)
   opts = opts or {}
   return default and vim.tbl_deep_extend("force", default, opts) or opts
 end
@@ -152,7 +152,7 @@ end
 -- @param type the type of the notification (:help vim.log.levels)
 -- @param opts table of nvim-notify options to use (:help notify-options)
 function astronvim.notify(msg, type, opts)
-  vim.schedule(function() vim.notify(msg, type, astronvim.default_tbl(opts, { title = "AstroNvim" })) end)
+  vim.schedule(function() vim.notify(msg, type, astronvim.default_tbl({ title = "AstroNvim" }, opts)) end)
 end
 
 --- Trigger an AstroNvim user event
