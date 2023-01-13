@@ -117,6 +117,7 @@ return {
   {
     "max397574/better-escape.nvim",
     event = "InsertCharPre",
+    opts = { timeout = 300 },
     default_config = function(opts) require("better_escape").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
