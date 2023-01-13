@@ -83,16 +83,16 @@ return {
       local tabline = require("heirline").tabline
       local buflist = tabline and tabline._buflist[1]
       if buflist then
-        local prev_showtabline = vim.opt.showtabline
+        local prev_showtabline = vim.opt.showtabline:get()
         buflist._picker_labels = {}
         buflist._show_picker = true
-        vim.opt.showtabline = 2
+        if prev_showtabline ~= 2 then vim.opt.showtabline = 2 end
         vim.cmd.redrawtabline()
         local char = vim.fn.getcharstr()
         local bufnr = buflist._picker_labels[char]
         if bufnr then callback(bufnr) end
         buflist._show_picker = false
-        vim.opt.showtabline = prev_showtabline
+        if prev_showtabline ~= 2 then vim.opt.showtabline = prev_showtabline end
         vim.cmd.redrawtabline()
       end
     end
