@@ -148,7 +148,7 @@ end
 -- @return The Heirline init function
 -- @usage local heirline_component = { init = astronvim.status.init.breadcrumbs { padding = { left = 1 } } }
 function astronvim.status.init.breadcrumbs(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     separator = " > ",
     icon = { enabled = true, hl = astronvim.status.env.icon_highlights.breadcrumbs },
     padding = { left = 0, right = 0 },
@@ -233,7 +233,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.spell() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.spell(opts)
-  opts = astronvim.default_tbl({ str = "", icon = { kind = "Spellcheck" }, show_empty = true }, opts)
+  opts = astronvim.extend_tbl({ str = "", icon = { kind = "Spellcheck" }, show_empty = true }, opts)
   return function() return astronvim.status.utils.stylize(vim.wo.spell and opts.str, opts) end
 end
 
@@ -244,7 +244,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.paste() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.paste(opts)
-  opts = astronvim.default_tbl({ str = "", icon = { kind = "Paste" }, show_empty = true }, opts)
+  opts = astronvim.extend_tbl({ str = "", icon = { kind = "Paste" }, show_empty = true }, opts)
   return function() return astronvim.status.utils.stylize(vim.opt.paste:get() and opts.str, opts) end
 end
 
@@ -254,7 +254,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.macro_recording() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.macro_recording(opts)
-  opts = astronvim.default_tbl({ prefix = "@" }, opts)
+  opts = astronvim.extend_tbl({ prefix = "@" }, opts)
   return function()
     local register = vim.fn.reg_recording()
     if register ~= "" then register = opts.prefix .. register end
@@ -317,7 +317,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.percentage() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.percentage(opts)
-  opts = astronvim.default_tbl({ escape = false, fixed_width = false, edge_text = true }, opts)
+  opts = astronvim.extend_tbl({ escape = false, fixed_width = false, edge_text = true }, opts)
   return function()
     local text = "%" .. (opts.fixed_width and "3" or "") .. "p%%"
     if opts.edge_text then
@@ -338,7 +338,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.ruler({ pad_ruler = { line = 3, char = 2 } }) }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.ruler(opts)
-  opts = astronvim.default_tbl({ pad_ruler = { line = 0, char = 0 } }, opts)
+  opts = astronvim.extend_tbl({ pad_ruler = { line = 0, char = 0 } }, opts)
   local padding_str = string.format("%%%dd:%%%dd", opts.pad_ruler.line, opts.pad_ruler.char)
   return function()
     local line = vim.fn.line "."
@@ -368,7 +368,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.close_button() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.close_button(opts)
-  opts = astronvim.default_tbl({ kind = "BufferClose" }, opts)
+  opts = astronvim.extend_tbl({ kind = "BufferClose" }, opts)
   return astronvim.status.utils.stylize(astronvim.get_icon(opts.kind), opts)
 end
 
@@ -390,7 +390,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.filename() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.filename(opts)
-  opts = astronvim.default_tbl(
+  opts = astronvim.extend_tbl(
     { fallback = "Empty", fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ":t" },
     opts
   )
@@ -406,7 +406,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.unique_path() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.unique_path(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t") end,
     bufnr = 0,
     max_length = 16,
@@ -459,7 +459,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_modified() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_modified(opts)
-  opts = astronvim.default_tbl({ str = "", icon = { kind = "FileModified" }, show_empty = true }, opts)
+  opts = astronvim.extend_tbl({ str = "", icon = { kind = "FileModified" }, show_empty = true }, opts)
   return function(self)
     return astronvim.status.utils.stylize(
       astronvim.status.condition.file_modified((self or {}).bufnr) and opts.str,
@@ -474,7 +474,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.file_read_only() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.file_read_only(opts)
-  opts = astronvim.default_tbl({ str = "", icon = { kind = "FileReadOnly" }, show_empty = true }, opts)
+  opts = astronvim.extend_tbl({ str = "", icon = { kind = "FileReadOnly" }, show_empty = true }, opts)
   return function(self)
     return astronvim.status.utils.stylize(
       astronvim.status.condition.file_read_only((self or {}).bufnr) and opts.str,
@@ -573,7 +573,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.lsp_client_names({ expand_null_ls = true, truncate = 0.25 }) }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.lsp_client_names(opts)
-  opts = astronvim.default_tbl({ expand_null_ls = true, truncate = 0.25 }, opts)
+  opts = astronvim.extend_tbl({ expand_null_ls = true, truncate = 0.25 }, opts)
   return function(self)
     local buf_client_names = {}
     for _, client in pairs(vim.lsp.get_active_clients { bufnr = self and self.bufnr or 0 }) do
@@ -615,7 +615,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.str({ str = "Hello" }) }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.str(opts)
-  opts = astronvim.default_tbl({ str = " " }, opts)
+  opts = astronvim.extend_tbl({ str = " " }, opts)
   return astronvim.status.utils.stylize(opts.str, opts)
 end
 
@@ -736,7 +736,7 @@ local function escape(str) return string.gsub(str, "%%2F", "/") end
 -- @return the stylized string
 -- @usage local string = astronvim.status.utils.stylize("Hello", { padding = { left = 1, right = 1 }, icon = { kind = "String" } })
 function astronvim.status.utils.stylize(str, opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     padding = { left = 0, right = 0 },
     separator = { left = "", right = "" },
     show_empty = false,
@@ -755,7 +755,7 @@ end
 -- @return The heirline component table
 -- @usage local heirline_component = astronvim.status.component.fill()
 function astronvim.status.component.fill(opts)
-  return astronvim.default_tbl({ provider = astronvim.status.provider.fill() }, opts)
+  return astronvim.extend_tbl({ provider = astronvim.status.provider.fill() }, opts)
 end
 
 --- A function to build a set of children components for an entire file information section
@@ -763,7 +763,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.file_info()
 function astronvim.status.component.file_info(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     file_icon = { hl = astronvim.status.hl.file_icon "statusline", padding = { left = 1, right = 1 } },
     filename = {},
     file_modified = { padding = { left = 1 } },
@@ -787,7 +787,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.tabline_file_info()
 function astronvim.status.component.tabline_file_info(opts)
-  return astronvim.status.component.file_info(astronvim.default_tbl({
+  return astronvim.status.component.file_info(astronvim.extend_tbl({
     file_icon = {
       condition = function(self) return not self._show_picker end,
       hl = astronvim.status.hl.file_icon "tabline",
@@ -819,7 +819,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.nav()
 function astronvim.status.component.nav(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     ruler = {},
     percentage = { padding = { left = 1 } },
     scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
@@ -837,7 +837,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.cmd_info()
 function astronvim.status.component.cmd_info(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     macro_recording = {
       icon = { kind = "MacroRecording", padding = { right = 1 } },
       condition = astronvim.status.condition.is_macro_recording,
@@ -868,7 +868,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.mode { mode_text = true }
 function astronvim.status.component.mode(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     mode_text = false,
     paste = false,
     spell = false,
@@ -887,7 +887,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.breadcumbs()
 function astronvim.status.component.breadcrumbs(opts)
-  opts = astronvim.default_tbl(
+  opts = astronvim.extend_tbl(
     { padding = { left = 1 }, condition = astronvim.status.condition.aerial_available, update = "CursorMoved" },
     opts
   )
@@ -900,7 +900,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.git_branch()
 function astronvim.status.component.git_branch(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     git_branch = { icon = { kind = "GitBranch", padding = { right = 1 } } },
     surround = { separator = "left", color = "git_branch_bg", condition = astronvim.status.condition.is_git_repo },
     hl = astronvim.status.hl.get_attributes "git_branch",
@@ -923,7 +923,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.git_diff()
 function astronvim.status.component.git_diff(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     added = { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } },
     changed = { icon = { kind = "GitChange", padding = { left = 1, right = 1 } } },
     removed = { icon = { kind = "GitDelete", padding = { left = 1, right = 1 } } },
@@ -958,7 +958,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.diagnostics()
 function astronvim.status.component.diagnostics(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     ERROR = { icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } } },
     WARN = { icon = { kind = "DiagnosticWarn", padding = { left = 1, right = 1 } } },
     INFO = { icon = { kind = "DiagnosticInfo", padding = { left = 1, right = 1 } } },
@@ -993,7 +993,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.treesitter()
 function astronvim.status.component.treesitter(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     str = { str = "TS", icon = { kind = "ActiveTS" } },
     surround = {
       separator = "right",
@@ -1012,7 +1012,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.component.lsp()
 function astronvim.status.component.lsp(opts)
-  opts = astronvim.default_tbl({
+  opts = astronvim.extend_tbl({
     lsp_progress = {
       str = "",
       padding = { right = 1 },
@@ -1054,7 +1054,7 @@ end
 -- @return The Heirline component table
 -- @usage local heirline_component = astronvim.status.components.builder({ { provider = "file_icon", opts = { padding = { right = 1 } } }, { provider = "filename" } })
 function astronvim.status.component.builder(opts)
-  opts = astronvim.default_tbl({ padding = { left = 0, right = 0 } }, opts)
+  opts = astronvim.extend_tbl({ padding = { left = 0, right = 0 } }, opts)
   local children = {}
   if opts.padding.left > 0 then -- add left padding
     table.insert(children, { provider = astronvim.pad_string(" ", { left = opts.padding.left - 1 }) })
@@ -1148,7 +1148,7 @@ function astronvim.status.utils.surround(separator, color, component, condition)
       local s_color = surround_color(self)
       if s_color then return { bg = s_color.main } end
     end,
-    astronvim.default_tbl(component, {}),
+    astronvim.extend_tbl(component, {}),
   })
   if separator[2] ~= "" then
     table.insert(surrounded, {

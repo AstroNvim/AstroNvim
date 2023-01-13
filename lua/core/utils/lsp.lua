@@ -121,7 +121,7 @@ astronvim.lsp.on_attach = function(client, bufnr)
         desc = "Auto format buffer " .. bufnr .. " before save",
         callback = function()
           if vim.g.autoformat_enabled then
-            vim.lsp.buf.format(astronvim.default_tbl(astronvim.lsp.format_opts, { bufnr = bufnr }))
+            vim.lsp.buf.format(astronvim.extend_tbl(astronvim.lsp.format_opts, { bufnr = bufnr }))
           end
         end,
       })
@@ -221,7 +221,7 @@ astronvim.lsp.flags = user_opts "lsp.flags"
 -- @return the table of LSP options used when setting up the given language server
 function astronvim.lsp.server_settings(server_name)
   local server = require("lspconfig")[server_name]
-  local lsp_opts = astronvim.default_tbl(
+  local lsp_opts = astronvim.extend_tbl(
     { capabilities = server.capabilities, flags = server.flags },
     { capabilities = astronvim.lsp.capabilities, flags = astronvim.lsp.flags }
   )
