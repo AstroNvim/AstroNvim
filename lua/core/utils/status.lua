@@ -52,6 +52,7 @@ astronvim.status.env.separators = astronvim.user_opts("heirline.separators", {
   right = { "  ", "" },
   center = { "  ", "  " },
   tab = { "", " " },
+  breadcrumbs = " > ",
 })
 
 astronvim.status.env.attributes = astronvim.user_opts("heirline.attributes", {
@@ -149,7 +150,7 @@ end
 -- @usage local heirline_component = { init = astronvim.status.init.breadcrumbs { padding = { left = 1 } } }
 function astronvim.status.init.breadcrumbs(opts)
   opts = astronvim.extend_tbl({
-    separator = " > ",
+    separator = astronvim.status.env.separators.breadcrumbs or " > ",
     icon = { enabled = true, hl = astronvim.status.env.icon_highlights.breadcrumbs },
     padding = { left = 0, right = 0 },
   }, opts)

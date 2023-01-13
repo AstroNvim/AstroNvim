@@ -210,7 +210,7 @@ local config = {
   -- Configure plugins
   plugins = {
     -- You can disable default plugins as follows:
-    -- { "goolord/alpha-nvim", enabled = false },
+    -- { "max397574/better-escape.nvim", enabled = false },
     --
     -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
     -- {
@@ -348,6 +348,7 @@ local config = {
   heirline = {
     -- -- Customize different separators between sections
     -- separators = {
+    --   breadcrumbs = " > ",
     --   tab = { "", "" },
     -- },
     -- -- Customize colors for each element each element has a `_fg` and a `_bg`
@@ -366,6 +367,7 @@ local config = {
     --   file_icon = {
     --     winbar = false, -- Filetype icon in the winbar inactive windows
     --     statusline = true, -- Filetype icon in the statusline
+    --     tabline = true, -- Filetype icon in the tabline
     --   },
     -- },
   },
