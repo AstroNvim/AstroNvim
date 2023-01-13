@@ -207,6 +207,17 @@ local config = {
     },
   },
 
+  -- Configure require("lazy").setup() options
+  lazy = {
+    defaults = { lazy = true },
+    performance = {
+      rtp = {
+        -- customize default disabled vim plugins
+        disabled_plugins = { "tohtml", "gzip", "matchit", "zipPlugin", "netrwPlugin", "tarPlugin", "matchparen" },
+      },
+    },
+  },
+
   -- Configure plugins
   plugins = {
     -- You can disable default plugins as follows:
