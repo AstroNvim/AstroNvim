@@ -7,9 +7,16 @@ return {
       "MasonUninstall",
       "MasonUninstallAll",
       "MasonLog",
-      "MasonUpdate", -- astronvim command
-      "MasonUpdateAll", -- astronvim command
     },
+    init = function()
+      local cmd = vim.api.nvim_create_user_command
+      cmd("MasonUpdateAll", function() astronvim.mason.update_all() end, { desc = "Update Mason Packages" })
+      cmd(
+        "MasonUpdate",
+        function(options) astronvim.mason.update(options.args) end,
+        { nargs = 1, desc = "Update Mason Package" }
+      )
+    end,
     opts = {
       ui = {
         icons = {
@@ -19,17 +26,7 @@ return {
         },
       },
     },
-    default_config = function(opts)
-      require("mason").setup(opts)
-
-      local cmd = vim.api.nvim_create_user_command
-      cmd("MasonUpdateAll", function() astronvim.mason.update_all() end, { desc = "Update Mason Packages" })
-      cmd(
-        "MasonUpdate",
-        function(options) astronvim.mason.update(options.args) end,
-        { nargs = 1, desc = "Update Mason Package" }
-      )
-    end,
+    default_config = function(opts) require("mason").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
 }
