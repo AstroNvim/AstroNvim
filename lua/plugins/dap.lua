@@ -3,6 +3,18 @@ return {
   enabled = vim.fn.has "win32" == 0,
   dependencies = {
     {
+      "jay-babu/mason-nvim-dap.nvim",
+      dependencies = { "nvim-dap" },
+      cmd = { "DapInstall", "DapUninstall" },
+      opts = { automatic_setup = true },
+      default_config = function(opts)
+        local mason_nvim_dap = require "mason-nvim-dap"
+        mason_nvim_dap.setup(opts)
+        mason_nvim_dap.setup_handlers {}
+      end,
+      config = function(plugin, opts) plugin.default_config(opts) end,
+    },
+    {
       "rcarriga/nvim-dap-ui",
       opts = { floating = { border = "rounded" } },
       default_config = function(opts)
