@@ -19,11 +19,11 @@ return {
     dashboard.section.header.opts.hl = "DashboardHeader"
 
     dashboard.section.buttons.val = {
+      astronvim.alpha_button("LDR n", "  New File  "),
       astronvim.alpha_button("LDR f f", "  Find File  "),
       astronvim.alpha_button("LDR f o", "  Recents  "),
       astronvim.alpha_button("LDR f w", "  Find Word  "),
-      astronvim.alpha_button("LDR f n", "  New File  "),
-      astronvim.alpha_button("LDR f m", "  Bookmarks  "),
+      astronvim.alpha_button("LDR f '", "  Bookmarks  "),
       astronvim.alpha_button("LDR S l", "  Last Session  "),
     }
 
