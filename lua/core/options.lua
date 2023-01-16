@@ -13,6 +13,10 @@ astronvim.vim_opts(astronvim.user_opts("options", {
     expandtab = true, -- Enable the use of space in tab
     fileencoding = "utf-8", -- File content encoding for the buffer
     fillchars = { eob = " " }, -- Disable `~` on nonexistent lines
+    foldenable = true, -- enable fold for nvim-ufo
+    foldlevel = 99, -- set high foldlevel for nvim-ufo
+    foldlevelstart = 99, -- start with all code unfolded
+    foldcolumn = vim.fn.has "nvim-0.9" == 1 and "1" or nil, -- show foldcolumn in nvim 0.9
     history = 100, -- Number of commands to remember in a history table
     ignorecase = true, -- Case insensitive searching
     laststatus = 3, -- globalstatus
