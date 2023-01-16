@@ -551,18 +551,16 @@ function astronvim.status.provider.lsp_progress(opts)
     local Lsp = vim.lsp.util.get_progress_messages()[1]
     return astronvim.status.utils.stylize(
       Lsp
-          and string.format(
-            " %%<%s %s %s (%s%%%%) ",
-            astronvim.get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
-              "Loading1",
-              "Loading2",
-              "Loading3",
-            })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1]),
-            Lsp.title and Lsp.title or "",
-            Lsp.message and Lsp.message or "",
-            Lsp.percentage or 0
-          )
-        or "",
+        and (
+          astronvim.get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
+            "Loading1",
+            "Loading2",
+            "Loading3",
+          })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1])
+          .. (Lsp.title and " " .. Lsp.title or "")
+          .. (Lsp.message and " " .. Lsp.message or "")
+          .. (Lsp.percentage and " (" .. Lsp.percentage .. "%)" or "")
+        ),
       opts
     )
   end
@@ -729,7 +727,7 @@ function astronvim.status.condition.treesitter_available(bufnr)
   return parsers.has_parser(parsers.get_buf_lang(bufnr or vim.api.nvim_get_current_buf()))
 end
 
-local function escape(str) return string.gsub(str, "%%2F", "/") end
+local function escape(str) return str:gsub("%%", "%%%%") end
 
 --- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding
 -- @param str the string to stylize
