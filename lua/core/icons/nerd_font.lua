@@ -18,6 +18,8 @@ return {
   Ellipsis = "…",
   FileModified = "",
   FileReadOnly = "",
+  FoldClosed = "",
+  FoldOpened = "",
   FolderClosed = "",
   FolderEmpty = "",
   FolderOpen = "",

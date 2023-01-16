@@ -168,6 +168,11 @@ return {
           },
         },
       },
+      statuscolumn = vim.fn.has "nvim-0.9" == 1 and {
+        astronvim.status.component.foldcolumn(),
+        astronvim.status.component.numbercolumn(),
+        astronvim.status.component.signcolumn(),
+      } or nil,
     }
   end,
   default_config = function(opts)
