@@ -67,6 +67,7 @@ end
 -- @return the current AstroNvim version string
 function astronvim.updater.version(quiet)
   local version = astronvim.install.version or git.current_version(false)
+  if options.channel ~= "stable" then version = ("nightly (%s)"):format(version) end
   if version and not quiet then astronvim.notify("Version: " .. version) end
   return version
 end
