@@ -85,6 +85,39 @@ astronvim.status.env.buf_matchers = {
   end,
 }
 
+astronvim.status.env.sign_handlers = {}
+-- gitsigns handlers
+local gitsigns = function(_)
+  local gitsigns_avail, gitsigns = pcall(require, "gitsigns")
+  if gitsigns_avail then vim.schedule(gitsigns.preview_hunk) end
+end
+for _, sign in ipairs { "Topdelete", "Untracked", "Add", "Changedelete", "Delete" } do
+  local name = "GitSigns" .. sign
+  if not astronvim.status.env.sign_handlers[name] then astronvim.status.env.sign_handlers[name] = gitsigns end
+end
+-- diagnostic handlers
+local diagnostics = function(args)
+  if args.mods:find "c" then
+    vim.schedule(vim.lsp.buf.code_action)
+  else
+    vim.schedule(vim.diagnostic.open_float)
+  end
+end
+for _, sign in ipairs { "Error", "Hint", "Info", "Warn" } do
+  local name = "DiagnosticSign" .. sign
+  if not astronvim.status.env.sign_handlers[name] then astronvim.status.env.sign_handlers[name] = diagnostics end
+end
+-- DAP handlers
+local dap_breakpoint = function(_)
+  local dap_avail, dap = pcall(require, "dap")
+  if dap_avail then vim.schedule(dap.toggle_breakpoint) end
+end
+for _, sign in ipairs { "", "Rejected", "Condition" } do
+  local name = "DapBreakpoint" .. sign
+  if not astronvim.status.env.sign_handlers[name] then astronvim.status.env.sign_handlers[name] = dap_breakpoint end
+end
+astronvim.status.env.sign_handlers = astronvim.user_opts("heirline.sign_handlers", astronvim.status.env.sign_handlers)
+
 --- Get the highlight background color of the lualine theme for the current colorscheme
 -- @param  mode the neovim mode to get the color of
 -- @param  fallback the color to fallback on if a lualine theme is not present
@@ -220,6 +253,42 @@ end
 -- @return the statusline string for filling the empty space
 -- @usage local heirline_component = { provider = astronvim.status.provider.fill }
 function astronvim.status.provider.fill() return "%=" end
+
+-- TODO: add docstring
+function astronvim.status.provider.signcolumn(opts)
+  opts = astronvim.extend_tbl({ escape = false }, opts)
+  return astronvim.status.utils.stylize("%s", opts)
+end
+
+-- TODO: add docstring
+function astronvim.status.provider.foldcolumn(opts)
+  return function() -- move to astronvim.status.provider.fold_indicator
+    local lnum = vim.v.lnum
+    return astronvim.status.utils.stylize(
+      vim.fn.foldlevel(lnum) > vim.fn.foldlevel(lnum - 1)
+          and astronvim.get_icon(vim.fn.foldclosed(lnum) == -1 and "FoldOpened" or "FoldClosed")
+        or " ",
+      opts
+    )
+  end
+end
+
+-- TODO: add docstring
+function astronvim.status.provider.numbercolumn(opts)
+  opts = astronvim.extend_tbl({ escape = false }, opts)
+  return function()
+    local str = "%="
+    local num, relnum = vim.opt.number:get(), vim.opt.relativenumber:get()
+    if num and not relnum then
+      str = str .. "%l"
+    elseif relnum and not num then
+      str = str .. "%r"
+    else
+      str = str .. "%{v:relnum?v:relnum:v:lnum}"
+    end
+    return astronvim.status.utils.stylize(str, opts)
+  end
+end
 
 --- A provider function for the current tab numbre
 -- @return the statusline function to return a string for a tab number
@@ -727,6 +796,14 @@ function astronvim.status.condition.treesitter_available(bufnr)
   return parsers.has_parser(parsers.get_buf_lang(bufnr or vim.api.nvim_get_current_buf()))
 end
 
+--- A condition function if the foldcolumn is enabled
+-- @treturn true if vim.opt.foldcolumn > 0, false if vim.opt.foldcolumn == 0
+function astronvim.status.condition.foldcolumn_enabled() return vim.opt.foldcolumn:get() ~= "0" end
+
+--- A condition function if the number column is enabled
+-- @treturn true if vim.opt.number or vim.opt.relativenumber, false if neither
+function astronvim.status.condition.numbercolumn_enabled() return vim.opt.number:get() or vim.opt.relativenumber:get() end
+
 local function escape(str) return str:gsub("%%", "%%%%") end
 
 --- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding
@@ -1048,6 +1125,60 @@ function astronvim.status.component.lsp(opts)
   )
 end
 
+-- TODO: add docstring
+function astronvim.status.component.foldcolumn(opts)
+  opts = astronvim.extend_tbl({
+    foldcolumn = {},
+    condition = astronvim.status.condition.foldcolumn_enabled,
+    on_click = {
+      name = "fold_click",
+      callback = function(...)
+        local lnum = astronvim.status.utils.statuscolumn_clickargs(...).mousepos.line
+        if vim.fn.foldlevel(lnum) <= vim.fn.foldlevel(lnum - 1) then return end
+        vim.cmd.execute("'" .. lnum .. "fold" .. (vim.fn.foldclosed(lnum) == -1 and "close" or "open") .. "'")
+      end,
+    },
+  }, opts)
+  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "foldcolumn" }))
+end
+
+-- TODO: add docstring
+function astronvim.status.component.numbercolumn(opts)
+  opts = astronvim.extend_tbl({
+    numbercolumn = { padding = { right = 1 } },
+    condition = astronvim.status.condition.numbercolumn_enabled,
+    on_click = {
+      name = "line_click",
+      callback = function(...)
+        local args = astronvim.status.utils.statuscolumn_clickargs(...)
+        if args.mods:find "c" then
+          local dap_avail, dap = pcall(require, "dap")
+          if dap_avail then vim.schedule(dap.toggle_breakpoint) end
+        end
+      end,
+    },
+  }, opts)
+  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "numbercolumn" }))
+end
+
+-- TODO: add docstring
+function astronvim.status.component.signcolumn(opts)
+  opts = astronvim.extend_tbl({
+    signcolumn = {},
+    condition = astronvim.status.condition.signcolumn_enabled,
+    on_click = {
+      name = "sign_click",
+      callback = function(...)
+        local args = astronvim.status.utils.statuscolumn_clickargs(...)
+        if args.sign and args.sign.name and astronvim.status.env.sign_handlers[args.sign.name] then
+          astronvim.status.env.sign_handlers[args.sign.name](args)
+        end
+      end,
+    },
+  }, opts)
+  return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "signcolumn" }))
+end
+
 --- A general function to build a section of astronvim status providers with highlights, conditions, and section surrounding
 -- @param opts a list of components to build into a section
 -- @return The Heirline component table
@@ -1175,6 +1306,31 @@ end
 -- @return line number, column number, window id
 function astronvim.status.utils.decode_pos(c)
   return bit.rshift(c, 16), bit.band(bit.rshift(c, 6), 1023), bit.band(c, 63)
+end
+
+-- TODO: add docstring
+function astronvim.status.utils.statuscolumn_clickargs(self, minwid, clicks, button, mods)
+  local args = {
+    minwid = minwid,
+    clicks = clicks,
+    button = button,
+    mods = mods,
+    mousepos = vim.fn.getmousepos(),
+  }
+  if not self.signs then self.signs = {} end
+  local sign = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol)
+  if sign == " " then sign = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol - 1) end
+  args.sign = self.signs[sign]
+  if not args.sign then -- update signs if not found on first click
+    for _, sign_def in ipairs(vim.fn.sign_getdefined()) do
+      if sign_def.text then self.signs[sign_def.text:gsub("%s", "")] = sign_def end
+    end
+    args.sign = self.signs[sign]
+  end
+  vim.api.nvim_set_current_win(args.mousepos.winid)
+  vim.api.nvim_win_set_cursor(0, { args.mousepos.line, 0 })
+  vim.pretty_print(args)
+  return args
 end
 
 return astronvim.status
