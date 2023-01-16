@@ -65,6 +65,19 @@ return {
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
   {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    event = "BufEnter",
+    opts = {
+      provider_selector = function(_, filetype, buftype)
+        return (filetype == "" or buftype == "nofile") and "indent" -- only use indent until a file is opened
+          or { "lsp", "indent" } -- if file opened, try to use lsp if it's available
+      end,
+    },
+    default_config = function(opts) require("ufo").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
+  },
+  {
     "numToStr/Comment.nvim",
     keys = { { "gc", mode = { "n", "v" } }, { "gb", mode = { "n", "v" } } },
     opts = function()

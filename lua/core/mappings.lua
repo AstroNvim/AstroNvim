@@ -303,6 +303,15 @@ if is_available "nvim-dap" then
   end
 end
 
+-- Improved Code Folding
+if is_available "nvim-ufo" then
+  maps.n["zR"] = { function() require("ufo").openAllFolds() end, desc = "Open all folds" }
+  maps.n["zM"] = { function() require("ufo").closeAllFolds() end, desc = "Close all folds" }
+  maps.n["zr"] = { function() require("ufo").openFoldsExceptKinds() end, desc = "Fold less" }
+  maps.n["zm"] = { function() require("ufo").closeFoldsWith() end, desc = "Fold more" }
+  maps.n["zp"] = { function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "Peek fold" }
+end
+
 -- Stay in indent mode
 maps.v["<S-Tab>"] = { "<gv", desc = "unindent line" }
 maps.v["<Tab>"] = { ">gv", desc = "indent line" }
