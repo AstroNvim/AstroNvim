@@ -71,7 +71,7 @@ return {
     opts = {
       provider_selector = function(_, filetype, buftype)
         return (filetype == "" or buftype == "nofile") and "indent" -- only use indent until a file is opened
-          or { "lsp", "indent" } -- if file opened, try to use lsp if it's available
+          or { "treesitter", "indent" } -- if file opened, try to use treesitter if available
       end,
     },
     default_config = function(opts) require("ufo").setup(opts) end,
