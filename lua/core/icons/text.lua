@@ -16,6 +16,8 @@ return {
   Ellipsis = "...",
   FileModified = "*",
   FileReadOnly = "[lock]",
+  FoldClosed = "+",
+  FoldOpened = "-",
   FolderClosed = "[D]",
   FolderEmpty = "[E]",
   FolderOpen = "[O]",
