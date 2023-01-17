@@ -291,7 +291,8 @@ function astronvim.updater.update(opts)
       vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
     end
 
-    require("lazy").sync { wait = true }
+    require("lazy.core.plugin").load() -- force immediate reload of lazy
+    require("lazy").sync { wait = true } -- sync new plugin spec changes
     astronvim.event "UpdateComplete"
   end
 end
