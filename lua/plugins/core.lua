@@ -118,12 +118,11 @@ return {
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
   {
-    "Darazaki/indent-o-matic",
-    init = function() table.insert(astronvim.file_plugins, "indent-o-matic") end,
+    "NMAC427/guess-indent.nvim",
+    init = function() table.insert(astronvim.file_plugins, "guess-indent.nvim") end,
     default_config = function(opts)
-      local indent_o_matic = require "indent-o-matic"
-      indent_o_matic.setup(opts)
-      indent_o_matic.detect()
+      require("guess-indent").setup(opts)
+      vim.cmd.lua { args = { "require('guess-indent').set_from_buffer('auto_cmd')" }, mods = { silent = true } }
     end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
