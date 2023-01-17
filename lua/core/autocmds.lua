@@ -210,6 +210,7 @@ autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
 local cmd = vim.api.nvim_create_user_command
 cmd("AstroUpdatePackages", function() astronvim.updater.update_packages() end, { desc = "Update Plugins and Mason" })
 cmd("AstroUpdate", function() astronvim.updater.update() end, { desc = "Update AstroNvim" })
+cmd("AstroRollback", function() astronvim.updater.rollback() end, { desc = "Rollback AstroNvim" })
 cmd("AstroVersion", function() astronvim.updater.version() end, { desc = "Check AstroNvim Version" })
 cmd("AstroChangelog", function() astronvim.updater.changelog() end, { desc = "Check AstroNvim Changelog" })
 cmd("ToggleHighlightURL", function() astronvim.ui.toggle_url_match() end, { desc = "Toggle URL Highlights" })
