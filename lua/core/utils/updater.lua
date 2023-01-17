@@ -11,12 +11,7 @@
 
 local git = require "core.utils.git"
 --- Updater settings overridden with any user provided configuration
-local options = astronvim.user_opts("updater", {
-  remote = "origin",
-  channel = "stable",
-  show_changelog = true,
-  auto_quit = true,
-})
+local options = astronvim.user_opts("updater", { remote = "origin", channel = "stable" })
 
 -- set the install channel
 if options.branch and options.branch ~= "main" then options.channel = "nightly" end
@@ -28,6 +23,9 @@ if options.pin_plugins == nil and options.channel == "stable" then options.pin_p
 
 --- the location of the snapshot of plugin commit pins for stable AstroNvim
 astronvim.updater.snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" }
+astronvim.updater.rollback_file =
+  { module = "astronvim_rollback", path = vim.fn.stdpath "cache" .. "/astronvim_rollback.lua" }
+package.path = package.path .. ";" .. astronvim.updater.rollback_file.path
 
 --- Helper function to generate AstroNvim snapshots (For internal use only)
 -- @param write boolean whether or not to write to the snapshot file (default: false)
@@ -84,9 +82,9 @@ end
 
 --- Attempt an update of AstroNvim
 -- @param target the target if checking out a specific tag or commit or nil if just pulling
-local function attempt_update(target)
+local function attempt_update(target, opts)
   -- if updating to a new stable version or a specific commit checkout the provided target
-  if options.channel == "stable" or options.commit then
+  if opts.channel == "stable" or opts.commit then
     return git.checkout(target, false)
     -- if no target, pull the latest
   else
@@ -103,8 +101,37 @@ function astronvim.updater.update_packages()
   astronvim.mason.update_all()
 end
 
+--- Create a table of options for the currently installed AstroNvim version
+-- @return the table of updater options
+function astronvim.updater.create_rollback(write)
+  local snapshot = { branch = git.current_branch(), commit = git.local_head() }
+  snapshot.remote = git.branch_remote(snapshot.branch)
+  snapshot.remotes = { [snapshot.remote] = git.remote_url(snapshot.remote) }
+
+  if write == true then
+    local file = assert(io.open(astronvim.updater.rollback_file.path, "w"))
+    file:write("return " .. vim.inspect(snapshot, { newline = " ", indent = "" }))
+    file:close()
+  end
+
+  return snapshot
+end
+
+--- AstroNvim's rollback to saved previous version function
+function astronvim.updater.rollback()
+  package.loaded[astronvim.updater.rollback_file.module] = nil
+  local rollback_avail, rollback_opts = pcall(require, astronvim.updater.rollback_file.module)
+  if not rollback_avail then
+    astronvim.notify("No rollback file available", "error")
+    return
+  end
+  astronvim.updater.update(rollback_opts)
+end
+
 --- AstroNvim's updater function
-function astronvim.updater.update()
+function astronvim.updater.update(opts)
+  if not opts then opts = options end
+  opts = astronvim.extend_tbl({ remote = "origin", show_changelog = true, auto_quit = true }, opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
     astronvim.notify(
@@ -120,7 +147,7 @@ function astronvim.updater.update()
     return
   end
   -- set up any remotes defined by the user if they do not exist
-  for remote, entry in pairs(options.remotes and options.remotes or {}) do
+  for remote, entry in pairs(opts.remotes and opts.remotes or {}) do
     local url = git.parse_remote_url(entry)
     local current_url = git.remote_url(remote, false)
     local check_needed = false
@@ -147,49 +174,49 @@ function astronvim.updater.update()
       return
     end
   end
-  local is_stable = options.channel == "stable"
+  local is_stable = opts.channel == "stable"
   if is_stable then
-    options.branch = "main"
-  elseif not options.branch then
-    options.branch = "nightly"
+    opts.branch = "main"
+  elseif not opts.branch then
+    opts.branch = "nightly"
   end
   -- fetch the latest remote
-  if not git.fetch(options.remote) then
-    vim.api.nvim_err_writeln("Error fetching remote: " .. options.remote)
+  if not git.fetch(opts.remote) then
+    vim.api.nvim_err_writeln("Error fetching remote: " .. opts.remote)
     return
   end
   -- switch to the necessary branch only if not on the stable channel
   if not is_stable then
-    local local_branch = (options.remote == "origin" and "" or (options.remote .. "_")) .. options.branch
+    local local_branch = (opts.remote == "origin" and "" or (opts.remote .. "_")) .. opts.branch
     if git.current_branch() ~= local_branch then
       astronvim.echo {
         { "Switching to branch: " },
-        { options.remote .. "/" .. options.branch .. "\n\n", "String" },
+        { opts.remote .. "/" .. opts.branch .. "\n\n", "String" },
       }
       if not git.checkout(local_branch, false) then
-        git.checkout("-b " .. local_branch .. " " .. options.remote .. "/" .. options.branch, false)
+        git.checkout("-b " .. local_branch .. " " .. opts.remote .. "/" .. opts.branch, false)
       end
     end
     -- check if the branch was switched to successfully
     if git.current_branch() ~= local_branch then
-      vim.api.nvim_err_writeln("Error checking out branch: " .. options.remote .. "/" .. options.branch)
+      vim.api.nvim_err_writeln("Error checking out branch: " .. opts.remote .. "/" .. opts.branch)
       return
     end
   end
   local source = git.local_head() -- calculate current commit
   local target -- calculate target commit
   if is_stable then -- if stable get tag commit
-    local version_search = options.version or "latest"
-    options.version = git.latest_version(git.get_versions(version_search))
-    if not options.version then -- continue only if stable version is found
+    local version_search = opts.version or "latest"
+    opts.version = git.latest_version(git.get_versions(version_search))
+    if not opts.version then -- continue only if stable version is found
       vim.api.nvim_err_writeln("Error finding version: " .. version_search)
       return
     end
-    target = git.tag_commit(options.version)
-  elseif options.commit then -- if commit specified use it
-    target = git.branch_contains(options.remote, options.branch, options.commit) and options.commit or nil
+    target = git.tag_commit(opts.version)
+  elseif opts.commit then -- if commit specified use it
+    target = git.branch_contains(opts.remote, opts.branch, opts.commit) and opts.commit or nil
   else -- get most recent commit
-    target = git.remote_head(options.remote, options.branch)
+    target = git.remote_head(opts.remote, opts.branch)
   end
   if not source or not target then -- continue if current and target commits were found
     vim.api.nvim_err_writeln "Error checking for updates"
@@ -198,32 +225,33 @@ function astronvim.updater.update()
     astronvim.echo { { "No updates available", "String" } }
     return
   elseif -- prompt user if they want to accept update
-    not options.skip_prompts
+    not opts.skip_prompts
     and not astronvim.confirm_prompt {
       { "Update available to ", "Title" },
-      { is_stable and options.version or target, "String" },
+      { is_stable and opts.version or target, "String" },
       { "\nUpdating requires a restart, continue?" },
     }
   then
     astronvim.echo(cancelled_message)
     return
   else -- perform update
+    astronvim.updater.create_rollback(true) -- create rollback file before updating
     -- calculate and print the changelog
     local changelog = git.get_commit_range(source, target)
     local breaking = git.breaking_changes(changelog)
     local breaking_prompt = { { "Update contains the following breaking changes:\n", "WarningMsg" } }
     vim.list_extend(breaking_prompt, git.pretty_changelog(breaking))
     vim.list_extend(breaking_prompt, { { "\nWould you like to continue?" } })
-    if #breaking > 0 and not options.skip_prompts and not astronvim.confirm_prompt(breaking_prompt) then
+    if #breaking > 0 and not opts.skip_prompts and not astronvim.confirm_prompt(breaking_prompt) then
       astronvim.echo(cancelled_message)
       return
     end
     -- attempt an update
-    local updated = attempt_update(target)
+    local updated = attempt_update(target, opts)
     -- check for local file conflicts and prompt user to continue or abort
     if
       not updated
-      and not options.skip_prompts
+      and not opts.skip_prompts
       and not astronvim.confirm_prompt {
         { "Unable to pull due to local modifications to base files.\n", "ErrorMsg" },
         { "Reset local files and continue?" },
@@ -234,7 +262,7 @@ function astronvim.updater.update()
       -- if continued and there were errors reset the base config and attempt another update
     elseif not updated then
       git.hard_reset(source)
-      updated = attempt_update(target)
+      updated = attempt_update(target, opts)
     end
     -- if update was unsuccessful throw an error
     if not updated then
@@ -247,19 +275,19 @@ function astronvim.updater.update()
       { git.current_version(), "String" },
       { "!\n", "Title" },
       {
-        options.auto_quit and "AstroNvim will now update plugins and quit.\n\n"
+        opts.auto_quit and "AstroNvim will now update plugins and quit.\n\n"
           or "After plugins update, please restart.\n\n",
         "WarningMsg",
       },
     }
-    if options.show_changelog and #changelog > 0 then
+    if opts.show_changelog and #changelog > 0 then
       vim.list_extend(summary, { { "Changelog:\n", "Title" } })
       vim.list_extend(summary, git.pretty_changelog(changelog))
     end
     astronvim.echo(summary)
 
     -- if the user wants to auto quit, create an autocommand to quit AstroNvim on the update completing
-    if options.auto_quit then
+    if opts.auto_quit then
       vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
     end
 
