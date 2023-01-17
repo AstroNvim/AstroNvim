@@ -131,7 +131,7 @@ end
 --- AstroNvim's updater function
 function astronvim.updater.update(opts)
   if not opts then opts = options end
-  opts = astronvim.extend_tbl({ remote = "origin", show_changelog = true, auto_quit = true }, opts)
+  opts = astronvim.extend_tbl({ remote = "origin", show_changelog = true, auto_quit = false }, opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
     astronvim.notify(
