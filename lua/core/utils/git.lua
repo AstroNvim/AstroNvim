@@ -49,6 +49,13 @@ function git.branch_contains(remote, branch, commit, ...)
   return git.cmd("merge-base --is-ancestor " .. commit .. " " .. remote .. "/" .. branch, ...) ~= nil
 end
 
+--- Get the remote name for a given branch
+-- @param branch the git branch to check
+-- @return the name of the remote for the given branch
+function git.branch_remote(branch, ...)
+  return astronvim.trim_or_nil(git.cmd("config branch." .. branch .. ".remote", ...))
+end
+
 --- Add a git remote
 -- @param remote the remote to add
 -- @param url the url of the remote
