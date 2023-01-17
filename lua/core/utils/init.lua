@@ -226,20 +226,19 @@ function astronvim.user_opts(module, default, extend)
   return default
 end
 
---- Open a URL under the cursor with the current operating system (Supports Mac OS X and *nix)
+--- Open a URL under the cursor with the current operating system
 -- @param path the path of the file to open with the system opener
 function astronvim.system_open(path)
-  path = path or vim.fn.expand "<cfile>"
-  if vim.fn.has "mac" == 1 then
-    -- if mac use the open command
-    vim.fn.jobstart({ "open", path }, { detach = true })
-  elseif vim.fn.has "unix" == 1 then
-    -- if unix then use xdg-open
-    vim.fn.jobstart({ "xdg-open", path }, { detach = true })
-  else
-    -- if any other operating system notify the user that there is currently no support
-    astronvim.notify("System open is not supported on this OS!", "error")
+  local cmd
+  if vim.fn.has "win32" == 1 and vim.fn.executable "explorer" == 1 then
+    cmd = "explorer"
+  elseif vim.fn.has "unix" == 1 and vim.fn.executable "xdg-open" == 1 then
+    cmd = "xdg-open"
+  elseif (vim.fn.has "mac" == 1 or vim.fn.has "unix" == 1) and vim.fn.executable "open" == 1 then
+    cmd = "open"
   end
+  if not cmd then astronvim.notify("Available system opening tool not found!", "error") end
+  vim.fn.jobstart({ cmd, path or vim.fn.expand "<cfile>" }, { detach = true })
 end
 
 -- term_details can be either a string for just a command or
