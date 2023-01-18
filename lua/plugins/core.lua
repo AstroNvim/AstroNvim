@@ -89,22 +89,7 @@ return {
     "numToStr/Comment.nvim",
     keys = { { "gc", mode = { "n", "v" } }, { "gb", mode = { "n", "v" } } },
     opts = function()
-      local utils = require "Comment.utils"
-      return {
-        pre_hook = function(ctx)
-          local location = nil
-          if ctx.ctype == utils.ctype.blockwise then
-            location = require("ts_context_commentstring.utils").get_cursor_location()
-          elseif ctx.cmotion == utils.cmotion.v or ctx.cmotion == utils.cmotion.V then
-            location = require("ts_context_commentstring.utils").get_visual_start_location()
-          end
-
-          return require("ts_context_commentstring.internal").calculate_commentstring {
-            key = ctx.ctype == utils.ctype.linewise and "__default" or "__multiline",
-            location = location,
-          }
-        end,
-      }
+      return { pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook() }
     end,
     default_config = function(opts) require("Comment").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
