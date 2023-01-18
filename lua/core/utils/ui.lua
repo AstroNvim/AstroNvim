@@ -78,6 +78,12 @@ function astronvim.ui.toggle_autoformat()
   ui_notify(string.format("Autoformatting %s", bool2str(vim.g.autoformat_enabled)))
 end
 
+--- Toggle codelens refresh
+function astronvim.ui.toggle_codelens()
+  vim.g.codelens_enabled = not vim.g.codelens_enabled
+  ui_notify(string.format("CodeLens refresh %s", bool2str(vim.g.codelens_enabled)))
+end
+
 --- Toggle showtabline=2|0
 function astronvim.ui.toggle_tabline()
   vim.opt.showtabline = vim.opt.showtabline:get() == 0 and 2 or 0
