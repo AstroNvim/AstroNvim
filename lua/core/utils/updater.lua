@@ -21,7 +21,7 @@ local options = astronvim.user_plugin_opts("updater", {
 })
 
 -- set the install channel
-if options.branch then options.channel = "nightly" end
+if options.branch and options.branch ~= "main" then options.channel = "nightly" end
 if astronvim.install.is_stable ~= nil then options.channel = astronvim.install.is_stable and "stable" or "nightly" end
 
 astronvim.updater = { options = options }

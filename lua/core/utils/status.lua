@@ -549,6 +549,7 @@ end
 function astronvim.status.provider.lsp_progress(opts)
   return function()
     local Lsp = vim.lsp.util.get_progress_messages()[1]
+    local function escape(str) return string.gsub(str, "%%2F", "/") end
     return astronvim.status.utils.stylize(
       Lsp
           and string.format(
@@ -558,8 +559,8 @@ function astronvim.status.provider.lsp_progress(opts)
               "Loading2",
               "Loading3",
             })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1]),
-            Lsp.title or "",
-            Lsp.message or "",
+            Lsp.title and escape(Lsp.title) or "",
+            Lsp.message and escape(Lsp.message) or "",
             Lsp.percentage or 0
           )
         or "",
