@@ -47,6 +47,7 @@ astronvim.vim_opts(astronvim.user_opts("options", {
     highlighturl_enabled = true, -- highlight URLs by default
     mapleader = " ", -- set leader key
     autoformat_enabled = true, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled)
+    codelens_enabled = true, -- enable or disable automatic codelens refreshing for lsp that support it
     lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signatureHelp)
     cmp_enabled = true, -- enable completion at start
     autopairs_enabled = true, -- enable autopairs at start
