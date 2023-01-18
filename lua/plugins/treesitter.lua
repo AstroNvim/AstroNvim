@@ -19,17 +19,10 @@ return {
   },
   build = function() require("nvim-treesitter.install").update { with_sync = true }() end,
   opts = {
-    highlight = {
-      enable = true,
-      additional_vim_regex_highlighting = false,
-    },
-    context_commentstring = {
-      enable = true,
-      enable_autocmd = false,
-    },
-    autotag = { enable = true },
+    highlight = { enable = true },
     incremental_selection = { enable = true },
-    indent = { enable = false },
+    autotag = { enable = true },
+    context_commentstring = { enable = true, enable_autocmd = false },
   },
   default_config = function(opts) require("nvim-treesitter.configs").setup(opts) end,
   config = function(plugin, opts) plugin.default_config(opts) end,
