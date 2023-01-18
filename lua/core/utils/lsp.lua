@@ -81,18 +81,12 @@ astronvim.lsp.on_attach = function(client, bufnr)
   end
 
   if capabilities.codeLensProvider then
-    local autocmd_group = "lsp_codelens_refresh"
-    local groups_found, groups = pcall(vim.api.nvim_get_autocmds, { group = autocmd_group, buffer = bufnr })
-    if not groups_found or vim.tbl_isempty(groups) then
-      vim.api.nvim_create_autocmd({ "InsertLeave", "BufEnter" }, {
-        group = vim.api.nvim_create_augroup(autocmd_group, { clear = false }),
-        buffer = bufnr,
-        desc = "Auto refresh CodeLens in buffer " .. bufnr .. " after leaving insert mode",
-        callback = function()
-          if vim.g.codelens_enabled then vim.lsp.codelens.refresh() end
-        end,
-      })
-    end
+    astronvim.add_buffer_autocmd("lsp_codelens_refresh", bufnr, {
+      events = { "InsertLeave", "BufEnter" },
+      callback = function()
+        if vim.g.codelens_enabled then vim.lsp.codelens.refresh() end
+      end,
+    })
     vim.lsp.codelens.refresh()
     lsp_mappings.n["<leader>ll"] = { function() vim.lsp.codelens.refresh() end, desc = "LSP CodeLens refresh" }
     lsp_mappings.n["<leader>lL"] = { function() vim.lsp.codelens.run() end, desc = "LSP CodeLens run" }
@@ -126,20 +120,14 @@ astronvim.lsp.on_attach = function(client, bufnr)
       and (tbl_isempty(autoformat.allow_filetypes or {}) or tbl_contains(autoformat.allow_filetypes, filetype))
       and (tbl_isempty(autoformat.ignore_filetypes or {}) or not tbl_contains(autoformat.ignore_filetypes, filetype))
     then
-      local autocmd_group = "lsp_auto_format"
-      local groups_found, groups = pcall(vim.api.nvim_get_autocmds, { group = autocmd_group, buffer = bufnr })
-      if not groups_found or vim.tbl_isempty(groups) then
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          group = vim.api.nvim_create_augroup(autocmd_group, { clear = false }),
-          buffer = bufnr,
-          desc = "Auto format buffer " .. bufnr .. " before save",
-          callback = function()
-            if vim.g.autoformat_enabled then
-              vim.lsp.buf.format(astronvim.extend_tbl(astronvim.lsp.format_opts, { bufnr = bufnr }))
-            end
-          end,
-        })
-      end
+      astronvim.add_buffer_autocmd("lsp_auto_format", bufnr, {
+        events = "BufWritePre",
+        callback = function()
+          if vim.g.autoformat_enabled then
+            vim.lsp.buf.format(astronvim.extend_tbl(astronvim.lsp.format_opts, { bufnr = bufnr }))
+          end
+        end,
+      })
       lsp_mappings.n["<leader>uf"] = {
         function() astronvim.ui.toggle_autoformat() end,
         desc = "Toggle autoformatting",
@@ -148,21 +136,10 @@ astronvim.lsp.on_attach = function(client, bufnr)
   end
 
   if capabilities.documentHighlightProvider then
-    local autocmd_group = "lsp_document_highlight"
-    local groups_found, groups = pcall(vim.api.nvim_get_autocmds, { group = autocmd_group, buffer = bufnr })
-    if not groups_found or vim.tbl_isempty(groups) then
-      vim.api.nvim_create_augroup(autocmd_group, { clear = false })
-      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-        group = autocmd_group,
-        buffer = bufnr,
-        callback = function() vim.lsp.buf.document_highlight() end,
-      })
-      vim.api.nvim_create_autocmd("CursorMoved", {
-        group = autocmd_group,
-        buffer = bufnr,
-        callback = function() vim.lsp.buf.clear_references() end,
-      })
-    end
+    astronvim.add_buffer_autocmd("lsp_document_highlight", bufnr, {
+      { events = { "CursorHold", "CursorHoldI" }, callback = function() vim.lsp.buf.document_highlight() end },
+      { events = "CursorMoved", callback = function() vim.lsp.buf.clear_references() end },
+    })
   end
 
   if capabilities.hoverProvider then

@@ -161,6 +161,25 @@ function astronvim.event(event)
   vim.schedule(function() vim.api.nvim_exec_autocmds("User", { pattern = "Astro" .. event }) end)
 end
 
+--- Add buffer autocmds to an augroup only if they don't already exist for a buffer
+-- @param augroup the augroup to add the autocmds to
+-- @param bufnr the buffer to add the autocmds to
+-- @param autocmds an autocmd definition with an added `events` key with the events to trigger it
+function astronvim.add_buffer_autocmd(augroup, bufnr, autocmds)
+  if not vim.tbl_islist(autocmds) then autocmds = { autocmds } end
+  local cmds_found, cmds = pcall(vim.api.nvim_get_autocmds, { group = augroup, buffer = bufnr })
+  if not cmds_found or vim.tbl_isempty(cmds) then
+    vim.api.nvim_create_augroup(augroup, { clear = false })
+    for _, autocmd in ipairs(autocmds) do
+      local events = autocmd.events
+      autocmd.events = nil
+      autocmd.group = augroup
+      autocmd.buffer = bufnr
+      vim.api.nvim_create_autocmd(events, autocmd)
+    end
+  end
+end
+
 --- Wrapper function for neovim echo API
 -- @param messages an array like table where each item is an array like table of strings to echo
 function astronvim.echo(messages)
