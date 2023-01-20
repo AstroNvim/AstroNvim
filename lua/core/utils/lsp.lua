@@ -15,7 +15,7 @@ local tbl_isempty = vim.tbl_isempty
 local user_opts = astronvim.user_opts
 local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
-local server_config = "lsp.config"
+local server_config = "lsp.config."
 local setup_handlers = user_opts("lsp.setup_handlers", {
   function(server, opts) require("lspconfig")[server].setup(opts) end,
   sumneko_lua = function(server, opts) -- initialize neodev before sumneko_lua if it's available
@@ -43,7 +43,8 @@ end
 -- @param server the name of the server to be setup
 astronvim.lsp.setup = function(server)
   -- if server doesn't exist, set it up from user server definition
-  if not pcall(require, "lspconfig.server_configurations." .. server) then
+  local config_avail, config = pcall(require, "lspconfig.server_configurations." .. server)
+  if not config_avail or not config.default_config then
     local server_definition = user_opts(server_config .. server)
     if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
   end
