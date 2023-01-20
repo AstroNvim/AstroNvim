@@ -19,14 +19,16 @@ if [ "$platform" = "linux" ]; then
       checkmake postgresql github-cli sqlite openssl readline xz zlib gum \
       rust-analyzer iniparser fftw ncurses base-devel espeak-ng prettier \
       luarocks hledger libtool automake portaudio astyle shfmt cppcheck \
-      lua-language-server bash-language-server haskell-language-server gopls
+      lua-language-server bash-language-server haskell-language-server gopls \
+      gradle tmux
     yay -S rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls
+    gem install tmuxinator
   elif [ "$distro" = "Ubuntu Linux" ]; then
     sudo apt-get update
     sudo apt-get upgrade
     sudo apt-get install git curl gum rust-analyzer libfftw3-dev \
       libasound2-dev libncursesw5-dev libpulse-dev libtool automake \
-      cava espeak-ng
+      cava espeak-ng gradle
   fi
 elif [ "$platform" = "darwin" ]; then
   echo "Determined platform: $platform" 
@@ -39,9 +41,9 @@ elif [ "$platform" = "darwin" ]; then
     lua-language-server elixir-ls samtay/tui/tetris espeak autoconf-archive \
     Code-Hex/tap/neo-cowsay youtube-dl achannarasappa/tap/ticker \
     circumflex hledger clang-format bash-language-server haskell-language-server \
-    efm-langserver gopls 
+    efm-langserver gopls gradle 
   sudo gem update
-  sudo gem install rubocop neovim
+  sudo gem install rubocop neovim tmuxinator
   export LIBTOOL='which glibtool'
   export LIBTOOLIZE='which glibtoolize'
   ln -s 'which glibtoolize' /usr/local/bin/libtoolize
@@ -70,7 +72,7 @@ pip install flake8 black isort cmake-language-server djlint pynvim
 npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
   fixjson @fsouza/prettierd stylelint shopify-cli cross-env webpack \
   sass serverless npm-run-all nativescript dockerfile-language-server-nodejs \
-  neovim
+  neovim gulp
 
   curl -s "https://get.sdkman.io" | bash
 
