@@ -48,7 +48,7 @@ astronvim.lsp.setup = function(server)
     local server_definition = user_opts(server_config .. server)
     if server_definition.cmd then require("lspconfig.configs")[server] = { default_config = server_definition } end
   end
-  local opts = astronvim.lsp.server_settings(server)
+  local opts = astronvim.lsp.config(server)
   local setup_handler = setup_handlers[server] or setup_handlers[1]
   if setup_handler then setup_handler(server, opts) end
 end
@@ -212,10 +212,10 @@ astronvim.lsp.capabilities.textDocument.completion.completionItem.resolveSupport
 astronvim.lsp.capabilities = user_opts("lsp.capabilities", astronvim.lsp.capabilities)
 astronvim.lsp.flags = user_opts "lsp.flags"
 
---- Get the server settings for a given language server to be provided to the server's `setup()` call
+--- Get the server configuration for a given language server to be provided to the server's `setup()` call
 -- @param  server_name the name of the server
 -- @return the table of LSP options used when setting up the given language server
-function astronvim.lsp.server_settings(server_name)
+function astronvim.lsp.config(server_name)
   local server = require("lspconfig")[server_name]
   local lsp_opts = astronvim.extend_tbl(
     { capabilities = server.capabilities, flags = server.flags },
