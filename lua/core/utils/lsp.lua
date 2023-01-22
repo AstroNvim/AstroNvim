@@ -228,6 +228,11 @@ function astronvim.lsp.config(server_name)
     end
   end
   if server_name == "sumneko_lua" then -- by default initialize neodev and disable third party checking
+    lsp_opts.before_init = function(param, config)
+      if vim.b.neodev_enabled and param.rootPath:match(astronvim.install.config) then
+        table.insert(config.settings.Lua.workspace.library, astronvim.install.home .. "/lua")
+      end
+    end
     lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
   end
   local opts = user_opts(server_config .. server_name, lsp_opts)
