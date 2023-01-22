@@ -2,6 +2,12 @@ return {
   "b0o/SchemaStore.nvim",
   {
     "folke/neodev.nvim",
+    opts = {
+      override = function(root_dir, library)
+        if root_dir:match(astronvim.install.config) then library.plugins = true end
+        vim.b.neodev_enabled = library.enabled
+      end,
+    },
     default_config = function(opts) require("neodev").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
