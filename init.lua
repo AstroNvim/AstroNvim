@@ -12,7 +12,8 @@ end
 
 local colorscheme = astronvim.user_opts("colorscheme", false, false)
 if colorscheme then colorscheme = pcall(vim.cmd.colorscheme, colorscheme) end
-if not colorscheme then vim.cmd.colorscheme "astronvim" end
+if not colorscheme then colorscheme = pcall(vim.cmd.colorscheme, "astrodark") end
+if not colorscheme then astronvim.notify("Error setting up colorscheme...", "error") end
 
 astronvim.conditional_func(astronvim.user_opts("polish", nil, false), true)
 
