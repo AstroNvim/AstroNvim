@@ -27,7 +27,7 @@ local config = {
   },
 
   -- Set colorscheme to use
-  colorscheme = "astronvim",
+  colorscheme = "astrodark",
 
   -- Add highlight groups in any theme
   highlights = {
@@ -69,50 +69,6 @@ local config = {
   --
   --   return local_vim
   -- end,
-
-  -- AstroNvim theme configuration
-  astronvim_theme = {
-    -- Modify the color palette for the default theme
-    colors = {
-      fg = "#abb2bf",
-      bg = "#1e222a",
-    },
-    highlights = function(hl) -- or a function that returns a new table of colors to set
-      local C = require "astronvim_theme.colors"
-
-      hl.Normal = { fg = C.fg, bg = C.bg }
-
-      -- New approach instead of diagnostic_style
-      hl.DiagnosticError.italic = true
-      hl.DiagnosticHint.italic = true
-      hl.DiagnosticInfo.italic = true
-      hl.DiagnosticWarn.italic = true
-
-      return hl
-    end,
-    -- enable or disable highlighting for extra plugins
-    plugins = {
-      aerial = true,
-      beacon = false,
-      bufferline = false,
-      cmp = true,
-      dashboard = true,
-      highlighturl = true,
-      hop = false,
-      indent_blankline = true,
-      lightspeed = false,
-      ["neo-tree"] = true,
-      notify = true,
-      ["nvim-tree"] = false,
-      ["nvim-web-devicons"] = true,
-      rainbow = true,
-      symbols_outline = false,
-      telescope = true,
-      treesitter = true,
-      vimwiki = false,
-      ["which-key"] = true,
-    },
-  },
 
   -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
