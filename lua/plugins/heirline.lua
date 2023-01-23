@@ -177,29 +177,29 @@ return {
   end,
   default_config = function(opts)
     local heirline = require "heirline"
-    local C = require "astronvim_theme.colors"
+    local C = astronvim.status.env.fallback_colors
 
     local function setup_colors()
       local Normal = astronvim.get_hlgroup("Normal", { fg = C.fg, bg = C.bg })
-      local Comment = astronvim.get_hlgroup("Comment", { fg = C.grey_2, bg = C.bg })
+      local Comment = astronvim.get_hlgroup("Comment", { fg = C.bright_grey, bg = C.bg })
       local Error = astronvim.get_hlgroup("Error", { fg = C.red, bg = C.bg })
-      local StatusLine = astronvim.get_hlgroup("StatusLine", { fg = C.fg, bg = C.grey_4 })
+      local StatusLine = astronvim.get_hlgroup("StatusLine", { fg = C.fg, bg = C.dark_bg })
       local TabLine = astronvim.get_hlgroup("TabLine", { fg = C.grey, bg = C.none })
       local TabLineSel = astronvim.get_hlgroup("TabLineSel", { fg = C.fg, bg = C.none })
-      local WinBar = astronvim.get_hlgroup("WinBar", { fg = C.grey_2, bg = C.bg })
+      local WinBar = astronvim.get_hlgroup("WinBar", { fg = C.bright_grey, bg = C.bg })
       local WinBarNC = astronvim.get_hlgroup("WinBarNC", { fg = C.grey, bg = C.bg })
-      local Conditional = astronvim.get_hlgroup("Conditional", { fg = C.purple_1, bg = C.grey_4 })
-      local String = astronvim.get_hlgroup("String", { fg = C.green, bg = C.grey_4 })
-      local TypeDef = astronvim.get_hlgroup("TypeDef", { fg = C.yellow, bg = C.grey_4 })
-      local GitSignsAdd = astronvim.get_hlgroup("GitSignsAdd", { fg = C.green, bg = C.grey_4 })
-      local GitSignsChange = astronvim.get_hlgroup("GitSignsChange", { fg = C.orange_1, bg = C.grey_4 })
-      local GitSignsDelete = astronvim.get_hlgroup("GitSignsDelete", { fg = C.red_1, bg = C.grey_4 })
-      local DiagnosticError = astronvim.get_hlgroup("DiagnosticError", { fg = C.red_1, bg = C.grey_4 })
-      local DiagnosticWarn = astronvim.get_hlgroup("DiagnosticWarn", { fg = C.orange_1, bg = C.grey_4 })
-      local DiagnosticInfo = astronvim.get_hlgroup("DiagnosticInfo", { fg = C.white_2, bg = C.grey_4 })
-      local DiagnosticHint = astronvim.get_hlgroup("DiagnosticHint", { fg = C.yellow_1, bg = C.grey_4 })
+      local Conditional = astronvim.get_hlgroup("Conditional", { fg = C.bright_purple, bg = C.dark_bg })
+      local String = astronvim.get_hlgroup("String", { fg = C.green, bg = C.dark_bg })
+      local TypeDef = astronvim.get_hlgroup("TypeDef", { fg = C.yellow, bg = C.dark_bg })
+      local GitSignsAdd = astronvim.get_hlgroup("GitSignsAdd", { fg = C.green, bg = C.dark_bg })
+      local GitSignsChange = astronvim.get_hlgroup("GitSignsChange", { fg = C.orange, bg = C.dark_bg })
+      local GitSignsDelete = astronvim.get_hlgroup("GitSignsDelete", { fg = C.bright_red, bg = C.dark_bg })
+      local DiagnosticError = astronvim.get_hlgroup("DiagnosticError", { fg = C.bright_red, bg = C.dark_bg })
+      local DiagnosticWarn = astronvim.get_hlgroup("DiagnosticWarn", { fg = C.orange, bg = C.dark_bg })
+      local DiagnosticInfo = astronvim.get_hlgroup("DiagnosticInfo", { fg = C.white, bg = C.dark_bg })
+      local DiagnosticHint = astronvim.get_hlgroup("DiagnosticHint", { fg = C.bright_yellow, bg = C.dark_bg })
       local HeirlineInactive = astronvim.get_hlgroup("HeirlineInactive", { fg = nil }).fg
-        or astronvim.status.hl.lualine_mode("inactive", C.grey_7)
+        or astronvim.status.hl.lualine_mode("inactive", C.dark_grey)
       local HeirlineNormal = astronvim.get_hlgroup("HeirlineNormal", { fg = nil }).fg
         or astronvim.status.hl.lualine_mode("normal", C.blue)
       local HeirlineInsert = astronvim.get_hlgroup("HeirlineInsert", { fg = nil }).fg
@@ -207,9 +207,9 @@ return {
       local HeirlineVisual = astronvim.get_hlgroup("HeirlineVisual", { fg = nil }).fg
         or astronvim.status.hl.lualine_mode("visual", C.purple)
       local HeirlineReplace = astronvim.get_hlgroup("HeirlineReplace", { fg = nil }).fg
-        or astronvim.status.hl.lualine_mode("replace", C.red_1)
+        or astronvim.status.hl.lualine_mode("replace", C.bright_red)
       local HeirlineCommand = astronvim.get_hlgroup("HeirlineCommand", { fg = nil }).fg
-        or astronvim.status.hl.lualine_mode("command", C.yellow_1)
+        or astronvim.status.hl.lualine_mode("command", C.bright_yellow)
       local HeirlineTerminal = astronvim.get_hlgroup("HeirlineTerminal", { fg = nil }).fg
         or astronvim.status.hl.lualine_mode("inactive", HeirlineInsert)
 

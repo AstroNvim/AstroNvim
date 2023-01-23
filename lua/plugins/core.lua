@@ -2,6 +2,11 @@ return {
   "nvim-lua/plenary.nvim",
   { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
   {
+    "AstroNvim/astrotheme",
+    default_config = function(opts) require("astrotheme").setup(opts) end,
+    config = function(plugin, opts) plugin.default_config(opts) end,
+  },
+  {
     "mrjones2014/smart-splits.nvim",
     opts = {
       ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" },
