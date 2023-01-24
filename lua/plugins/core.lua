@@ -72,8 +72,9 @@ return {
   },
   {
     "kevinhwang91/nvim-ufo",
+    init = function() table.insert(astronvim.file_plugins, "nvim-ufo") end,
+    event = "InsertEnter",
     dependencies = { "kevinhwang91/promise-async" },
-    event = "BufEnter",
     opts = {
       preview = {
         mappings = {
