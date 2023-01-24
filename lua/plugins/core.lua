@@ -3,6 +3,7 @@ return {
   { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
   {
     "AstroNvim/astrotheme",
+    opts = { plugins = { ["dashboard-nvim"] = true } },
     default_config = function(opts) require("astrotheme").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
