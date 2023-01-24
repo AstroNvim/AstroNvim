@@ -198,19 +198,19 @@ return {
       local DiagnosticWarn = astronvim.get_hlgroup("DiagnosticWarn", { fg = C.orange, bg = C.dark_bg })
       local DiagnosticInfo = astronvim.get_hlgroup("DiagnosticInfo", { fg = C.white, bg = C.dark_bg })
       local DiagnosticHint = astronvim.get_hlgroup("DiagnosticHint", { fg = C.bright_yellow, bg = C.dark_bg })
-      local HeirlineInactive = astronvim.get_hlgroup("HeirlineInactive", { fg = nil }).fg
+      local HeirlineInactive = astronvim.get_hlgroup("HeirlineInactive", { bg = nil }).bg
         or astronvim.status.hl.lualine_mode("inactive", C.dark_grey)
-      local HeirlineNormal = astronvim.get_hlgroup("HeirlineNormal", { fg = nil }).fg
+      local HeirlineNormal = astronvim.get_hlgroup("HeirlineNormal", { bg = nil }).bg
         or astronvim.status.hl.lualine_mode("normal", C.blue)
-      local HeirlineInsert = astronvim.get_hlgroup("HeirlineInsert", { fg = nil }).fg
+      local HeirlineInsert = astronvim.get_hlgroup("HeirlineInsert", { bg = nil }).bg
         or astronvim.status.hl.lualine_mode("insert", C.green)
-      local HeirlineVisual = astronvim.get_hlgroup("HeirlineVisual", { fg = nil }).fg
+      local HeirlineVisual = astronvim.get_hlgroup("HeirlineVisual", { bg = nil }).bg
         or astronvim.status.hl.lualine_mode("visual", C.purple)
-      local HeirlineReplace = astronvim.get_hlgroup("HeirlineReplace", { fg = nil }).fg
+      local HeirlineReplace = astronvim.get_hlgroup("HeirlineReplace", { bg = nil }).bg
         or astronvim.status.hl.lualine_mode("replace", C.bright_red)
-      local HeirlineCommand = astronvim.get_hlgroup("HeirlineCommand", { fg = nil }).fg
+      local HeirlineCommand = astronvim.get_hlgroup("HeirlineCommand", { bg = nil }).bg
         or astronvim.status.hl.lualine_mode("command", C.bright_yellow)
-      local HeirlineTerminal = astronvim.get_hlgroup("HeirlineTerminal", { fg = nil }).fg
+      local HeirlineTerminal = astronvim.get_hlgroup("HeirlineTerminal", { bg = nil }).bg
         or astronvim.status.hl.lualine_mode("inactive", HeirlineInsert)
 
       local colors = astronvim.user_opts("heirline.colors", {
