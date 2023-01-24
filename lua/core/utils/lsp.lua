@@ -16,13 +16,8 @@ local user_opts = astronvim.user_opts
 local conditional_func = astronvim.conditional_func
 local is_available = astronvim.is_available
 local server_config = "lsp.config."
-local setup_handlers = user_opts("lsp.setup_handlers", {
-  function(server, opts) require("lspconfig")[server].setup(opts) end,
-  sumneko_lua = function(server, opts) -- initialize neodev before sumneko_lua if it's available
-    pcall(require, "neodev")
-    require("lspconfig")[server].setup(opts)
-  end,
-})
+local setup_handlers =
+  user_opts("lsp.setup_handlers", { function(server, opts) require("lspconfig")[server].setup(opts) end })
 
 astronvim.lsp.formatting = user_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
 if type(astronvim.lsp.formatting.format_on_save) == "boolean" then
@@ -228,6 +223,7 @@ function astronvim.lsp.config(server_name)
     end
   end
   if server_name == "sumneko_lua" then -- by default initialize neodev and disable third party checking
+    pcall(require, "neodev")
     lsp_opts.before_init = function(param, config)
       if vim.b.neodev_enabled and param.rootPath:match(astronvim.install.config) then
         table.insert(config.settings.Lua.workspace.library, astronvim.install.home .. "/lua")
