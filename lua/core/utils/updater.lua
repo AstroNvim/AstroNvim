@@ -32,6 +32,10 @@ package.path = package.path .. ";" .. astronvim.updater.rollback_file.path
 -- @return the plugin specification table of the snapshot
 function astronvim.updater.generate_snapshot(write)
   local file
+  local prev_snapshot = require(astronvim.updater.snapshot.module)
+  for _, plugin in ipairs(prev_snapshot) do
+    prev_snapshot[plugin[1]] = plugin
+  end
   local plugins = assert(require("lazy").plugins())
   local function git_commit(dir)
     return astronvim.trim_or_nil(assert(astronvim.cmd("git -C " .. dir .. " rev-parse HEAD", false)))
@@ -43,6 +47,9 @@ function astronvim.updater.generate_snapshot(write)
   local snapshot = vim.tbl_map(function(plugin)
     if not plugin[1] and plugin.name == "lazy.nvim" then plugin[1] = "folke/lazy.nvim" end
     plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
+    if prev_snapshot[plugin[1]] and prev_snapshot[plugin[1]].version then
+      plugin.version = prev_snapshot[plugin[1]].version
+    end
     if file then
       file:write(("  { %q, "):format(plugin[1]))
       if plugin.version then
