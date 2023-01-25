@@ -67,7 +67,6 @@ return {
       {
         "windwp/windline.nvim",
         config = function()
-          --require('configs.fearless')
           require "wlsample.airline_anim"
         end,
       },
@@ -89,38 +88,6 @@ return {
         end
       },
       {
-        "EdenEast/nightfox.nvim",
-        config = function()
-          require("nightfox").setup {
-            -- disable extra plugins that AstroNvim doesn't use (this is optional)
-            modules = {
-              barbar = false,
-              dashboard = false,
-              fern = false,
-              fidget = false,
-              gitgutter = false,
-              glyph_palette = false,
-              illuminate = false,
-              lightspeed = false,
-              lsp_saga = false,
-              lsp_trouble = false,
-              modes = false,
-              neogit = false,
-              nvimtree = false,
-              pounce = false,
-              sneak = false,
-              symbols_outline = false,
-            },
-            groups = {
-              all = {
-                -- add highlight group for AstroNvim's built in URL highlighting
-                HighlightURL = { style = "underline" },
-              },
-            },
-          }
-        end,
-      },
-      {
         "mfussenegger/nvim-dap-python",
       },
       -- Rust support
@@ -140,35 +107,6 @@ return {
           }
         end,
       },
-      --{
-      --  "nvim-neorg/neorg",
-      --  after = { "nvim-treesitter" },
-      -- Is configured via the server_registration_override installed below!
-      --  config = function()
-      --    require("neorg").setup {
-      --      load = {
-      --        ["core.defaults"] = {},
-      --        ["core.norg.concealer"] = {},
-      --        ["core.keybinds"] = {},
-      --        ["core.gtd.base"] = {
-      --          config = {
-      --            workspace = "work",
-      --          }
-      --        },
-      --        ["core.gtd.ui"] = {},
-      --        ["core.gtd.helpers"] = {},
-      --        ["core.norg.dirman"] = {
-      --          config = {
-      --            workspaces = {
-      --              work = "~/notes/work",
-      --              home = "~/notes/home",
-      --            }
-      --          }
-      --        }
-      --      }
-      --    }
-      --  end,
-      --},
     },
     ["null-ls"] = function(config)
       local null_ls = require "null-ls"
@@ -332,8 +270,4 @@ return {
       },
     },
   },
-  --polish = function ()
-  --  vim.lsp.get_client_by_id(1)
-  --  vim.opt.laststatus = 2
-  --end,
 }
