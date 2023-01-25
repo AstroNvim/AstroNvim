@@ -41,6 +41,7 @@ function astronvim.updater.generate_snapshot(write)
     file:write "return {\n"
   end
   local snapshot = vim.tbl_map(function(plugin)
+    if not plugin[1] and plugin.name == "lazy.nvim" then plugin[1] = "folke/lazy.nvim" end
     plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
     if file then
       file:write(("  { %q, "):format(plugin[1]))
