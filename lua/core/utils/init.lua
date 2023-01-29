@@ -494,6 +494,7 @@ function astronvim.close_tab()
   end
 end
 
+require "core.utils.ffi"
 require "core.utils.ui"
 require "core.utils.status"
 require "core.utils.updater"

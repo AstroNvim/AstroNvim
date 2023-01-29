@@ -18,6 +18,7 @@ return {
   FileReadOnly = "[lock]",
   FoldClosed = "+",
   FoldOpened = "-",
+  FoldSeparator = " ",
   FolderClosed = "[D]",
   FolderEmpty = "[E]",
   FolderOpen = "[O]",

@@ -20,6 +20,7 @@ return {
   FileReadOnly = "",
   FoldClosed = "",
   FoldOpened = "",
+  FoldSeparator = " ",
   FolderClosed = "",
   FolderEmpty = "",
   FolderOpen = "",

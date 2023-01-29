@@ -282,14 +282,42 @@ end
 
 -- TODO: add docstring
 function astronvim.status.provider.foldcolumn(opts)
+  opts = astronvim.extend_tbl({ escape = false }, opts)
+  local ffi = astronvim.ffi -- get AstroNvim C extensions
+  local fillchars = vim.opt.fillchars:get()
+  local foldopen = fillchars.foldopen or astronvim.get_icon "FoldOpened"
+  local foldclosed = fillchars.foldclose or astronvim.get_icon "FoldClosed"
+  local foldsep = fillchars.foldsep or astronvim.get_icon "FoldSeparator"
   return function() -- move to astronvim.status.provider.fold_indicator
-    local lnum = vim.v.lnum
-    return astronvim.status.utils.stylize(
-      vim.fn.foldlevel(lnum) > vim.fn.foldlevel(lnum - 1)
-          and astronvim.get_icon(vim.fn.foldclosed(lnum) == -1 and "FoldOpened" or "FoldClosed")
-        or " ",
-      opts
-    )
+    local wp = ffi.C.find_window_by_handle(0, ffi.new "Error") -- get window handler
+    local width = ffi.C.compute_foldcolumn(wp, 0) -- get foldcolumn width
+    -- get fold info of current line
+    local foldinfo = width > 0 and ffi.C.fold_info(wp, vim.v.lnum) or { start = 0, level = 0, llevel = 0, lines = 0 }
+
+    local str = ""
+    if width ~= 0 then
+      if foldinfo.level == 0 then
+        str = (" "):rep(width)
+      else
+        local closed = foldinfo.lines > 0
+        local first_level = foldinfo.level - width - (closed and 1 or 0) + 1
+        if first_level < 1 then first_level = 1 end
+
+        for col = 1, width do
+          str = str
+            .. (
+              ((closed and (col == foldinfo.level or col == width)) and foldclosed)
+              or ((foldinfo.start == vim.v.lnum and first_level + col > foldinfo.llevel) and foldopen)
+              or foldsep
+            )
+          if col == foldinfo.level then
+            str = str .. (" "):rep(width - col)
+            break
+          end
+        end
+      end
+    end
+    return astronvim.status.utils.stylize(str, opts)
   end
 end
 
