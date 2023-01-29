@@ -183,7 +183,7 @@ autocmd({ "VimEnter", "ColorScheme" }, {
 autocmd("BufRead", {
   group = augroup("git_plugin_lazy_load", { clear = true }),
   callback = function()
-    vim.fn.system("git -C " .. vim.fn.expand "%:p:h" .. " rev-parse")
+    vim.fn.system("git -C '" .. vim.fn.expand "%:p:h" .. "' rev-parse")
     if vim.v.shell_error == 0 then
       vim.api.nvim_del_augroup_by_name "git_plugin_lazy_load"
       if #astronvim.git_plugins > 0 then
