@@ -4,8 +4,7 @@ return {
   {
     "AstroNvim/astrotheme",
     opts = { plugins = { ["dashboard-nvim"] = true } },
-    default_config = function(opts) require("astrotheme").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.astrotheme",
   },
   {
     "mrjones2014/smart-splits.nvim",
@@ -13,21 +12,18 @@ return {
       ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" },
       ignored_buftypes = { "nofile" },
     },
-    default_config = function(opts) require("smart-splits").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.smart-splits",
   },
   {
     "Shatur/neovim-session-manager",
     event = "BufWritePost",
     cmd = "SessionManager",
-    default_config = function(opts) require("session_manager").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.session_manager",
   },
   {
     "s1n7ax/nvim-window-picker",
     opts = { use_winbar = "smart" },
-    default_config = function(opts) require("window-picker").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.window-picker",
   },
   {
     "windwp/nvim-autopairs",
@@ -47,17 +43,7 @@ return {
         highlight_grey = "LineNr",
       },
     },
-    default_config = function(opts)
-      local npairs = require "nvim-autopairs"
-      npairs.setup(opts)
-
-      if not vim.g.autopairs_enabled then npairs.disable() end
-      local cmp_status_ok, cmp = pcall(require, "cmp")
-      if cmp_status_ok then
-        cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { tex = false })
-      end
-    end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.nvim-autopairs",
   },
   {
     "folke/which-key.nvim",
@@ -67,8 +53,7 @@ return {
       window = { border = "rounded", padding = { 2, 2, 2, 2 } },
       disable = { filetypes = { "TelescopePrompt" } },
     },
-    default_config = function(opts) require("which-key").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.which-key",
   },
   {
     "kevinhwang91/nvim-ufo",
@@ -89,8 +74,7 @@ return {
           or { "treesitter", "indent" } -- if file opened, try to use treesitter if available
       end,
     },
-    default_config = function(opts) require("ufo").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.ufo",
   },
   {
     "numToStr/Comment.nvim",
@@ -98,8 +82,7 @@ return {
     opts = function()
       return { pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook() }
     end,
-    default_config = function(opts) require("Comment").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.Comment",
   },
   {
     "akinsho/toggleterm.nvim",
@@ -114,23 +97,17 @@ return {
         highlights = { border = "Normal", background = "Normal" },
       },
     },
-    default_config = function(opts) require("toggleterm").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.toggleterm",
   },
   {
     "NMAC427/guess-indent.nvim",
     init = function() table.insert(astronvim.file_plugins, "guess-indent.nvim") end,
-    default_config = function(opts)
-      require("guess-indent").setup(opts)
-      vim.cmd.lua { args = { "require('guess-indent').set_from_buffer('auto_cmd')" }, mods = { silent = true } }
-    end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.guess-indent",
   },
   {
     "max397574/better-escape.nvim",
     event = "InsertCharPre",
     opts = { timeout = 300 },
-    default_config = function(opts) require("better_escape").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.better_escape",
   },
 }

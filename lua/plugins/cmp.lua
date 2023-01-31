@@ -2,14 +2,7 @@ return {
   {
     "L3MON4D3/LuaSnip",
     dependencies = { "rafamadriz/friendly-snippets" },
-    default_config = function(opts)
-      if opts then require("luasnip").config.setup(opts) end
-      vim.tbl_map(
-        function(type) require("luasnip.loaders.from_" .. type).lazy_load() end,
-        { "vscode", "snipmate", "lua" }
-      )
-    end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.luasnip",
   },
   {
     "hrsh7th/nvim-cmp",
@@ -104,7 +97,6 @@ return {
         },
       }
     end,
-    default_config = function(opts) require("cmp").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.cmp",
   },
 }
