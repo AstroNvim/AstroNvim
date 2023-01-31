@@ -36,6 +36,5 @@ return {
     dashboard.config.opts.noautocmd = true
     return dashboard
   end,
-  default_config = function(opts) require("alpha").setup(opts.opts) end,
-  config = function(plugin, opts) plugin.default_config(opts) end,
+  config = require "plugins.configs.alpha",
 }

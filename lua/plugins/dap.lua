@@ -7,24 +7,12 @@ return {
       dependencies = { "nvim-dap" },
       cmd = { "DapInstall", "DapUninstall" },
       opts = { automatic_setup = true },
-      default_config = function(opts)
-        local mason_nvim_dap = require "mason-nvim-dap"
-        mason_nvim_dap.setup(opts)
-        mason_nvim_dap.setup_handlers {}
-      end,
-      config = function(plugin, opts) plugin.default_config(opts) end,
+      config = require "plugins.configs.mason-nvim-dap",
     },
     {
       "rcarriga/nvim-dap-ui",
       opts = { floating = { border = "rounded" } },
-      default_config = function(opts)
-        local dap, dapui = require "dap", require "dapui"
-        dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-        dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-        dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
-        dapui.setup(opts)
-      end,
-      config = function(plugin, opts) plugin.default_config(opts) end,
+      config = require "plugins.configs.nvim-dap-ui",
     },
   },
   init = function() table.insert(astronvim.file_plugins, "nvim-dap") end,

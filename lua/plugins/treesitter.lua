@@ -24,6 +24,5 @@ return {
     autotag = { enable = true },
     context_commentstring = { enable = true, enable_autocmd = false },
   },
-  default_config = function(opts) require("nvim-treesitter.configs").setup(opts) end,
-  config = function(plugin, opts) plugin.default_config(opts) end,
+  config = require "plugins.configs.nvim-treesitter",
 }

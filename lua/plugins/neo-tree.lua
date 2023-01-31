@@ -88,6 +88,5 @@ return {
       },
     }
   end,
-  default_config = function(opts) require("neo-tree").setup(opts) end,
-  config = function(plugin, opts) plugin.default_config(opts) end,
+  config = require "plugins.configs.neo-tree",
 }
