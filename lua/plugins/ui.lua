@@ -16,11 +16,7 @@ return {
       xz = { icon = "", name = "Xz" },
       zip = { icon = "", name = "Zip" },
     },
-    default_config = function(opts)
-      require("nvim-web-devicons").set_default_icon(astronvim.get_icon "DefaultFile", "#6d8086", "66")
-      require("nvim-web-devicons").set_icon(opts)
-    end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.nvim-web-devicons",
   },
   {
     "onsails/lspkind.nvim",
@@ -47,22 +43,13 @@ return {
       },
     },
     enabled = vim.g.icons_enabled,
-    default_config = function(opts)
-      astronvim.lspkind = opts
-      require("lspkind").init(opts)
-    end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.lspkind",
   },
   {
     "rcarriga/nvim-notify",
     init = function() astronvim.load_plugin_with_func("nvim-notify", vim, "notify") end,
     opts = { stages = "fade" },
-    default_config = function(opts)
-      local notify = require "notify"
-      notify.setup(opts)
-      vim.notify = notify
-    end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.notify",
   },
   {
     "stevearc/dressing.nvim",
@@ -77,16 +64,14 @@ return {
         builtin = { win_options = { winhighlight = "Normal:Normal,NormalNC:Normal" } },
       },
     },
-    default_config = function(opts) require("dressing").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.dressing",
   },
   {
     "NvChad/nvim-colorizer.lua",
     init = function() table.insert(astronvim.file_plugins, "nvim-colorizer.lua") end,
     cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
     opts = { user_default_options = { names = false } },
-    default_config = function(opts) require("colorizer").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.colorizer",
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -136,7 +121,6 @@ return {
       context_char = "▏",
       show_current_context = true,
     },
-    default_config = function(opts) require("indent_blankline").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.indent_blankline",
   },
 }

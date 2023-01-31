@@ -8,8 +8,7 @@ return {
         vim.b.neodev_enabled = library.enabled
       end,
     },
-    default_config = function(opts) require("neodev").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.neodev",
   },
   {
     "neovim/nvim-lspconfig",
@@ -17,33 +16,11 @@ return {
       {
         "williamboman/mason-lspconfig.nvim",
         cmd = { "LspInstall", "LspUninstall" },
-        default_config = function(opts)
-          local mason_lspconfig = require "mason-lspconfig"
-          mason_lspconfig.setup(opts)
-          mason_lspconfig.setup_handlers { function(server) astronvim.lsp.setup(server) end }
-          astronvim.event "LspSetup"
-        end,
-        config = function(plugin, opts) plugin.default_config(opts) end,
+        config = require "plugins.configs.mason-lspconfig",
       },
     },
     init = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
-    default_config = function(_)
-      if vim.g.lsp_handlers_enabled then
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-        vim.lsp.handlers["textDocument/signatureHelp"] =
-          vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
-      end
-      local setup_servers = function()
-        vim.tbl_map(astronvim.lsp.setup, astronvim.user_opts "lsp.servers")
-        vim.api.nvim_exec_autocmds("FileType", {})
-      end
-      if astronvim.is_available "mason-lspconfig.nvim" then
-        vim.api.nvim_create_autocmd("User", { pattern = "AstroLspSetup", once = true, callback = setup_servers })
-      else
-        setup_servers()
-      end
-    end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.lspconfig",
   },
   {
     "jose-elias-alvarez/null-ls.nvim",
@@ -52,18 +29,12 @@ return {
         "jay-babu/mason-null-ls.nvim",
         cmd = { "NullLsInstall", "NullLsUninstall" },
         opts = { automatic_setup = true },
-        default_config = function(opts)
-          local mason_null_ls = require "mason-null-ls"
-          mason_null_ls.setup(opts)
-          mason_null_ls.setup_handlers {}
-        end,
-        config = function(plugin, opts) plugin.default_config(opts) end,
+        config = require "plugins.configs.mason-null-ls",
       },
     },
     init = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
     opts = { on_attach = astronvim.lsp.on_attach },
-    default_config = function(opts) require("null-ls").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.null-ls",
   },
   {
     "stevearc/aerial.nvim",
@@ -91,7 +62,6 @@ return {
         ["]]"] = false,
       },
     },
-    default_config = function(opts) require("aerial").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.aerial",
   },
 }

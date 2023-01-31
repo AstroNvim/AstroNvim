@@ -26,7 +26,6 @@ return {
         },
       },
     },
-    default_config = function(opts) require("mason").setup(opts) end,
-    config = function(plugin, opts) plugin.default_config(opts) end,
+    config = require "plugins.configs.mason",
   },
 }
