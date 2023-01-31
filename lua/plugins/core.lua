@@ -25,7 +25,7 @@ return {
   },
   {
     "s1n7ax/nvim-window-picker",
-    opts = function() return { use_winbar = "smart", other_win_hl_color = require("astronvim.colors").grey_4 } end,
+    opts = { use_winbar = "smart" },
     default_config = function(opts) require("window-picker").setup(opts) end,
     config = function(plugin, opts) plugin.default_config(opts) end,
   },
