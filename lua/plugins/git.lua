@@ -13,5 +13,4 @@ return {
       untracked = { text = "▎" },
     },
   },
-  config = require "plugins.configs.gitsigns",
 }

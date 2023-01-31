@@ -26,6 +26,5 @@ return {
         },
       },
     },
-    config = require "plugins.configs.mason",
   },
 }

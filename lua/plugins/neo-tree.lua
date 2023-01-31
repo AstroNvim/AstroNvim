@@ -88,5 +88,4 @@ return {
       },
     }
   end,
-  config = require "plugins.configs.neo-tree",
 }
