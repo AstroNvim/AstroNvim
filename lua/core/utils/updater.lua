@@ -23,9 +23,7 @@ if options.pin_plugins == nil and options.channel == "stable" then options.pin_p
 
 --- the location of the snapshot of plugin commit pins for stable AstroNvim
 astronvim.updater.snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" }
-astronvim.updater.rollback_file =
-  { module = "astronvim_rollback", path = vim.fn.stdpath "cache" .. "/astronvim_rollback.lua" }
-package.path = package.path .. ";" .. astronvim.updater.rollback_file.path
+astronvim.updater.rollback_file = vim.fn.stdpath "cache" .. "/astronvim_rollback.lua"
 
 --- Helper function to generate AstroNvim snapshots (For internal use only)
 -- @param write boolean whether or not to write to the snapshot file (default: false)
@@ -117,7 +115,7 @@ function astronvim.updater.create_rollback(write)
   snapshot.remotes = { [snapshot.remote] = git.remote_url(snapshot.remote) }
 
   if write == true then
-    local file = assert(io.open(astronvim.updater.rollback_file.path, "w"))
+    local file = assert(io.open(astronvim.updater.rollback_file, "w"))
     file:write("return " .. vim.inspect(snapshot, { newline = " ", indent = "" }))
     file:close()
   end
@@ -127,8 +125,7 @@ end
 
 --- AstroNvim's rollback to saved previous version function
 function astronvim.updater.rollback()
-  package.loaded[astronvim.updater.rollback_file.module] = nil
-  local rollback_avail, rollback_opts = pcall(require, astronvim.updater.rollback_file.module)
+  local rollback_avail, rollback_opts = pcall(dofile, astronvim.updater.rollback_file)
   if not rollback_avail then
     astronvim.notify("No rollback file available", "error")
     return
