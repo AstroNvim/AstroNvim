@@ -11,7 +11,10 @@ if not vim.loop.fs_stat(lazypath) then
     callback = function()
       vim.cmd.bw()
       vim.opt.cmdheight = oldcmdheight
-      vim.tbl_map(function(module) pcall(require, module) end, { "nvim-treesitter", "mason" })
+      vim.tbl_map(
+        function(module) pcall(require, module) end,
+        { "nvim-treesitter", "mason", "mason-lspconfig", "mason-null-ls", "mason-nvim-dap" }
+      )
       astronvim.notify "Mason is installing packages if configured, check status with :Mason"
     end,
   })
