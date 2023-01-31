@@ -274,15 +274,36 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.fill }
 function astronvim.status.provider.fill() return "%=" end
 
--- TODO: add docstring
+--- A provider function for the signcolumn string
+-- @param opts options passed to the stylize function
+-- @return the statuscolumn string for adding the signcolumn
+-- @usage local heirline_component = { provider = astronvim.status.provider.signcolumn }
+-- @see astronvim.status.utils.stylize
 function astronvim.status.provider.signcolumn(opts)
   opts = astronvim.extend_tbl({ escape = false }, opts)
   return astronvim.status.utils.stylize("%s", opts)
 end
 
--- TODO: add docstring
-function astronvim.status.provider.foldcolumn(opts)
+--- A provider function for the numbercolumn string
+-- @param opts options passed to the stylize function
+-- @return the statuscolumn string for adding the numbercolumn
+-- @usage local heirline_component = { provider = astronvim.status.provider.numbercolumn }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.numbercolumn(opts)
   opts = astronvim.extend_tbl({ escape = false }, opts)
+  return function()
+    local num, relnum = vim.opt.number:get(), vim.opt.relativenumber:get()
+    local str = ((num and not relnum) and "%l") or ((relnum and not num) and "%r") or "%{v:relnum?v:relnum:v:lnum}"
+    return astronvim.status.utils.stylize(str, opts)
+  end
+end
+
+--- A provider function for building a foldcolumn
+-- @param opts options passed to the stylize function
+-- @return a custom foldcolumn function for the statuscolumn that doesn't show the nest levels
+-- @usage local heirline_component = { provider = astronvim.status.provider.foldcolumn }
+-- @see astronvim.status.utils.stylize
+function astronvim.status.provider.foldcolumn(opts)
   local ffi = astronvim.ffi -- get AstroNvim C extensions
   local fillchars = vim.opt.fillchars:get()
   local foldopen = fillchars.foldopen or astronvim.get_icon "FoldOpened"
@@ -316,23 +337,6 @@ function astronvim.status.provider.foldcolumn(opts)
           end
         end
       end
-    end
-    return astronvim.status.utils.stylize(str, opts)
-  end
-end
-
--- TODO: add docstring
-function astronvim.status.provider.numbercolumn(opts)
-  opts = astronvim.extend_tbl({ escape = false }, opts)
-  return function()
-    local str = "%="
-    local num, relnum = vim.opt.number:get(), vim.opt.relativenumber:get()
-    if num and not relnum then
-      str = str .. "%l"
-    elseif relnum and not num then
-      str = str .. "%r"
-    else
-      str = str .. "%{v:relnum?v:relnum:v:lnum}"
     end
     return astronvim.status.utils.stylize(str, opts)
   end
@@ -1173,7 +1177,10 @@ function astronvim.status.component.lsp(opts)
   )
 end
 
--- TODO: add docstring
+--- A function to build a set of components for a foldcolumn section in a statuscolumn
+-- @param opts options for configuring foldcolumn and the overall padding
+-- @return The Heirline component table
+-- @usage local heirline_component = astronvim.status.component.foldcolumn()
 function astronvim.status.component.foldcolumn(opts)
   opts = astronvim.extend_tbl({
     foldcolumn = {},
@@ -1190,7 +1197,10 @@ function astronvim.status.component.foldcolumn(opts)
   return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "foldcolumn" }))
 end
 
--- TODO: add docstring
+--- A function to build a set of components for a numbercolumn section in statuscolumn
+-- @param opts options for configuring numbercolumn and the overall padding
+-- @return The Heirline component table
+-- @usage local heirline_component = astronvim.status.component.numbercolumn()
 function astronvim.status.component.numbercolumn(opts)
   opts = astronvim.extend_tbl({
     numbercolumn = { padding = { right = 1 } },
@@ -1209,7 +1219,10 @@ function astronvim.status.component.numbercolumn(opts)
   return astronvim.status.component.builder(astronvim.status.utils.setup_providers(opts, { "numbercolumn" }))
 end
 
--- TODO: add docstring
+--- A function to build a set of components for a signcolumn section in statuscolumn
+-- @param opts options for configuring signcolumn and the overall padding
+-- @return The Heirline component table
+-- @usage local heirline_component = astronvim.status.component.signcolumn()
 function astronvim.status.component.signcolumn(opts)
   opts = astronvim.extend_tbl({
     signcolumn = {},
@@ -1356,7 +1369,14 @@ function astronvim.status.utils.decode_pos(c)
   return bit.rshift(c, 16), bit.band(bit.rshift(c, 6), 1023), bit.band(c, 63)
 end
 
--- TODO: add docstring
+--- A helper function for decoding statuscolumn click events with mouse click pressed, modifier keys, as well as which signcolumn sign was clicked if any
+-- @param self the self parameter from Heirline component on_click.callback function call
+-- @param minwid the minwid parameter from Heirline component on_click.callback function call
+-- @param clicks the clicks parameter from Heirline component on_click.callback function call
+-- @param button the button parameter from Heirline component on_click.callback function call
+-- @param mods the button parameter from Heirline component on_click.callback function call
+-- @return the argument table with the decoded mouse information and signcolumn signs information
+-- @usage local heirline_component = { on_click = { callback = function(...) local args = astronvim.status.utils.statuscolumn_clickargs(...) end } }
 function astronvim.status.utils.statuscolumn_clickargs(self, minwid, clicks, button, mods)
   local args = {
     minwid = minwid,
