@@ -97,6 +97,5 @@ return {
         },
       }
     end,
-    config = require "plugins.configs.cmp",
   },
 }

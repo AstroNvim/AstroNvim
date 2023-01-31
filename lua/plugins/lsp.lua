@@ -8,7 +8,6 @@ return {
         vim.b.neodev_enabled = library.enabled
       end,
     },
-    config = require "plugins.configs.neodev",
   },
   {
     "neovim/nvim-lspconfig",
@@ -34,7 +33,6 @@ return {
     },
     init = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
     opts = { on_attach = astronvim.lsp.on_attach },
-    config = require "plugins.configs.null-ls",
   },
   {
     "stevearc/aerial.nvim",
@@ -62,6 +60,5 @@ return {
         ["]]"] = false,
       },
     },
-    config = require "plugins.configs.aerial",
   },
 }

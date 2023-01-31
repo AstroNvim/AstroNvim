@@ -64,14 +64,12 @@ return {
         builtin = { win_options = { winhighlight = "Normal:Normal,NormalNC:Normal" } },
       },
     },
-    config = require "plugins.configs.dressing",
   },
   {
     "NvChad/nvim-colorizer.lua",
     init = function() table.insert(astronvim.file_plugins, "nvim-colorizer.lua") end,
     cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
     opts = { user_default_options = { names = false } },
-    config = require "plugins.configs.colorizer",
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -121,6 +119,5 @@ return {
       context_char = "▏",
       show_current_context = true,
     },
-    config = require "plugins.configs.indent_blankline",
   },
 }

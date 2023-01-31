@@ -4,7 +4,6 @@ return {
   {
     "AstroNvim/astrotheme",
     opts = { plugins = { ["dashboard-nvim"] = true } },
-    config = require "plugins.configs.astrotheme",
   },
   {
     "mrjones2014/smart-splits.nvim",
@@ -12,18 +11,15 @@ return {
       ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" },
       ignored_buftypes = { "nofile" },
     },
-    config = require "plugins.configs.smart-splits",
   },
   {
     "Shatur/neovim-session-manager",
     event = "BufWritePost",
     cmd = "SessionManager",
-    config = require "plugins.configs.session_manager",
   },
   {
     "s1n7ax/nvim-window-picker",
     opts = { use_winbar = "smart" },
-    config = require "plugins.configs.window-picker",
   },
   {
     "windwp/nvim-autopairs",
@@ -53,7 +49,6 @@ return {
       window = { border = "rounded", padding = { 2, 2, 2, 2 } },
       disable = { filetypes = { "TelescopePrompt" } },
     },
-    config = require "plugins.configs.which-key",
   },
   {
     "kevinhwang91/nvim-ufo",
@@ -74,7 +69,6 @@ return {
           or { "treesitter", "indent" } -- if file opened, try to use treesitter if available
       end,
     },
-    config = require "plugins.configs.ufo",
   },
   {
     "numToStr/Comment.nvim",
@@ -82,7 +76,6 @@ return {
     opts = function()
       return { pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook() }
     end,
-    config = require "plugins.configs.Comment",
   },
   {
     "akinsho/toggleterm.nvim",
@@ -97,7 +90,6 @@ return {
         highlights = { border = "Normal", background = "Normal" },
       },
     },
-    config = require "plugins.configs.toggleterm",
   },
   {
     "NMAC427/guess-indent.nvim",
@@ -108,6 +100,5 @@ return {
     "max397574/better-escape.nvim",
     event = "InsertCharPre",
     opts = { timeout = 300 },
-    config = require "plugins.configs.better_escape",
   },
 }
