@@ -304,6 +304,7 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.foldcolumn }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.foldcolumn(opts)
+  opts = astronvim.extend_tbl({ escape = false }, opts)
   local ffi = astronvim.ffi -- get AstroNvim C extensions
   local fillchars = vim.opt.fillchars:get()
   local foldopen = fillchars.foldopen or astronvim.get_icon "FoldOpened"
@@ -317,8 +318,9 @@ function astronvim.status.provider.foldcolumn(opts)
 
     local str = ""
     if width ~= 0 then
+      str = vim.v.relnum > 0 and "%#FoldColumn#" or "%#CursorLineFold#"
       if foldinfo.level == 0 then
-        str = (" "):rep(width)
+        str = str .. (" "):rep(width)
       else
         local closed = foldinfo.lines > 0
         local first_level = foldinfo.level - width - (closed and 1 or 0) + 1
@@ -338,7 +340,7 @@ function astronvim.status.provider.foldcolumn(opts)
         end
       end
     end
-    return astronvim.status.utils.stylize(str, opts)
+    return astronvim.status.utils.stylize(str .. "%*", opts)
   end
 end
 
