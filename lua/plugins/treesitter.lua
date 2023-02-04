@@ -17,7 +17,7 @@ return {
     "TSUpdate",
     "TSUpdateSync",
   },
-  build = function() require("nvim-treesitter.install").update { with_sync = true }() end,
+  build = ":TSUpdate",
   opts = {
     highlight = { enable = true },
     incremental_selection = { enable = true },
