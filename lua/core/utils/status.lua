@@ -1185,7 +1185,7 @@ end
 -- @usage local heirline_component = astronvim.status.component.foldcolumn()
 function astronvim.status.component.foldcolumn(opts)
   opts = astronvim.extend_tbl({
-    foldcolumn = {},
+    foldcolumn = { padding = { right = 1 } },
     condition = astronvim.status.condition.foldcolumn_enabled,
     on_click = {
       name = "fold_click",
