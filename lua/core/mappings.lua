@@ -97,7 +97,7 @@ if is_available "alpha-nvim" then
       if #wins > 1 and vim.api.nvim_get_option_value("filetype", { win = wins[1] }) == "neo-tree" then
         vim.fn.win_gotoid(wins[2]) -- go to non-neo-tree window to toggle alpha
       end
-      require("alpha").start()
+      require("alpha").start(false, require("alpha").default_config)
     end,
     desc = "Home Screen",
   }
