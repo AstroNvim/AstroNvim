@@ -132,7 +132,7 @@ if is_available "alpha-nvim" then
           end
         end
       end
-      if not should_skip then require("alpha").start(true) end
+      if not should_skip then require("alpha").start(true, require("alpha").default_config) end
     end,
   })
 end
