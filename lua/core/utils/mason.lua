@@ -61,7 +61,7 @@ function astronvim.mason.update_all()
 
   if no_pkgs then
     astronvim.notify "Mason: No updates available"
-    astronvim.event "MasonUpdateComplete"
+    astronvim.event "MasonUpdateCompleted"
   else
     local updated = false
     for _, pkg in ipairs(installed_pkgs) do
@@ -73,7 +73,7 @@ function astronvim.mason.update_all()
             running = running - 1
             if running == 0 then
               astronvim.notify "Mason: Update Complete"
-              astronvim.event "MasonUpdateComplete"
+              astronvim.event "MasonUpdateCompleted"
             end
           end)
         else
@@ -84,7 +84,7 @@ function astronvim.mason.update_all()
             else
               astronvim.notify "Mason: No updates available"
             end
-            astronvim.event "MasonUpdateComplete"
+            astronvim.event "MasonUpdateCompleted"
           end
         end
       end)
