@@ -456,6 +456,7 @@ function astronvim.move_buf(n)
     end
   end
   vim.t.bufs = bufs -- set buffers
+  astronvim.event "BufsUpdated"
   vim.cmd.redrawtabline() -- redraw tabline
 end
 
@@ -490,6 +491,7 @@ end
 function astronvim.close_tab()
   if #vim.api.nvim_list_tabpages() > 1 then
     vim.t.bufs = nil
+    astronvim.event "BufsUpdated"
     vim.cmd.tabclose()
   end
 end
