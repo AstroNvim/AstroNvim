@@ -22,6 +22,7 @@ autocmd({ "BufAdd", "BufEnter" }, {
       vim.t.bufs = bufs
     end
     vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
+    astronvim.event "BufsUpdated"
   end,
 })
 autocmd("BufDelete", {
@@ -41,6 +42,7 @@ autocmd("BufDelete", {
       end
     end
     vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
+    astronvim.event "BufsUpdated"
     vim.cmd.redrawtabline()
   end,
 })
