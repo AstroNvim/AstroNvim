@@ -190,10 +190,11 @@ end
 -- @return function for setting hl property in a component
 -- @usage local heirline_component = { provider = "Example Provider", hl = astronvim.status.hl.file_icon("winbar") },
 function astronvim.status.hl.file_icon(name)
+  local hl_enabled = astronvim.status.env.icon_highlights.file_icon[name]
   return function(self)
-    local hl_enabled = astronvim.status.env.icon_highlights.file_icon[name]
-    if type(hl_enabled) == "function" then hl_enabled = hl_enabled(self) end
-    if hl_enabled then return astronvim.status.hl.filetype_color(self) end
+    if hl_enabled == true or (type(hl_enabled) == "function" and hl_enabled(self)) then
+      return astronvim.status.hl.filetype_color(self)
+    end
   end
 end
 
