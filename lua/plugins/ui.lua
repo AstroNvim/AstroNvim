@@ -47,13 +47,13 @@ return {
   },
   {
     "rcarriga/nvim-notify",
-    init = function() astronvim.load_plugin_with_func("nvim-notify", vim, "notify") end,
+    init = function() require("core.utils").load_plugin_with_func("nvim-notify", vim, "notify") end,
     opts = { stages = "fade" },
     config = require "plugins.configs.notify",
   },
   {
     "stevearc/dressing.nvim",
-    init = function() astronvim.load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
+    init = function() require("core.utils").load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
     opts = {
       input = {
         default_prompt = "➤ ",
