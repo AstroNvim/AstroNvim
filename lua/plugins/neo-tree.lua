@@ -30,7 +30,6 @@ return {
     }
     return {
       close_if_last_window = true,
-      enable_diagnostics = false,
       source_selector = {
         winbar = true,
         content_layout = "center",
@@ -49,6 +48,7 @@ return {
           folder_empty = astronvim.get_icon "FolderEmpty",
           default = astronvim.get_icon "DefaultFile",
         },
+        modified = { symbol = astronvim.get_icon "FileModified" },
         git_status = {
           symbols = {
             added = astronvim.get_icon "GitAdd",
