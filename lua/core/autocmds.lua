@@ -1,7 +1,10 @@
-local is_available = astronvim.is_available
 local namespace = vim.api.nvim_create_namespace
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
+
+local utils = require "core.utils"
+local is_available = utils.is_available
+local astroevent = utils.event
 
 vim.on_key(function(char)
   if vim.fn.mode() == "n" then
@@ -21,8 +24,8 @@ autocmd({ "BufAdd", "BufEnter" }, {
       table.insert(bufs, args.buf)
       vim.t.bufs = bufs
     end
-    vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
-    astronvim.event "BufsUpdated"
+    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid_buffer, vim.t.bufs)
+    astroevent "BufsUpdated"
   end,
 })
 autocmd("BufDelete", {
@@ -41,8 +44,8 @@ autocmd("BufDelete", {
         end
       end
     end
-    vim.t.bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.t.bufs)
-    astronvim.event "BufsUpdated"
+    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid_buffer, vim.t.bufs)
+    astroevent "BufsUpdated"
     vim.cmd.redrawtabline()
   end,
 })
@@ -51,7 +54,7 @@ autocmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
   group = augroup("highlighturl", { clear = true }),
   pattern = "*",
-  callback = function() astronvim.set_url_match() end,
+  callback = function() utils.set_url_match() end,
 })
 
 autocmd("TextYankPost", {
@@ -178,7 +181,7 @@ autocmd({ "VimEnter", "ColorScheme" }, {
         end
       end
     end
-    astronvim.event "ColorScheme"
+    astroevent "ColorScheme"
   end,
 })
 
@@ -210,9 +213,17 @@ autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
 })
 
 local cmd = vim.api.nvim_create_user_command
-cmd("AstroUpdatePackages", function() astronvim.updater.update_packages() end, { desc = "Update Plugins and Mason" })
-cmd("AstroUpdate", function() astronvim.updater.update() end, { desc = "Update AstroNvim" })
-cmd("AstroRollback", function() astronvim.updater.rollback() end, { desc = "Rollback AstroNvim" })
-cmd("AstroVersion", function() astronvim.updater.version() end, { desc = "Check AstroNvim Version" })
-cmd("AstroChangelog", function() astronvim.updater.changelog() end, { desc = "Check AstroNvim Changelog" })
-cmd("ToggleHighlightURL", function() astronvim.ui.toggle_url_match() end, { desc = "Toggle URL Highlights" })
+cmd(
+  "AstroUpdatePackages",
+  function() require("core.utils.updater").update_packages() end,
+  { desc = "Update Plugins and Mason" }
+)
+cmd("AstroUpdate", function() require("core.utils.updater").update() end, { desc = "Update AstroNvim" })
+cmd("AstroRollback", function() require("core.utils.updater").rollback() end, { desc = "Rollback AstroNvim" })
+cmd("AstroVersion", function() require("core.utils.updater").version() end, { desc = "Check AstroNvim Version" })
+cmd("AstroChangelog", function() require("core.utils.updater").changelog() end, { desc = "Check AstroNvim Changelog" })
+cmd(
+  "ToggleHighlightURL",
+  function() require("core.utils.ui").toggle_url_match() end,
+  { desc = "Toggle URL Highlights" }
+)

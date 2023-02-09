@@ -8,10 +8,12 @@
 
 local git = { url = "https://github.com/" }
 
+local function trim_or_nil(str) return type(str) == "string" and vim.trim(str) or nil end
+
 --- Run a git command from the AstroNvim installation directory
 -- @param args the git arguments
 -- @return the result of the command or nil if unsuccessful
-function git.cmd(args, ...) return astronvim.cmd("git -C " .. astronvim.install.home .. " " .. args, ...) end
+function git.cmd(args, ...) return require("core.utils").cmd("git -C " .. astronvim.install.home .. " " .. args, ...) end
 
 --- Check if the AstroNvim is able to reach the `git` command
 -- @return the result of running `git --help`
@@ -52,9 +54,7 @@ end
 --- Get the remote name for a given branch
 -- @param branch the git branch to check
 -- @return the name of the remote for the given branch
-function git.branch_remote(branch, ...)
-  return astronvim.trim_or_nil(git.cmd("config branch." .. branch .. ".remote", ...))
-end
+function git.branch_remote(branch, ...) return trim_or_nil(git.cmd("config branch." .. branch .. ".remote", ...)) end
 
 --- Add a git remote
 -- @param remote the remote to add
@@ -71,32 +71,32 @@ function git.remote_update(remote, url, ...) return git.cmd("remote set-url " ..
 --- Get the URL of a given git remote
 -- @param remote the remote to get the URL of
 -- @return the url of the remote
-function git.remote_url(remote, ...) return astronvim.trim_or_nil(git.cmd("remote get-url " .. remote, ...)) end
+function git.remote_url(remote, ...) return trim_or_nil(git.cmd("remote get-url " .. remote, ...)) end
 
 --- Get the current version with git describe including tags
 -- @return the current git describe string
-function git.current_version(...) return astronvim.trim_or_nil(git.cmd("describe --tags", ...)) end
+function git.current_version(...) return trim_or_nil(git.cmd("describe --tags", ...)) end
 
 --- Get the current branch
 -- @return the branch of the AstroNvim installation
-function git.current_branch(...) return astronvim.trim_or_nil(git.cmd("rev-parse --abbrev-ref HEAD", ...)) end
+function git.current_branch(...) return trim_or_nil(git.cmd("rev-parse --abbrev-ref HEAD", ...)) end
 
 --- Get the current head of the git repo
 -- @return the head string
-function git.local_head(...) return astronvim.trim_or_nil(git.cmd("rev-parse HEAD", ...)) end
+function git.local_head(...) return trim_or_nil(git.cmd("rev-parse HEAD", ...)) end
 
 --- Get the current head of a git remote
 -- @param remote the remote to check
 -- @param branch the branch to check
 -- @return the head string of the remote branch
 function git.remote_head(remote, branch, ...)
-  return astronvim.trim_or_nil(git.cmd("rev-list -n 1 " .. remote .. "/" .. branch, ...))
+  return trim_or_nil(git.cmd("rev-list -n 1 " .. remote .. "/" .. branch, ...))
 end
 
 --- Get the commit hash of a given tag
 -- @param tag the tag to resolve
 -- @return the commit hash of a git tag
-function git.tag_commit(tag, ...) return astronvim.trim_or_nil(git.cmd("rev-list -n 1 " .. tag, ...)) end
+function git.tag_commit(tag, ...) return trim_or_nil(git.cmd("rev-list -n 1 " .. tag, ...)) end
 
 --- Get the commit log between two commit hashes
 -- @param start_hash the start commit hash

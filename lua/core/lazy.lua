@@ -12,7 +12,7 @@ if not vim.loop.fs_stat(lazypath) then
       vim.cmd.bw()
       vim.opt.cmdheight = oldcmdheight
       vim.tbl_map(function(module) pcall(require, module) end, { "nvim-treesitter", "mason" })
-      astronvim.notify "Mason is installing packages if configured, check status with :Mason"
+      require("core.utils").notify "Mason is installing packages if configured, check status with :Mason"
     end,
   })
 end
@@ -30,7 +30,7 @@ vim.list_extend(spec, { { import = "plugins" }, user_plugins })
 require("lazy").setup(astronvim.user_opts("lazy", {
   spec = spec,
   defaults = { lazy = true },
-  install = { colorscheme = { astronvim.user_opts("colorscheme", false, false), "astrodark" } },
+  install = { colorscheme = { astronvim.user_opts("colorscheme", false, false) or "astrodark" } },
   performance = {
     rtp = {
       paths = { astronvim.install.config },

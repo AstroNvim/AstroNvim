@@ -1,4 +1,5 @@
-local is_available = astronvim.is_available
+local utils = require "core.utils"
+local is_available = utils.is_available
 
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
@@ -23,7 +24,8 @@ maps.v["k"] = maps.n.k
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>confirm q<cr>", desc = "Quit" }
 maps.n["<leader>n"] = { "<cmd>enew<cr>", desc = "New File" }
-maps.n["gx"] = { function() astronvim.system_open() end, desc = "Open the file under cursor with system app" }
+maps.n["gx"] =
+  { function() require("core.utils").system_open() end, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
 maps.n["<C-q>"] = { "<cmd>q!<cr>", desc = "Force quit" }
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
@@ -44,31 +46,41 @@ maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
 
 -- Manage Buffers
-maps.n["<leader>c"] = { function() astronvim.close_buf(0) end, desc = "Close buffer" }
-maps.n["<leader>C"] = { function() astronvim.close_buf(0, true) end, desc = "Force close buffer" }
-maps.n["]b"] = { function() astronvim.nav_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
-maps.n["[b"] = { function() astronvim.nav_buf(-(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Previous buffer" }
-maps.n[">b"] =
-  { function() astronvim.move_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Move buffer tab right" }
-maps.n["<b"] =
-  { function() astronvim.move_buf(-(vim.v.count > 0 and vim.v.count or 1)) end, desc = "Move buffer tab left" }
+maps.n["<leader>c"] = { function() require("core.utils.buffer").close_buf(0) end, desc = "Close buffer" }
+maps.n["<leader>C"] = { function() require("core.utils.buffer").close_buf(0, true) end, desc = "Force close buffer" }
+maps.n["]b"] =
+  { function() require("core.utils.buffer").nav_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
+maps.n["[b"] = {
+  function() require("core.utils.buffer").nav_buf(-(vim.v.count > 0 and vim.v.count or 1)) end,
+  desc = "Previous buffer",
+}
+maps.n[">b"] = {
+  function() require("core.utils.buffer").move_buf(vim.v.count > 0 and vim.v.count or 1) end,
+  desc = "Move buffer tab right",
+}
+maps.n["<b"] = {
+  function() require("core.utils.buffer").move_buf(-(vim.v.count > 0 and vim.v.count or 1)) end,
+  desc = "Move buffer tab left",
+}
 
 maps.n["<leader>b"] = sections.b
 maps.n["<leader>bb"] = {
   function()
-    astronvim.status.heirline.buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
+    require("core.utils.status").heirline.buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
   end,
   desc = "Select buffer from tabline",
 }
 maps.n["<leader>bd"] = {
   function()
-    astronvim.status.heirline.buffer_picker(function(bufnr) astronvim.close_buf(bufnr) end)
+    require("core.utils.status").heirline.buffer_picker(
+      function(bufnr) require("core.utils.buffer").close_buf(bufnr) end
+    )
   end,
   desc = "Delete buffer from tabline",
 }
 maps.n["<leader>b\\"] = {
   function()
-    astronvim.status.heirline.buffer_picker(function(bufnr)
+    require("core.utils.status").heirline.buffer_picker(function(bufnr)
       vim.cmd.split()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
@@ -77,7 +89,7 @@ maps.n["<leader>b\\"] = {
 }
 maps.n["<leader>b|"] = {
   function()
-    astronvim.status.heirline.buffer_picker(function(bufnr)
+    require("core.utils.status").heirline.buffer_picker(function(bufnr)
       vim.cmd.vsplit()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
@@ -197,7 +209,7 @@ if is_available "telescope.nvim" then
         if vim.fn.isdirectory(dir) == 1 then table.insert(search_dirs, dir) end -- add directory to search if exists
       end
       if vim.tbl_isempty(search_dirs) then -- if no config folders found, show warning
-        astronvim.notify("No user configuration files found", "warn")
+        require("core.utils").notify("No user configuration files found", "warn")
       else
         if #search_dirs == 1 then cwd = search_dirs[1] end -- if only one directory, focus cwd
         require("telescope.builtin").find_files { prompt_title = "Config Files", search_dirs = search_dirs, cwd = cwd } -- call telescope
@@ -217,7 +229,7 @@ if is_available "telescope.nvim" then
   maps.n["<leader>fh"] = { function() require("telescope.builtin").help_tags() end, desc = "Find help" }
   maps.n["<leader>fk"] = { function() require("telescope.builtin").keymaps() end, desc = "Find keymaps" }
   maps.n["<leader>fm"] = { function() require("telescope.builtin").man_pages() end, desc = "Find man" }
-  if astronvim.is_available "nvim-notify" then
+  if is_available "nvim-notify" then
     maps.n["<leader>fn"] =
       { function() require("telescope").extensions.notify.notify() end, desc = "Find notifications" }
   end
@@ -252,7 +264,7 @@ end
 -- Terminal
 if is_available "toggleterm.nvim" then
   maps.n["<leader>t"] = sections.t
-  local toggle_term_cmd = astronvim.toggle_term_cmd
+  local toggle_term_cmd = require("core.utils").toggle_term_cmd
   if vim.fn.executable "lazygit" == 1 then
     maps.n["<leader>g"] = sections.g
     maps.n["<leader>gg"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
@@ -329,28 +341,29 @@ maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window navigatio
 maps.n["<leader>u"] = sections.u
 -- Custom menu for modification of the user experience
 if is_available "nvim-autopairs" then
-  maps.n["<leader>ua"] = { function() astronvim.ui.toggle_autopairs() end, desc = "Toggle autopairs" }
+  maps.n["<leader>ua"] = { function() require("core.utils.ui").toggle_autopairs() end, desc = "Toggle autopairs" }
 end
-maps.n["<leader>ub"] = { function() astronvim.ui.toggle_background() end, desc = "Toggle background" }
+maps.n["<leader>ub"] = { function() require("core.utils.ui").toggle_background() end, desc = "Toggle background" }
 if is_available "nvim-cmp" then
-  maps.n["<leader>uc"] = { function() astronvim.ui.toggle_cmp() end, desc = "Toggle autocompletion" }
+  maps.n["<leader>uc"] = { function() require("core.utils.ui").toggle_cmp() end, desc = "Toggle autocompletion" }
 end
 if is_available "nvim-colorizer.lua" then
   maps.n["<leader>uC"] = { "<cmd>ColorizerToggle<cr>", desc = "Toggle color highlight" }
 end
-maps.n["<leader>ud"] = { function() astronvim.ui.toggle_diagnostics() end, desc = "Toggle diagnostics" }
-maps.n["<leader>ug"] = { function() astronvim.ui.toggle_signcolumn() end, desc = "Toggle signcolumn" }
-maps.n["<leader>ui"] = { function() astronvim.ui.set_indent() end, desc = "Change indent setting" }
-maps.n["<leader>ul"] = { function() astronvim.ui.toggle_statusline() end, desc = "Toggle statusline" }
-maps.n["<leader>uL"] = { function() astronvim.ui.toggle_codelens() end, desc = "Toggle CodeLens refresh" }
-maps.n["<leader>un"] = { function() astronvim.ui.change_number() end, desc = "Change line numbering" }
-maps.n["<leader>uN"] = { function() astronvim.ui.toggle_ui_notifications() end, desc = "Toggle UI notifications" }
-maps.n["<leader>up"] = { function() astronvim.ui.toggle_paste() end, desc = "Toggle paste mode" }
-maps.n["<leader>us"] = { function() astronvim.ui.toggle_spell() end, desc = "Toggle spellcheck" }
-maps.n["<leader>uS"] = { function() astronvim.ui.toggle_conceal() end, desc = "Toggle conceal" }
-maps.n["<leader>ut"] = { function() astronvim.ui.toggle_tabline() end, desc = "Toggle tabline" }
-maps.n["<leader>uu"] = { function() astronvim.ui.toggle_url_match() end, desc = "Toggle URL highlight" }
-maps.n["<leader>uw"] = { function() astronvim.ui.toggle_wrap() end, desc = "Toggle wrap" }
-maps.n["<leader>uy"] = { function() astronvim.ui.toggle_syntax() end, desc = "Toggle syntax highlight" }
+maps.n["<leader>ud"] = { function() require("core.utils.ui").toggle_diagnostics() end, desc = "Toggle diagnostics" }
+maps.n["<leader>ug"] = { function() require("core.utils.ui").toggle_signcolumn() end, desc = "Toggle signcolumn" }
+maps.n["<leader>ui"] = { function() require("core.utils.ui").set_indent() end, desc = "Change indent setting" }
+maps.n["<leader>ul"] = { function() require("core.utils.ui").toggle_statusline() end, desc = "Toggle statusline" }
+maps.n["<leader>uL"] = { function() require("core.utils.ui").toggle_codelens() end, desc = "Toggle CodeLens refresh" }
+maps.n["<leader>un"] = { function() require("core.utils.ui").change_number() end, desc = "Change line numbering" }
+maps.n["<leader>uN"] =
+  { function() require("core.utils.ui").toggle_ui_notifications() end, desc = "Toggle UI notifications" }
+maps.n["<leader>up"] = { function() require("core.utils.ui").toggle_paste() end, desc = "Toggle paste mode" }
+maps.n["<leader>us"] = { function() require("core.utils.ui").toggle_spell() end, desc = "Toggle spellcheck" }
+maps.n["<leader>uS"] = { function() require("core.utils.ui").toggle_conceal() end, desc = "Toggle conceal" }
+maps.n["<leader>ut"] = { function() require("core.utils.ui").toggle_tabline() end, desc = "Toggle tabline" }
+maps.n["<leader>uu"] = { function() require("core.utils.ui").toggle_url_match() end, desc = "Toggle URL highlight" }
+maps.n["<leader>uw"] = { function() require("core.utils.ui").toggle_wrap() end, desc = "Toggle wrap" }
+maps.n["<leader>uy"] = { function() require("core.utils.ui").toggle_syntax() end, desc = "Toggle syntax highlight" }
 
-astronvim.set_mappings(astronvim.user_opts("mappings", maps))
+utils.set_mappings(astronvim.user_opts("mappings", maps))

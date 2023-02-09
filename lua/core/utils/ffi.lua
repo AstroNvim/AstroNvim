@@ -1,9 +1,9 @@
 -- ### AstroNvim C Extensions
 
-astronvim.ffi = require "ffi"
+local ffi = require "ffi"
 
 -- Custom C extension to get direct fold information from Neovim
-astronvim.ffi.cdef [[
+ffi.cdef [[
 	typedef struct {} Error;
 	typedef struct {} win_T;
 	typedef struct {
@@ -17,4 +17,4 @@ astronvim.ffi.cdef [[
 	int compute_foldcolumn(win_T *wp, int col);
 ]]
 
-return astronvim.ffi
+return ffi

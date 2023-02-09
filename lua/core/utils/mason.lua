@@ -1,20 +1,24 @@
---- ### AstroNvim Mason Utils
+--- ### Mason Utils
 --
--- This module is automatically loaded by AstroNvim on during it's initialization into global variable `astronvim.mason`
+-- Mason related utility functions to use within AstroNvim and user configurations.
 --
--- This module can also be manually loaded with `local updater = require("core.utils").mason`
+-- This module can be loaded with `local mason_utils = require("core.utils.mason")`
 --
 -- @module core.utils.mason
 -- @see core.utils
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
-astronvim.mason = {}
+local M = {}
+
+local utils = require "core.utils"
+local notify = utils.notify
+local astroevent = utils.event
 
 --- Update a mason package
 -- @param pkg_name string of the name of the package as defined in Mason (Not mason-lspconfig or mason-null-ls)
 -- @param auto_install boolean of whether or not to install a package that is not currently installed (default: True)
-function astronvim.mason.update(pkg_name, auto_install)
+function M.update(pkg_name, auto_install)
   if auto_install == nil then auto_install = true end
   local registry_avail, registry = pcall(require, "mason-registry")
   if not registry_avail then
@@ -24,22 +28,22 @@ function astronvim.mason.update(pkg_name, auto_install)
 
   local pkg_avail, pkg = pcall(registry.get_package, pkg_name)
   if not pkg_avail then
-    astronvim.notify(("Mason: %s is not available"):format(pkg_name), "error")
+    notify(("Mason: %s is not available"):format(pkg_name), "error")
   else
     if not pkg:is_installed() then
       if auto_install then
-        astronvim.notify(("Mason: Installing %s"):format(pkg.name))
+        notify(("Mason: Installing %s"):format(pkg.name))
         pkg:install()
       else
-        astronvim.notify(("Mason: %s not installed"):format(pkg.name), "warn")
+        notify(("Mason: %s not installed"):format(pkg.name), "warn")
       end
     else
       pkg:check_new_version(function(update_available, version)
         if update_available then
-          astronvim.notify(("Mason: Updating %s to %s"):format(pkg.name, version.latest_version))
-          pkg:install():on("closed", function() astronvim.notify(("Mason: Updated %s"):format(pkg.name)) end)
+          notify(("Mason: Updating %s to %s"):format(pkg.name, version.latest_version))
+          pkg:install():on("closed", function() notify(("Mason: Updated %s"):format(pkg.name)) end)
         else
-          astronvim.notify(("Mason: No updates available for %s"):format(pkg.name))
+          notify(("Mason: No updates available for %s"):format(pkg.name))
         end
       end)
     end
@@ -47,7 +51,7 @@ function astronvim.mason.update(pkg_name, auto_install)
 end
 
 --- Update all packages in Mason
-function astronvim.mason.update_all()
+function M.update_all()
   local registry_avail, registry = pcall(require, "mason-registry")
   if not registry_avail then
     vim.api.nvim_err_writeln "Unable to access mason registry"
@@ -57,34 +61,34 @@ function astronvim.mason.update_all()
   local installed_pkgs = registry.get_installed_packages()
   local running = #installed_pkgs
   local no_pkgs = running == 0
-  astronvim.notify "Mason: Checking for package updates..."
+  notify "Mason: Checking for package updates..."
 
   if no_pkgs then
-    astronvim.notify "Mason: No updates available"
-    astronvim.event "MasonUpdateCompleted"
+    notify "Mason: No updates available"
+    astroevent "MasonUpdateCompleted"
   else
     local updated = false
     for _, pkg in ipairs(installed_pkgs) do
       pkg:check_new_version(function(update_available, version)
         if update_available then
           updated = true
-          astronvim.notify(("Mason: Updating %s to %s"):format(pkg.name, version.latest_version))
+          notify(("Mason: Updating %s to %s"):format(pkg.name, version.latest_version))
           pkg:install():on("closed", function()
             running = running - 1
             if running == 0 then
-              astronvim.notify "Mason: Update Complete"
-              astronvim.event "MasonUpdateCompleted"
+              notify "Mason: Update Complete"
+              astroevent "MasonUpdateCompleted"
             end
           end)
         else
           running = running - 1
           if running == 0 then
             if updated then
-              astronvim.notify "Mason: Update Complete"
+              notify "Mason: Update Complete"
             else
-              astronvim.notify "Mason: No updates available"
+              notify "Mason: No updates available"
             end
-            astronvim.event "MasonUpdateCompleted"
+            astroevent "MasonUpdateCompleted"
           end
         end
       end)
@@ -92,4 +96,4 @@ function astronvim.mason.update_all()
   end
 end
 
-return astronvim.mason
+return M
