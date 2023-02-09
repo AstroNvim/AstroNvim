@@ -18,13 +18,14 @@ return {
     }
     dashboard.section.header.opts.hl = "DashboardHeader"
 
+    local button = require("core.utils").alpha_button
     dashboard.section.buttons.val = {
-      astronvim.alpha_button("LDR n", "  New File  "),
-      astronvim.alpha_button("LDR f f", "  Find File  "),
-      astronvim.alpha_button("LDR f o", "  Recents  "),
-      astronvim.alpha_button("LDR f w", "  Find Word  "),
-      astronvim.alpha_button("LDR f '", "  Bookmarks  "),
-      astronvim.alpha_button("LDR S l", "  Last Session  "),
+      button("LDR n", "  New File  "),
+      button("LDR f f", "  Find File  "),
+      button("LDR f o", "  Recents  "),
+      button("LDR f w", "  Find Word  "),
+      button("LDR f '", "  Bookmarks  "),
+      button("LDR S l", "  Last Session  "),
     }
 
     dashboard.section.footer.val =

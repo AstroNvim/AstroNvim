@@ -1,8 +1,8 @@
 --- ### AstroNvim Updater
 --
--- This module is automatically loaded by AstroNvim on during it's initialization into global variable `astronvim.updater`
+-- AstroNvim Updater utilities to use within AstroNvim and user configurations.
 --
--- This module can also be manually loaded with `local updater = require("core.utils").updater`
+-- This module can also loaded with `local updater = require("core.utils.updater")`
 --
 -- @module core.utils.updater
 -- @see core.utils
@@ -10,25 +10,30 @@
 -- @license GNU General Public License v3.0
 
 local git = require "core.utils.git"
---- Updater settings overridden with any user provided configuration
-local options = astronvim.user_opts("updater", { remote = "origin", channel = "stable" })
 
--- set the install channel
-if options.branch and options.branch ~= "main" then options.channel = "nightly" end
-if astronvim.install.is_stable ~= nil then options.channel = astronvim.install.is_stable and "stable" or "nightly" end
+local M = {}
 
-astronvim.updater = { options = options }
--- set default pin_plugins for stable branch
-if options.pin_plugins == nil and options.channel == "stable" then options.pin_plugins = true end
+local utils = require "core.utils"
+local notify = utils.notify
 
---- the location of the snapshot of plugin commit pins for stable AstroNvim
-astronvim.updater.snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" }
-astronvim.updater.rollback_file = vim.fn.stdpath "cache" .. "/astronvim_rollback.lua"
+local function echo(messages)
+  -- if no parameter provided, echo a new line
+  messages = messages or { { "\n" } }
+  if type(messages) == "table" then vim.api.nvim_echo(messages, false, {}) end
+end
+
+local function confirm_prompt(messages)
+  if messages then echo(messages) end
+  local confirmed = string.lower(vim.fn.input "(y/n) ") == "y"
+  echo()
+  echo()
+  return confirmed
+end
 
 --- Helper function to generate AstroNvim snapshots (For internal use only)
 -- @param write boolean whether or not to write to the snapshot file (default: false)
 -- @return the plugin specification table of the snapshot
-function astronvim.updater.generate_snapshot(write)
+function M.generate_snapshot(write)
   local file
   local prev_snapshot = require(astronvim.updater.snapshot.module)
   for _, plugin in ipairs(prev_snapshot) do
@@ -36,7 +41,7 @@ function astronvim.updater.generate_snapshot(write)
   end
   local plugins = assert(require("lazy").plugins())
   local function git_commit(dir)
-    return astronvim.trim_or_nil(assert(astronvim.cmd("git -C " .. dir .. " rev-parse HEAD", false)))
+    return astronvim.trim_or_nil(assert(utils.cmd("git -C " .. dir .. " rev-parse HEAD", false)))
   end
   if write == true then
     file = assert(io.open(astronvim.updater.snapshot.path, "w"))
@@ -69,20 +74,20 @@ end
 --- Get the current AstroNvim version
 -- @param quiet boolean to quietly execute or send a notification
 -- @return the current AstroNvim version string
-function astronvim.updater.version(quiet)
+function M.version(quiet)
   local version = astronvim.install.version or git.current_version(false)
-  if options.channel ~= "stable" then version = ("nightly (%s)"):format(version) end
-  if version and not quiet then astronvim.notify("Version: " .. version) end
+  if astronvim.updater.options.channel ~= "stable" then version = ("nightly (%s)"):format(version) end
+  if version and not quiet then notify("Version: " .. version) end
   return version
 end
 
 --- Get the full AstroNvim changelog
 -- @param quiet boolean to quietly execute or display the changelog
 -- @return the current AstroNvim changelog table of commit messages
-function astronvim.updater.changelog(quiet)
+function M.changelog(quiet)
   local summary = {}
   vim.list_extend(summary, git.pretty_changelog(git.get_commit_range()))
-  if not quiet then astronvim.echo(summary) end
+  if not quiet then echo(summary) end
   return summary
 end
 
@@ -102,14 +107,14 @@ end
 local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 
 --- Sync Packer and then update Mason
-function astronvim.updater.update_packages()
+function M.update_packages()
   require("lazy").sync { wait = true }
-  astronvim.mason.update_all()
+  require("core.utils.mason").update_all()
 end
 
 --- Create a table of options for the currently installed AstroNvim version
 -- @return the table of updater options
-function astronvim.updater.create_rollback(write)
+function M.create_rollback(write)
   local snapshot = { branch = git.current_branch(), commit = git.local_head() }
   snapshot.remote = git.branch_remote(snapshot.branch)
   snapshot.remotes = { [snapshot.remote] = git.remote_url(snapshot.remote) }
@@ -124,22 +129,22 @@ function astronvim.updater.create_rollback(write)
 end
 
 --- AstroNvim's rollback to saved previous version function
-function astronvim.updater.rollback()
+function M.rollback()
   local rollback_avail, rollback_opts = pcall(dofile, astronvim.updater.rollback_file)
   if not rollback_avail then
-    astronvim.notify("No rollback file available", "error")
+    notify("No rollback file available", "error")
     return
   end
-  astronvim.updater.update(rollback_opts)
+  M.update(rollback_opts)
 end
 
 --- AstroNvim's updater function
-function astronvim.updater.update(opts)
-  if not opts then opts = options end
-  opts = astronvim.extend_tbl({ remote = "origin", show_changelog = true, auto_quit = false }, opts)
+function M.update(opts)
+  if not opts then opts = astronvim.updater.options end
+  opts = require("core.utils").extend_tbl({ remote = "origin", show_changelog = true, auto_quit = false }, opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
-    astronvim.notify(
+    notify(
       "git command is not available, please verify it is accessible in a command line. This may be an issue with your PATH",
       "error"
     )
@@ -148,7 +153,7 @@ function astronvim.updater.update(opts)
 
   -- if installed with an external package manager, disable the internal updater
   if not git.is_repo() then
-    astronvim.notify("Updater not available for non-git installations", "error")
+    notify("Updater not available for non-git installations", "error")
     return
   end
   -- set up any remotes defined by the user if they do not exist
@@ -161,7 +166,7 @@ function astronvim.updater.update(opts)
       check_needed = true
     elseif
       current_url ~= url
-      and astronvim.confirm_prompt {
+      and confirm_prompt {
         { "Remote " },
         { remote, "Title" },
         { " is currently set to " },
@@ -194,7 +199,7 @@ function astronvim.updater.update(opts)
   if not is_stable then
     local local_branch = (opts.remote == "origin" and "" or (opts.remote .. "_")) .. opts.branch
     if git.current_branch() ~= local_branch then
-      astronvim.echo {
+      echo {
         { "Switching to branch: " },
         { opts.remote .. "/" .. opts.branch .. "\n\n", "String" },
       }
@@ -227,28 +232,28 @@ function astronvim.updater.update(opts)
     vim.api.nvim_err_writeln "Error checking for updates"
     return
   elseif source == target then
-    astronvim.echo { { "No updates available", "String" } }
+    echo { { "No updates available", "String" } }
     return
   elseif -- prompt user if they want to accept update
     not opts.skip_prompts
-    and not astronvim.confirm_prompt {
+    and not confirm_prompt {
       { "Update available to ", "Title" },
       { is_stable and opts.version or target, "String" },
       { "\nUpdating requires a restart, continue?" },
     }
   then
-    astronvim.echo(cancelled_message)
+    echo(cancelled_message)
     return
   else -- perform update
-    astronvim.updater.create_rollback(true) -- create rollback file before updating
+    M.create_rollback(true) -- create rollback file before updating
     -- calculate and print the changelog
     local changelog = git.get_commit_range(source, target)
     local breaking = git.breaking_changes(changelog)
     local breaking_prompt = { { "Update contains the following breaking changes:\n", "WarningMsg" } }
     vim.list_extend(breaking_prompt, git.pretty_changelog(breaking))
     vim.list_extend(breaking_prompt, { { "\nWould you like to continue?" } })
-    if #breaking > 0 and not opts.skip_prompts and not astronvim.confirm_prompt(breaking_prompt) then
-      astronvim.echo(cancelled_message)
+    if #breaking > 0 and not opts.skip_prompts and not confirm_prompt(breaking_prompt) then
+      echo(cancelled_message)
       return
     end
     -- attempt an update
@@ -257,12 +262,12 @@ function astronvim.updater.update(opts)
     if
       not updated
       and not opts.skip_prompts
-      and not astronvim.confirm_prompt {
+      and not confirm_prompt {
         { "Unable to pull due to local modifications to base files.\n", "ErrorMsg" },
         { "Reset local files and continue?" },
       }
     then
-      astronvim.echo(cancelled_message)
+      echo(cancelled_message)
       return
       -- if continued and there were errors reset the base config and attempt another update
     elseif not updated then
@@ -289,7 +294,7 @@ function astronvim.updater.update(opts)
       vim.list_extend(summary, { { "Changelog:\n", "Title" } })
       vim.list_extend(summary, git.pretty_changelog(changelog))
     end
-    astronvim.echo(summary)
+    echo(summary)
 
     -- if the user wants to auto quit, create an autocommand to quit AstroNvim on the update completing
     if opts.auto_quit then
@@ -298,6 +303,8 @@ function astronvim.updater.update(opts)
 
     require("lazy.core.plugin").load() -- force immediate reload of lazy
     require("lazy").sync { wait = true } -- sync new plugin spec changes
-    astronvim.event "UpdateComplete"
+    utils.event "UpdateComplete"
   end
 end
+
+return M
