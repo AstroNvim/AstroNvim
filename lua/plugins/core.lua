@@ -43,12 +43,13 @@ return {
   },
   {
     "folke/which-key.nvim",
-    event = "UIEnter",
+    event = "VeryLazy",
     opts = {
       plugins = { spelling = { enabled = true }, presets = { operators = false } },
       window = { border = "rounded", padding = { 2, 2, 2, 2 } },
       disable = { filetypes = { "TelescopePrompt" } },
     },
+    config = require "plugins.configs.which-key",
   },
   {
     "kevinhwang91/nvim-ufo",

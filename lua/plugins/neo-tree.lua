@@ -6,7 +6,7 @@ return {
   opts = function()
     -- TODO move after neo-tree improves (https://github.com/nvim-neo-tree/neo-tree.nvim/issues/707)
     local global_commands = {
-      system_open = function(state) astronvim.system_open(state.tree:get_node():get_id()) end,
+      system_open = function(state) require("core.utils").system_open(state.tree:get_node():get_id()) end,
       parent_or_close = function(state)
         local node = state.tree:get_node()
         if (node.type == "directory" or node:has_children()) and node:is_expanded() then
@@ -28,38 +28,39 @@ return {
         end
       end,
     }
+    local get_icon = require("core.utils").get_icon
     return {
       close_if_last_window = true,
       source_selector = {
         winbar = true,
         content_layout = "center",
         tab_labels = {
-          filesystem = astronvim.get_icon "FolderClosed" .. " File",
-          buffers = astronvim.get_icon "DefaultFile" .. " Bufs",
-          git_status = astronvim.get_icon "Git" .. " Git",
-          diagnostics = astronvim.get_icon "Diagnostic" .. " Diagnostic",
+          filesystem = get_icon "FolderClosed" .. " File",
+          buffers = get_icon "DefaultFile" .. " Bufs",
+          git_status = get_icon "Git" .. " Git",
+          diagnostics = get_icon "Diagnostic" .. " Diagnostic",
         },
       },
       default_component_configs = {
         indent = { padding = 0 },
         icon = {
-          folder_closed = astronvim.get_icon "FolderClosed",
-          folder_open = astronvim.get_icon "FolderOpen",
-          folder_empty = astronvim.get_icon "FolderEmpty",
-          default = astronvim.get_icon "DefaultFile",
+          folder_closed = get_icon "FolderClosed",
+          folder_open = get_icon "FolderOpen",
+          folder_empty = get_icon "FolderEmpty",
+          default = get_icon "DefaultFile",
         },
-        modified = { symbol = astronvim.get_icon "FileModified" },
+        modified = { symbol = get_icon "FileModified" },
         git_status = {
           symbols = {
-            added = astronvim.get_icon "GitAdd",
-            deleted = astronvim.get_icon "GitDelete",
-            modified = astronvim.get_icon "GitChange",
-            renamed = astronvim.get_icon "GitRenamed",
-            untracked = astronvim.get_icon "GitUntracked",
-            ignored = astronvim.get_icon "GitIgnored",
-            unstaged = astronvim.get_icon "GitUnstaged",
-            staged = astronvim.get_icon "GitStaged",
-            conflict = astronvim.get_icon "GitConflict",
+            added = get_icon "GitAdd",
+            deleted = get_icon "GitDelete",
+            modified = get_icon "GitChange",
+            renamed = get_icon "GitRenamed",
+            untracked = get_icon "GitUntracked",
+            ignored = get_icon "GitIgnored",
+            unstaged = get_icon "GitUnstaged",
+            staged = get_icon "GitStaged",
+            conflict = get_icon "GitConflict",
           },
         },
       },

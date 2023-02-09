@@ -3,7 +3,7 @@ vim.opt.backspace:append { "nostop" } -- Don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then -- TODO v3 REMOVE THIS CONDITIONAL
   vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
 end
-astronvim.vim_opts(astronvim.user_opts("options", {
+local options = astronvim.user_opts("options", {
   opt = {
     clipboard = "unnamedplus", -- Connection to the system clipboard
     cmdheight = 0, -- hide command line unless needed
@@ -57,7 +57,10 @@ astronvim.vim_opts(astronvim.user_opts("options", {
     icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
     ui_notifications_enabled = true, -- disable notifications when toggling UI elements
   },
-  t = {
-    bufs = vim.tbl_filter(astronvim.is_valid_buffer, vim.api.nvim_list_bufs()), -- buffers in tab
-  },
-}))
+})
+
+for scope, table in pairs(options) do
+  for setting, value in pairs(table) do
+    vim[scope][setting] = value
+  end
+end
