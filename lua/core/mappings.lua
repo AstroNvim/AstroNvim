@@ -46,20 +46,20 @@ maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
 
 -- Manage Buffers
-maps.n["<leader>c"] = { function() require("core.utils.buffer").close_buf(0) end, desc = "Close buffer" }
-maps.n["<leader>C"] = { function() require("core.utils.buffer").close_buf(0, true) end, desc = "Force close buffer" }
+maps.n["<leader>c"] = { function() require("core.utils.buffer").close(0) end, desc = "Close buffer" }
+maps.n["<leader>C"] = { function() require("core.utils.buffer").close(0, true) end, desc = "Force close buffer" }
 maps.n["]b"] =
-  { function() require("core.utils.buffer").nav_buf(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
+  { function() require("core.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
 maps.n["[b"] = {
-  function() require("core.utils.buffer").nav_buf(-(vim.v.count > 0 and vim.v.count or 1)) end,
+  function() require("core.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
   desc = "Previous buffer",
 }
 maps.n[">b"] = {
-  function() require("core.utils.buffer").move_buf(vim.v.count > 0 and vim.v.count or 1) end,
+  function() require("core.utils.buffer").move(vim.v.count > 0 and vim.v.count or 1) end,
   desc = "Move buffer tab right",
 }
 maps.n["<b"] = {
-  function() require("core.utils.buffer").move_buf(-(vim.v.count > 0 and vim.v.count or 1)) end,
+  function() require("core.utils.buffer").move(-(vim.v.count > 0 and vim.v.count or 1)) end,
   desc = "Move buffer tab left",
 }
 
@@ -72,9 +72,7 @@ maps.n["<leader>bb"] = {
 }
 maps.n["<leader>bd"] = {
   function()
-    require("core.utils.status").heirline.buffer_picker(
-      function(bufnr) require("core.utils.buffer").close_buf(bufnr) end
-    )
+    require("core.utils.status").heirline.buffer_picker(function(bufnr) require("core.utils.buffer").close(bufnr) end)
   end,
   desc = "Delete buffer from tabline",
 }

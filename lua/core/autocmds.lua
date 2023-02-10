@@ -24,7 +24,7 @@ autocmd({ "BufAdd", "BufEnter" }, {
       table.insert(bufs, args.buf)
       vim.t.bufs = bufs
     end
-    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid_buffer, vim.t.bufs)
+    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid, vim.t.bufs)
     astroevent "BufsUpdated"
   end,
 })
@@ -44,7 +44,7 @@ autocmd("BufDelete", {
         end
       end
     end
-    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid_buffer, vim.t.bufs)
+    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid, vim.t.bufs)
     astroevent "BufsUpdated"
     vim.cmd.redrawtabline()
   end,

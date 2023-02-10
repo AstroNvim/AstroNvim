@@ -13,14 +13,14 @@ local M = {}
 --- Check if a buffer is valid
 -- @param bufnr the buffer to check
 -- @return true if the buffer is valid or false
-function M.is_valid_buffer(bufnr)
+function M.is_valid(bufnr)
   if not bufnr or bufnr < 1 then return false end
   return vim.bo[bufnr].buflisted and vim.api.nvim_buf_is_valid(bufnr)
 end
 
 --- Move the current buffer tab n places in the bufferline
 -- @param n numer of tabs to move the current buffer over by (positive = right, negative = left)
-function M.move_buf(n)
+function M.move(n)
   if n == 0 then return end -- if n = 0 then no shifts are needed
   local bufs = vim.t.bufs -- make temp variable
   for i, bufnr in ipairs(bufs) do -- loop to find current buffer
@@ -47,7 +47,7 @@ end
 
 --- Navigate left and right by n places in the bufferline
 -- @param n the number of tabs to navigate to (positive = right, negative = left)
-function M.nav_buf(n)
+function M.nav(n)
   local current = vim.api.nvim_get_current_buf()
   for i, v in ipairs(vim.t.bufs) do
     if current == v then
@@ -59,11 +59,11 @@ end
 
 --- Close a given buffer
 -- @param bufnr? the buffer number to close or the current buffer if not provided
-function M.close_buf(bufnr, force)
+function M.close(bufnr, force)
   if force == nil then force = false end
   local current = vim.api.nvim_get_current_buf()
   if not bufnr or bufnr == 0 then bufnr = current end
-  if bufnr == current then M.nav_buf(vim.t.bufs[1] == current and 1 or -1) end
+  if bufnr == current then M.nav(vim.t.bufs[1] == current and 1 or -1) end
 
   if require("core.utils").is_available "bufdelete.nvim" then
     require("bufdelete").bufdelete(bufnr, force)
