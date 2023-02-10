@@ -921,7 +921,7 @@ function M.component.tabline_file_info(opts)
       hl = function(self) return M.hl.get_attributes(self.tab_type .. "_close") end,
       padding = { left = 1, right = 1 },
       on_click = {
-        callback = function(_, minwid) require("core.utils.buffer").close_buf(minwid) end,
+        callback = function(_, minwid) require("core.utils.buffer").close(minwid) end,
         minwid = function(self) return self.bufnr end,
         name = "heirline_tabline_close_buffer_callback",
       },
