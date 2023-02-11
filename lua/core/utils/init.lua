@@ -89,7 +89,7 @@ end
 --- Toggle a user terminal if it exists, if not then create a new one and save it
 -- @param term_details a terminal command string or a table of options for Terminal:new() (Check toggleterm.nvim documentation for table format)
 function M.toggle_term_cmd(opts)
-  local terms = M.user_terminals
+  local terms = astronvim.user_terminals
   -- if a command string is provided, create a basic table for Terminal:new() options
   if type(opts) == "string" then opts = { cmd = opts, hidden = true } end
   local num = vim.v.count > 0 and vim.v.count or 1
@@ -101,7 +101,7 @@ function M.toggle_term_cmd(opts)
     terms[opts.cmd][num] = require("toggleterm.terminal").Terminal:new(opts)
   end
   -- toggle the terminal
-  M.user_terminals[opts.cmd][num]:toggle()
+  terms[opts.cmd][num]:toggle()
 end
 
 --- Create a button entity to use with the alpha dashboard
