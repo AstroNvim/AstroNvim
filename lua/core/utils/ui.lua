@@ -75,7 +75,15 @@ end
 --- Toggle auto format
 function M.toggle_autoformat()
   vim.g.autoformat_enabled = not vim.g.autoformat_enabled
-  ui_notify(string.format("Autoformatting %s", bool2str(vim.g.autoformat_enabled)))
+  ui_notify(string.format("Global autoformatting %s", bool2str(vim.g.autoformat_enabled)))
+end
+
+--- Toggle buffer local auto format
+function M.toggle_buffer_autoformat()
+  local old_val = vim.b.autoformat_enabled
+  if old_val == nil then old_val = vim.g.autoformat_enabled end
+  vim.b.autoformat_enabled = not old_val
+  ui_notify(string.format("Buffer autoformatting %s", bool2str(vim.b.autoformat_enabled)))
 end
 
 --- Toggle codelens refresh
