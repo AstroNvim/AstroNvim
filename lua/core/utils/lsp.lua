@@ -270,7 +270,7 @@ function M.config(server_name)
       lsp_opts.settings = { json = { schemas = schemastore.json.schemas(), validate = { enable = true } } }
     end
   end
-  if server_name == "sumneko_lua" then -- by default initialize neodev and disable third party checking
+  if server_name == "lua_ls" then -- by default initialize neodev and disable third party checking
     pcall(require, "neodev")
     lsp_opts.before_init = function(param, config)
       if vim.b.neodev_enabled and param.rootPath:match(astronvim.install.config) then

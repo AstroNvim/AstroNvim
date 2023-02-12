@@ -94,7 +94,7 @@ local config = {
         },
       },
       disabled = { -- disable formatting capabilities for the listed language servers
-        -- "sumneko_lua",
+        -- "lua_ls",
       },
       timeout_ms = 1000, -- default format timeout
       -- filter = function(client) -- fully override the default formatting function
@@ -116,9 +116,9 @@ local config = {
     --   -- first function changes the default setup handler
     --   function(server, opts) require("lspconfig")[server].setup(opts) end,
     --   -- keys for a specific server name will be used for that LSP
-    --   sumneko_lua = function(server, opts)
-    --     -- custom sumneko_lua setup handler
-    --     require("lspconfig")["sumneko_lua"].setup(opts)
+    --   lua_ls = function(server, opts)
+    --     -- custom lua_ls setup handler
+    --     require("lspconfig")["lua_ls"].setup(opts)
     --   end,
     -- },
 
@@ -293,7 +293,7 @@ local config = {
       "williamboman/mason-lspconfig.nvim",
       -- overrides `require("mason-lspconfig").setup(...)`
       opts = {
-        -- ensure_installed = { "sumneko_lua" },
+        -- ensure_installed = { "lua_ls" },
       },
     },
     -- use mason-null-ls to configure Formatters/Linter installation for null-ls sources
