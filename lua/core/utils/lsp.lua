@@ -167,14 +167,20 @@ M.on_attach = function(client, bufnr)
       add_buffer_autocmd("lsp_auto_format", bufnr, {
         events = "BufWritePre",
         callback = function()
-          if vim.g.autoformat_enabled then
+          local autoformat_enabled = vim.b.autoformat_enabled
+          if autoformat_enabled == nil then autoformat_enabled = vim.g.autoformat_enabled end
+          if autoformat_enabled then
             vim.lsp.buf.format(require("core.utils").extend_tbl(M.format_opts, { bufnr = bufnr }))
           end
         end,
       })
       lsp_mappings.n["<leader>uf"] = {
+        function() require("core.utils.ui").toggle_buffer_autoformat() end,
+        desc = "Toggle autoformatting (buffer)",
+      }
+      lsp_mappings.n["<leader>uF"] = {
         function() require("core.utils.ui").toggle_autoformat() end,
-        desc = "Toggle autoformatting",
+        desc = "Toggle autoformatting (global)",
       }
     end
   end
