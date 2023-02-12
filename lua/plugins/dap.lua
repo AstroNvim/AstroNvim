@@ -4,7 +4,6 @@ return {
   dependencies = {
     {
       "jay-babu/mason-nvim-dap.nvim",
-      dependencies = { "nvim-dap" },
       cmd = { "DapInstall", "DapUninstall" },
       opts = { automatic_setup = true },
       config = require "plugins.configs.mason-nvim-dap",
@@ -15,5 +14,4 @@ return {
       config = require "plugins.configs.nvim-dap-ui",
     },
   },
-  init = function() table.insert(astronvim.file_plugins, "nvim-dap") end,
 }
