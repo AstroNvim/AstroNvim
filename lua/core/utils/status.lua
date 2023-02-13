@@ -78,7 +78,7 @@ M.env.separators = astronvim.user_opts("heirline.separators", {
   right = { "  ", "" },
   center = { "  ", "  " },
   tab = { "", " " },
-  breadcrumbs = " > ",
+  breadcrumbs = "  ",
 })
 
 M.env.attributes = astronvim.user_opts("heirline.attributes", {
@@ -210,20 +210,23 @@ end
 -- @usage local heirline_component = { init = require("core.utils.status").init.breadcrumbs { padding = { left = 1 } } }
 function M.init.breadcrumbs(opts)
   opts = extend_tbl({
-    separator = M.env.separators.breadcrumbs or " > ",
+    separator = M.env.separators.breadcrumbs or "  ",
     icon = { enabled = true, hl = M.env.icon_highlights.breadcrumbs },
     padding = { left = 0, right = 0 },
   }, opts)
   return function(self)
     local data = require("aerial").get_location(true) or {}
     local children = {}
+    -- add prefix if needed, use the separator if true, or use the provided character
+    if opts.prefix and not vim.tbl_isempty(data) then
+      table.insert(children, { provider = opts.prefix == true and opts.separator or opts.prefix })
+    end
     -- create a child for each level
     for i, d in ipairs(data) do
-      local pos = M.utils.encode_pos(d.lnum, d.col, self.winnr)
       local child = {
         { provider = string.gsub(d.name, "%%", "%%%%"):gsub("%s*->%s*", "") }, -- add symbol name
         on_click = { -- add on click function
-          minwid = pos,
+          minwid = M.utils.encode_pos(d.lnum, d.col, self.winnr),
           callback = function(_, minwid)
             local lnum, col, winnr = M.utils.decode_pos(minwid)
             vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { lnum, col })
