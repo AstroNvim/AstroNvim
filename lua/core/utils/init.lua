@@ -158,13 +158,15 @@ function M.load_plugin_with_func(plugin, module, func_names)
   end
 end
 
-M.which_key_queue = {}
-
+--- Register queued which-key mappings
 function M.which_key_register()
-  local wk_avail, wk = pcall(require, "which-key")
-  if wk_avail then
-    for _, registration in ipairs(M.which_key_queue) do
-      wk.register(registration.mappings, registration.opts)
+  if M.which_key_queue then
+    local wk_avail, wk = pcall(require, "which-key")
+    if wk_avail then
+      for mode, registration in pairs(M.which_key_queue) do
+        wk.register(registration, { mode = mode })
+      end
+      M.which_key_queue = nil
     end
   end
 end
@@ -176,35 +178,28 @@ function M.set_mappings(map_table, base)
   -- iterate over the first keys for each mode
   base = base or {}
   for mode, maps in pairs(map_table) do
-    local mode_which_key = {}
     -- iterate over each keybinding set in the current mode
     for keymap, options in pairs(maps) do
       -- build the options for the command accordingly
       if options then
         local cmd = options
-        local keymap_opts = vim.deepcopy(base)
+        local keymap_opts = base
         if type(options) == "table" then
           cmd = options[1]
-          keymap_opts = vim.tbl_deep_extend("force", options, keymap_opts)
+          keymap_opts = vim.tbl_deep_extend("force", keymap_opts, options)
           keymap_opts[1] = nil
         end
-        if type(options) == "table" and options.name then
-          mode_which_key[keymap] = options
-        else
-          -- extend the keybinding options with the base provided and set the mapping
+        if keymap_opts.name then -- if which-key mapping, queue it
+          if not M.which_key_queue then M.which_key_queue = {} end
+          if not M.which_key_queue[mode] then M.which_key_queue[mode] = {} end
+          M.which_key_queue[mode][keymap] = keymap_opts
+        else -- if not which-key mapping, set it
           vim.keymap.set(mode, keymap, cmd, keymap_opts)
         end
       end
     end
-    if not vim.tbl_isempty(mode_which_key) then
-      local opts = vim.tbl_deep_extend("force", { mode = mode }, base)
-      if package.loaded["which-key"] then
-        require("which-key").register(mode_which_key, opts)
-      else
-        table.insert(M.which_key_queue, { mappings = mode_which_key, opts = opts })
-      end
-    end
   end
+  if package.loaded["which-key"] then M.which_key_register() end -- if which-key is loaded already, register
 end
 
 --- regex used for matching a valid URL/URI string
