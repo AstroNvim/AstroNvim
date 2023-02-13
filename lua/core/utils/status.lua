@@ -1499,20 +1499,23 @@ function M.heirline.make_tablist(...) return require("heirline.utils").make_tabl
 -- @param callback function with a single parameter of the buffer number
 function M.heirline.buffer_picker(callback)
   local tabline = require("heirline").tabline
+  -- if buflist then
+  local prev_showtabline = vim.opt.showtabline:get()
+  if prev_showtabline ~= 2 then vim.opt.showtabline = 2 end
+  vim.cmd.redrawtabline()
   local buflist = tabline and tabline._buflist and tabline._buflist[1]
   if buflist then
-    local prev_showtabline = vim.opt.showtabline:get()
     buflist._picker_labels = {}
     buflist._show_picker = true
-    if prev_showtabline ~= 2 then vim.opt.showtabline = 2 end
     vim.cmd.redrawtabline()
     local char = vim.fn.getcharstr()
     local bufnr = buflist._picker_labels[char]
     if bufnr then callback(bufnr) end
     buflist._show_picker = false
-    if prev_showtabline ~= 2 then vim.opt.showtabline = prev_showtabline end
-    vim.cmd.redrawtabline()
   end
+  if prev_showtabline ~= 2 then vim.opt.showtabline = prev_showtabline end
+  vim.cmd.redrawtabline()
+  -- end
 end
 
 return M
