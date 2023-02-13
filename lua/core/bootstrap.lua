@@ -47,7 +47,6 @@ local function load_module_file(module)
 end
 
 --- Main configuration engine logic for extending a default configuration table with either a function override or a table to merge into the default option
--- @function M.func_or_extend
 -- @param overrides the override definition, either a table or a function that takes a single parameter of the original table
 -- @param default the default configuration table
 -- @param extend boolean value to either extend the default or simply overwrite it if an override is provided
