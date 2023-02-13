@@ -205,11 +205,12 @@ function M.hl.file_icon(name)
 end
 
 --- An `init` function to build a set of children components for LSP breadcrumbs
--- @param opts options for configuring the breadcrumbs (default: `{ separator = " > ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
+-- @param opts options for configuring the breadcrumbs (default: `{ max_depth = 5, separator = " > ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
 -- @return The Heirline init function
 -- @usage local heirline_component = { init = require("core.utils.status").init.breadcrumbs { padding = { left = 1 } } }
 function M.init.breadcrumbs(opts)
   opts = extend_tbl({
+    max_depth = 5,
     separator = M.env.separators.breadcrumbs or "  ",
     icon = { enabled = true, hl = M.env.icon_highlights.breadcrumbs },
     padding = { left = 0, right = 0 },
@@ -221,29 +222,38 @@ function M.init.breadcrumbs(opts)
     if opts.prefix and not vim.tbl_isempty(data) then
       table.insert(children, { provider = opts.prefix == true and opts.separator or opts.prefix })
     end
+    local start_idx = 0
+    if opts.max_depth and opts.max_depth > 0 then
+      start_idx = #data - opts.max_depth
+      if start_idx > 0 then
+        table.insert(children, { provider = require("core.utils").get_icon "Ellipsis" .. opts.separator })
+      end
+    end
     -- create a child for each level
     for i, d in ipairs(data) do
-      local child = {
-        { provider = string.gsub(d.name, "%%", "%%%%"):gsub("%s*->%s*", "") }, -- add symbol name
-        on_click = { -- add on click function
-          minwid = M.utils.encode_pos(d.lnum, d.col, self.winnr),
-          callback = function(_, minwid)
-            local lnum, col, winnr = M.utils.decode_pos(minwid)
-            vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { lnum, col })
-          end,
-          name = "heirline_breadcrumbs",
-        },
-      }
-      if opts.icon.enabled then -- add icon and highlight if enabled
-        local hl = opts.icon.hl
-        if type(hl) == "function" then hl = hl(self) end
-        table.insert(child, 1, {
-          provider = string.format("%s ", d.icon),
-          hl = hl and string.format("Aerial%sIcon", d.kind) or nil,
-        })
+      if i > start_idx then
+        local child = {
+          { provider = string.gsub(d.name, "%%", "%%%%"):gsub("%s*->%s*", "") }, -- add symbol name
+          on_click = { -- add on click function
+            minwid = M.utils.encode_pos(d.lnum, d.col, self.winnr),
+            callback = function(_, minwid)
+              local lnum, col, winnr = M.utils.decode_pos(minwid)
+              vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { lnum, col })
+            end,
+            name = "heirline_breadcrumbs",
+          },
+        }
+        if opts.icon.enabled then -- add icon and highlight if enabled
+          local hl = opts.icon.hl
+          if type(hl) == "function" then hl = hl(self) end
+          table.insert(child, 1, {
+            provider = string.format("%s ", d.icon),
+            hl = hl and string.format("Aerial%sIcon", d.kind) or nil,
+          })
+        end
+        if #data > 1 and i < #data then table.insert(child, { provider = opts.separator }) end -- add a separator only if needed
+        table.insert(children, child)
       end
-      if #data > 1 and i < #data then table.insert(child, { provider = opts.separator }) end -- add a separator only if needed
-      table.insert(children, child)
     end
     if opts.padding.left > 0 then -- add left padding
       table.insert(children, 1, { provider = M.pad_string(" ", { left = opts.padding.left - 1 }) })
