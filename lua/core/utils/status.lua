@@ -246,9 +246,10 @@ function M.init.breadcrumbs(opts)
         if opts.icon.enabled then -- add icon and highlight if enabled
           local hl = opts.icon.hl
           if type(hl) == "function" then hl = hl(self) end
+          local hlgroup = string.format("Aerial%sIcon", d.kind)
           table.insert(child, 1, {
             provider = string.format("%s ", d.icon),
-            hl = hl and string.format("Aerial%sIcon", d.kind) or nil,
+            hl = (hl and vim.fn.hlexists(hlgroup) == 1) and hlgroup or nil,
           })
         end
         if #data > 1 and i < #data then table.insert(child, { provider = opts.separator }) end -- add a separator only if needed
