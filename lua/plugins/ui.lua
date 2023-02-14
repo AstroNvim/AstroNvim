@@ -23,7 +23,6 @@ return {
     opts = {
       mode = "symbol",
       symbol_map = {
-        NONE = "",
         Array = "",
         Boolean = "⊨",
         Class = "",
