@@ -42,7 +42,7 @@ return {
         },
       },
       default_component_configs = {
-        indent = { padding = 0 },
+        indent = { padding = 0, indent_size = 1 },
         icon = {
           folder_closed = get_icon "FolderClosed",
           folder_open = get_icon "FolderOpen",
@@ -84,6 +84,7 @@ return {
       },
       buffers = { commands = global_commands },
       git_status = { commands = global_commands },
+      diagnostics = { commands = global_commands },
       event_handlers = {
         { event = "neo_tree_buffer_enter", handler = function(_) vim.opt_local.signcolumn = "auto" end },
       },
