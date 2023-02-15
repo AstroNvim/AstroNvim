@@ -79,6 +79,7 @@ M.env.separators = astronvim.user_opts("heirline.separators", {
   center = { "  ", "  " },
   tab = { "", " " },
   breadcrumbs = "  ",
+  path = "  ",
 })
 
 M.env.attributes = astronvim.user_opts("heirline.attributes", {
@@ -205,7 +206,7 @@ function M.hl.file_icon(name)
 end
 
 --- An `init` function to build a set of children components for LSP breadcrumbs
--- @param opts options for configuring the breadcrumbs (default: `{ max_depth = 5, separator = " > ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
+-- @param opts options for configuring the breadcrumbs (default: `{ max_depth = 5, separator = "  ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
 -- @return The Heirline init function
 -- @usage local heirline_component = { init = require("core.utils.status").init.breadcrumbs { padding = { left = 1 } } }
 function M.init.breadcrumbs(opts)
@@ -253,6 +254,55 @@ function M.init.breadcrumbs(opts)
           })
         end
         if #data > 1 and i < #data then table.insert(child, { provider = opts.separator }) end -- add a separator only if needed
+        table.insert(children, child)
+      end
+    end
+    if opts.padding.left > 0 then -- add left padding
+      table.insert(children, 1, { provider = M.pad_string(" ", { left = opts.padding.left - 1 }) })
+    end
+    if opts.padding.right > 0 then -- add right padding
+      table.insert(children, { provider = M.pad_string(" ", { right = opts.padding.right - 1 }) })
+    end
+    -- instantiate the new child
+    self[1] = self:new(children, 1)
+  end
+end
+
+--- An `init` function to build a set of children components for a separated path to file
+-- @param opts options for configuring the breadcrumbs (default: `{ max_depth = 3, path_func = M.provider.unique_path(), separator = "  ", suffix = true, padding = { left = 0, right = 0 } }`)
+-- @return The Heirline init function
+-- @usage local heirline_component = { init = require("core.utils.status").init.separated_path { padding = { left = 1 } } }
+function M.init.separated_path(opts)
+  opts = extend_tbl({
+    max_depth = 3,
+    path_func = M.provider.unique_path(),
+    separator = M.env.separators.path or "  ",
+    suffix = true,
+    padding = { left = 0, right = 0 },
+  }, opts)
+  if opts.suffix == true then opts.suffix = opts.separator end
+  return function(self)
+    local path = opts.path_func(self)
+    if path == "." then path = "" end -- if there is no path, just replace with empty string
+    local data = vim.fn.split(path, "/")
+    local children = {}
+    -- add prefix if needed, use the separator if true, or use the provided character
+    if opts.prefix and not vim.tbl_isempty(data) then
+      table.insert(children, { provider = opts.prefix == true and opts.separator or opts.prefix })
+    end
+    local start_idx = 0
+    if opts.max_depth and opts.max_depth > 0 then
+      start_idx = #data - opts.max_depth
+      if start_idx > 0 then
+        table.insert(children, { provider = require("core.utils").get_icon "Ellipsis" .. opts.separator })
+      end
+    end
+    -- create a child for each level
+    for i, d in ipairs(data) do
+      if i > start_idx then
+        local child = { { provider = d } }
+        local separator = i < #data and opts.separtor or opts.suffix
+        if separator then table.insert(child, { provider = separator }) end
         table.insert(children, child)
       end
     end
@@ -1017,6 +1067,16 @@ end
 function M.component.breadcrumbs(opts)
   opts = extend_tbl({ padding = { left = 1 }, condition = M.condition.aerial_available, update = "CursorMoved" }, opts)
   opts.init = M.init.breadcrumbs(opts)
+  return opts
+end
+
+--- A function to build a set of children components for the current file path
+-- @param opts options for configuring path and the overall padding
+-- @return The Heirline component table
+-- @usage local heirline_component = require("core.utils.status").component.separated_path()
+function M.component.separated_path(opts)
+  opts = extend_tbl({ padding = { left = 1 }, update = { "BufEnter", "DirChanged" } }, opts)
+  opts.init = M.init.separated_path(opts)
   return opts
 end
 
