@@ -41,7 +41,8 @@ function M.generate_snapshot(write)
   end
   local plugins = assert(require("lazy").plugins())
   local function git_commit(dir)
-    return astronvim.trim_or_nil(assert(utils.cmd("git -C " .. dir .. " rev-parse HEAD", false)))
+    local commit = assert(utils.cmd("git -C " .. dir .. " rev-parse HEAD", false))
+    if commit then return vim.trim(commit) end
   end
   if write == true then
     file = assert(io.open(astronvim.updater.snapshot.path, "w"))
