@@ -33,7 +33,7 @@ return function(_, opts)
     local HeirlineCommand = get_hlgroup("HeirlineCommand", { bg = nil }).bg
       or status.hl.lualine_mode("command", C.bright_yellow)
     local HeirlineTerminal = get_hlgroup("HeirlineTerminal", { bg = nil }).bg
-      or status.hl.lualine_mode("inactive", HeirlineInsert)
+      or status.hl.lualine_mode("insert", HeirlineInsert)
 
     local colors = astronvim.user_opts("heirline.colors", {
       close_fg = Error.fg,
