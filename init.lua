@@ -11,10 +11,11 @@ end
 
 local utils = require "core.utils"
 
-local colorscheme = astronvim.user_opts("colorscheme", false, false)
-if colorscheme then colorscheme = pcall(vim.cmd.colorscheme, colorscheme) end
-if not colorscheme then colorscheme = pcall(vim.cmd.colorscheme, "astrodark") end
-if not colorscheme then utils.notify("Error setting up colorscheme...", "error") end
+if astronvim.default_colorscheme then
+  if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
+    utils.notify("Error setting up colorscheme: " .. astronvim.default_colorscheme, "error")
+  end
+end
 
 utils.conditional_func(astronvim.user_opts("polish", nil, false), true)
 
