@@ -127,3 +127,5 @@ astronvim.user_terminals = {}
 astronvim.git_plugins = {}
 --- table of plugins to load when file opened
 astronvim.file_plugins = {}
+--- the default colorscheme to apply on startup
+astronvim.default_colorscheme = astronvim.user_opts("colorscheme", "astrodark", false)
