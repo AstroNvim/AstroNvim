@@ -27,10 +27,13 @@ end
 
 vim.list_extend(spec, { { import = "plugins" }, user_plugins })
 
+local colorscheme
+if astronvim.default_colorscheme then colorscheme = { astronvim.default_colorscheme } end
+
 require("lazy").setup(astronvim.user_opts("lazy", {
   spec = spec,
   defaults = { lazy = true },
-  install = { colorscheme = { astronvim.user_opts("colorscheme", false, false) or "astrodark" } },
+  install = { colorscheme = colorscheme },
   performance = {
     rtp = {
       paths = { astronvim.install.config },
