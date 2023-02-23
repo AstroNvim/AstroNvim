@@ -2,18 +2,18 @@
 --
 -- AstroNvim Updater utilities to use within AstroNvim and user configurations.
 --
--- This module can also loaded with `local updater = require("core.utils.updater")`
+-- This module can also loaded with `local updater = require("astronvim.utils.updater")`
 --
--- @module core.utils.updater
--- @see core.utils
+-- @module astronvim.utils.updater
+-- @see astronvim.utils
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
-local git = require "core.utils.git"
+local git = require "astronvim.utils.git"
 
 local M = {}
 
-local utils = require "core.utils"
+local utils = require "astronvim.utils"
 local notify = utils.notify
 
 local function echo(messages)
@@ -98,7 +98,7 @@ local function attempt_update(target, opts)
   -- if updating to a new stable version or a specific commit checkout the provided target
   if opts.channel == "stable" or opts.commit then
     return git.checkout(target, false)
-    -- if no target, pull the latest
+  -- if no target, pull the latest
   else
     return git.pull(false)
   end
@@ -110,7 +110,7 @@ local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 --- Sync Packer and then update Mason
 function M.update_packages()
   require("lazy").sync { wait = true }
-  require("core.utils.mason").update_all()
+  require("astronvim.utils.mason").update_all()
 end
 
 --- Create a table of options for the currently installed AstroNvim version
@@ -142,7 +142,7 @@ end
 --- AstroNvim's updater function
 function M.update(opts)
   if not opts then opts = astronvim.updater.options end
-  opts = require("core.utils").extend_tbl({ remote = "origin", show_changelog = true, auto_quit = false }, opts)
+  opts = require("astronvim.utils").extend_tbl({ remote = "origin", show_changelog = true, auto_quit = false }, opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
     notify(
@@ -270,7 +270,7 @@ function M.update(opts)
     then
       echo(cancelled_message)
       return
-      -- if continued and there were errors reset the base config and attempt another update
+    -- if continued and there were errors reset the base config and attempt another update
     elseif not updated then
       git.hard_reset(source)
       updated = attempt_update(target, opts)

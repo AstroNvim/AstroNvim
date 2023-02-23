@@ -2,10 +2,10 @@
 --
 --  Utility functions for easy UI toggles.
 --
--- This module can be loaded with `local ui = require("core.utils.ui")`
+-- This module can be loaded with `local ui = require("astronvim.utils.ui")`
 --
--- @module core.utils.ui
--- @see core.utils
+-- @module astronvim.utils.ui
+-- @see astronvim.utils
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
@@ -14,7 +14,7 @@ local M = {}
 local function bool2str(bool) return bool and "on" or "off" end
 
 local function ui_notify(str)
-  if vim.g.ui_notifications_enabled then require("core.utils").notify(str) end
+  if vim.g.ui_notifications_enabled then require("astronvim.utils").notify(str) end
 end
 
 --- Toggle notifications for UI toggles
@@ -55,7 +55,7 @@ function M.toggle_diagnostics()
     vim.g.status_diagnostics_enabled = true
   end
 
-  vim.diagnostic.config(require("core.utils.lsp").diagnostics[bool2str(vim.g.diagnostics_enabled)])
+  vim.diagnostic.config(require("astronvim.utils.lsp").diagnostics[bool2str(vim.g.diagnostics_enabled)])
   ui_notify(string.format("diagnostics %s", status))
 end
 
@@ -198,7 +198,7 @@ end
 --- Toggle URL/URI syntax highlighting rules
 function M.toggle_url_match()
   vim.g.highlighturl_enabled = not vim.g.highlighturl_enabled
-  require("core.utils").set_url_match()
+  require("astronvim.utils").set_url_match()
 end
 
 return M

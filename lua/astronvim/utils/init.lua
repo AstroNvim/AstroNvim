@@ -2,9 +2,9 @@
 --
 -- Various utility functions to use within AstroNvim and user configurations.
 --
--- This module can be loaded with `local utils = require "core.utils"`
+-- This module can be loaded with `local utils = require "astronvim.utils"`
 --
--- @module core.utils
+-- @module astronvim.utils
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
@@ -33,8 +33,8 @@ end
 function M.get_icon(kind)
   local icon_pack = vim.g.icons_enabled and "icons" or "text_icons"
   if not M[icon_pack] then
-    M.icons = astronvim.user_opts("icons", require "core.icons.nerd_font")
-    M.text_icons = astronvim.user_opts("text_icons", require "core.icons.text")
+    M.icons = astronvim.user_opts("icons", require "astronvim.icons.nerd_font")
+    M.text_icons = astronvim.user_opts("text_icons", require "astronvim.icons.text")
   end
   return M[icon_pack] and M[icon_pack][kind] or ""
 end

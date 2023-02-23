@@ -35,7 +35,7 @@ body:
     id: health
     attributes:
       label: AstroNvim Health
-      description: Output of `:checkhealth core`
+      description: Output of `:checkhealth astronvim`
       placeholder: |
         ## AstroNvim
         - INFO: AstroNvim Version: nightly (v2.11.8-181-g11d5990)

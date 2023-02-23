@@ -2,7 +2,7 @@ return {
   "rebelot/heirline.nvim",
   event = "BufEnter",
   opts = function()
-    local status = require "core.utils.status"
+    local status = require "astronvim.utils.status"
     return {
       statusline = { -- statusline
         hl = { fg = "fg", bg = "bg" },
@@ -70,7 +70,7 @@ return {
             provider = status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
             hl = status.hl.get_attributes("tab_close", true),
             on_click = {
-              callback = function() require("core.utils.buffer").close_tab() end,
+              callback = function() require("astronvim.utils.buffer").close_tab() end,
               name = "heirline_tabline_close_tab_callback",
             },
           },

@@ -3,7 +3,7 @@ local M = {}
 function M.check()
   vim.health.report_start "AstroNvim"
 
-  vim.health.report_info("AstroNvim Version: " .. require("core.utils.updater").version(true))
+  vim.health.report_info("AstroNvim Version: " .. require("astronvim.utils.updater").version(true))
   vim.health.report_info("Neovim Version: v" .. vim.fn.matchstr(vim.fn.execute "version", "NVIM v\\zs[^\n]*"))
 
   if vim.version().prerelease then

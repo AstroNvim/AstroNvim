@@ -2,15 +2,15 @@
 --
 -- Statusline related utility functions to use within AstroNvim and user configurations.
 --
--- This module can be loaded with `local status = require "core.utils.status"`
+-- This module can be loaded with `local status = require "astronvim.utils.status"`
 --
--- @module core.utils.status
+-- @module astronvim.utils.status
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
 local M = { hl = {}, init = {}, provider = {}, condition = {}, component = {}, utils = {}, env = {}, heirline = {} }
 
-local utils = require "core.utils"
+local utils = require "astronvim.utils"
 local extend_tbl = utils.extend_tbl
 local get_icon = utils.get_icon
 local is_available = utils.is_available
@@ -157,18 +157,18 @@ end
 
 --- Get the highlight for the current mode
 -- @return the highlight group for the current mode
--- @usage local heirline_component = { provider = "Example Provider", hl = require("core.utils.status").hl.mode },
+-- @usage local heirline_component = { provider = "Example Provider", hl = require("astronvim.utils.status").hl.mode },
 function M.hl.mode() return { bg = M.hl.mode_bg() } end
 
 --- Get the foreground color group for the current mode, good for usage with Heirline surround utility
 -- @return the highlight group for the current mode foreground
--- @usage local heirline_component = require("heirline.utils").surround({ "|", "|" }, require("core.utils.status").hl.mode_bg, heirline_component),
+-- @usage local heirline_component = require("heirline.utils").surround({ "|", "|" }, require("astronvim.utils.status").hl.mode_bg, heirline_component),
 
 function M.hl.mode_bg() return M.env.modes[vim.fn.mode()][2] end
 
 --- Get the foreground color group for the current filetype
 -- @return the highlight group for the current filetype foreground
--- @usage local heirline_component = { provider = require("core.utils.status").provider.fileicon(), hl = require("core.utils.status").hl.filetype_color },
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.fileicon(), hl = require("astronvim.utils.status").hl.filetype_color },
 function M.hl.filetype_color(self)
   local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
   if not devicons_avail then return {} end
@@ -184,7 +184,7 @@ end
 -- @param name string, the name of the element to get the attributes and colors for
 -- @param include_bg boolean whether or not to include background color (Default: false)
 -- @return a table of highlight information
--- @usage local heirline_component = { provider = "Example Provider", hl = require("core.utils.status").hl.get_attributes("treesitter") },
+-- @usage local heirline_component = { provider = "Example Provider", hl = require("astronvim.utils.status").hl.get_attributes("treesitter") },
 function M.hl.get_attributes(name, include_bg)
   local hl = M.env.attributes[name] or {}
   hl.fg = name .. "_fg"
@@ -195,7 +195,7 @@ end
 --- Enable filetype color highlight if enabled in icon_highlights.file_icon options
 -- @param name string of the icon_highlights.file_icon table element
 -- @return function for setting hl property in a component
--- @usage local heirline_component = { provider = "Example Provider", hl = require("core.utils.status").hl.file_icon("winbar") },
+-- @usage local heirline_component = { provider = "Example Provider", hl = require("astronvim.utils.status").hl.file_icon("winbar") },
 function M.hl.file_icon(name)
   local hl_enabled = M.env.icon_highlights.file_icon[name]
   return function(self)
@@ -208,7 +208,7 @@ end
 --- An `init` function to build a set of children components for LSP breadcrumbs
 -- @param opts options for configuring the breadcrumbs (default: `{ max_depth = 5, separator = "  ", icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
 -- @return The Heirline init function
--- @usage local heirline_component = { init = require("core.utils.status").init.breadcrumbs { padding = { left = 1 } } }
+-- @usage local heirline_component = { init = require("astronvim.utils.status").init.breadcrumbs { padding = { left = 1 } } }
 function M.init.breadcrumbs(opts)
   opts = extend_tbl({
     max_depth = 5,
@@ -227,7 +227,7 @@ function M.init.breadcrumbs(opts)
     if opts.max_depth and opts.max_depth > 0 then
       start_idx = #data - opts.max_depth
       if start_idx > 0 then
-        table.insert(children, { provider = require("core.utils").get_icon "Ellipsis" .. opts.separator })
+        table.insert(children, { provider = require("astronvim.utils").get_icon "Ellipsis" .. opts.separator })
       end
     end
     -- create a child for each level
@@ -271,7 +271,7 @@ end
 --- An `init` function to build a set of children components for a separated path to file
 -- @param opts options for configuring the breadcrumbs (default: `{ max_depth = 3, path_func = M.provider.unique_path(), separator = "  ", suffix = true, padding = { left = 0, right = 0 } }`)
 -- @return The Heirline init function
--- @usage local heirline_component = { init = require("core.utils.status").init.separated_path { padding = { left = 1 } } }
+-- @usage local heirline_component = { init = require("astronvim.utils.status").init.separated_path { padding = { left = 1 } } }
 function M.init.separated_path(opts)
   opts = extend_tbl({
     max_depth = 3,
@@ -294,7 +294,7 @@ function M.init.separated_path(opts)
     if opts.max_depth and opts.max_depth > 0 then
       start_idx = #data - opts.max_depth
       if start_idx > 0 then
-        table.insert(children, { provider = require("core.utils").get_icon "Ellipsis" .. opts.separator })
+        table.insert(children, { provider = require("astronvim.utils").get_icon "Ellipsis" .. opts.separator })
       end
     end
     -- create a child for each level
@@ -320,7 +320,7 @@ end
 --- An `init` function to build multiple update events which is not supported yet by Heirline's update field
 -- @param opts an array like table of autocmd events as either just a string or a table with custom patterns and callbacks.
 -- @return The Heirline init function
--- @usage local heirline_component = { init = require("core.utils.status").init.update_events { "BufEnter", { "User", pattern = "LspProgressUpdate" } } }
+-- @usage local heirline_component = { init = require("astronvim.utils.status").init.update_events { "BufEnter", { "User", pattern = "LspProgressUpdate" } } }
 function M.init.update_events(opts)
   return function(self)
     if not rawget(self, "once") then
@@ -342,14 +342,14 @@ end
 
 --- A provider function for the fill string
 -- @return the statusline string for filling the empty space
--- @usage local heirline_component = { provider = require("core.utils.status").provider.fill }
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.fill }
 function M.provider.fill() return "%=" end
 
 --- A provider function for the signcolumn string
 -- @param opts options passed to the stylize function
 -- @return the statuscolumn string for adding the signcolumn
--- @usage local heirline_component = { provider = require("core.utils.status").provider.signcolumn }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.signcolumn }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.signcolumn(opts)
   opts = extend_tbl({ escape = false }, opts)
   return M.utils.stylize("%s", opts)
@@ -358,8 +358,8 @@ end
 --- A provider function for the numbercolumn string
 -- @param opts options passed to the stylize function
 -- @return the statuscolumn string for adding the numbercolumn
--- @usage local heirline_component = { provider = require("core.utils.status").provider.numbercolumn }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.numbercolumn }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.numbercolumn(opts)
   opts = extend_tbl({ escape = false }, opts)
   return function()
@@ -372,11 +372,11 @@ end
 --- A provider function for building a foldcolumn
 -- @param opts options passed to the stylize function
 -- @return a custom foldcolumn function for the statuscolumn that doesn't show the nest levels
--- @usage local heirline_component = { provider = require("core.utils.status").provider.foldcolumn }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.foldcolumn }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.foldcolumn(opts)
   opts = extend_tbl({ escape = false }, opts)
-  local ffi = require "core.utils.ffi" -- get AstroNvim C extensions
+  local ffi = require "astronvim.utils.ffi" -- get AstroNvim C extensions
   local fillchars = vim.opt.fillchars:get()
   local foldopen = fillchars.foldopen or get_icon "FoldOpened"
   local foldclosed = fillchars.foldclose or get_icon "FoldClosed"
@@ -417,7 +417,7 @@ end
 
 --- A provider function for the current tab numbre
 -- @return the statusline function to return a string for a tab number
--- @usage local heirline_component = { provider = require("core.utils.status").provider.tabnr() }
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.tabnr() }
 function M.provider.tabnr()
   return function(self) return (self and self.tabnr) and "%" .. self.tabnr .. "T " .. self.tabnr .. " %T" or "" end
 end
@@ -425,8 +425,8 @@ end
 --- A provider function for showing if spellcheck is on
 -- @param opts options passed to the stylize function
 -- @return the function for outputting if spell is enabled
--- @usage local heirline_component = { provider = require("core.utils.status").provider.spell() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.spell() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.spell(opts)
   opts = extend_tbl({ str = "", icon = { kind = "Spellcheck" }, show_empty = true }, opts)
   return function() return M.utils.stylize(vim.wo.spell and opts.str, opts) end
@@ -436,8 +436,8 @@ end
 -- @param opts options passed to the stylize function
 -- @return the function for outputting if paste is enabled
 
--- @usage local heirline_component = { provider = require("core.utils.status").provider.paste() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.paste() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.paste(opts)
   opts = extend_tbl({ str = "", icon = { kind = "Paste" }, show_empty = true }, opts)
   return function() return M.utils.stylize(vim.opt.paste:get() and opts.str, opts) end
@@ -446,8 +446,8 @@ end
 --- A provider function for displaying if a macro is currently being recorded
 -- @param opts a prefix before the recording register and options passed to the stylize function
 -- @return a function that returns a string of the current recording status
--- @usage local heirline_component = { provider = require("core.utils.status").provider.macro_recording() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.macro_recording() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.macro_recording(opts)
   opts = extend_tbl({ prefix = "@" }, opts)
   return function()
@@ -460,8 +460,8 @@ end
 --- A provider function for displaying the current search count
 -- @param opts options for `vim.fn.searchcount` and options passed to the stylize function
 -- @return a function that returns a string of the current search location
--- @usage local heirline_component = { provider = require("core.utils.status").provider.search_count() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.search_count() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.search_count(opts)
   local search_func = vim.tbl_isempty(opts or {}) and function() return vim.fn.searchcount() end
     or function() return vim.fn.searchcount(opts) end
@@ -485,8 +485,8 @@ end
 --- A provider function for showing the text of the current vim mode
 -- @param opts options for padding the text and options passed to the stylize function
 -- @return the function for displaying the text of the current vim mode
--- @usage local heirline_component = { provider = require("core.utils.status").provider.mode_text() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.mode_text() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.mode_text(opts)
   local max_length = math.max(unpack(vim.tbl_map(function(str) return #str[1] end, vim.tbl_values(M.env.modes))))
   return function()
@@ -508,8 +508,8 @@ end
 --- A provider function for showing the percentage of the current location in a document
 -- @param opts options for Top/Bot text, fixed width, and options passed to the stylize function
 -- @return the statusline string for displaying the percentage of current document location
--- @usage local heirline_component = { provider = require("core.utils.status").provider.percentage() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.percentage() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.percentage(opts)
   opts = extend_tbl({ escape = false, fixed_width = false, edge_text = true }, opts)
   return function()
@@ -529,8 +529,8 @@ end
 --- A provider function for showing the current line and character in a document
 -- @param opts options for padding the line and character locations and options passed to the stylize function
 -- @return the statusline string for showing location in document line_num:char_num
--- @usage local heirline_component = { provider = require("core.utils.status").provider.ruler({ pad_ruler = { line = 3, char = 2 } }) }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.ruler({ pad_ruler = { line = 3, char = 2 } }) }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.ruler(opts)
   opts = extend_tbl({ pad_ruler = { line = 0, char = 0 } }, opts)
   local padding_str = string.format("%%%dd:%%%dd", opts.pad_ruler.line, opts.pad_ruler.char)
@@ -544,8 +544,8 @@ end
 --- A provider function for showing the current location as a scrollbar
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the scrollbar
--- @usage local heirline_component = { provider = require("core.utils.status").provider.scrollbar() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.scrollbar() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.scrollbar(opts)
   local sbar = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
   return function()
@@ -559,8 +559,8 @@ end
 --- A provider to simply show a cloes button icon
 -- @param opts options passed to the stylize function and the kind of icon to use
 -- @return return the stylized icon
--- @usage local heirline_component = { provider = require("core.utils.status").provider.close_button() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.close_button() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.close_button(opts)
   opts = extend_tbl({ kind = "BufferClose" }, opts)
   return M.utils.stylize(get_icon(opts.kind), opts)
@@ -569,8 +569,8 @@ end
 --- A provider function for showing the current filetype
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the filetype
--- @usage local heirline_component = { provider = require("core.utils.status").provider.filetype() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.filetype() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.filetype(opts)
   return function(self)
     local buffer = vim.bo[self and self.bufnr or 0]
@@ -581,13 +581,14 @@ end
 --- A provider function for showing the current filename
 -- @param opts options for argument to fnamemodify to format filename and options passed to the stylize function
 -- @return the function for outputting the filename
--- @usage local heirline_component = { provider = require("core.utils.status").provider.filename() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.filename() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.filename(opts)
-  opts = extend_tbl(
-    { fallback = "Empty", fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ":t" },
-    opts
-  )
+  opts = extend_tbl({
+    fallback = "Empty",
+    fname = function(nr) return vim.api.nvim_buf_get_name(nr) end,
+    modify = ":t",
+  }, opts)
   return function(self)
     local filename = vim.fn.fnamemodify(opts.fname(self and self.bufnr or 0), opts.modify)
     return M.utils.stylize((filename == "" and opts.fallback or filename), opts)
@@ -597,8 +598,8 @@ end
 --- Get a unique filepath between all buffers
 -- @param opts options for function to get the buffer name, a buffer number, max length, and options passed to the stylize function
 -- @return path to file that uniquely identifies each buffer
--- @usage local heirline_component = { provider = require("core.utils.status").provider.unique_path() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.unique_path() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.unique_path(opts)
   opts = extend_tbl({
     buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t") end,
@@ -650,8 +651,8 @@ end
 --- A provider function for showing if the current file is modifiable
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the indicator if the file is modified
--- @usage local heirline_component = { provider = require("core.utils.status").provider.file_modified() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.file_modified() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.file_modified(opts)
   opts = extend_tbl({ str = "", icon = { kind = "FileModified" }, show_empty = true }, opts)
   return function(self) return M.utils.stylize(M.condition.file_modified((self or {}).bufnr) and opts.str, opts) end
@@ -660,8 +661,8 @@ end
 --- A provider function for showing if the current file is read-only
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the indicator if the file is read-only
--- @usage local heirline_component = { provider = require("core.utils.status").provider.file_read_only() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.file_read_only() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.file_read_only(opts)
   opts = extend_tbl({ str = "", icon = { kind = "FileReadOnly" }, show_empty = true }, opts)
   return function(self) return M.utils.stylize(M.condition.file_read_only((self or {}).bufnr) and opts.str, opts) end
@@ -670,8 +671,8 @@ end
 --- A provider function for showing the current filetype icon
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the filetype icon
--- @usage local heirline_component = { provider = require("core.utils.status").provider.file_icon() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.file_icon() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.file_icon(opts)
   return function(self)
     local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
@@ -688,8 +689,8 @@ end
 --- A provider function for showing the current git branch
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the git branch
--- @usage local heirline_component = { provider = require("core.utils.status").provider.git_branch() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.git_branch() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.git_branch(opts)
   return function(self) return M.utils.stylize(vim.b[self and self.bufnr or 0].gitsigns_head or "", opts) end
 end
@@ -697,8 +698,8 @@ end
 --- A provider function for showing the current git diff count of a specific type
 -- @param opts options for type of git diff and options passed to the stylize function
 -- @return the function for outputting the git diff
--- @usage local heirline_component = { provider = require("core.utils.status").provider.git_diff({ type = "added" }) }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.git_diff({ type = "added" }) }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.git_diff(opts)
   if not opts or not opts.type then return end
   return function(self)
@@ -713,8 +714,8 @@ end
 --- A provider function for showing the current diagnostic count of a specific severity
 -- @param opts options for severity of diagnostic and options passed to the stylize function
 -- @return the function for outputting the diagnostic count
--- @usage local heirline_component = { provider = require("core.utils.status").provider.diagnostics({ severity = "ERROR" }) }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.diagnostics({ severity = "ERROR" }) }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.diagnostics(opts)
   if not opts or not opts.severity then return end
   return function(self)
@@ -727,8 +728,8 @@ end
 --- A provider function for showing the current progress of loading language servers
 -- @param opts options passed to the stylize function
 -- @return the function for outputting the LSP progress
--- @usage local heirline_component = { provider = require("core.utils.status").provider.lsp_progress() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.lsp_progress() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.lsp_progress(opts)
   return function()
     local Lsp = vim.lsp.util.get_progress_messages()[1]
@@ -752,8 +753,8 @@ end
 --- A provider function for showing the connected LSP client names
 -- @param opts options for explanding null_ls clients, max width percentage, and options passed to the stylize function
 -- @return the function for outputting the LSP client names
--- @usage local heirline_component = { provider = require("core.utils.status").provider.lsp_client_names({ expand_null_ls = true, truncate = 0.25 }) }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.lsp_client_names({ expand_null_ls = true, truncate = 0.25 }) }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.lsp_client_names(opts)
   opts = extend_tbl({ expand_null_ls = true, truncate = 0.25 }, opts)
   return function(self)
@@ -783,8 +784,8 @@ end
 --- A provider function for showing if treesitter is connected
 -- @param opts options passed to the stylize function
 -- @return the function for outputting TS if treesitter is connected
--- @usage local heirline_component = { provider = require("core.utils.status").provider.treesitter_status() }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.treesitter_status() }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.treesitter_status(opts)
   return function() return M.utils.stylize(require("nvim-treesitter.parser").has_parser() and "TS" or "", opts) end
 end
@@ -792,8 +793,8 @@ end
 --- A provider function for displaying a single string
 -- @param opts options passed to the stylize function
 -- @return the stylized statusline string
--- @usage local heirline_component = { provider = require("core.utils.status").provider.str({ str = "Hello" }) }
--- @see core.utils.status.utils.stylize
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.str({ str = "Hello" }) }
+-- @see astronvim.utils.status.utils.stylize
 function M.provider.str(opts)
   opts = extend_tbl({ str = " " }, opts)
   return M.utils.stylize(opts.str, opts)
@@ -801,14 +802,14 @@ end
 
 --- A condition function if the window is currently active
 -- @return boolean of wether or not the window is currently actie
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.is_active }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_active }
 function M.condition.is_active() return vim.api.nvim_get_current_win() == tonumber(vim.g.actual_curwin) end
 
 --- A condition function if the buffer filetype,buftype,bufname match a pattern
 -- @param patterns the table of patterns to match
 -- @param bufnr number of the buffer to match (Default: 0 [current])
 -- @return boolean of wether or not LSP is attached
--- @usage local heirline_component = { provider = "Example Provider", condition = function() return require("core.utils.status").condition.buffer_matches { buftype = { "terminal" } } end }
+-- @usage local heirline_component = { provider = "Example Provider", condition = function() return require("astronvim.utils.status").condition.buffer_matches { buftype = { "terminal" } } end }
 function M.condition.buffer_matches(patterns, bufnr)
   for kind, pattern_list in pairs(patterns) do
     if M.env.buf_matchers[kind](pattern_list, bufnr) then return true end
@@ -818,18 +819,18 @@ end
 
 --- A condition function if a macro is being recorded
 -- @return boolean of wether or not a macro is currently being recorded
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.is_macro_recording }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_macro_recording }
 function M.condition.is_macro_recording() return vim.fn.reg_recording() ~= "" end
 
 --- A condition function if search is visible
 -- @return boolean of wether or not searching is currently visible
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.is_hlsearch }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_hlsearch }
 function M.condition.is_hlsearch() return vim.v.hlsearch ~= 0 end
 
 --- A condition function if the current file is in a git repo
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current file is in a git repo
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.is_git_repo }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_git_repo }
 function M.condition.is_git_repo(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
   return vim.b[bufnr or 0].gitsigns_head or vim.b[bufnr or 0].gitsigns_status_dict
@@ -838,7 +839,7 @@ end
 --- A condition function if there are any git changes
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not there are any git changes
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.git_changed }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.git_changed }
 function M.condition.git_changed(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
   local git_status = vim.b[bufnr or 0].gitsigns_status_dict
@@ -848,7 +849,7 @@ end
 --- A condition function if the current buffer is modified
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current buffer is modified
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.file_modified }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.file_modified }
 function M.condition.file_modified(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
   return vim.bo[bufnr or 0].modified
@@ -857,7 +858,7 @@ end
 --- A condition function if the current buffer is read only
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current buffer is read only or not modifiable
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.file_read_only }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.file_read_only }
 function M.condition.file_read_only(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
   local buffer = vim.bo[bufnr or 0]
@@ -867,7 +868,7 @@ end
 --- A condition function if the current file has any diagnostics
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current file has any diagnostics
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.has_diagnostics }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.has_diagnostics }
 function M.condition.has_diagnostics(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
   return vim.g.status_diagnostics_enabled and #vim.diagnostic.get(bufnr or 0) > 0
@@ -876,7 +877,7 @@ end
 --- A condition function if there is a defined filetype
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not there is a filetype
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.has_filetype }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.has_filetype }
 function M.condition.has_filetype(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
   return vim.fn.empty(vim.fn.expand "%:t") ~= 1 and vim.bo[bufnr or 0].filetype and vim.bo[bufnr or 0].filetype ~= ""
@@ -884,14 +885,14 @@ end
 
 --- A condition function if Aerial is available
 -- @return boolean of wether or not aerial plugin is installed
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.aerial_available }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.aerial_available }
 -- function M.condition.aerial_available() return is_available "aerial.nvim" end
 function M.condition.aerial_available() return package.loaded["aerial"] end
 
 --- A condition function if LSP is attached
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not LSP is attached
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.lsp_attached }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.lsp_attached }
 function M.condition.lsp_attached(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
   return next(vim.lsp.get_active_clients { bufnr = bufnr or 0 }) ~= nil
@@ -900,7 +901,7 @@ end
 --- A condition function if treesitter is in use
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not treesitter is active
--- @usage local heirline_component = { provider = "Example Provider", condition = require("core.utils.status").condition.treesitter_available }
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.treesitter_available }
 function M.condition.treesitter_available(bufnr)
   if not package.loaded["nvim-treesitter"] then return false end
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -922,7 +923,7 @@ local function escape(str) return str:gsub("%%", "%%%%") end
 -- @param str the string to stylize
 -- @param opts options of `{ padding = { left = 0, right = 0 }, separator = { left = "|", right = "|" }, escape = true, show_empty = false, icon = { kind = "NONE", padding = { left = 0, right = 0 } } }`
 -- @return the stylized string
--- @usage local string = require("core.utils.status").utils.stylize("Hello", { padding = { left = 1, right = 1 }, icon = { kind = "String" } })
+-- @usage local string = require("astronvim.utils.status").utils.stylize("Hello", { padding = { left = 1, right = 1 }, icon = { kind = "String" } })
 function M.utils.stylize(str, opts)
   opts = extend_tbl({
     padding = { left = 0, right = 0 },
@@ -941,13 +942,13 @@ end
 --- A Heirline component for filling in the empty space of the bar
 -- @param opts options for configuring the other fields of the heirline component
 -- @return The heirline component table
--- @usage local heirline_component = require("core.utils.status").component.fill()
+-- @usage local heirline_component = require("astronvim.utils.status").component.fill()
 function M.component.fill(opts) return extend_tbl({ provider = M.provider.fill() }, opts) end
 
 --- A function to build a set of children components for an entire file information section
 -- @param opts options for configuring file_icon, filename, filetype, file_modified, file_read_only, and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.file_info()
+-- @usage local heirline_component = require("astronvim.utils.status").component.file_info()
 function M.component.file_info(opts)
   opts = extend_tbl({
     file_icon = { hl = M.hl.file_icon "statusline", padding = { left = 1, right = 1 } },
@@ -971,7 +972,7 @@ end
 --- A function with different file_info defaults specifically for use in the tabline
 -- @param opts options for configuring file_icon, filename, filetype, file_modified, file_read_only, and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.tabline_file_info()
+-- @usage local heirline_component = require("astronvim.utils.status").component.tabline_file_info()
 function M.component.tabline_file_info(opts)
   return M.component.file_info(extend_tbl({
     file_icon = {
@@ -985,7 +986,7 @@ function M.component.tabline_file_info(opts)
       hl = function(self) return M.hl.get_attributes(self.tab_type .. "_close") end,
       padding = { left = 1, right = 1 },
       on_click = {
-        callback = function(_, minwid) require("core.utils.buffer").close(minwid) end,
+        callback = function(_, minwid) require("astronvim.utils.buffer").close(minwid) end,
         minwid = function(self) return self.bufnr end,
         name = "heirline_tabline_close_buffer_callback",
       },
@@ -1003,7 +1004,7 @@ end
 --- A function to build a set of children components for an entire navigation section
 -- @param opts options for configuring ruler, percentage, scrollbar, and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.nav()
+-- @usage local heirline_component = require("astronvim.utils.status").component.nav()
 function M.component.nav(opts)
   opts = extend_tbl({
     ruler = {},
@@ -1019,7 +1020,7 @@ end
 --- A function to build a set of children components for information shown in the cmdline
 -- @param opts options for configuring macro recording, search count, and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.cmd_info()
+-- @usage local heirline_component = require("astronvim.utils.status").component.cmd_info()
 function M.component.cmd_info(opts)
   opts = extend_tbl({
     macro_recording = {
@@ -1046,7 +1047,7 @@ end
 --- A function to build a set of children components for a mode section
 -- @param opts options for configuring mode_text, paste, spell, and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.mode { mode_text = true }
+-- @usage local heirline_component = require("astronvim.utils.status").component.mode { mode_text = true }
 function M.component.mode(opts)
   opts = extend_tbl({
     mode_text = false,
@@ -1063,7 +1064,7 @@ end
 --- A function to build a set of children components for an LSP breadcrumbs section
 -- @param opts options for configuring breadcrumbs and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.breadcumbs()
+-- @usage local heirline_component = require("astronvim.utils.status").component.breadcumbs()
 function M.component.breadcrumbs(opts)
   opts = extend_tbl({ padding = { left = 1 }, condition = M.condition.aerial_available, update = "CursorMoved" }, opts)
   opts.init = M.init.breadcrumbs(opts)
@@ -1073,7 +1074,7 @@ end
 --- A function to build a set of children components for the current file path
 -- @param opts options for configuring path and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.separated_path()
+-- @usage local heirline_component = require("astronvim.utils.status").component.separated_path()
 function M.component.separated_path(opts)
   opts = extend_tbl({ padding = { left = 1 }, update = { "BufEnter", "DirChanged" } }, opts)
   opts.init = M.init.separated_path(opts)
@@ -1083,7 +1084,7 @@ end
 --- A function to build a set of children components for a git branch section
 -- @param opts options for configuring git branch and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.git_branch()
+-- @usage local heirline_component = require("astronvim.utils.status").component.git_branch()
 function M.component.git_branch(opts)
   opts = extend_tbl({
     git_branch = { icon = { kind = "GitBranch", padding = { right = 1 } } },
@@ -1106,7 +1107,7 @@ end
 --- A function to build a set of children components for a git difference section
 -- @param opts options for configuring git changes and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.git_diff()
+-- @usage local heirline_component = require("astronvim.utils.status").component.git_diff()
 function M.component.git_diff(opts)
   opts = extend_tbl({
     added = { icon = { kind = "GitAdd", padding = { left = 1, right = 1 } } },
@@ -1139,7 +1140,7 @@ end
 --- A function to build a set of children components for a diagnostics section
 -- @param opts options for configuring diagnostic providers and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.diagnostics()
+-- @usage local heirline_component = require("astronvim.utils.status").component.diagnostics()
 function M.component.diagnostics(opts)
   opts = extend_tbl({
     ERROR = { icon = { kind = "DiagnosticError", padding = { left = 1, right = 1 } } },
@@ -1174,7 +1175,7 @@ end
 --- A function to build a set of children components for a Treesitter section
 -- @param opts options for configuring diagnostic providers and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.treesitter()
+-- @usage local heirline_component = require("astronvim.utils.status").component.treesitter()
 function M.component.treesitter(opts)
   opts = extend_tbl({
     str = { str = "TS", icon = { kind = "ActiveTS" } },
@@ -1193,7 +1194,7 @@ end
 --- A function to build a set of children components for an LSP section
 -- @param opts options for configuring lsp progress and client_name providers and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.lsp()
+-- @usage local heirline_component = require("astronvim.utils.status").component.lsp()
 function M.component.lsp(opts)
   opts = extend_tbl({
     lsp_progress = {
@@ -1235,7 +1236,7 @@ end
 --- A function to build a set of components for a foldcolumn section in a statuscolumn
 -- @param opts options for configuring foldcolumn and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.foldcolumn()
+-- @usage local heirline_component = require("astronvim.utils.status").component.foldcolumn()
 function M.component.foldcolumn(opts)
   opts = extend_tbl({
     foldcolumn = { padding = { right = 1 } },
@@ -1255,7 +1256,7 @@ end
 --- A function to build a set of components for a numbercolumn section in statuscolumn
 -- @param opts options for configuring numbercolumn and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.numbercolumn()
+-- @usage local heirline_component = require("astronvim.utils.status").component.numbercolumn()
 function M.component.numbercolumn(opts)
   opts = extend_tbl({
     numbercolumn = { padding = { right = 1 } },
@@ -1277,7 +1278,7 @@ end
 --- A function to build a set of components for a signcolumn section in statuscolumn
 -- @param opts options for configuring signcolumn and the overall padding
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").component.signcolumn()
+-- @usage local heirline_component = require("astronvim.utils.status").component.signcolumn()
 function M.component.signcolumn(opts)
   opts = extend_tbl({
     signcolumn = {},
@@ -1298,7 +1299,7 @@ end
 --- A general function to build a section of astronvim status providers with highlights, conditions, and section surrounding
 -- @param opts a list of components to build into a section
 -- @return The Heirline component table
--- @usage local heirline_component = require("core.utils.status").components.builder({ { provider = "file_icon", opts = { padding = { right = 1 } } }, { provider = "filename" } })
+-- @usage local heirline_component = require("astronvim.utils.status").components.builder({ { provider = "file_icon", opts = { padding = { right = 1 } } }, { provider = "filename" } })
 function M.component.builder(opts)
   opts = extend_tbl({ padding = { left = 0, right = 0 } }, opts)
   local children = {}
@@ -1461,7 +1462,7 @@ end
 -- @param button the button parameter from Heirline component on_click.callback function call
 -- @param mods the button parameter from Heirline component on_click.callback function call
 -- @return the argument table with the decoded mouse information and signcolumn signs information
--- @usage local heirline_component = { on_click = { callback = function(...) local args = require("core.utils.status").utils.statuscolumn_clickargs(...) end } }
+-- @usage local heirline_component = { on_click = { callback = function(...) local args = require("astronvim.utils.status").utils.statuscolumn_clickargs(...) end } }
 function M.utils.statuscolumn_clickargs(self, minwid, clicks, button, mods)
   local args = {
     minwid = minwid,

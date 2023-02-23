@@ -2,9 +2,9 @@
 --
 -- Buffer management related utility functions
 --
--- This module can be loaded with `local buffer_utils = require "core.utils.buffer"`
+-- This module can be loaded with `local buffer_utils = require "astronvim.utils.buffer"`
 --
--- @module core.utils.buffer
+-- @module astronvim.utils.buffer
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
@@ -41,7 +41,7 @@ function M.move(n)
     end
   end
   vim.t.bufs = bufs -- set buffers
-  require("core.utils").event "BufsUpdated"
+  require("astronvim.utils").event "BufsUpdated"
   vim.cmd.redrawtabline() -- redraw tabline
 end
 
@@ -65,7 +65,7 @@ function M.close(bufnr, force)
   if not bufnr or bufnr == 0 then bufnr = current end
   if bufnr == current then M.nav(vim.t.bufs[1] == current and 1 or -1) end
 
-  if require("core.utils").is_available "bufdelete.nvim" then
+  if require("astronvim.utils").is_available "bufdelete.nvim" then
     require("bufdelete").bufdelete(bufnr, force)
   else
     vim.cmd((force and "bd!" or "confirm bd") .. bufnr)
@@ -76,7 +76,7 @@ end
 function M.close_tab()
   if #vim.api.nvim_list_tabpages() > 1 then
     vim.t.bufs = nil
-    require("core.utils").event "BufsUpdated"
+    require("astronvim.utils").event "BufsUpdated"
     vim.cmd.tabclose()
   end
 end

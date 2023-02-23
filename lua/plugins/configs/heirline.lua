@@ -1,8 +1,8 @@
 return function(_, opts)
   local heirline = require "heirline"
-  local status = require "core.utils.status"
+  local status = require "astronvim.utils.status"
   local C = status.env.fallback_colors
-  local get_hlgroup = require("core.utils").get_hlgroup
+  local get_hlgroup = require("astronvim.utils").get_hlgroup
 
   local function setup_colors()
     local Normal = get_hlgroup("Normal", { fg = C.fg, bg = C.bg })

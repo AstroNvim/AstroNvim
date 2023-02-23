@@ -6,7 +6,7 @@ return {
   opts = function()
     -- TODO move after neo-tree improves (https://github.com/nvim-neo-tree/neo-tree.nvim/issues/707)
     local global_commands = {
-      system_open = function(state) require("core.utils").system_open(state.tree:get_node():get_id()) end,
+      system_open = function(state) require("astronvim.utils").system_open(state.tree:get_node():get_id()) end,
       parent_or_close = function(state)
         local node = state.tree:get_node()
         if (node.type == "directory" or node:has_children()) and node:is_expanded() then
@@ -28,7 +28,7 @@ return {
         end
       end,
     }
-    local get_icon = require("core.utils").get_icon
+    local get_icon = require("astronvim.utils").get_icon
     return {
       close_if_last_window = true,
       source_selector = {
@@ -86,7 +86,10 @@ return {
       git_status = { commands = global_commands },
       diagnostics = { commands = global_commands },
       event_handlers = {
-        { event = "neo_tree_buffer_enter", handler = function(_) vim.opt_local.signcolumn = "auto" end },
+        {
+          event = "neo_tree_buffer_enter",
+          handler = function(_) vim.opt_local.signcolumn = "auto" end,
+        },
       },
     }
   end,

@@ -19,8 +19,10 @@ return {
       local snip_status_ok, luasnip = pcall(require, "luasnip")
       local lspkind_status_ok, lspkind = pcall(require, "lspkind")
       if not snip_status_ok then return end
-      local border_opts =
-        { border = "single", winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None" }
+      local border_opts = {
+        border = "single",
+        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+      }
 
       local function has_words_before()
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))

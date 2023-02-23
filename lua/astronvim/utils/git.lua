@@ -1,8 +1,8 @@
 --- ### Git LUA API
 --
--- This module can be loaded with `local git = require "core.utils.git"`
+-- This module can be loaded with `local git = require "astronvim.utils.git"`
 --
--- @module core.utils.git
+-- @module astronvim.utils.git
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
@@ -13,7 +13,9 @@ local function trim_or_nil(str) return type(str) == "string" and vim.trim(str) o
 --- Run a git command from the AstroNvim installation directory
 -- @param args the git arguments
 -- @return the result of the command or nil if unsuccessful
-function git.cmd(args, ...) return require("core.utils").cmd("git -C " .. astronvim.install.home .. " " .. args, ...) end
+function git.cmd(args, ...)
+  return require("astronvim.utils").cmd("git -C " .. astronvim.install.home .. " " .. args, ...)
+end
 
 --- Check if the AstroNvim is able to reach the `git` command
 -- @return the result of running `git --help`
@@ -152,10 +154,12 @@ function git.pretty_changelog(commits)
   for _, commit in ipairs(commits) do
     local hash, type, msg = commit:match "(%[.*%])(.*:)(.*)"
     if hash and type and msg then
-      vim.list_extend(
-        changelog,
-        { { hash, "DiffText" }, { type, git.is_breaking(commit) and "DiffDelete" or "DiffChange" }, { msg }, { "\n" } }
-      )
+      vim.list_extend(changelog, {
+        { hash, "DiffText" },
+        { type, git.is_breaking(commit) and "DiffDelete" or "DiffChange" },
+        { msg },
+        { "\n" },
+      })
     end
   end
   return changelog
