@@ -32,7 +32,7 @@ return {
       },
     },
     init = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
-    opts = function() return { on_attach = require("core.utils.lsp").on_attach } end,
+    opts = function() return { on_attach = require("astronvim.utils.lsp").on_attach } end,
   },
   {
     "stevearc/aerial.nvim",

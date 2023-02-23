@@ -2,7 +2,7 @@ local namespace = vim.api.nvim_create_namespace
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
-local utils = require "core.utils"
+local utils = require "astronvim.utils"
 local is_available = utils.is_available
 local astroevent = utils.event
 
@@ -24,7 +24,7 @@ autocmd({ "BufAdd", "BufEnter" }, {
       table.insert(bufs, args.buf)
       vim.t.bufs = bufs
     end
-    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid, vim.t.bufs)
+    vim.t.bufs = vim.tbl_filter(require("astronvim.utils.buffer").is_valid, vim.t.bufs)
     astroevent "BufsUpdated"
   end,
 })
@@ -44,7 +44,7 @@ autocmd("BufDelete", {
         end
       end
     end
-    vim.t.bufs = vim.tbl_filter(require("core.utils.buffer").is_valid, vim.t.bufs)
+    vim.t.bufs = vim.tbl_filter(require("astronvim.utils.buffer").is_valid, vim.t.bufs)
     astroevent "BufsUpdated"
     vim.cmd.redrawtabline()
   end,
@@ -215,15 +215,19 @@ autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
 local cmd = vim.api.nvim_create_user_command
 cmd(
   "AstroUpdatePackages",
-  function() require("core.utils.updater").update_packages() end,
+  function() require("astronvim.utils.updater").update_packages() end,
   { desc = "Update Plugins and Mason" }
 )
-cmd("AstroUpdate", function() require("core.utils.updater").update() end, { desc = "Update AstroNvim" })
-cmd("AstroRollback", function() require("core.utils.updater").rollback() end, { desc = "Rollback AstroNvim" })
-cmd("AstroVersion", function() require("core.utils.updater").version() end, { desc = "Check AstroNvim Version" })
-cmd("AstroChangelog", function() require("core.utils.updater").changelog() end, { desc = "Check AstroNvim Changelog" })
+cmd("AstroUpdate", function() require("astronvim.utils.updater").update() end, { desc = "Update AstroNvim" })
+cmd("AstroRollback", function() require("astronvim.utils.updater").rollback() end, { desc = "Rollback AstroNvim" })
+cmd("AstroVersion", function() require("astronvim.utils.updater").version() end, { desc = "Check AstroNvim Version" })
+cmd(
+  "AstroChangelog",
+  function() require("astronvim.utils.updater").changelog() end,
+  { desc = "Check AstroNvim Changelog" }
+)
 cmd(
   "ToggleHighlightURL",
-  function() require("core.utils.ui").toggle_url_match() end,
+  function() require("astronvim.utils.ui").toggle_url_match() end,
   { desc = "Toggle URL Highlights" }
 )
