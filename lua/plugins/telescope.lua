@@ -6,7 +6,7 @@ return {
   cmd = "Telescope",
   opts = function()
     local actions = require "telescope.actions"
-    local get_icon = require("core.utils").get_icon
+    local get_icon = require("astronvim.utils").get_icon
     return {
       defaults = {
         prompt_prefix = string.format("%s ", get_icon "Search"),

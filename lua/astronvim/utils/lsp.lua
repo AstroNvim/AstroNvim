@@ -2,10 +2,10 @@
 --
 -- LSP related utility functions to use within AstroNvim and user configurations.
 --
--- This module can be loaded with `local lsp_utils = require("core.utils.lsp")`
+-- This module can be loaded with `local lsp_utils = require("astronvim.utils.lsp")`
 --
--- @module core.utils.lsp
--- @see core.utils
+-- @module astronvim.utils.lsp
+-- @see astronvim.utils
 -- @copyright 2022
 -- @license GNU General Public License v3.0
 
@@ -14,13 +14,14 @@ local tbl_contains = vim.tbl_contains
 local tbl_isempty = vim.tbl_isempty
 local user_opts = astronvim.user_opts
 
-local utils = require "core.utils"
+local utils = require "astronvim.utils"
 local conditional_func = utils.conditional_func
 local is_available = utils.is_available
 
 local server_config = "lsp.config."
-local setup_handlers =
-  user_opts("lsp.setup_handlers", { function(server, opts) require("lspconfig")[server].setup(opts) end })
+local setup_handlers = user_opts("lsp.setup_handlers", {
+  function(server, opts) require("lspconfig")[server].setup(opts) end,
+})
 
 M.diagnostics = { off = {}, on = {} }
 
@@ -103,10 +104,22 @@ M.on_attach = function(client, bufnr)
   local capabilities = client.server_capabilities
   local lsp_mappings = {
     n = {
-      ["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
-      ["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" },
-      ["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" },
-      ["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
+      ["<leader>ld"] = {
+        function() vim.diagnostic.open_float() end,
+        desc = "Hover diagnostics",
+      },
+      ["[d"] = {
+        function() vim.diagnostic.goto_prev() end,
+        desc = "Previous diagnostic",
+      },
+      ["]d"] = {
+        function() vim.diagnostic.goto_next() end,
+        desc = "Next diagnostic",
+      },
+      ["gl"] = {
+        function() vim.diagnostic.open_float() end,
+        desc = "Hover diagnostics",
+      },
     },
     v = {},
   }
@@ -120,7 +133,10 @@ M.on_attach = function(client, bufnr)
   end
 
   if capabilities.codeActionProvider then
-    lsp_mappings.n["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" }
+    lsp_mappings.n["<leader>la"] = {
+      function() vim.lsp.buf.code_action() end,
+      desc = "LSP code action",
+    }
     lsp_mappings.v["<leader>la"] = lsp_mappings.n["<leader>la"]
   end
 
@@ -132,16 +148,28 @@ M.on_attach = function(client, bufnr)
       end,
     })
     vim.lsp.codelens.refresh()
-    lsp_mappings.n["<leader>ll"] = { function() vim.lsp.codelens.refresh() end, desc = "LSP CodeLens refresh" }
-    lsp_mappings.n["<leader>lL"] = { function() vim.lsp.codelens.run() end, desc = "LSP CodeLens run" }
+    lsp_mappings.n["<leader>ll"] = {
+      function() vim.lsp.codelens.refresh() end,
+      desc = "LSP CodeLens refresh",
+    }
+    lsp_mappings.n["<leader>lL"] = {
+      function() vim.lsp.codelens.run() end,
+      desc = "LSP CodeLens run",
+    }
   end
 
   if capabilities.declarationProvider then
-    lsp_mappings.n["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol" }
+    lsp_mappings.n["gD"] = {
+      function() vim.lsp.buf.declaration() end,
+      desc = "Declaration of current symbol",
+    }
   end
 
   if capabilities.definitionProvider then
-    lsp_mappings.n["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol" }
+    lsp_mappings.n["gd"] = {
+      function() vim.lsp.buf.definition() end,
+      desc = "Show the definition of current symbol",
+    }
   end
 
   if capabilities.documentFormattingProvider and not tbl_contains(M.formatting.disabled, client.name) then
@@ -170,16 +198,16 @@ M.on_attach = function(client, bufnr)
           local autoformat_enabled = vim.b.autoformat_enabled
           if autoformat_enabled == nil then autoformat_enabled = vim.g.autoformat_enabled end
           if autoformat_enabled then
-            vim.lsp.buf.format(require("core.utils").extend_tbl(M.format_opts, { bufnr = bufnr }))
+            vim.lsp.buf.format(require("astronvim.utils").extend_tbl(M.format_opts, { bufnr = bufnr }))
           end
         end,
       })
       lsp_mappings.n["<leader>uf"] = {
-        function() require("core.utils.ui").toggle_buffer_autoformat() end,
+        function() require("astronvim.utils.ui").toggle_buffer_autoformat() end,
         desc = "Toggle autoformatting (buffer)",
       }
       lsp_mappings.n["<leader>uF"] = {
-        function() require("core.utils.ui").toggle_autoformat() end,
+        function() require("astronvim.utils.ui").toggle_autoformat() end,
         desc = "Toggle autoformatting (global)",
       }
     end
@@ -187,38 +215,68 @@ M.on_attach = function(client, bufnr)
 
   if capabilities.documentHighlightProvider then
     add_buffer_autocmd("lsp_document_highlight", bufnr, {
-      { events = { "CursorHold", "CursorHoldI" }, callback = function() vim.lsp.buf.document_highlight() end },
-      { events = "CursorMoved", callback = function() vim.lsp.buf.clear_references() end },
+      {
+        events = { "CursorHold", "CursorHoldI" },
+        callback = function() vim.lsp.buf.document_highlight() end,
+      },
+      {
+        events = "CursorMoved",
+        callback = function() vim.lsp.buf.clear_references() end,
+      },
     })
   end
 
   if capabilities.hoverProvider then
-    lsp_mappings.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" }
+    lsp_mappings.n["K"] = {
+      function() vim.lsp.buf.hover() end,
+      desc = "Hover symbol details",
+    }
   end
 
   if capabilities.implementationProvider then
-    lsp_mappings.n["gI"] = { function() vim.lsp.buf.implementation() end, desc = "Implementation of current symbol" }
+    lsp_mappings.n["gI"] = {
+      function() vim.lsp.buf.implementation() end,
+      desc = "Implementation of current symbol",
+    }
   end
 
   if capabilities.referencesProvider then
-    lsp_mappings.n["gr"] = { function() vim.lsp.buf.references() end, desc = "References of current symbol" }
-    lsp_mappings.n["<leader>lR"] = { function() vim.lsp.buf.references() end, desc = "Search references" }
+    lsp_mappings.n["gr"] = {
+      function() vim.lsp.buf.references() end,
+      desc = "References of current symbol",
+    }
+    lsp_mappings.n["<leader>lR"] = {
+      function() vim.lsp.buf.references() end,
+      desc = "Search references",
+    }
   end
 
   if capabilities.renameProvider then
-    lsp_mappings.n["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" }
+    lsp_mappings.n["<leader>lr"] = {
+      function() vim.lsp.buf.rename() end,
+      desc = "Rename current symbol",
+    }
   end
 
   if capabilities.signatureHelpProvider then
-    lsp_mappings.n["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help" }
+    lsp_mappings.n["<leader>lh"] = {
+      function() vim.lsp.buf.signature_help() end,
+      desc = "Signature help",
+    }
   end
 
   if capabilities.typeDefinitionProvider then
-    lsp_mappings.n["gT"] = { function() vim.lsp.buf.type_definition() end, desc = "Definition of current type" }
+    lsp_mappings.n["gT"] = {
+      function() vim.lsp.buf.type_definition() end,
+      desc = "Definition of current type",
+    }
   end
 
   if capabilities.workspaceSymbolProvider then
-    lsp_mappings.n["<leader>lG"] = { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols" }
+    lsp_mappings.n["<leader>lG"] = {
+      function() vim.lsp.buf.workspace_symbol() end,
+      desc = "Search workspace symbols",
+    }
   end
 
   if is_available "telescope.nvim" then -- setup telescope mappings if available
@@ -266,7 +324,7 @@ M.flags = user_opts "lsp.flags"
 -- @return the table of LSP options used when setting up the given language server
 function M.config(server_name)
   local server = require("lspconfig")[server_name]
-  local lsp_opts = require("core.utils").extend_tbl(
+  local lsp_opts = require("astronvim.utils").extend_tbl(
     { capabilities = server.capabilities, flags = server.flags },
     { capabilities = M.capabilities, flags = M.flags }
   )
