@@ -18,27 +18,29 @@ body:
         - label: Restarted AstroNvim
           required: true
   - type: input
-    id: version
-    attributes:
-      label: AstroNvim version
-      placeholder: |
-        output of :AstroVersion
-    validations:
-      required: true
-  - type: input
-    id: nvim-version
-    attributes:
-      label: Neovim version (>= 0.8)
-      description: "Output of `nvim --version`"
-      placeholder: |
-        NVIM v0.8.0
-    validations:
-      required: true
-  - type: input
     id: system-version
     attributes:
       label: "Operating system/version"
       placeholder: "macOS 11.5"
+    validations:
+      required: true
+  - type: input
+    id: terminal
+    attributes:
+      label: "Terminal/GUI"
+      placeholder: "kitty"
+    validations:
+      required: true
+  - type: textarea
+    id: health
+    attributes:
+      label: AstroNvim Health
+      description: Output of `:checkhealth core`
+      placeholder: |
+        ## AstroNvim
+        - INFO: AstroNvim Version: nightly (v2.11.8-181-g11d5990)
+        - INFO: Neovim Version: v0.8.3
+        - OK: Using stable Neovim >= 0.8.0
     validations:
       required: true
   - type: textarea
