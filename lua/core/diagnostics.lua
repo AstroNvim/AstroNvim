@@ -19,7 +19,6 @@ end
 astronvim.lsp.diagnostics = {
   -- diagnostics off
   [0] = {
-    -- status = "all diagnostics off",
     underline = false,
     virtual_text = false,
     signs = false,
@@ -27,7 +26,6 @@ astronvim.lsp.diagnostics = {
   },
   -- status only
   [1] = {
-    -- status = "status diagnostics only",
     virtual_text = false,
     signs = false,
     update_in_insert = true,
@@ -44,7 +42,6 @@ astronvim.lsp.diagnostics = {
   },
   -- virtual text off, signs on
   [2] = {
-    -- status = "virtual text off",
     virtual_text = false,
     signs = { active = signs },
     update_in_insert = true,
@@ -61,7 +58,6 @@ astronvim.lsp.diagnostics = {
   },
   -- all diagnostics on
   [3] = {
-    -- status = "all diagnostics on",
     virtual_text = true,
     signs = { active = signs },
     update_in_insert = true,
