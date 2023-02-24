@@ -25,7 +25,7 @@ astronvim.lsp.diagnostics = {
     update_in_insert = false,
   },
   -- status only
-  [1] = {
+  [1] = astronvim.user_plugin_opts("diagnostics", {
     virtual_text = false,
     signs = false,
     update_in_insert = true,
@@ -39,9 +39,9 @@ astronvim.lsp.diagnostics = {
       header = "",
       prefix = "",
     },
-  },
+  }),
   -- virtual text off, signs on
-  [2] = {
+  [2] = astronvim.user_plugin_opts("diagnostics", {
     virtual_text = false,
     signs = { active = signs },
     update_in_insert = true,
@@ -55,9 +55,9 @@ astronvim.lsp.diagnostics = {
       header = "",
       prefix = "",
     },
-  },
+  }),
   -- all diagnostics on
-  [3] = {
+  [3] = astronvim.user_plugin_opts("diagnostics", {
     virtual_text = true,
     signs = { active = signs },
     update_in_insert = true,
@@ -71,7 +71,7 @@ astronvim.lsp.diagnostics = {
       header = "",
       prefix = "",
     },
-  },
+  }),
 }
 
 vim.diagnostic.config(astronvim.lsp.diagnostics[vim.g.diagnostics_mode])
