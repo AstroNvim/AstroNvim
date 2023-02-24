@@ -17,13 +17,51 @@ for _, sign in ipairs(signs) do
 end
 
 astronvim.lsp.diagnostics = {
-  off = {
+  -- diagnostics off
+  [0] = {
+    -- status = "all diagnostics off",
     underline = false,
     virtual_text = false,
     signs = false,
     update_in_insert = false,
   },
-  on = astronvim.user_plugin_opts("diagnostics", {
+  -- status only
+  [1] = {
+    -- status = "status diagnostics only",
+    virtual_text = false,
+    signs = false,
+    update_in_insert = true,
+    underline = true,
+    severity_sort = true,
+    float = {
+      focused = false,
+      style = "minimal",
+      border = "rounded",
+      source = "always",
+      header = "",
+      prefix = "",
+    },
+  },
+  -- virtual text off, signs on
+  [2] = {
+    -- status = "virtual text off",
+    virtual_text = false,
+    signs = { active = signs },
+    update_in_insert = true,
+    underline = true,
+    severity_sort = true,
+    float = {
+      focused = false,
+      style = "minimal",
+      border = "rounded",
+      source = "always",
+      header = "",
+      prefix = "",
+    },
+  },
+  -- all diagnostics on
+  [3] = {
+    -- status = "all diagnostics on",
     virtual_text = true,
     signs = { active = signs },
     update_in_insert = true,
@@ -37,7 +75,7 @@ astronvim.lsp.diagnostics = {
       header = "",
       prefix = "",
     },
-  }),
+  },
 }
 
-vim.diagnostic.config(astronvim.lsp.diagnostics[vim.g.diagnostics_enabled and "on" or "off"])
+vim.diagnostic.config(astronvim.lsp.diagnostics[vim.g.diagnostics_mode])
