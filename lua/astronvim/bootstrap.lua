@@ -11,11 +11,15 @@ _G.astronvim = {}
 
 --- installation details from external installers
 astronvim.install = _G["astronvim_installation"] or { home = vim.fn.stdpath "config" }
+astronvim.supported_configs = { astronvim.install.home }
 --- external astronvim configuration folder
 astronvim.install.config = vim.fn.stdpath("config"):gsub("nvim$", "astronvim")
-vim.opt.rtp:append(astronvim.install.config)
---- supported astronvim user conifg folders
-astronvim.supported_configs = { astronvim.install.home, astronvim.install.config }
+-- check if they are the same, protects against NVIM_APPNAME use for isolated install
+if astronvim.install.home ~= astronvim.install.config then
+  vim.opt.rtp:append(astronvim.install.config)
+  --- supported astronvim user conifg folders
+  table.insert(astronvim.supported_configs, astronvim.install.config)
+end
 
 --- Looks to see if a module path references a lua file in a configuration folder and tries to load it. If there is an error loading the file, write an error and continue
 -- @param module the module path to try and load
