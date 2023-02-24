@@ -36,7 +36,7 @@ require("lazy").setup(astronvim.user_opts("lazy", {
   install = { colorscheme = colorscheme },
   performance = {
     rtp = {
-      paths = { astronvim.install.config },
+      paths = astronvim.supported_configs,
       disabled_plugins = { "tohtml", "gzip", "matchit", "zipPlugin", "netrwPlugin", "tarPlugin", "matchparen" },
     },
   },

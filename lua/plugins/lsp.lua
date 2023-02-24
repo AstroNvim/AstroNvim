@@ -4,7 +4,12 @@ return {
     "folke/neodev.nvim",
     opts = {
       override = function(root_dir, library)
-        if root_dir:match(astronvim.install.config) then library.plugins = true end
+        for _, astronvim_config in ipairs(astronvim.supported_configs) do
+          if root_dir:match(astronvim_config) then
+            library.plugins = true
+            break
+          end
+        end
         vim.b.neodev_enabled = library.enabled
       end,
     },
