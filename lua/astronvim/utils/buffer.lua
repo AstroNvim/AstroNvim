@@ -59,6 +59,7 @@ end
 
 --- Close a given buffer
 -- @param bufnr? the buffer number to close or the current buffer if not provided
+-- @param force? whether or not to foce close the buffers or confirm changes (default: false)
 function M.close(bufnr, force)
   if force == nil then force = false end
   local current = vim.api.nvim_get_current_buf()
@@ -69,6 +70,24 @@ function M.close(bufnr, force)
     require("bufdelete").bufdelete(bufnr, force)
   else
     vim.cmd((force and "bd!" or "confirm bd") .. bufnr)
+  end
+end
+
+--- Close all buffers
+-- @param keep_current? whether or not to keep the current buffer (default: false)
+-- @param force? whether or not to foce close the buffers or confirm changes (default: false)
+function M.close_all(keep_current, force)
+  if force == nil then force = false end
+  if keep_current == nil then keep_current = false end
+  local current = vim.api.nvim_get_current_buf()
+  for _, bufnr in ipairs(vim.t.bufs) do
+    if not keep_current or bufnr ~= current then
+      if require("astronvim.utils").is_available "bufdelete.nvim" then
+        require("bufdelete").bufdelete(bufnr, force)
+      else
+        vim.cmd((force and "bd!" or "confirm bd") .. bufnr)
+      end
+    end
   end
 end
 
