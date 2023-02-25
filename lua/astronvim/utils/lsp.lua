@@ -23,17 +23,51 @@ local setup_handlers = user_opts("lsp.setup_handlers", {
   function(server, opts) require("lspconfig")[server].setup(opts) end,
 })
 
-M.diagnostics = { off = {}, on = {} }
+M.diagnostics = { [0] = {}, [1] = {}, [2] = {}, [3] = {} }
 
 M.setup_diagnostics = function(signs)
   M.diagnostics = {
-    off = {
+  -- diagnostics off
+    [0] = {
       underline = false,
       virtual_text = false,
       signs = false,
       update_in_insert = false,
     },
-    on = astronvim.user_opts("diagnostics", {
+    -- status only
+    [1] = astronvim.user_opts("diagnostics", {
+      virtual_text = false,
+      signs = false,
+      update_in_insert = true,
+      underline = true,
+      severity_sort = true,
+      float = {
+        focused = false,
+        style = "minimal",
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+      },
+    }),
+    -- virtual text off, signs on
+    [2] = astronvim.user_opts("diagnostics", {
+      virtual_text = false,
+      signs = { active = signs },
+      update_in_insert = true,
+      underline = true,
+      severity_sort = true,
+      float = {
+        focused = false,
+        style = "minimal",
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+      },
+    }),
+    -- all diagnostics on
+    [3] = astronvim.user_opts("diagnostics", {
       virtual_text = true,
       signs = { active = signs },
       update_in_insert = true,
@@ -50,7 +84,8 @@ M.setup_diagnostics = function(signs)
     }),
   }
 
-  vim.diagnostic.config(M.diagnostics[vim.g.diagnostics_enabled and "on" or "off"])
+  vim.diagnostic.config(M.diagnostics[vim.g.diagnostics_mode])
+
 end
 
 M.formatting = user_opts("lsp.formatting", { format_on_save = { enabled = true }, disabled = {} })
