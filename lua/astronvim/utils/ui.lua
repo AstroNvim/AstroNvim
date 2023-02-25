@@ -41,22 +41,17 @@ end
 
 --- Toggle diagnostics
 function M.toggle_diagnostics()
-  local status = "on"
-  if vim.g.status_diagnostics_enabled then
-    if vim.g.diagnostics_enabled then
-      vim.g.diagnostics_enabled = false
-      status = "virtual text off"
-    else
-      vim.g.status_diagnostics_enabled = false
-      status = "fully off"
-    end
+  vim.g.diagnostics_mode = (vim.g.diagnostics_mode - 1) % 4
+  vim.diagnostic.config(require("astronvim.utils.lsp").diagnostics[vim.g.diagnostics_mode])
+  if vim.g.diagnostics_mode == 0 then
+    ui_notify "diagnostics off"
+  elseif vim.g.diagnostics_mode == 1 then
+    ui_notify "only status diagnostics"
+  elseif vim.g.diagnostics_mode == 2 then
+    ui_notify "virtual text off"
   else
-    vim.g.diagnostics_enabled = true
-    vim.g.status_diagnostics_enabled = true
+    ui_notify "all diagnostics on"
   end
-
-  vim.diagnostic.config(require("astronvim.utils.lsp").diagnostics[bool2str(vim.g.diagnostics_enabled)])
-  ui_notify(string.format("diagnostics %s", status))
 end
 
 --- Toggle background="dark"|"light"
