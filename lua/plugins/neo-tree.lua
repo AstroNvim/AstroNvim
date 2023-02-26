@@ -28,11 +28,7 @@ return {
         end
       end,
       copy_name = function(state) vim.fn.setreg("+", state.tree:get_node().name) end,
-      copy_absolute_path = function(state)
-        local node = state.tree:get_node();
-        local full_path = node.path;
-        vim.fn.setreg('*', full_path, 'c')
-      end,
+      copy_path = function(state) vim.fn.setreg("+", state.tree:get_node().path) end,
     }
     local get_icon = require("astronvim.utils").get_icon
     return {
@@ -80,8 +76,8 @@ return {
           O = "system_open",
           h = "parent_or_close",
           l = "child_or_open",
-          Y = "copy_file_name",
-          ["<C-y>"] = "copy_absolute_path",
+          Y = "copy_name",
+          ["<C-y>"] = "copy_path",
         },
       },
       filesystem = {
