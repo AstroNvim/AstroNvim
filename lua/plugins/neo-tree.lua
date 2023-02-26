@@ -27,10 +27,7 @@ return {
           state.commands.open(state)
         end
       end,
-      copy_file_name = function(state)
-        local node = state.tree:get_node();
-        vim.fn.setreg('*', node.name, 'c')
-      end,
+      copy_name = function(state) vim.fn.setreg("+", state.tree:get_node().name) end,
       copy_absolute_path = function(state)
         local node = state.tree:get_node();
         local full_path = node.path;
