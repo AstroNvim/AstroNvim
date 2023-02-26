@@ -83,7 +83,7 @@ return {
           O = "system_open",
           h = "parent_or_close",
           l = "child_or_open",
-          ["Y"] = "copy_file_name",
+          Y = "copy_file_name",
           ["<C-y>"] = "copy_absolute_path",
         },
       },
