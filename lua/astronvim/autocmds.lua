@@ -57,15 +57,15 @@ autocmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   callback = function() utils.set_url_match() end,
 })
 
-local view_group = vim.api.nvim_create_augroup("auto_view", { clear = true })
-vim.api.nvim_create_autocmd("BufWinLeave", {
+local view_group = augroup("auto_view", { clear = true })
+autocmd("BufWinLeave", {
   desc = "Save view with mkview for real files",
   group = view_group,
   callback = function(event)
     if vim.b[event.buf].view_activated then vim.cmd.mkview() end
   end,
 })
-vim.api.nvim_create_autocmd("BufWinEnter", {
+autocmd("BufWinEnter", {
   desc = "Try to load file view if available and enable view saving for real files",
   group = view_group,
   callback = function(event)
@@ -76,6 +76,15 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
       vim.b[event.buf].view_activated = true
       vim.cmd.loadview { mods = { emsg_silent = true } }
     end
+  end,
+})
+
+autocmd("FileType", {
+  desc = "Make q close help, man, quickfix, dap floats",
+  group = augroup("q_close_windows", { clear = true }),
+  pattern = { "qf", "help", "man", "dap-float" },
+  callback = function(event)
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, nowait = true })
   end,
 })
 
@@ -180,15 +189,6 @@ if is_available "neo-tree.nvim" then
         end
       end
     end,
-  })
-end
-
-if is_available "nvim-dap-ui" then
-  autocmd("FileType", {
-    desc = "Make q close dap floating windows",
-    group = augroup("dapui", { clear = true }),
-    pattern = "dap-float",
-    callback = function() vim.keymap.set("n", "q", "<cmd>close!<cr>") end,
   })
 end
 
