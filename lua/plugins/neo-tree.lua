@@ -34,28 +34,29 @@ return {
         local modify = vim.fn.fnamemodify
 
         local results = {
-          { val = filepath, msg = "Absolute path" },
-          { val = modify(filepath, ":."), msg = "Path relative to CWD" },
-          { val = modify(filepath, ":~"), msg = "Path relative to Home" },
-          { val = filename, msg = "Filename" },
-          { val = modify(filename, ":r"), msg = "Filename w/o extension" },
-          { val = modify(filename, ":e"), msg = "Extension only" },
+          e = { val = modify(filename, ":e"), msg = "Extension only" },
+          f = { val = filename, msg = "Filename" },
+          F = { val = modify(filename, ":r"), msg = "Filename w/o extension" },
+          h = { val = modify(filepath, ":~"), msg = "Path relative to Home" },
+          p = { val = modify(filepath, ":."), msg = "Path relative to CWD" },
+          P = { val = filepath, msg = "Absolute path" },
         }
 
         local messages = {
           { "\nChoose to copy to clipboard:\n", "Normal" },
         }
-        for i, result in ipairs(results) do
+        for i, result in pairs(results) do
           if result.val and result.val ~= "" then
             vim.list_extend(messages, {
-              { ("%d. %s: "):format(i, result.msg) },
+              { ("%s."):format(i), "Identifier" },
+              { (" %s: "):format(i, result.msg) },
               { result.val, "String" },
               { "\n" },
             })
           end
         end
         vim.api.nvim_echo(messages, false, {})
-        local result = results[vim.fn.getchar() - 48]
+        local result = results[vim.fn.getcharstr()]
         if result and result.val and result.val ~= "" then
           vim.notify("Copied: " .. result.val)
           vim.fn.setreg("+", result.val)
