@@ -4,16 +4,22 @@ local is_available = utils.is_available
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
 local sections = {
-  f = { name = "Find" },
-  p = { name = "Packages" },
-  l = { name = "LSP" },
-  u = { name = "UI" },
-  b = { name = "Buffers" },
-  d = { name = "Debugger" },
-  g = { name = "Git" },
-  S = { name = "Session" },
-  t = { name = "Terminal" },
+  f = { name = "󰍉 Find" },
+  p = { name = "󰏖 Packages" },
+  l = { name = " LSP" },
+  u = { name = " UI" },
+  b = { name = "󰓩 Buffers" },
+  d = { name = " Debugger" },
+  g = { name = " Git" },
+  S = { name = "󱂬 Session" },
+  t = { name = " Terminal" },
 }
+
+if not vim.g.icons_enabled then
+  for _, opts in pairs(sections) do
+    opts.name = opts.name:gsub("^.* ", "")
+  end
+end
 
 -- Normal --
 -- Standard Operations
