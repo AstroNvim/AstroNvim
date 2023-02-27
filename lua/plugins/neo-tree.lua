@@ -27,8 +27,40 @@ return {
           state.commands.open(state)
         end
       end,
-      copy_name = function(state) vim.fn.setreg("+", state.tree:get_node().name) end,
-      copy_path = function(state) vim.fn.setreg("+", state.tree:get_node().path) end,
+      copy_selector = function(state)
+        local node = state.tree:get_node()
+        local filepath = node:get_id()
+        local filename = node.name
+        local modify = vim.fn.fnamemodify
+
+        local results = {
+          { val = filepath, msg = "Absolute path" },
+          { val = modify(filepath, ":."), msg = "Path relative to CWD" },
+          { val = modify(filepath, ":~"), msg = "Path relative to Home" },
+          { val = filename, msg = "Filename" },
+          { val = modify(filename, ":r"), msg = "Filename w/o extension" },
+          { val = modify(filename, ":e"), msg = "Extension only" },
+        }
+
+        local messages = {
+          { "\nChoose to copy to clipboard:\n", "Normal" },
+        }
+        for i, result in ipairs(results) do
+          if result.val and result.val ~= "" then
+            vim.list_extend(messages, {
+              { ("%d. %s: "):format(i, result.msg) },
+              { result.val, "String" },
+              { "\n" },
+            })
+          end
+        end
+        vim.api.nvim_echo(messages, false, {})
+        local result = results[vim.fn.getchar() - 48]
+        if result and result.val and result.val ~= "" then
+          vim.notify("Copied: " .. result.val)
+          vim.fn.setreg("+", result.val)
+        end
+      end,
     }
     local get_icon = require("astronvim.utils").get_icon
     return {
@@ -76,8 +108,7 @@ return {
           O = "system_open",
           h = "parent_or_close",
           l = "child_or_open",
-          Y = "copy_name",
-          ["<C-y>"] = "copy_path",
+          Y = "copy_selector",
         },
       },
       filesystem = {
