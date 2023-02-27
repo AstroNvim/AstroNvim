@@ -47,7 +47,6 @@ return {
     opts = {
       plugins = { spelling = { enabled = true }, presets = { operators = false } },
       icons = { group = vim.g.icons_enabled and "" or "+", separator = "" },
-      window = { border = "rounded", padding = { 2, 2, 2, 2 } },
       disable = { filetypes = { "TelescopePrompt" } },
     },
     config = require "plugins.configs.which-key",
