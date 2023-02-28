@@ -301,7 +301,9 @@ M.on_attach = function(client, bufnr)
     end
   end
 
-  if not vim.tbl_isempty(lsp_mappings.v) then lsp_mappings.v["<leader>l"] = { name = "LSP" } end
+  if not vim.tbl_isempty(lsp_mappings.v) then
+    lsp_mappings.v["<leader>l"] = { name = (vim.g.icons_enabled and " " or "") .. "LSP" }
+  end
   utils.set_mappings(user_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
 
   local on_attach_override = user_opts("lsp.on_attach", nil, false)

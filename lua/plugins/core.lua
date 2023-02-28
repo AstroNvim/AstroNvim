@@ -46,7 +46,7 @@ return {
     event = "VeryLazy",
     opts = {
       plugins = { spelling = { enabled = true }, presets = { operators = false } },
-      window = { border = "rounded", padding = { 2, 2, 2, 2 } },
+      icons = { group = vim.g.icons_enabled and "" or "+", separator = "" },
       disable = { filetypes = { "TelescopePrompt" } },
     },
     config = require "plugins.configs.which-key",
