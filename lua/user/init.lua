@@ -127,8 +127,7 @@ return {
         }, -- Mix
         null_ls.builtins.formatting.stylua, -- Lua
         null_ls.builtins.formatting.shfmt, -- Shell
-        null_ls.builtins.formatting.black, -- Python
-        null_ls.builtins.formatting.isort, -- Python
+        null_ls.builtins.formatting.black.with { extra_args = { "--fast" } }, -- Python
         null_ls.builtins.formatting.gofmt, -- GO
         null_ls.builtins.formatting.surface, -- Phoenix
         null_ls.builtins.formatting.prettierd.with {
@@ -240,6 +239,13 @@ return {
         "write_good",
         "black",
         "shfmt",
+      },
+    },
+    ["mason-nvim-dap"] = { -- overrides `require("mason-nvim-dap").setup(...)`
+      ensure_installed = {
+         "python",
+         "lua",
+         "elixir"
       },
     },
     ["neo-tree"] = {
