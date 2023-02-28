@@ -48,8 +48,8 @@ return {
         for i, result in pairs(results) do
           if result.val and result.val ~= "" then
             vim.list_extend(messages, {
-              { ("%s."):format(i), "Identifier" },
-              { (" %s: "):format(i, result.msg) },
+              { ("%s. "):format(i), "Identifier" },
+              { ("%s: "):format(result.msg) },
               { result.val, "String" },
               { "\n" },
             })
