@@ -65,6 +65,7 @@ return {
     }
     local get_icon = require("astronvim.utils").get_icon
     return {
+      auto_clean_after_session_restore = true,
       close_if_last_window = true,
       source_selector = {
         winbar = true,
