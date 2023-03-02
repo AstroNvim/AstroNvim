@@ -1244,9 +1244,15 @@ function M.component.foldcolumn(opts)
     on_click = {
       name = "fold_click",
       callback = function(...)
-        local lnum = M.utils.statuscolumn_clickargs(...).mousepos.line
-        if vim.fn.foldlevel(lnum) <= vim.fn.foldlevel(lnum - 1) then return end
-        vim.cmd.execute("'" .. lnum .. "fold" .. (vim.fn.foldclosed(lnum) == -1 and "close" or "open") .. "'")
+        local args = M.utils.statuscolumn_clickargs(...)
+        local char = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol)
+        if char == " " then char = vim.fn.screenstring(args.mousepos.screenrow, args.mousepos.screencol - 1) end
+        local fillchars = vim.opt_local.fillchars:get()
+        if char == (fillchars.foldopen or get_icon "FoldOpened") then
+          vim.cmd "norm! zc"
+        elseif char == (fillchars.foldcolse or get_icon "FoldClosed") then
+          vim.cmd "norm! zo"
+        end
       end,
     },
   }, opts)
