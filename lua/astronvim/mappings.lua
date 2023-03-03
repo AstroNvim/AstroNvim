@@ -14,12 +14,7 @@ local sections = {
   S = { name = "󱂬 Session" },
   t = { name = " Terminal" },
 }
-
-if not vim.g.icons_enabled then
-  for _, opts in pairs(sections) do
-    opts.name = opts.name:gsub("^.* ", "")
-  end
-end
+if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.name = opts.name:gsub("^.* ", "") end, sections) end
 
 -- Normal --
 -- Standard Operations
@@ -30,10 +25,7 @@ maps.v["k"] = maps.n.k
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>confirm q<cr>", desc = "Quit" }
 maps.n["<leader>n"] = { "<cmd>enew<cr>", desc = "New File" }
-maps.n["gx"] = {
-  function() require("astronvim.utils").system_open() end,
-  desc = "Open the file under cursor with system app",
-}
+maps.n["gx"] = { utils.system_open, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
 maps.n["<C-q>"] = { "<cmd>q!<cr>", desc = "Force quit" }
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
@@ -41,26 +33,11 @@ maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
 
 -- Plugin Manager
 maps.n["<leader>p"] = sections.p
-maps.n["<leader>pi"] = {
-  function() require("lazy").install() end,
-  desc = "Plugins Install",
-}
-maps.n["<leader>ps"] = {
-  function() require("lazy").home() end,
-  desc = "Plugins Status",
-}
-maps.n["<leader>pS"] = {
-  function() require("lazy").sync() end,
-  desc = "Plugins Sync",
-}
-maps.n["<leader>pu"] = {
-  function() require("lazy").check() end,
-  desc = "Plugins Check Updates",
-}
-maps.n["<leader>pU"] = {
-  function() require("lazy").update() end,
-  desc = "Plugins Update",
-}
+maps.n["<leader>pi"] = { function() require("lazy").install() end, desc = "Plugins Install" }
+maps.n["<leader>ps"] = { function() require("lazy").home() end, desc = "Plugins Status" }
+maps.n["<leader>pS"] = { function() require("lazy").sync() end, desc = "Plugins Sync" }
+maps.n["<leader>pu"] = { function() require("lazy").check() end, desc = "Plugins Check Updates" }
+maps.n["<leader>pU"] = { function() require("lazy").update() end, desc = "Plugins Update" }
 
 -- AstroNvim
 maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Plugins and Mason" }
@@ -132,14 +109,8 @@ maps.n["<leader>b|"] = {
 }
 
 -- Navigate tabs
-maps.n["]t"] = {
-  function() vim.cmd.tabnext() end,
-  desc = "Next tab",
-}
-maps.n["[t"] = {
-  function() vim.cmd.tabprevious() end,
-  desc = "Previous tab",
-}
+maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
+maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
 
 -- Alpha
 if is_available "alpha-nvim" then
@@ -157,59 +128,24 @@ end
 
 -- Comment
 if is_available "Comment.nvim" then
-  maps.n["<leader>/"] = {
-    function() require("Comment.api").toggle.linewise.current() end,
-    desc = "Comment line",
-  }
-  maps.v["<leader>/"] = {
-    "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
-    desc = "Toggle comment line",
-  }
+  maps.n["<leader>/"] = { function() require("Comment.api").toggle.linewise.current() end, desc = "Comment line" }
+  maps.v["<leader>/"] =
+    { "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", desc = "Toggle comment line" }
 end
 
 -- GitSigns
 if is_available "gitsigns.nvim" then
   maps.n["<leader>g"] = sections.g
-  maps.n["]g"] = {
-    function() require("gitsigns").next_hunk() end,
-    desc = "Next Git hunk",
-  }
-  maps.n["[g"] = {
-    function() require("gitsigns").prev_hunk() end,
-    desc = "Previous Git hunk",
-  }
-  maps.n["<leader>gl"] = {
-    function() require("gitsigns").blame_line() end,
-    desc = "View Git blame",
-  }
-  maps.n["<leader>gp"] = {
-    function() require("gitsigns").preview_hunk() end,
-    desc = "Preview Git hunk",
-  }
-  maps.n["<leader>gh"] = {
-    function() require("gitsigns").reset_hunk() end,
-    desc = "Reset Git hunk",
-  }
-  maps.n["<leader>gr"] = {
-    function() require("gitsigns").reset_buffer() end,
-    desc = "Reset Git buffer",
-  }
-  maps.n["<leader>gs"] = {
-    function() require("gitsigns").stage_hunk() end,
-    desc = "Stage Git hunk",
-  }
-  maps.n["<leader>gS"] = {
-    function() require("gitsigns").stage_buffer() end,
-    desc = "Stage Git buffer",
-  }
-  maps.n["<leader>gu"] = {
-    function() require("gitsigns").undo_stage_hunk() end,
-    desc = "Unstage Git hunk",
-  }
-  maps.n["<leader>gd"] = {
-    function() require("gitsigns").diffthis() end,
-    desc = "View Git diff",
-  }
+  maps.n["]g"] = { function() require("gitsigns").next_hunk() end, desc = "Next Git hunk" }
+  maps.n["[g"] = { function() require("gitsigns").prev_hunk() end, desc = "Previous Git hunk" }
+  maps.n["<leader>gl"] = { function() require("gitsigns").blame_line() end, desc = "View Git blame" }
+  maps.n["<leader>gp"] = { function() require("gitsigns").preview_hunk() end, desc = "Preview Git hunk" }
+  maps.n["<leader>gh"] = { function() require("gitsigns").reset_hunk() end, desc = "Reset Git hunk" }
+  maps.n["<leader>gr"] = { function() require("gitsigns").reset_buffer() end, desc = "Reset Git buffer" }
+  maps.n["<leader>gs"] = { function() require("gitsigns").stage_hunk() end, desc = "Stage Git hunk" }
+  maps.n["<leader>gS"] = { function() require("gitsigns").stage_buffer() end, desc = "Stage Git buffer" }
+  maps.n["<leader>gu"] = { function() require("gitsigns").undo_stage_hunk() end, desc = "Unstage Git hunk" }
+  maps.n["<leader>gd"] = { function() require("gitsigns").diffthis() end, desc = "View Git diff" }
 end
 
 -- NeoTree
@@ -246,41 +182,14 @@ end
 
 -- Smart Splits
 if is_available "smart-splits.nvim" then
-  -- Better window navigation
-  maps.n["<C-h>"] = {
-    function() require("smart-splits").move_cursor_left() end,
-    desc = "Move to left split",
-  }
-  maps.n["<C-j>"] = {
-    function() require("smart-splits").move_cursor_down() end,
-    desc = "Move to below split",
-  }
-  maps.n["<C-k>"] = {
-    function() require("smart-splits").move_cursor_up() end,
-    desc = "Move to above split",
-  }
-  maps.n["<C-l>"] = {
-    function() require("smart-splits").move_cursor_right() end,
-    desc = "Move to right split",
-  }
-
-  -- Resize with arrows
-  maps.n["<C-Up>"] = {
-    function() require("smart-splits").resize_up() end,
-    desc = "Resize split up",
-  }
-  maps.n["<C-Down>"] = {
-    function() require("smart-splits").resize_down() end,
-    desc = "Resize split down",
-  }
-  maps.n["<C-Left>"] = {
-    function() require("smart-splits").resize_left() end,
-    desc = "Resize split left",
-  }
-  maps.n["<C-Right>"] = {
-    function() require("smart-splits").resize_right() end,
-    desc = "Resize split right",
-  }
+  maps.n["<C-h>"] = { function() require("smart-splits").move_cursor_left() end, desc = "Move to left split" }
+  maps.n["<C-j>"] = { function() require("smart-splits").move_cursor_down() end, desc = "Move to below split" }
+  maps.n["<C-k>"] = { function() require("smart-splits").move_cursor_up() end, desc = "Move to above split" }
+  maps.n["<C-l>"] = { function() require("smart-splits").move_cursor_right() end, desc = "Move to right split" }
+  maps.n["<C-Up>"] = { function() require("smart-splits").resize_up() end, desc = "Resize split up" }
+  maps.n["<C-Down>"] = { function() require("smart-splits").resize_down() end, desc = "Resize split down" }
+  maps.n["<C-Left>"] = { function() require("smart-splits").resize_left() end, desc = "Resize split left" }
+  maps.n["<C-Right>"] = { function() require("smart-splits").resize_right() end, desc = "Resize split right" }
 else
   maps.n["<C-h>"] = { "<C-w>h", desc = "Move to left split" }
   maps.n["<C-j>"] = { "<C-w>j", desc = "Move to below split" }
@@ -295,36 +204,18 @@ end
 -- SymbolsOutline
 if is_available "aerial.nvim" then
   maps.n["<leader>l"] = sections.l
-  maps.n["<leader>lS"] = {
-    function() require("aerial").toggle() end,
-    desc = "Symbols outline",
-  }
+  maps.n["<leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
 end
 
 -- Telescope
 if is_available "telescope.nvim" then
   maps.n["<leader>f"] = sections.f
   maps.n["<leader>g"] = sections.g
-  maps.n["<leader>gb"] = {
-    function() require("telescope.builtin").git_branches() end,
-    desc = "Git branches",
-  }
-  maps.n["<leader>gc"] = {
-    function() require("telescope.builtin").git_commits() end,
-    desc = "Git commits",
-  }
-  maps.n["<leader>gt"] = {
-    function() require("telescope.builtin").git_status() end,
-    desc = "Git status",
-  }
-  maps.n["<leader>f<CR>"] = {
-    function() require("telescope.builtin").resume() end,
-    desc = "Resume previous search",
-  }
-  maps.n["<leader>f'"] = {
-    function() require("telescope.builtin").marks() end,
-    desc = "Find marks",
-  }
+  maps.n["<leader>gb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
+  maps.n["<leader>gc"] = { function() require("telescope.builtin").git_commits() end, desc = "Git commits" }
+  maps.n["<leader>gt"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" }
+  maps.n["<leader>f<CR>"] = { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
+  maps.n["<leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }
   maps.n["<leader>fa"] = {
     function()
       local cwd = vim.fn.stdpath "config" .. "/.."
@@ -346,60 +237,27 @@ if is_available "telescope.nvim" then
     end,
     desc = "Find AstroNvim config files",
   }
-  maps.n["<leader>fb"] = {
-    function() require("telescope.builtin").buffers() end,
-    desc = "Find buffers",
-  }
-  maps.n["<leader>fc"] = {
-    function() require("telescope.builtin").grep_string() end,
-    desc = "Find for word under cursor",
-  }
-  maps.n["<leader>fC"] = {
-    function() require("telescope.builtin").commands() end,
-    desc = "Find commands",
-  }
-  maps.n["<leader>ff"] = {
-    function() require("telescope.builtin").find_files() end,
-    desc = "Find files",
-  }
+  maps.n["<leader>fb"] = { function() require("telescope.builtin").buffers() end, desc = "Find buffers" }
+  maps.n["<leader>fc"] =
+    { function() require("telescope.builtin").grep_string() end, desc = "Find for word under cursor" }
+  maps.n["<leader>fC"] = { function() require("telescope.builtin").commands() end, desc = "Find commands" }
+  maps.n["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find files" }
   maps.n["<leader>fF"] = {
     function() require("telescope.builtin").find_files { hidden = true, no_ignore = true } end,
     desc = "Find all files",
   }
-  maps.n["<leader>fh"] = {
-    function() require("telescope.builtin").help_tags() end,
-    desc = "Find help",
-  }
-  maps.n["<leader>fk"] = {
-    function() require("telescope.builtin").keymaps() end,
-    desc = "Find keymaps",
-  }
-  maps.n["<leader>fm"] = {
-    function() require("telescope.builtin").man_pages() end,
-    desc = "Find man",
-  }
+  maps.n["<leader>fh"] = { function() require("telescope.builtin").help_tags() end, desc = "Find help" }
+  maps.n["<leader>fk"] = { function() require("telescope.builtin").keymaps() end, desc = "Find keymaps" }
+  maps.n["<leader>fm"] = { function() require("telescope.builtin").man_pages() end, desc = "Find man" }
   if is_available "nvim-notify" then
-    maps.n["<leader>fn"] = {
-      function() require("telescope").extensions.notify.notify() end,
-      desc = "Find notifications",
-    }
+    maps.n["<leader>fn"] =
+      { function() require("telescope").extensions.notify.notify() end, desc = "Find notifications" }
   end
-  maps.n["<leader>fo"] = {
-    function() require("telescope.builtin").oldfiles() end,
-    desc = "Find history",
-  }
-  maps.n["<leader>fr"] = {
-    function() require("telescope.builtin").registers() end,
-    desc = "Find registers",
-  }
-  maps.n["<leader>ft"] = {
-    function() require("telescope.builtin").colorscheme { enable_preview = true } end,
-    desc = "Find themes",
-  }
-  maps.n["<leader>fw"] = {
-    function() require("telescope.builtin").live_grep() end,
-    desc = "Find words",
-  }
+  maps.n["<leader>fo"] = { function() require("telescope.builtin").oldfiles() end, desc = "Find history" }
+  maps.n["<leader>fr"] = { function() require("telescope.builtin").registers() end, desc = "Find registers" }
+  maps.n["<leader>ft"] =
+    { function() require("telescope.builtin").colorscheme { enable_preview = true } end, desc = "Find themes" }
+  maps.n["<leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
   maps.n["<leader>fW"] = {
     function()
       require("telescope.builtin").live_grep {
@@ -409,10 +267,7 @@ if is_available "telescope.nvim" then
     desc = "Find words in all files",
   }
   maps.n["<leader>l"] = sections.l
-  maps.n["<leader>lD"] = {
-    function() require("telescope.builtin").diagnostics() end,
-    desc = "Search diagnostics",
-  }
+  maps.n["<leader>lD"] = { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
   maps.n["<leader>ls"] = {
     function()
       local aerial_avail, _ = pcall(require, "aerial")
@@ -432,40 +287,20 @@ if is_available "toggleterm.nvim" then
   local toggle_term_cmd = require("astronvim.utils").toggle_term_cmd
   if vim.fn.executable "lazygit" == 1 then
     maps.n["<leader>g"] = sections.g
-    maps.n["<leader>gg"] = {
-      function() toggle_term_cmd "lazygit" end,
-      desc = "ToggleTerm lazygit",
-    }
-    maps.n["<leader>tl"] = {
-      function() toggle_term_cmd "lazygit" end,
-      desc = "ToggleTerm lazygit",
-    }
+    maps.n["<leader>gg"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+    maps.n["<leader>tl"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
   end
   if vim.fn.executable "node" == 1 then
-    maps.n["<leader>tn"] = {
-      function() toggle_term_cmd "node" end,
-      desc = "ToggleTerm node",
-    }
+    maps.n["<leader>tn"] = { function() toggle_term_cmd "node" end, desc = "ToggleTerm node" }
   end
   if vim.fn.executable "gdu" == 1 then
-    maps.n["<leader>tu"] = {
-      function() toggle_term_cmd "gdu" end,
-      desc = "ToggleTerm gdu",
-    }
+    maps.n["<leader>tu"] = { function() toggle_term_cmd "gdu" end, desc = "ToggleTerm gdu" }
   end
   if vim.fn.executable "btm" == 1 then
-    maps.n["<leader>tt"] = {
-      function() toggle_term_cmd "btm" end,
-      desc = "ToggleTerm btm",
-    }
+    maps.n["<leader>tt"] = { function() toggle_term_cmd "btm" end, desc = "ToggleTerm btm" }
   end
   local python = vim.fn.executable "python" == 1 and "python" or vim.fn.executable "python3" == 1 and "python3"
-  if python then
-    maps.n["<leader>tp"] = {
-      function() toggle_term_cmd(python) end,
-      desc = "ToggleTerm python",
-    }
-  end
+  if python then maps.n["<leader>tp"] = { function() toggle_term_cmd(python) end, desc = "ToggleTerm python" } end
   maps.n["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" }
   maps.n["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
@@ -479,116 +314,38 @@ if is_available "nvim-dap" then
   maps.n["<leader>d"] = sections.d
   -- modified function keys found with `showkey -a` in the terminal to get key code
   -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
-  maps.n["<F5>"] = {
-    function() require("dap").continue() end,
-    desc = "Debugger: Start",
-  }
-  maps.n["<F17>"] = {
-    function() require("dap").terminate() end,
-    desc = "Debugger: Stop",
-  } -- Shift+F5
-  maps.n["<F29>"] = {
-    function() require("dap").restart_frame() end,
-    desc = "Debugger: Restart",
-  } -- Control+F5
-  maps.n["<F6>"] = {
-    function() require("dap").pause() end,
-    desc = "Debugger: Pause",
-  }
-  maps.n["<F9>"] = {
-    function() require("dap").toggle_breakpoint() end,
-    desc = "Debugger: Toggle Breakpoint",
-  }
-  maps.n["<F10>"] = {
-    function() require("dap").step_over() end,
-    desc = "Debugger: Step Over",
-  }
-  maps.n["<F11>"] = {
-    function() require("dap").step_into() end,
-    desc = "Debugger: Step Into",
-  }
-  maps.n["<F23>"] = {
-    function() require("dap").step_out() end,
-    desc = "Debugger: Step Out",
-  } -- Shift+F11
-  maps.n["<leader>db"] = {
-    function() require("dap").toggle_breakpoint() end,
-    desc = "Toggle Breakpoint (F9)",
-  }
-  maps.n["<leader>dB"] = {
-    function() require("dap").clear_breakpoints() end,
-    desc = "Clear Breakpoints",
-  }
-  maps.n["<leader>dc"] = {
-    function() require("dap").continue() end,
-    desc = "Start/Continue (F5)",
-  }
-  maps.n["<leader>di"] = {
-    function() require("dap").step_into() end,
-    desc = "Step Into (F11)",
-  }
-  maps.n["<leader>do"] = {
-    function() require("dap").step_over() end,
-    desc = "Step Over (F10)",
-  }
-  maps.n["<leader>dO"] = {
-    function() require("dap").step_out() end,
-    desc = "Step Out (S-F11)",
-  }
-  maps.n["<leader>dq"] = {
-    function() require("dap").close() end,
-    desc = "Close Session",
-  }
-  maps.n["<leader>dQ"] = {
-    function() require("dap").terminate() end,
-    desc = "Terminate Session (S-F5)",
-  }
-  maps.n["<leader>dp"] = {
-    function() require("dap").pause() end,
-    desc = "Pause (F6)",
-  }
-  maps.n["<leader>dr"] = {
-    function() require("dap").restart_frame() end,
-    desc = "Restart (C-F5)",
-  }
-  maps.n["<leader>dR"] = {
-    function() require("dap").repl.toggle() end,
-    desc = "Toggle REPL",
-  }
+  maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
+  maps.n["<F17>"] = { function() require("dap").terminate() end, desc = "Debugger: Stop" } -- Shift+F5
+  maps.n["<F29>"] = { function() require("dap").restart_frame() end, desc = "Debugger: Restart" } -- Control+F5
+  maps.n["<F6>"] = { function() require("dap").pause() end, desc = "Debugger: Pause" }
+  maps.n["<F9>"] = { function() require("dap").toggle_breakpoint() end, desc = "Debugger: Toggle Breakpoint" }
+  maps.n["<F10>"] = { function() require("dap").step_over() end, desc = "Debugger: Step Over" }
+  maps.n["<F11>"] = { function() require("dap").step_into() end, desc = "Debugger: Step Into" }
+  maps.n["<F23>"] = { function() require("dap").step_out() end, desc = "Debugger: Step Out" } -- Shift+F11
+  maps.n["<leader>db"] = { function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint (F9)" }
+  maps.n["<leader>dB"] = { function() require("dap").clear_breakpoints() end, desc = "Clear Breakpoints" }
+  maps.n["<leader>dc"] = { function() require("dap").continue() end, desc = "Start/Continue (F5)" }
+  maps.n["<leader>di"] = { function() require("dap").step_into() end, desc = "Step Into (F11)" }
+  maps.n["<leader>do"] = { function() require("dap").step_over() end, desc = "Step Over (F10)" }
+  maps.n["<leader>dO"] = { function() require("dap").step_out() end, desc = "Step Out (S-F11)" }
+  maps.n["<leader>dq"] = { function() require("dap").close() end, desc = "Close Session" }
+  maps.n["<leader>dQ"] = { function() require("dap").terminate() end, desc = "Terminate Session (S-F5)" }
+  maps.n["<leader>dp"] = { function() require("dap").pause() end, desc = "Pause (F6)" }
+  maps.n["<leader>dr"] = { function() require("dap").restart_frame() end, desc = "Restart (C-F5)" }
+  maps.n["<leader>dR"] = { function() require("dap").repl.toggle() end, desc = "Toggle REPL" }
   if is_available "nvim-dap-ui" then
-    maps.n["<leader>du"] = {
-      function() require("dapui").toggle() end,
-      desc = "Toggle Debugger UI",
-    }
-    maps.n["<leader>dh"] = {
-      function() require("dap.ui.widgets").hover() end,
-      desc = "Debugger Hover",
-    }
+    maps.n["<leader>du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
+    maps.n["<leader>dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
   end
 end
 
 -- Improved Code Folding
 if is_available "nvim-ufo" then
-  maps.n["zR"] = {
-    function() require("ufo").openAllFolds() end,
-    desc = "Open all folds",
-  }
-  maps.n["zM"] = {
-    function() require("ufo").closeAllFolds() end,
-    desc = "Close all folds",
-  }
-  maps.n["zr"] = {
-    function() require("ufo").openFoldsExceptKinds() end,
-    desc = "Fold less",
-  }
-  maps.n["zm"] = {
-    function() require("ufo").closeFoldsWith() end,
-    desc = "Fold more",
-  }
-  maps.n["zp"] = {
-    function() require("ufo").peekFoldedLinesUnderCursor() end,
-    desc = "Peek fold",
-  }
+  maps.n["zR"] = { function() require("ufo").openAllFolds() end, desc = "Open all folds" }
+  maps.n["zM"] = { function() require("ufo").closeAllFolds() end, desc = "Close all folds" }
+  maps.n["zr"] = { function() require("ufo").openFoldsExceptKinds() end, desc = "Fold less" }
+  maps.n["zm"] = { function() require("ufo").closeFoldsWith() end, desc = "Fold more" }
+  maps.n["zp"] = { function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "Peek fold" }
 end
 
 -- Stay in indent mode
@@ -604,79 +361,33 @@ maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window navigatio
 maps.n["<leader>u"] = sections.u
 -- Custom menu for modification of the user experience
 if is_available "nvim-autopairs" then
-  maps.n["<leader>ua"] = {
-    function() require("astronvim.utils.ui").toggle_autopairs() end,
-    desc = "Toggle autopairs",
-  }
+  maps.n["<leader>ua"] = { function() require("astronvim.utils.ui").toggle_autopairs() end, desc = "Toggle autopairs" }
 end
-maps.n["<leader>ub"] = {
-  function() require("astronvim.utils.ui").toggle_background() end,
-  desc = "Toggle background",
-}
+maps.n["<leader>ub"] = { function() require("astronvim.utils.ui").toggle_background() end, desc = "Toggle background" }
 if is_available "nvim-cmp" then
-  maps.n["<leader>uc"] = {
-    function() require("astronvim.utils.ui").toggle_cmp() end,
-    desc = "Toggle autocompletion",
-  }
+  maps.n["<leader>uc"] = { function() require("astronvim.utils.ui").toggle_cmp() end, desc = "Toggle autocompletion" }
 end
 if is_available "nvim-colorizer.lua" then
   maps.n["<leader>uC"] = { "<cmd>ColorizerToggle<cr>", desc = "Toggle color highlight" }
 end
-maps.n["<leader>ud"] = {
-  function() require("astronvim.utils.ui").toggle_diagnostics() end,
-  desc = "Toggle diagnostics",
-}
-maps.n["<leader>ug"] = {
-  function() require("astronvim.utils.ui").toggle_signcolumn() end,
-  desc = "Toggle signcolumn",
-}
-maps.n["<leader>ui"] = {
-  function() require("astronvim.utils.ui").set_indent() end,
-  desc = "Change indent setting",
-}
-maps.n["<leader>ul"] = {
-  function() require("astronvim.utils.ui").toggle_statusline() end,
-  desc = "Toggle statusline",
-}
-maps.n["<leader>uL"] = {
-  function() require("astronvim.utils.ui").toggle_codelens() end,
-  desc = "Toggle CodeLens refresh",
-}
-maps.n["<leader>un"] = {
-  function() require("astronvim.utils.ui").change_number() end,
-  desc = "Change line numbering",
-}
-maps.n["<leader>uN"] = {
-  function() require("astronvim.utils.ui").toggle_ui_notifications() end,
-  desc = "Toggle UI notifications",
-}
-maps.n["<leader>up"] = {
-  function() require("astronvim.utils.ui").toggle_paste() end,
-  desc = "Toggle paste mode",
-}
-maps.n["<leader>us"] = {
-  function() require("astronvim.utils.ui").toggle_spell() end,
-  desc = "Toggle spellcheck",
-}
-maps.n["<leader>uS"] = {
-  function() require("astronvim.utils.ui").toggle_conceal() end,
-  desc = "Toggle conceal",
-}
-maps.n["<leader>ut"] = {
-  function() require("astronvim.utils.ui").toggle_tabline() end,
-  desc = "Toggle tabline",
-}
-maps.n["<leader>uu"] = {
-  function() require("astronvim.utils.ui").toggle_url_match() end,
-  desc = "Toggle URL highlight",
-}
-maps.n["<leader>uw"] = {
-  function() require("astronvim.utils.ui").toggle_wrap() end,
-  desc = "Toggle wrap",
-}
-maps.n["<leader>uy"] = {
-  function() require("astronvim.utils.ui").toggle_syntax() end,
-  desc = "Toggle syntax highlight",
-}
+maps.n["<leader>ud"] =
+  { function() require("astronvim.utils.ui").toggle_diagnostics() end, desc = "Toggle diagnostics" }
+maps.n["<leader>ug"] = { function() require("astronvim.utils.ui").toggle_signcolumn() end, desc = "Toggle signcolumn" }
+maps.n["<leader>ui"] = { function() require("astronvim.utils.ui").set_indent() end, desc = "Change indent setting" }
+maps.n["<leader>ul"] = { function() require("astronvim.utils.ui").toggle_statusline() end, desc = "Toggle statusline" }
+maps.n["<leader>uL"] =
+  { function() require("astronvim.utils.ui").toggle_codelens() end, desc = "Toggle CodeLens refresh" }
+maps.n["<leader>un"] = { function() require("astronvim.utils.ui").change_number() end, desc = "Change line numbering" }
+maps.n["<leader>uN"] =
+  { function() require("astronvim.utils.ui").toggle_ui_notifications() end, desc = "Toggle UI notifications" }
+maps.n["<leader>up"] = { function() require("astronvim.utils.ui").toggle_paste() end, desc = "Toggle paste mode" }
+maps.n["<leader>us"] = { function() require("astronvim.utils.ui").toggle_spell() end, desc = "Toggle spellcheck" }
+maps.n["<leader>uS"] = { function() require("astronvim.utils.ui").toggle_conceal() end, desc = "Toggle conceal" }
+maps.n["<leader>ut"] = { function() require("astronvim.utils.ui").toggle_tabline() end, desc = "Toggle tabline" }
+maps.n["<leader>uu"] =
+  { function() require("astronvim.utils.ui").toggle_url_match() end, desc = "Toggle URL highlight" }
+maps.n["<leader>uw"] = { function() require("astronvim.utils.ui").toggle_wrap() end, desc = "Toggle wrap" }
+maps.n["<leader>uy"] =
+  { function() require("astronvim.utils.ui").toggle_syntax() end, desc = "Toggle syntax highlight" }
 
 utils.set_mappings(astronvim.user_opts("mappings", maps))
