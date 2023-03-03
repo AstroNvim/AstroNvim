@@ -1,5 +1,6 @@
 local utils = require "astronvim.utils"
 local is_available = utils.is_available
+local ui = require "astronvim.utils.ui"
 
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
@@ -46,18 +47,10 @@ maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
 
 -- Manage Buffers
-maps.n["<leader>c"] = {
-  function() require("astronvim.utils.buffer").close(0) end,
-  desc = "Close buffer",
-}
-maps.n["<leader>C"] = {
-  function() require("astronvim.utils.buffer").close(0, true) end,
-  desc = "Force close buffer",
-}
-maps.n["]b"] = {
-  function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end,
-  desc = "Next buffer",
-}
+maps.n["<leader>c"] = { function() require("astronvim.utils.buffer").close() end, desc = "Close buffer" }
+maps.n["<leader>C"] = { function() require("astronvim.utils.buffer").close(0, true) end, desc = "Force close buffer" }
+maps.n["]b"] =
+  { function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
 maps.n["[b"] = {
   function() require("astronvim.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
   desc = "Previous buffer",
@@ -225,7 +218,7 @@ if is_available "telescope.nvim" then
         if vim.fn.isdirectory(dir) == 1 then table.insert(search_dirs, dir) end -- add directory to search if exists
       end
       if vim.tbl_isempty(search_dirs) then -- if no config folders found, show warning
-        require("astronvim.utils").notify("No user configuration files found", "warn")
+        utils.notify("No user configuration files found", "warn")
       else
         if #search_dirs == 1 then cwd = search_dirs[1] end -- if only one directory, focus cwd
         require("telescope.builtin").find_files {
@@ -284,23 +277,22 @@ end
 -- Terminal
 if is_available "toggleterm.nvim" then
   maps.n["<leader>t"] = sections.t
-  local toggle_term_cmd = require("astronvim.utils").toggle_term_cmd
   if vim.fn.executable "lazygit" == 1 then
     maps.n["<leader>g"] = sections.g
-    maps.n["<leader>gg"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
-    maps.n["<leader>tl"] = { function() toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+    maps.n["<leader>gg"] = { function() utils.toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+    maps.n["<leader>tl"] = { function() utils.toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
   end
   if vim.fn.executable "node" == 1 then
-    maps.n["<leader>tn"] = { function() toggle_term_cmd "node" end, desc = "ToggleTerm node" }
+    maps.n["<leader>tn"] = { function() utils.toggle_term_cmd "node" end, desc = "ToggleTerm node" }
   end
   if vim.fn.executable "gdu" == 1 then
-    maps.n["<leader>tu"] = { function() toggle_term_cmd "gdu" end, desc = "ToggleTerm gdu" }
+    maps.n["<leader>tu"] = { function() utils.toggle_term_cmd "gdu" end, desc = "ToggleTerm gdu" }
   end
   if vim.fn.executable "btm" == 1 then
-    maps.n["<leader>tt"] = { function() toggle_term_cmd "btm" end, desc = "ToggleTerm btm" }
+    maps.n["<leader>tt"] = { function() utils.toggle_term_cmd "btm" end, desc = "ToggleTerm btm" }
   end
   local python = vim.fn.executable "python" == 1 and "python" or vim.fn.executable "python3" == 1 and "python3"
-  if python then maps.n["<leader>tp"] = { function() toggle_term_cmd(python) end, desc = "ToggleTerm python" } end
+  if python then maps.n["<leader>tp"] = { function() utils.toggle_term_cmd(python) end, desc = "ToggleTerm python" } end
   maps.n["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" }
   maps.n["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
@@ -360,34 +352,25 @@ maps.t["<C-l>"] = { "<c-\\><c-n><c-w>l", desc = "Terminal right window navigatio
 
 maps.n["<leader>u"] = sections.u
 -- Custom menu for modification of the user experience
-if is_available "nvim-autopairs" then
-  maps.n["<leader>ua"] = { function() require("astronvim.utils.ui").toggle_autopairs() end, desc = "Toggle autopairs" }
-end
-maps.n["<leader>ub"] = { function() require("astronvim.utils.ui").toggle_background() end, desc = "Toggle background" }
-if is_available "nvim-cmp" then
-  maps.n["<leader>uc"] = { function() require("astronvim.utils.ui").toggle_cmp() end, desc = "Toggle autocompletion" }
-end
+if is_available "nvim-autopairs" then maps.n["<leader>ua"] = { ui.toggle_autopairs, desc = "Toggle autopairs" } end
+maps.n["<leader>ub"] = { ui.toggle_background, desc = "Toggle background" }
+if is_available "nvim-cmp" then maps.n["<leader>uc"] = { ui.toggle_cmp, desc = "Toggle autocompletion" } end
 if is_available "nvim-colorizer.lua" then
   maps.n["<leader>uC"] = { "<cmd>ColorizerToggle<cr>", desc = "Toggle color highlight" }
 end
-maps.n["<leader>ud"] =
-  { function() require("astronvim.utils.ui").toggle_diagnostics() end, desc = "Toggle diagnostics" }
-maps.n["<leader>ug"] = { function() require("astronvim.utils.ui").toggle_signcolumn() end, desc = "Toggle signcolumn" }
-maps.n["<leader>ui"] = { function() require("astronvim.utils.ui").set_indent() end, desc = "Change indent setting" }
-maps.n["<leader>ul"] = { function() require("astronvim.utils.ui").toggle_statusline() end, desc = "Toggle statusline" }
-maps.n["<leader>uL"] =
-  { function() require("astronvim.utils.ui").toggle_codelens() end, desc = "Toggle CodeLens refresh" }
-maps.n["<leader>un"] = { function() require("astronvim.utils.ui").change_number() end, desc = "Change line numbering" }
-maps.n["<leader>uN"] =
-  { function() require("astronvim.utils.ui").toggle_ui_notifications() end, desc = "Toggle UI notifications" }
-maps.n["<leader>up"] = { function() require("astronvim.utils.ui").toggle_paste() end, desc = "Toggle paste mode" }
-maps.n["<leader>us"] = { function() require("astronvim.utils.ui").toggle_spell() end, desc = "Toggle spellcheck" }
-maps.n["<leader>uS"] = { function() require("astronvim.utils.ui").toggle_conceal() end, desc = "Toggle conceal" }
-maps.n["<leader>ut"] = { function() require("astronvim.utils.ui").toggle_tabline() end, desc = "Toggle tabline" }
-maps.n["<leader>uu"] =
-  { function() require("astronvim.utils.ui").toggle_url_match() end, desc = "Toggle URL highlight" }
-maps.n["<leader>uw"] = { function() require("astronvim.utils.ui").toggle_wrap() end, desc = "Toggle wrap" }
-maps.n["<leader>uy"] =
-  { function() require("astronvim.utils.ui").toggle_syntax() end, desc = "Toggle syntax highlight" }
+maps.n["<leader>ud"] = { ui.toggle_diagnostics, desc = "Toggle diagnostics" }
+maps.n["<leader>ug"] = { ui.toggle_signcolumn, desc = "Toggle signcolumn" }
+maps.n["<leader>ui"] = { ui.set_indent, desc = "Change indent setting" }
+maps.n["<leader>ul"] = { ui.toggle_statusline, desc = "Toggle statusline" }
+maps.n["<leader>uL"] = { ui.toggle_codelens, desc = "Toggle CodeLens refresh" }
+maps.n["<leader>un"] = { ui.change_number, desc = "Change line numbering" }
+maps.n["<leader>uN"] = { ui.toggle_ui_notifications, desc = "Toggle UI notifications" }
+maps.n["<leader>up"] = { ui.toggle_paste, desc = "Toggle paste mode" }
+maps.n["<leader>us"] = { ui.toggle_spell, desc = "Toggle spellcheck" }
+maps.n["<leader>uS"] = { ui.toggle_conceal, desc = "Toggle conceal" }
+maps.n["<leader>ut"] = { ui.toggle_tabline, desc = "Toggle tabline" }
+maps.n["<leader>uu"] = { ui.toggle_url_match, desc = "Toggle URL highlight" }
+maps.n["<leader>uw"] = { ui.toggle_wrap, desc = "Toggle wrap" }
+maps.n["<leader>uy"] = { ui.toggle_syntax, desc = "Toggle syntax highlight" }
 
 utils.set_mappings(astronvim.user_opts("mappings", maps))
