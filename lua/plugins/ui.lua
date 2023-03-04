@@ -66,13 +66,13 @@ return {
   },
   {
     "NvChad/nvim-colorizer.lua",
-    init = function() table.insert(astronvim.file_plugins, "nvim-colorizer.lua") end,
+    event = "User AstroFile",
     cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
     opts = { user_default_options = { names = false } },
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    init = function() table.insert(astronvim.file_plugins, "indent-blankline.nvim") end,
+    event = "User AstroFile",
     opts = {
       buftype_exclude = {
         "nofile",

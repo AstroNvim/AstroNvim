@@ -209,29 +209,13 @@ autocmd({ "VimEnter", "ColorScheme" }, {
   end,
 })
 
-autocmd("BufRead", {
-  group = augroup("git_plugin_lazy_load", { clear = true }),
-  callback = function()
-    vim.fn.system('git -C "' .. vim.fn.expand "%:p:h" .. '" rev-parse')
-    if vim.v.shell_error == 0 then
-      vim.api.nvim_del_augroup_by_name "git_plugin_lazy_load"
-      if #astronvim.git_plugins > 0 then
-        vim.schedule(function() require("lazy").load { plugins = astronvim.git_plugins } end)
-      end
-    end
-  end,
-})
-autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
-  group = augroup("file_plugin_lazy_load", { clear = true }),
+autocmd({ "BufReadPost", "BufNewFile" }, {
+  group = augroup("file_user_events", { clear = true }),
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
-      vim.api.nvim_del_augroup_by_name "file_plugin_lazy_load"
-      if #astronvim.file_plugins > 0 then
-        if vim.tbl_contains(astronvim.file_plugins, "nvim-treesitter") then
-          require("lazy").load { plugins = { "nvim-treesitter" } }
-        end
-        vim.schedule(function() require("lazy").load { plugins = astronvim.file_plugins } end)
-      end
+      utils.event "File"
+      vim.fn.system('git -C "' .. vim.fn.expand "%:p:h" .. '" rev-parse')
+      if vim.v.shell_error == 0 then utils.event "GitFile" end
     end
   end,
 })

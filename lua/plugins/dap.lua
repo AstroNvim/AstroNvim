@@ -15,5 +15,5 @@ return {
       config = require "plugins.configs.nvim-dap-ui",
     },
   },
-  init = function() table.insert(astronvim.file_plugins, "nvim-dap") end,
+  event = "User AstroFile",
 }
