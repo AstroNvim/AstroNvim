@@ -127,9 +127,5 @@ astronvim.updater.rollback_file = vim.fn.stdpath "cache" .. "/astronvim_rollback
 
 --- table of user created terminals
 astronvim.user_terminals = {}
---- table of plugins to load with git
-astronvim.git_plugins = {}
---- table of plugins to load when file opened
-astronvim.file_plugins = {}
 --- the default colorscheme to apply on startup
 astronvim.default_colorscheme = astronvim.user_opts("colorscheme", "astrodark", false)

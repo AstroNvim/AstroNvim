@@ -23,7 +23,7 @@ return {
         config = require "plugins.configs.mason-lspconfig",
       },
     },
-    init = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
+    event = "User AstroFile",
     config = require "plugins.configs.lspconfig",
   },
   {
@@ -36,12 +36,12 @@ return {
         config = require "plugins.configs.mason-null-ls",
       },
     },
-    init = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
+    event = "User AstroFile",
     opts = function() return { on_attach = require("astronvim.utils.lsp").on_attach } end,
   },
   {
     "stevearc/aerial.nvim",
-    init = function() table.insert(astronvim.file_plugins, "aerial.nvim") end,
+    event = "User AstroFile",
     opts = {
       attach_mode = "global",
       backends = { "lsp", "treesitter", "markdown", "man" },

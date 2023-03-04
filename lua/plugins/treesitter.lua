@@ -1,7 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   dependencies = { "windwp/nvim-ts-autotag", "JoosepAlviste/nvim-ts-context-commentstring" },
-  init = function() table.insert(astronvim.file_plugins, "nvim-treesitter") end,
+  event = "User AstroFile",
   cmd = {
     "TSBufDisable",
     "TSBufEnable",

@@ -52,8 +52,7 @@ return {
   },
   {
     "kevinhwang91/nvim-ufo",
-    init = function() table.insert(astronvim.file_plugins, "nvim-ufo") end,
-    event = "InsertEnter",
+    event = { "User AstroFile", "InsertEnter" },
     dependencies = { "kevinhwang91/promise-async" },
     opts = {
       preview = {
@@ -106,7 +105,7 @@ return {
   },
   {
     "NMAC427/guess-indent.nvim",
-    init = function() table.insert(astronvim.file_plugins, "guess-indent.nvim") end,
+    event = "User AstroFile",
     config = require "plugins.configs.guess-indent",
   },
   {
