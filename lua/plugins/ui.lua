@@ -47,7 +47,6 @@ return {
   {
     "rcarriga/nvim-notify",
     init = function() require("astronvim.utils").load_plugin_with_func("nvim-notify", vim, "notify") end,
-    opts = { stages = "fade" },
     config = require "plugins.configs.notify",
   },
   {
