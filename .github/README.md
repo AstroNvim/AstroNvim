@@ -33,7 +33,7 @@
     <a href="https://www.reddit.com/r/AstroNvim/">
       <img src="https://img.shields.io/reddit/subreddit-subscribers/AstroNvim?style=for-the-badge&logo=reddit&color=ee99a0&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://discord.gg/UcZutyeaFW">
+    <a href="https://discord.gg/astronvim">
       <img src="https://img.shields.io/discord/939594913560031363?style=for-the-badge&logo=discord&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
 </p>
