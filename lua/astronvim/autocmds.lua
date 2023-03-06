@@ -1,6 +1,7 @@
-local namespace = vim.api.nvim_create_namespace
-local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+local cmd = vim.api.nvim_create_user_command
+local namespace = vim.api.nvim_create_namespace
 
 local utils = require "astronvim.utils"
 local is_available = utils.is_available
@@ -219,22 +220,16 @@ autocmd({ "BufReadPost", "BufNewFile" }, {
   end,
 })
 
-local cmd = vim.api.nvim_create_user_command
-cmd(
-  "AstroUpdatePackages",
-  function() require("astronvim.utils.updater").update_packages() end,
-  { desc = "Update Plugins and Mason" }
-)
-cmd("AstroUpdate", function() require("astronvim.utils.updater").update() end, { desc = "Update AstroNvim" })
-cmd("AstroRollback", function() require("astronvim.utils.updater").rollback() end, { desc = "Rollback AstroNvim" })
-cmd("AstroVersion", function() require("astronvim.utils.updater").version() end, { desc = "Check AstroNvim Version" })
 cmd(
   "AstroChangelog",
   function() require("astronvim.utils.updater").changelog() end,
   { desc = "Check AstroNvim Changelog" }
 )
 cmd(
-  "ToggleHighlightURL",
-  function() require("astronvim.utils.ui").toggle_url_match() end,
-  { desc = "Toggle URL Highlights" }
+  "AstroUpdatePackages",
+  function() require("astronvim.utils.updater").update_packages() end,
+  { desc = "Update Plugins and Mason" }
 )
+cmd("AstroRollback", function() require("astronvim.utils.updater").rollback() end, { desc = "Rollback AstroNvim" })
+cmd("AstroUpdate", function() require("astronvim.utils.updater").update() end, { desc = "Update AstroNvim" })
+cmd("AstroVersion", function() require("astronvim.utils.updater").version() end, { desc = "Check AstroNvim Version" })
