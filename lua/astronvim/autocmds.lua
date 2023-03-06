@@ -214,8 +214,7 @@ autocmd({ "BufReadPost", "BufNewFile" }, {
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
       utils.event "File"
-      vim.fn.system('git -C "' .. vim.fn.expand "%:p:h" .. '" rev-parse')
-      if vim.v.shell_error == 0 then utils.event "GitFile" end
+      if utils.cmd('git -C "' .. vim.fn.expand "%:p:h" .. '" rev-parse', false) then utils.event "GitFile" end
     end
   end,
 })
