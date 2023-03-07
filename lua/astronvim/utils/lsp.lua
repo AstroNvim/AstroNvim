@@ -84,7 +84,7 @@ M.setup = function(server)
   end
   local opts = M.config(server)
   local setup_handler = setup_handlers[server] or setup_handlers[1]
-  if setup_handler then setup_handler(server, opts) end
+  if not vim.tbl_contains(astronvim.lsp.skip_setup, server) and setup_handler then setup_handler(server, opts) end
 end
 
 local function add_buffer_autocmd(augroup, bufnr, autocmds)
