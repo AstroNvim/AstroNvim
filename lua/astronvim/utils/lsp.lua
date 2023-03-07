@@ -148,6 +148,7 @@ M.on_attach = function(client, bufnr)
   if capabilities.codeLensProvider then
     add_buffer_autocmd("lsp_codelens_refresh", bufnr, {
       events = { "InsertLeave", "BufEnter" },
+      desc = "Refresh codelens",
       callback = function()
         if vim.g.codelens_enabled then vim.lsp.codelens.refresh() end
       end,
@@ -199,6 +200,7 @@ M.on_attach = function(client, bufnr)
     then
       add_buffer_autocmd("lsp_auto_format", bufnr, {
         events = "BufWritePre",
+        desc = "autoformat on save",
         callback = function()
           local autoformat_enabled = vim.b.autoformat_enabled
           if autoformat_enabled == nil then autoformat_enabled = vim.g.autoformat_enabled end
@@ -222,10 +224,12 @@ M.on_attach = function(client, bufnr)
     add_buffer_autocmd("lsp_document_highlight", bufnr, {
       {
         events = { "CursorHold", "CursorHoldI" },
+        desc = "highlight references when cursor holds",
         callback = function() vim.lsp.buf.document_highlight() end,
       },
       {
-        events = "CursorMoved",
+        events = { "CursorMoved", "CursorMovedI" },
+        desc = "clear references when cursor moves",
         callback = function() vim.lsp.buf.clear_references() end,
       },
     })
