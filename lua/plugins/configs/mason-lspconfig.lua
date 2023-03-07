@@ -4,5 +4,5 @@ return function(_, opts)
   mason_lspconfig.setup_handlers {
     function(server) require("astronvim.utils.lsp").setup(server) end,
   }
-  require("astronvim.utils").event "LspSetup"
+  require("astronvim.utils").event "MasonLspSetup"
 end
