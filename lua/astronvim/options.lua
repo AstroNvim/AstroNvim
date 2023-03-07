@@ -5,6 +5,7 @@ if vim.fn.has "nvim-0.9" == 1 then -- TODO v3 REMOVE THIS CONDITIONAL
 end
 local options = astronvim.user_opts("options", {
   opt = {
+    breakindent = true, -- Wrap indent to match  line start
     clipboard = "unnamedplus", -- Connection to the system clipboard
     cmdheight = 0, -- hide command line unless needed
     completeopt = { "menuone", "noselect" }, -- Options for insert mode completion
@@ -19,7 +20,9 @@ local options = astronvim.user_opts("options", {
     foldcolumn = vim.fn.has "nvim-0.9" == 1 and "1" or nil, -- show foldcolumn in nvim 0.9
     history = 100, -- Number of commands to remember in a history table
     ignorecase = true, -- Case insensitive searching
+    infercase = true, -- Infer cases in keyword completion
     laststatus = 3, -- globalstatus
+    linebreak = true, -- Wrap lines at 'breakat'
     mouse = "a", -- Enable mouse support
     number = true, -- Show numberline
     preserveindent = true, -- Preserve indent structure as much as possible
@@ -32,6 +35,7 @@ local options = astronvim.user_opts("options", {
     sidescrolloff = 8, -- Number of columns to keep at the sides of the cursor
     signcolumn = "yes", -- Always show the sign column
     smartcase = true, -- Case sensitivie searching
+    smartindent = true, -- Smarter autoindentation
     splitbelow = true, -- Splitting a new window below the current one
     -- TODO v3 REMOVE THIS CONDITIONAL
     splitkeep = vim.fn.has "nvim-0.9" == 1 and "screen" or nil, -- Maintain code view when splitting
@@ -41,6 +45,7 @@ local options = astronvim.user_opts("options", {
     timeoutlen = 500, -- Shorten key timeout length a little bit for which-key
     undofile = true, -- Enable persistent undo
     updatetime = 300, -- Length of time to wait before triggering the plugin
+    virtualedit = "block", -- allow going past end of line in visual block mode
     wrap = false, -- Disable wrapping of lines longer than the width of window
     writebackup = false, -- Disable making a backup before overwriting a file
   },
