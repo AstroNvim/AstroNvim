@@ -1,6 +1,6 @@
 vim.opt.shortmess:append { s = true, I = true } -- disable startup message
 vim.opt.backspace:append { "nostop" } -- Don't stop backspace at insert
-if vim.fn.has "nvim-0.9" == 1 then -- TODO v3 REMOVE THIS CONDITIONAL
+if vim.fn.has "nvim-0.9" == 1 then
   vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
 end
 local options = astronvim.user_opts("options", {
@@ -37,7 +37,6 @@ local options = astronvim.user_opts("options", {
     smartcase = true, -- Case sensitivie searching
     smartindent = true, -- Smarter autoindentation
     splitbelow = true, -- Splitting a new window below the current one
-    -- TODO v3 REMOVE THIS CONDITIONAL
     splitkeep = vim.fn.has "nvim-0.9" == 1 and "screen" or nil, -- Maintain code view when splitting
     splitright = true, -- Splitting a new window at the right of the current one
     tabstop = 2, -- Number of space in a tab
