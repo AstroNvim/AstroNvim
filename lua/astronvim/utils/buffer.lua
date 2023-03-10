@@ -62,10 +62,6 @@ end
 -- @param force? whether or not to foce close the buffers or confirm changes (default: false)
 function M.close(bufnr, force)
   if force == nil then force = false end
-  local current = vim.api.nvim_get_current_buf()
-  if not bufnr or bufnr == 0 then bufnr = current end
-  if bufnr == current then M.nav(vim.t.bufs[1] == current and 1 or -1) end
-
   if require("astronvim.utils").is_available "bufdelete.nvim" then
     require("bufdelete").bufdelete(bufnr, force)
   else
