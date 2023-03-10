@@ -24,6 +24,9 @@ jobs:
       - name: Build Docs
         run: |
           ldoc .
+      - name: Set CNAME
+        run: |
+          echo "api.astronvim.com" > docs/CNAME
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
