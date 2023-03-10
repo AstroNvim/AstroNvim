@@ -91,7 +91,7 @@ mv ~/.local/share/nvim ~/.local/share/nvim.bak
 
 ```shell
 git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-nvim +PackerSync
+nvim
 ```
 
 ## 📦 Basic Setup
@@ -113,12 +113,21 @@ Example: `:DapInstall python`
 
 #### Manage plugins
 
-Run `:PackerClean` to remove any disabled or unused plugins<br>
-Run `:PackerSync` to update and clean plugins<br>
+Run `:Lazy check` to check for plugin updates
+
+Run `:Lazy update` to apply any pending plugin updates
+
+Run `:Lazy clean` to remove any disabled or unused plugins
+
+Run `:Lazy sync` to update and clean plugins
 
 #### Update AstroNvim
 
 Run `:AstroUpdate` to get the latest updates from the repository<br>
+
+#### Update AstroNvim Packages
+
+Run `:AstroUpdatePackages` (`<leader>pa`) to update both Neovim plugins and Mason packages
 
 ## 🗒️ Links
 
