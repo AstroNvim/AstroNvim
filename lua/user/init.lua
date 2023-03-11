@@ -1,49 +1,54 @@
 return {
+  -- Configure AstroNvim updates
+  updater = {
+    remote = "origin", -- remote to use
+    channel = "stable", -- "stable" or "nightly"
+    version = "latest", -- "latest", tag name, or regex search like "v1.*" to only do updates before v2 (STABLE ONLY)
+    branch = "nightly", -- branch name (NIGHTLY ONLY)
+    commit = nil, -- commit hash (NIGHTLY ONLY)
+    pin_plugins = nil, -- nil, true, false (nil will pin plugins on stable only)
+    skip_prompts = false, -- skip prompts about breaking changes
+    show_changelog = true, -- show the changelog after performing an update
+    auto_quit = false, -- automatically quit the current session after a successful update
+    remotes = { -- easily add new remotes to track
+      --   ["remote_name"] = "https://remote_url.come/repo.git", -- full remote url
+      --   ["remote2"] = "github_user/repo", -- GitHub user/repo shortcut,
+      --   ["remote3"] = "github_user", -- GitHub user assume AstroNvim fork
+    },
+  },
+  -- Set colorscheme to use
   colorscheme = "tokyonight",
-  -- Set dashboard header
-  header = {
-    "           ██████ ██████    ███    ██████  ██      ██████  ██████  ██████            ",
-    "           ██     ██       ██ ██   ██  ██  ██      ██      ██      ██                ",
-    "           █████  █████   ███████  ██████  ██      █████   ██████  ██████            ",
-    "           ██     ██      ██   ██  ██ ██   ██      ██          ██      ██            ",
-    "           ██     ██████  ██   ██  ██  ██  ██████  ██████  ██████  ██████            ",
-    " ",
-    "                                                                                     ",
-    "                                                                                     ",
-    "                               ▒▒                  ▒▒                                ",
-    "                             ▒▒██▒▒              ▒▒██▒▒                              ",
-    "                             ▒▒██▒▒              ▒▒██▒▒                              ",
-    "                         ▒▒  ▒▒██▒▒              ▒▒██▒▒  ▒▒                          ",
-    "                       ▒▒██▒▒▒▒██▒▒              ▒▒██▒▒▒▒██▒▒                        ",
-    "                       ▒▒██▒▒▒▒▒▒██▒▒  ▒▒  ▒▒  ▒▒██▒▒▒▒▒▒██▒▒                        ",
-    "                         ▒▒██▒▒▒▒██▒▒▒▒██▒▒██▒▒▒▒██▒▒▒▒██▒▒                          ",
-    "                         ▒▒██▒▒▒▒██▒▒▒▒██▒▒██▒▒▒▒██▒▒▒▒██▒▒                          ",
-    "                         ▒▒██▒▒▒▒▒▒██▒▒██████▒▒██▒▒▒▒▒▒██▒▒                          ",
-    "                           ▒▒██▒▒▒▒▒▒██████████▒▒▒▒▒▒██▒▒                            ",
-    "                             ▒▒██████████████████████▒▒                              ",
-    "                               ▒▒▒▒▒▒██████████▒▒▒▒▒▒                                ",
-    "                             ▒▒██████▒▒██████▒▒██████▒▒                              ",
-    "                           ▒▒██▒▒▒▒▒▒██████████▒▒▒▒▒▒██▒▒                            ",
-    "                         ▒▒██▒▒▒▒▒▒██████████████▒▒▒▒▒▒██▒▒                          ",
-    "                         ▒▒██▒▒▒▒██▒▒██████████▒▒██▒▒▒▒██▒▒                          ",
-    "                       ▒▒██▒▒▒▒██▒▒████▒▒▒▒▒▒████▒▒██▒▒▒▒██▒▒                        ",
-    "                       ▒▒██▒▒▒▒██▒▒██████▒▒██████▒▒██▒▒▒▒██▒▒                        ",
-    "                       ▒▒██▒▒▒▒██▒▒██████▒▒██████▒▒██▒▒▒▒██▒▒                        ",
-    "                         ▒▒▒▒▒▒██▒▒████▒▒▒▒▒▒████▒▒██▒▒▒▒▒▒                          ",
-    "                           ▒▒██▒▒  ▒▒██████████▒▒  ▒▒██▒▒                            ",
-    "                           ▒▒██▒▒    ▒▒██████▒▒    ▒▒██▒▒                            ",
-    "                           ▒▒██▒▒      ▒▒██▒▒      ▒▒██▒▒                            ",
-    "                           ▒▒██▒▒        ▒▒        ▒▒██▒▒                            ",
-    "                             ▒▒                      ▒▒                              ",
-    "                                                                                     ",
-    "            Spiders are the only web developers that enjoy finding bugs.             ",
+    -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
+  diagnostics = {
+    virtual_text = true,
+    underline = true,
   },
   lsp = {
+    -- customize lsp formatting options
     formatting = {
-      format_on_save = false, -- enable or disable automatic formatting on save
-      timeout_ms = 20000,
+      -- control auto formatting on save
+      format_on_save = {
+        enabled = true, -- enable or disable format on save globally
+        allow_filetypes = { -- enable format on save for specified filetypes only
+          -- "go",
+        },
+        ignore_filetypes = { -- disable format on save for specified filetypes
+          -- "python",
+        },
+      },
+      disabled = { -- disable formatting capabilities for the listed language servers
+        -- "sumneko_lua",
+      },
+      timeout_ms = 20000, -- default format timeout
+      -- filter = function(client) -- fully override the default formatting function
+      --   return true
+      -- end
     },
     skip_setup = { "clangd" },
+    -- enable servers that you already have installed without mason
+    servers = {
+      -- "pyright"
+    },
     ["server-settings"] = {
       clangd = {
         capabilities = {
@@ -58,222 +63,35 @@ return {
         -- I also choose to turn off the auto dep fetching feature.
         -- It often get's into a weird state that requires deleting
         -- the .elixir_ls directory and restarting your editor.
-        fetchDeps = false
-      }
-    },
-  },
-  plugins = {
-    init = {
-      {
-        "windwp/windline.nvim",
-        config = function()
-          require "wlsample.airline_anim"
-        end,
-      },
-      {
-        "psliwka/vim-smoothie",
-      },
-      {
-        "ThePrimeagen/vim-be-good",
-      },
-      {
-        "folke/tokyonight.nvim",
-        config = function()
-          require("tokyonight").setup {
-            style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-            light_style = "day", -- The theme is used when the background is set to light
-            transparent = false, -- Enable this to disable setting the background color
-            terminal_colors = true,
-          }
-        end
-      },
-      {
-        "mfussenegger/nvim-dap-python",
-      },
-      -- Rust support
-      {
-        "simrat39/rust-tools.nvim",
-        after = { "mason-lspconfig.nvim" },
-        -- Is configured via the server_registration_override installed below!
-        config = function()
-          require("rust-tools").setup {
-            server = astronvim.lsp.server_settings "rust_analyzer",
-            tools = {
-              inlay_hints = {
-                parameter_hints_prefix = "  ",
-                other_hints_prefix = "  ",
-              },
-            },
-          }
-        end,
-      },
-    },
-    ["null-ls"] = function(config)
-      local null_ls = require "null-ls"
-      config.default_timeout = 20000
-      -- Check supported formatters and linters
-      -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
-      -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
-      config.sources = {
-        null_ls.builtins.formatting.astyle, -- C/C++
-        null_ls.builtins.formatting.erlfmt, -- Erlang
-        null_ls.builtins.formatting.mix.with {
-          filetypes = {
-            "elixir",
-            "ex",
-            "exs",
-            "heex",
-          },
-        }, -- Mix
-        null_ls.builtins.formatting.stylua, -- Lua
-        null_ls.builtins.formatting.shfmt, -- Shell
-        null_ls.builtins.formatting.black.with { extra_args = { "--fast" } }, -- Python
-        null_ls.builtins.formatting.gofmt, -- GO
-        null_ls.builtins.formatting.surface, -- Phoenix
-        null_ls.builtins.formatting.prettierd.with {
-          filetypes = {
-            "javascript",
-            "typescript",
-            "css",
-            "scss",
-            "html",
-            "yaml",
-            "markdown",
-            "json",
-            "svelte",
-            "toml",
-          },
-        },
-        -- Linters
-        null_ls.builtins.diagnostics.credo, -- Elixir
-        null_ls.builtins.diagnostics.rubocop, -- Ruby
-        null_ls.builtins.diagnostics.checkmake, -- Makefile
-        null_ls.builtins.diagnostics.tsc, -- Typescript
-        null_ls.builtins.diagnostics.cppcheck, -- C/C++
-        null_ls.builtins.diagnostics.eslint, -- JavaScript
-        null_ls.builtins.diagnostics.flake8, -- Python
-        null_ls.builtins.diagnostics.gitlint, -- Git
-        null_ls.builtins.diagnostics.golangci_lint, -- Go
-        null_ls.builtins.diagnostics.hadolint, -- Dockerfile
-        null_ls.builtins.diagnostics.markdownlint, -- Markdown
-        null_ls.builtins.diagnostics.stylelint, -- SCSS
-        null_ls.builtins.diagnostics.shellcheck.with {
-          diagnostics_format = "#{m} [#{c}]",
-        },
-        null_ls.builtins.diagnostics.luacheck.with {
-          extra_args = { "--global vim" },
-        },
-        null_ls.builtins.diagnostics.write_good, -- English
-        -- Code Actions
-        null_ls.builtins.code_actions.gitsigns,
-        null_ls.builtins.code_actions.shellcheck,
-        -- Hover
-        null_ls.builtins.hover.dictionary,
-      }
-      -- set up null-ls's on_attach function
-      return config -- return final config table
-    end,
-    treesitter = {
-      highlight = {
-        enable = true,
-      },
-      ensure_installed = {
-        --"norg",
-        "bash",
-        "haskell",
-        "markdown",
-        "toml",
-        "yaml",
-        "lua",
-        "python",
-        "java",
-        "javascript",
-        "typescript",
-        "c",
-        "cpp",
-        "rust",
-        "scss",
-        "swift",
-        "ruby",
-        "php",
-        "make",
-        "json",
-        "html",
-        "graphql",
-        "go",
-        "erlang",
-        "elixir",
-        "eex",
-        "heex",
-        "surface",
-        "dockerfile",
-      },
-    },
-    ["mason-lspconfig"] = {
-      ensure_installed = {
-        "sumneko_lua",
-        "clangd",
-        "dockerls",
-        "eslint",
-        "elixirls",
-        "erlangls",
-        "gopls",
-        "graphql",
-        "html",
-        "jsonls",
-        "jdtls",
-        "intelephense",
-        "pyright",
-        "solargraph",
-        "rust_analyzer",
-      },
-    },
-    ["mason-null-ls"] = { -- overrides `require("mason-null-ls").setup(...)`
-      ensure_installed = {
-        "prettier",
-        "stylua",
-        "clang_format",
-        "hadolint",
-        "djlint",
-        "fixjson",
-        "write_good",
-        "black",
-        "shfmt",
-      },
-    },
-    ["mason-nvim-dap"] = { -- overrides `require("mason-nvim-dap").setup(...)`
-      ensure_installed = {
-         "python",
-         "lua",
-         "elixir"
-      },
-    },
-    ["neo-tree"] = {
-      window = {
-        width = 50,
+        fetchDeps = false,
       },
     },
   },
-  mappings = {
-    n = {
-      -- NeoTest
-      ["<leader>T"] = { "Tests" },
-      ["<leader>Tn"] = {
-        function() require("neotest").run.run() end,
-        desc = "Run nearest test",
-      },
-      ["<leader>Tf"] = {
-        function() require("neotest").run.run(vim.fn.expand "%") end,
-        desc = "Run tests in current file",
-      },
-      ["<leader>To"] = {
-        function() require("neotest").output.open() end,
-        desc = "Display output of tests",
-      },
-      ["<leader>Ts"] = {
-        function() require("neotest").summary.toggle() end,
-        desc = "Open the summary window",
+  -- Configure require("lazy").setup() options
+  lazy = {
+    defaults = { lazy = true },
+    performance = {
+      rtp = {
+        -- customize default disabled vim plugins
+        disabled_plugins = { "tohtml", "gzip", "matchit", "zipPlugin", "netrwPlugin", "tarPlugin", "matchparen" },
       },
     },
   },
+  -- This function is run last and is a good place to configuring
+  -- augroups/autocommands and custom filetypes also this just pure lua so
+  -- anything that doesn't fit in the normal config locations above can go here
+  polish = function()
+    -- Set up custom filetypes
+    -- vim.filetype.add {
+    --   extension = {
+    --     foo = "fooscript",
+    --   },
+    --   filename = {
+    --     ["Foofile"] = "fooscript",
+    --   },
+    --   pattern = {
+    --     ["~/%.config/foo/.*"] = "fooscript",
+    --   },
+    -- }
+  end,
 }
