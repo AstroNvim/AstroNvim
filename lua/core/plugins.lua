@@ -1,21 +1,21 @@
+local on_file_open = { "BufRead", "BufWinEnter", "BufNewFile" }
+
 local astro_plugins = {
   -- Plugin manager
   ["wbthomason/packer.nvim"] = {
-    setup = function()
-      astronvim.lazy_load_commands("packer.nvim", {
-        "PackerSnapshot",
-        "PackerSnapshotRollback",
-        "PackerSnapshotDelete",
-        "PackerInstall",
-        "PackerUpdate",
-        "PackerSync",
-        "PackerClean",
-        "PackerCompile",
-        "PackerStatus",
-        "PackerProfile",
-        "PackerLoad",
-      })
-    end,
+    cmd = {
+      "PackerSnapshot",
+      "PackerSnapshotRollback",
+      "PackerSnapshotDelete",
+      "PackerInstall",
+      "PackerUpdate",
+      "PackerSync",
+      "PackerClean",
+      "PackerCompile",
+      "PackerStatus",
+      "PackerProfile",
+      "PackerLoad",
+    },
     config = function() require "core.plugins" end,
   },
 
@@ -26,25 +26,13 @@ local astro_plugins = {
   ["nvim-lua/plenary.nvim"] = { module = "plenary" },
 
   -- Indent detection
-  ["Darazaki/indent-o-matic"] = {
-    opt = true,
-    setup = function() table.insert(astronvim.file_plugins, "indent-o-matic") end,
-    config = function() require "configs.indent-o-matic" end,
-  },
+  ["Darazaki/indent-o-matic"] = { event = on_file_open, config = function() require "configs.indent-o-matic" end },
 
   -- Notification Enhancer
-  ["rcarriga/nvim-notify"] = {
-    module = "notify",
-    setup = function() astronvim.load_plugin_with_func("nvim-notify", vim, "notify") end,
-    config = function() require "configs.notify" end,
-  },
+  ["rcarriga/nvim-notify"] = { event = "UIEnter", config = function() require "configs.notify" end },
 
   -- Neovim UI Enhancer
-  ["stevearc/dressing.nvim"] = {
-    opt = true,
-    setup = function() astronvim.load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
-    config = function() require "configs.dressing" end,
-  },
+  ["stevearc/dressing.nvim"] = { event = "UIEnter", config = function() require "configs.dressing" end },
 
   -- Smarter Splits
   ["mrjones2014/smart-splits.nvim"] = {
@@ -67,18 +55,14 @@ local astro_plugins = {
   },
 
   -- Bufferline
-  ["akinsho/bufferline.nvim"] = { -- TODO v3: remove this plugin
-    disable = vim.g.heirline_bufferline,
+  ["akinsho/bufferline.nvim"] = {
     module = "bufferline",
     event = "UIEnter",
     config = function() require "configs.bufferline" end,
   },
 
   -- Better buffer closing
-  ["famiu/bufdelete.nvim"] = {
-    module = "bufdelete",
-    setup = function() astronvim.lazy_load_commands("bufdelete.nvim", { "Bdelete", "Bwipeout" }) end,
-  },
+  ["famiu/bufdelete.nvim"] = { module = "bufdelete", cmd = { "Bdelete", "Bwipeout" } },
 
   ["s1n7ax/nvim-window-picker"] = {
     tag = "v1.*",
@@ -90,11 +74,9 @@ local astro_plugins = {
   ["nvim-neo-tree/neo-tree.nvim"] = {
     branch = "v2.x",
     module = "neo-tree",
+    cmd = "Neotree",
     requires = { { "MunifTanjim/nui.nvim", module = "nui" } },
-    setup = function()
-      astronvim.lazy_load_commands("neo-tree.nvim", "Neotree")
-      vim.g.neo_tree_remove_legacy_commands = true
-    end,
+    setup = function() vim.g.neo_tree_remove_legacy_commands = true end,
     config = function() require "configs.neo-tree" end,
   },
 
@@ -103,26 +85,8 @@ local astro_plugins = {
 
   -- Syntax highlighting
   ["nvim-treesitter/nvim-treesitter"] = {
-    module = "nvim-treesitter",
-    setup = function()
-      table.insert(astronvim.file_plugins, "nvim-treesitter")
-      astronvim.lazy_load_commands("nvim-treesitter", {
-        "TSBufDisable",
-        "TSBufEnable",
-        "TSBufToggle",
-        "TSDisable",
-        "TSEnable",
-        "TSToggle",
-        "TSInstall",
-        "TSInstallInfo",
-        "TSInstallSync",
-        "TSModuleInfo",
-        "TSUninstall",
-        "TSUpdate",
-        "TSUpdateSync",
-      })
-    end,
     run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
+    event = on_file_open,
     config = function() require "configs.treesitter" end,
   },
 
@@ -166,48 +130,15 @@ local astro_plugins = {
   -- Built-in LSP
   ["neovim/nvim-lspconfig"] = {
     module = "lspconfig",
-    setup = function() table.insert(astronvim.file_plugins, "nvim-lspconfig") end,
+    event = on_file_open,
     config = function() require "configs.lspconfig" end,
   },
 
   -- Formatting and linting
-  ["jose-elias-alvarez/null-ls.nvim"] = {
-    module = "null-ls",
-    setup = function() table.insert(astronvim.file_plugins, "null-ls.nvim") end,
-    config = function() require "configs.null-ls" end,
-  },
-
-  -- Debugger
-  ["mfussenegger/nvim-dap"] = {
-    disable = vim.fn.has "win32" == 1,
-    module = "dap",
-    config = function() require "configs.dap" end,
-  },
-
-  -- Debugger UI
-  ["rcarriga/nvim-dap-ui"] = {
-    disable = vim.fn.has "win32" == 1,
-    after = "nvim-dap",
-    config = function() require "configs.dapui" end,
-  },
+  ["jose-elias-alvarez/null-ls.nvim"] = { event = on_file_open, config = function() require "configs.null-ls" end },
 
   -- Package Manager
-  ["williamboman/mason.nvim"] = {
-    module = "mason",
-    cmd = {
-      "Mason",
-      "MasonInstall",
-      "MasonUninstall",
-      "MasonUninstallAll",
-      "MasonLog",
-      "MasonUpdate", -- astronvim command
-      "MasonUpdateAll", -- astronvim command
-    },
-    config = function()
-      require "configs.mason"
-      vim.tbl_map(function(plugin) pcall(require, plugin) end, { "lspconfig", "null-ls", "dap" })
-    end,
-  },
+  ["williamboman/mason.nvim"] = { module = "mason", config = function() require "configs.mason" end },
 
   -- LSP manager
   ["williamboman/mason-lspconfig.nvim"] = {
@@ -218,25 +149,13 @@ local astro_plugins = {
   -- null-ls manager
   ["jayp0521/mason-null-ls.nvim"] = { after = "null-ls.nvim", config = function() require "configs.mason-null-ls" end },
 
-  -- dap manager
-  ["jayp0521/mason-nvim-dap.nvim"] = {
-    disable = vim.fn.has "win32" == 1,
-    after = "nvim-dap",
-    config = function() require "configs.mason-nvim-dap" end,
-  },
-
   -- LSP symbols
-  ["stevearc/aerial.nvim"] = {
-    module = "aerial",
-    after = { "nvim-treesitter", "nvim-lspconfig" },
-    ft = { "man", "markdown" },
-    config = function() require "configs.aerial" end,
-  },
+  ["stevearc/aerial.nvim"] = { module = "aerial", config = function() require "configs.aerial" end },
 
   -- Fuzzy finder
   ["nvim-telescope/telescope.nvim"] = {
+    cmd = "Telescope",
     module = "telescope",
-    setup = function() astronvim.lazy_load_commands("telescope.nvim", "Telescope") end,
     config = function() require "configs.telescope" end,
   },
 
@@ -258,45 +177,34 @@ local astro_plugins = {
 
   -- Start screen
   ["goolord/alpha-nvim"] = {
+    cmd = "Alpha",
     module = "alpha",
-    setup = function() astronvim.lazy_load_commands("alpha-nvim", "Alpha") end,
     config = function() require "configs.alpha" end,
   },
 
   -- Color highlighting
-  ["NvChad/nvim-colorizer.lua"] = {
-    opt = true,
-    setup = function()
-      astronvim.lazy_load_commands(
-        "nvim-colorizer.lua",
-        { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" }
-      )
-      table.insert(astronvim.file_plugins, "nvim-colorizer.lua")
-    end,
-    config = function() require "configs.colorizer" end,
-  },
+  ["NvChad/nvim-colorizer.lua"] = { event = on_file_open, config = function() require "configs.colorizer" end },
 
   -- Autopairs
   ["windwp/nvim-autopairs"] = { event = "InsertEnter", config = function() require "configs.autopairs" end },
 
   -- Terminal
   ["akinsho/toggleterm.nvim"] = {
-    module = "toggleterm",
-    setup = function() astronvim.lazy_load_commands("toggleterm.nvim", { "ToggleTerm", "TermExec" }) end,
+    cmd = "ToggleTerm",
+    module = { "toggleterm", "toggleterm.terminal" },
     config = function() require "configs.toggleterm" end,
   },
 
   -- Commenting
   ["numToStr/Comment.nvim"] = {
-    module = "Comment",
+    module = { "Comment", "Comment.api" },
     keys = { "gc", "gb" },
     config = function() require "configs.Comment" end,
   },
 
   -- Indentation
   ["lukas-reineke/indent-blankline.nvim"] = {
-    opt = true,
-    setup = function() table.insert(astronvim.file_plugins, "indent-blankline.nvim") end,
+    event = on_file_open,
     config = function() require "configs.indent-line" end,
   },
 
@@ -315,8 +223,8 @@ local astro_plugins = {
   -- Session manager
   ["Shatur/neovim-session-manager"] = {
     module = "session_manager",
+    cmd = "SessionManager",
     event = "BufWritePost",
-    setup = function() astronvim.lazy_load_commands("neovim-session-manager", "SessionManager") end,
     config = function() require "configs.session_manager" end,
   },
 
@@ -334,10 +242,7 @@ local astro_plugins = {
 if astronvim.updater.snapshot then
   for plugin, options in pairs(astro_plugins) do
     local pin = astronvim.updater.snapshot[plugin:match "/([^/]*)$"]
-    if pin and pin.commit then
-      options.commit = pin.commit
-      options.tag = nil
-    end
+    options.commit = pin and pin.commit or options.commit
   end
 end
 
@@ -346,20 +251,8 @@ local status_ok, packer = pcall(require, "packer")
 if status_ok then
   packer.startup {
     function(use)
-      local plugins = user_plugin_opts("plugins.init", astro_plugins)
-      for key, plugin in pairs(plugins) do
+      for key, plugin in pairs(user_plugin_opts("plugins.init", astro_plugins)) do
         if type(key) == "string" and not plugin[1] then plugin[1] = key end
-        if key == "williamboman/mason.nvim" and plugin.cmd then
-          for mason_plugin, commands in pairs { -- lazy load mason plugin commands with Mason
-            ["jayp0521/mason-null-ls.nvim"] = { "NullLsInstall", "NullLsUninstall" },
-            ["williamboman/mason-lspconfig.nvim"] = { "LspInstall", "LspUninstall" },
-            ["jayp0521/mason-nvim-dap.nvim"] = { "DapInstall", "DapUninstall" },
-          } do
-            if plugins[mason_plugin] and not plugins[mason_plugin].disable then
-              vim.list_extend(plugin.cmd, commands)
-            end
-          end
-        end
         use(plugin)
       end
     end,
