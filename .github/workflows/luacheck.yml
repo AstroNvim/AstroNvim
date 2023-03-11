@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: nebularg/actions-luacheck@v1
+      - uses: lunarmodules/luacheck@v1

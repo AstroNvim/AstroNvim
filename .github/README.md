@@ -1,15 +1,15 @@
 <div align="center" id="madewithlua">
-    <img src="https://astronvim.github.io/img/logo/astronvim.svg" width="110", height="100">
+    <img src="https://astronvim.com/img/logo/astronvim.svg" width="110", height="100">
 </div>
 
 <h1 align="center">AstroNvim</h1>
 
 <h4 align="center">
-  <a href="https://astronvim.github.io/#%EF%B8%8F-installation">Install</a>
+  <a href="https://astronvim.com/#%EF%B8%8F-installation">Install</a>
   ·
-  <a href="https://astronvim.github.io/#%EF%B8%8F-configuration">Configure</a>
+  <a href="https://astronvim.com/#%EF%B8%8F-configuration">Configure</a>
   ·
-  <a href="https://astronvim.github.io">Docs</a>
+  <a href="https://astronvim.com">Docs</a>
 </h4>
 
 <p align="center">
@@ -18,15 +18,22 @@
     </a>
     <a href="https://github.com/AstroNvim/AstroNvim/releases/latest">
       <img src="https://img.shields.io/github/v/release/AstroNvim/AstroNvim?style=for-the-badge&logo=gitbook&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
-	</a>
-    <a href="https://github.com/catppuccin/catppuccin/stargazers">
+    </a>
+    <a href="https://github.com/AstroNvim/AstroNvim/stargazers">
       <img src="https://img.shields.io/github/stars/AstroNvim/AstroNvim?style=for-the-badge&logo=apachespark&color=eed49f&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
+    <img src="https://img.shields.io/endpoint?url=https://waka.mehalter.com/api/compat/shields/v1/mehalter/interval:any/label:AstroNvim&style=for-the-badge&label=wakatime&logo=wakatime&color=a6da95&logoColor=D9E0EE&labelColor=302D41"/>
     <br>
+    <a href="https://www.twitter.com/AstroNvim">
+      <img src="https://img.shields.io/twitter/follow/AstroNvim?style=for-the-badge&logo=twitter&color=fab387&logoColor=D9E0EE&labelColor=302D41"/>
+    </a>
+    <a href="https://social.mehalter.com/@AstroNvim">
+      <img src="https://img.shields.io/mastodon/follow/109649751340616771?domain=https%3A%2F%2Fsocial.mehalter.com&style=for-the-badge&logo=mastodon&color=eebebe&logoColor=D9E0EE&labelColor=302D41"/>
+    </a>
     <a href="https://www.reddit.com/r/AstroNvim/">
       <img src="https://img.shields.io/reddit/subreddit-subscribers/AstroNvim?style=for-the-badge&logo=reddit&color=ee99a0&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://discord.gg/UcZutyeaFW">
+    <a href="https://discord.gg/astronvim">
       <img src="https://img.shields.io/discord/939594913560031363?style=for-the-badge&logo=discord&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
 </p>
@@ -37,27 +44,27 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🌟 Preview
 
-![Preview1](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dashboard.png)
-![Preview2](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/overview.png)
-![Preview33](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/vertsplit.png)
+![Dashboard Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dashboard.png)
+![Coding Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/overview.png)
+![Debugging Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dap.png)
 
 ## ✨ Features
 
 - File explorer with [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim)
 - Autocompletion with [Cmp](https://github.com/hrsh7th/nvim-cmp)
 - Git integration with [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
-- Statusline with [Heirline](https://github.com/rebelot/heirline.nvim)
+- Statusline, Winbar, and Bufferline with [Heirline](https://github.com/rebelot/heirline.nvim)
 - Terminal with [Toggleterm](https://github.com/akinsho/toggleterm.nvim)
 - Fuzzy finding with [Telescope](https://github.com/nvim-telescope/telescope.nvim)
 - Syntax highlighting with [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- Formatting and linting with [Null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
+- Formatting and Linting with [Null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
 - Language Server Protocol with [Native LSP](https://github.com/neovim/nvim-lspconfig)
-- Buffer Line with [bufferline.nvim](https://github.com/akinsho/bufferline.nvim)
+- Debug Adapter Protocol with [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 
 ## ⚡ Requirements
 
-- [Nerd Fonts](https://www.nerdfonts.com/font-downloads) (_Optional with manual intervention:_ See [Documentation on customizing icons](https://astronvim.github.io/Recipes/icons))
-- [Neovim 0.8 (_Not_ including nightly)](https://github.com/neovim/neovim/releases/tag/v0.8.0)
+- [Nerd Fonts](https://www.nerdfonts.com/font-downloads) (_Optional with manual intervention:_ See [Documentation on customizing icons](https://astronvim.com/Recipes/icons))
+- [Neovim 0.8+ (_Not_ including nightly)](https://github.com/neovim/neovim/releases/tag/stable)
 - [Tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md) (_Note:_ This is only necessary if you want to use `auto_install` feature with Treesitter)
 - A clipboard tool is necessary for the integration with the system clipboard (see [`:help clipboard-tool`](https://neovim.io/doc/user/provider.html#clipboard-tool) for supported solutions)
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using)
@@ -83,8 +90,8 @@ mv ~/.local/share/nvim ~/.local/share/nvim.bak
 #### Clone the repository
 
 ```shell
-git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-nvim +PackerSync
+git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+nvim
 ```
 
 #### Install depedencies (Garuda and MacOSX)
@@ -105,24 +112,38 @@ Example: `:LspInstall pyright`
 Enter `:TSInstall` followed by the name of the language you want to install<br>
 Example: `:TSInstall python`
 
+#### Install Debugger
+
+Enter `:DapInstall` followed by the name of the debugger you want to install<br>
+Example: `:DapInstall python`
+
 #### Manage plugins
 
-Run `:PackerClean` to remove any disabled or unused plugins<br>
-Run `:PackerSync` to update and clean plugins<br>
+Run `:Lazy check` to check for plugin updates
+
+Run `:Lazy update` to apply any pending plugin updates
+
+Run `:Lazy clean` to remove any disabled or unused plugins
+
+Run `:Lazy sync` to update and clean plugins
 
 #### Update AstroNvim
 
 Run `:AstroUpdate` to get the latest updates from the repository<br>
 
+#### Update AstroNvim Packages
+
+Run `:AstroUpdatePackages` (`<leader>pa`) to update both Neovim plugins and Mason packages
+
 ## 🗒️ Links
 
-[AstroNvim Documentation](https://astronvim.github.io/)
-[Core AstroNvim LUA API Documentation](https://astronvim.github.io/AstroNvim/)
+[AstroNvim Documentation](https://astronvim.com)
+[Core AstroNvim LUA API Documentation](https://api.astronvim.com)
 
-- [Basic Usage](https://astronvim.github.io/Basic%20Usage/walkthrough) is given for basic usage
-- [Default Mappings](https://astronvim.github.io/Basic%20Usage/mappings) more about the default key bindings
-- [Default Plugin Configuration](https://astronvim.github.io/configuration/plugin_defaults) more about the provided plugin defaults
-- [Advanced Configuration](https://astronvim.github.io/configuration/config_options) more about advanced configuration
+- [Basic Usage](https://astronvim.com/Basic%20Usage/walkthrough) is given for basic usage
+- [Default Mappings](https://astronvim.com/Basic%20Usage/mappings) more about the default key bindings
+- [Default Plugin Configuration](https://astronvim.com/configuration/plugin_defaults) more about the provided plugin defaults
+- [Advanced Configuration](https://astronvim.com/configuration/config_options) more about advanced configuration
 
 ### 📹 Videos
 
@@ -135,7 +156,7 @@ There have been some great review videos released by members of the community! H
 
 Sincere appreciation to the following repositories, plugin authors and the entire neovim community out there that made the development of AstroNvim possible.
 
-- [Plugins](https://astronvim.github.io/acknowledgements#plugins-used-in-astronvim)
+- [Plugins](https://astronvim.com/acknowledgements#plugins-used-in-astronvim)
 - [NvChad](https://github.com/NvChad/NvChad)
 - [LunarVim](https://github.com/LunarVim)
 - [CosmicVim](https://github.com/CosmicNvim/CosmicNvim)
