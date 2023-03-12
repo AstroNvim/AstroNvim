@@ -345,6 +345,10 @@ function M.config(server_name)
       lsp_opts.settings = { json = { schemas = schemastore.json.schemas(), validate = { enable = true } } }
     end
   end
+  if server_name == "yamlls" then -- by default add yaml schemas
+    local schemastore_avail, schemastore = pcall(require, "schemastore")
+    if schemastore_avail then lsp_opts.settings = { yaml = { schemas = schemastore.yaml.schemas() } } end
+  end
   if server_name == "lua_ls" then -- by default initialize neodev and disable third party checking
     pcall(require, "neodev")
     lsp_opts.before_init = function(param, config)
