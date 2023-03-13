@@ -7,7 +7,7 @@ return {
   { "NvChad/nvim-colorizer.lua", commit = "dde3084106a70b9a79d48f426f6d6fec6fd203f7" },
   { "Shatur/neovim-session-manager", commit = "e7a2cbf56b5fd3a223f2774b535499fc62eca6ef" },
   { "akinsho/toggleterm.nvim", commit = "98e15df2c838fe5c3cae1efa36fa5c255fc75aa8" },
-  { "b0o/SchemaStore.nvim", commit = "083485d0ec106c46eb38b525342dc8e23a9921c9" },
+  { "b0o/SchemaStore.nvim", commit = "1dc606bf07e1419d785e04d6dbb8585987d817cc" },
   { "famiu/bufdelete.nvim", commit = "8933abc09df6c381d47dc271b1ee5d266541448e" },
   { "folke/lazy.nvim", version = "^9" },
   { "folke/neodev.nvim", version = "^2" },
