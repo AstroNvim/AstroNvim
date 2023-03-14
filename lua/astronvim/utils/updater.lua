@@ -278,7 +278,7 @@ function M.update(opts)
     end
     -- if update was unsuccessful throw an error
     if not updated then
-      vim.api.nvim_err_writeln "Error ocurred performing update"
+      vim.api.nvim_err_writeln "Error occurred performing update"
       return
     end
     -- print a summary of the update with the changelog
