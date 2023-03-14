@@ -39,7 +39,7 @@ return {
   { "rafamadriz/friendly-snippets", commit = "2f5b8a41659a19bd602497a35da8d81f1e88f6d9" },
   { "rcarriga/nvim-dap-ui", version = "^3" },
   { "rcarriga/nvim-notify", version = "^3" },
-  { "rebelot/heirline.nvim", commit = "00f7e271775362792116e252d931590a9344d6a9" },
+  { "rebelot/heirline.nvim", commit = "a7cc90b6ef4b599fef8f0d61a88c389bfd7fdb10" },
   { "s1n7ax/nvim-window-picker", version = "^1" },
   { "saadparwaiz1/cmp_luasnip", commit = "18095520391186d634a0045dacaa346291096566" },
   { "stevearc/aerial.nvim", commit = "5b788392ec571621891e1b73887af5ac12056610" },

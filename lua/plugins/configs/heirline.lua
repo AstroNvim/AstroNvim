@@ -116,14 +116,4 @@ return function(_, opts)
     desc = "Refresh heirline colors",
     callback = function() require("heirline.utils").on_colorscheme(setup_colors()) end,
   })
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "HeirlineInitWinbar",
-    group = augroup,
-    desc = "Disable winbar for some filetypes",
-    callback = function()
-      if vim.opt.diff:get() or status.condition.buffer_matches(require("heirline").winbar.disabled or {}) then
-        vim.opt_local.winbar = nil
-      end
-    end,
-  })
 end
