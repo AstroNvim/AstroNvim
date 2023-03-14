@@ -114,16 +114,14 @@ function astronvim.user_opts(module, default, extend)
 end
 
 --- Updater settings overridden with any user provided configuration
-local options = astronvim.user_opts("updater", { remote = "origin", channel = "stable" })
-if options.branch and options.branch ~= "main" then options.channel = "nightly" end
+astronvim.updater = {
+  options = astronvim.user_opts("updater", { remote = "origin", channel = "stable" }),
+  snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" },
+  rollback_file = vim.fn.stdpath "cache" .. "/astronvim_rollback.lua",
+}
+local options = astronvim.updater.options
 if astronvim.install.is_stable ~= nil then options.channel = astronvim.install.is_stable and "stable" or "nightly" end
-astronvim.updater = { options = options }
--- set default pin_plugins for stable branch
-if options.pin_plugins == nil and options.channel == "stable" then options.pin_plugins = true end
-
---- the location of the snapshot of plugin commit pins for stable AstroNvim
-astronvim.updater.snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" }
-astronvim.updater.rollback_file = vim.fn.stdpath "cache" .. "/astronvim_rollback.lua"
+if options.pin_plugins == nil then options.pin_plugins = options.channel == "stable" end
 
 --- table of user created terminals
 astronvim.user_terminals = {}
