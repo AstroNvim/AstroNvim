@@ -4,6 +4,14 @@ return {
   opts = function()
     local status = require "astronvim.utils.status"
     return {
+      opts = {
+        disable_winbar_cb = function(args)
+          return status.condition.buffer_matches({
+            buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
+            filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
+          }, args.buf)
+        end,
+      },
       statusline = { -- statusline
         hl = { fg = "fg", bg = "bg" },
         status.component.mode(),
@@ -20,18 +28,8 @@ return {
         status.component.mode { surround = { separator = "right" } },
       },
       winbar = { -- winbar
-        static = {
-          disabled = {
-            buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-            filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
-          },
-        },
         init = function(self) self.bufnr = vim.api.nvim_get_current_buf() end,
         fallthrough = false,
-        {
-          condition = function(self) return vim.opt.diff:get() or status.condition.buffer_matches(self.disabled or {}) end,
-          init = function() vim.opt_local.winbar = nil end,
-        },
         {
           condition = function() return not status.condition.is_active() end,
           status.component.separated_path(),
