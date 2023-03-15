@@ -11,8 +11,6 @@ body:
       options:
         - label: "Using a stable version of Neovim (i.e. not neovim nightly)"
           required: true
-        - label: "`:PackerSync`"
-          required: true
         - label: "`:AstroUpdate`"
           required: true
         - label: Restarted AstroNvim

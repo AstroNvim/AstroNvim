@@ -1,25 +1,14 @@
 return {
   "nvim-lua/plenary.nvim",
+  { "AstroNvim/astrotheme", opts = { plugins = { ["dashboard-nvim"] = true } } },
   { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
-  {
-    "AstroNvim/astrotheme",
-    opts = { plugins = { ["dashboard-nvim"] = true } },
-  },
+  { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
+  { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "plugins.configs.guess-indent" },
+  { "Shatur/neovim-session-manager", event = "BufWritePost", cmd = "SessionManager" },
+  { "s1n7ax/nvim-window-picker", opts = { use_winbar = "smart" } },
   {
     "mrjones2014/smart-splits.nvim",
-    opts = {
-      ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" },
-      ignored_buftypes = { "nofile" },
-    },
-  },
-  {
-    "Shatur/neovim-session-manager",
-    event = "BufWritePost",
-    cmd = "SessionManager",
-  },
-  {
-    "s1n7ax/nvim-window-picker",
-    opts = { use_winbar = "smart" },
+    opts = { ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" }, ignored_buftypes = { "nofile" } },
   },
   {
     "windwp/nvim-autopairs",
@@ -86,7 +75,8 @@ return {
     "numToStr/Comment.nvim",
     keys = { { "gc", mode = { "n", "v" } }, { "gb", mode = { "n", "v" } } },
     opts = function()
-      return { pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook() }
+      local commentstring_avail, commentstring = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+      return commentstring_avail and commentstring and { pre_hook = commentstring.create_pre_hook() } or {}
     end,
   },
   {
@@ -102,15 +92,5 @@ return {
         highlights = { border = "Normal", background = "Normal" },
       },
     },
-  },
-  {
-    "NMAC427/guess-indent.nvim",
-    event = "User AstroFile",
-    config = require "plugins.configs.guess-indent",
-  },
-  {
-    "max397574/better-escape.nvim",
-    event = "InsertCharPre",
-    opts = { timeout = 300 },
   },
 }

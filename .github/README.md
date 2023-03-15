@@ -9,7 +9,11 @@
   ·
   <a href="https://astronvim.com/#%EF%B8%8F-configuration">Configure</a>
   ·
+  <a href="https://github.com/AstroNvim/astrocommunity">Community Plugins</a>
+  ·
   <a href="https://astronvim.com">Docs</a>
+  ·
+  <a href="https://discord.gg/AstroNvim">Discord</a>
 </h4>
 
 <p align="center">
