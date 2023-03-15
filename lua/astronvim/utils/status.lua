@@ -511,15 +511,15 @@ end
 -- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.percentage() }
 -- @see astronvim.utils.status.utils.stylize
 function M.provider.percentage(opts)
-  opts = extend_tbl({ escape = false, fixed_width = false, edge_text = true }, opts)
+  opts = extend_tbl({ escape = false, fixed_width = true, edge_text = true }, opts)
   return function()
-    local text = "%" .. (opts.fixed_width and "3" or "") .. "p%%"
+    local text = "%" .. (opts.fixed_width and (opts.edge_text and "2" or "3") or "") .. "p%%"
     if opts.edge_text then
       local current_line = vim.fn.line "."
       if current_line == 1 then
-        text = (opts.fixed_width and " " or "") .. "Top"
+        text = "Top"
       elseif current_line == vim.fn.line "$" then
-        text = (opts.fixed_width and " " or "") .. "Bot"
+        text = "Bot"
       end
     end
     return M.utils.stylize(text, opts)
@@ -532,8 +532,8 @@ end
 -- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.ruler({ pad_ruler = { line = 3, char = 2 } }) }
 -- @see astronvim.utils.status.utils.stylize
 function M.provider.ruler(opts)
-  opts = extend_tbl({ pad_ruler = { line = 0, char = 0 } }, opts)
-  local padding_str = string.format("%%%dd:%%%dd", opts.pad_ruler.line, opts.pad_ruler.char)
+  opts = extend_tbl({ pad_ruler = { line = 3, char = 2 } }, opts)
+  local padding_str = string.format("%%%dd:%%-%dd", opts.pad_ruler.line, opts.pad_ruler.char)
   return function()
     local line = vim.fn.line "."
     local char = vim.fn.virtcol "."
