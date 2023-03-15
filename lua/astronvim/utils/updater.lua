@@ -76,7 +76,7 @@ end
 -- @param quiet boolean to quietly execute or send a notification
 -- @return the current AstroNvim version string
 function M.version(quiet)
-  local version = astronvim.install.version or git.current_version(false)
+  local version = astronvim.install.version or git.current_version(false) or "unknown"
   if astronvim.updater.options.channel ~= "stable" then version = ("nightly (%s)"):format(version) end
   if version and not quiet then notify("Version: " .. version) end
   return version
