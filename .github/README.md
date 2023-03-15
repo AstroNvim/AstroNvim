@@ -150,6 +150,10 @@ There have been some great review videos released by members of the community! H
 - [Why I'm quitting VIM by Carlos Mafla](https://www.youtube.com/watch?v=71GDopdc9rw) (Content By: [@gigo6000](https://github.com/gigo6000))
 - [Astro Vim - All in one Nvim config!! by John McBride](https://www.youtube.com/watch?v=JQLZ7NJRTEo) (Content By: [@jpmcb](https://github.com/jpmcb))
 
+## 🚀 Contributing
+
+If you plan to contribute, please check the [contribution guidelines](CONTRIBUTING.md) first.
+
 ## ⭐ Credits
 
 Sincere appreciation to the following repositories, plugin authors and the entire neovim community out there that made the development of AstroNvim possible.
