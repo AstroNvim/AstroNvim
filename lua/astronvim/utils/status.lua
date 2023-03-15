@@ -1178,7 +1178,7 @@ end
 -- @usage local heirline_component = require("astronvim.utils.status").component.treesitter()
 function M.component.treesitter(opts)
   opts = extend_tbl({
-    str = { str = "TS", icon = { kind = "ActiveTS" } },
+    str = { str = "TS", icon = { kind = "ActiveTS", padding = { right = 1 } } },
     surround = {
       separator = "right",
       color = "treesitter_bg",
