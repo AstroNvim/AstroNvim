@@ -57,6 +57,10 @@ function M.nav(n)
   end
 end
 
+--- Navigate to a specific buffer by its position in the bufferline
+-- @param tabnr the position of the buffer to navigate to
+function M.nav_to(tabnr) vim.cmd.b(vim.t.bufs[tabnr]) end
+
 --- Close a given buffer
 -- @param bufnr? the buffer number to close or the current buffer if not provided
 -- @param force? whether or not to foce close the buffers or confirm changes (default: false)
