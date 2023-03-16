@@ -453,6 +453,7 @@ function M.provider.macro_recording(opts)
   return function()
     local register = vim.fn.reg_recording()
     if register ~= "" then register = opts.prefix .. register end
+    vim.cmd "redrawstatus"
     return M.utils.stylize(register, opts)
   end
 end
