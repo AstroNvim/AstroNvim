@@ -1059,7 +1059,11 @@ function M.component.mode(opts)
     spell = false,
     surround = { separator = "left", color = M.hl.mode_bg },
     hl = M.hl.get_attributes "mode",
-    update = "ModeChanged",
+    update = {
+      "ModeChanged",
+      pattern = "*:*",
+      callback = vim.schedule_wrap(function() vim.cmd.redrawstatus() end),
+    },
   }, opts)
   if not opts["mode_text"] then opts.str = { str = " " } end
   return M.component.builder(M.utils.setup_providers(opts, { "mode_text", "str", "paste", "spell" }))
