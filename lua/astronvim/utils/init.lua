@@ -19,6 +19,19 @@ function M.extend_tbl(default, opts)
   return default and vim.tbl_deep_extend("force", default, opts) or opts
 end
 
+--- Insert one or more values into a list like table and maintain that you do not insert non-unique values (THIS MODIFIES `lst`)
+-- @param lst the list like table that you want to insert into
+-- @param vals either a list like table of values to be inserted or a single value to be inserted
+-- @return the modified list like table
+function M.list_insert_unique(lst, vals)
+  assert(vim.tbl_islist(lst), "Provided table is not a list like table")
+  if not vim.tbl_islist(vals) then vals = { vals } end
+  for _, val in ipairs(vals) do
+    if not vim.tbl_contains(lst, val) then table.insert(lst, val) end
+  end
+  return lst
+end
+
 --- Call function if a condition is met
 -- @param func the function to run
 -- @param condition a boolean value of whether to run the function or not
