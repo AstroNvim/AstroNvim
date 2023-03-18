@@ -1012,7 +1012,7 @@ function M.component.nav(opts)
     scrollbar = { padding = { left = 1 }, hl = { fg = "scrollbar" } },
     surround = { separator = "right", color = "nav_bg" },
     hl = M.hl.get_attributes "nav",
-    update = { "CursorMoved", "BufEnter" },
+    update = { "CursorMoved", "CursorMovedI", "BufEnter" },
   }, opts)
   return M.component.builder(M.utils.setup_providers(opts, { "ruler", "percentage", "scrollbar" }))
 end
