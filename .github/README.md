@@ -94,7 +94,7 @@ mv ~/.local/share/nvim ~/.local/share/nvim.bak
 #### Clone the repository
 
 ```shell
-git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+git clone --depth 1 https://github.com/klxdev/AstroNvim ~/.config/nvim
 nvim
 ```
 
