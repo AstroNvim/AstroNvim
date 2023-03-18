@@ -1,3 +1,4 @@
+vim.opt.viewoptions:remove "curdir" -- disable saving current directory with views
 vim.opt.shortmess:append { s = true, I = true } -- disable startup message
 vim.opt.backspace:append { "nostop" } -- Don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then
