@@ -556,7 +556,7 @@ function M.provider.scrollbar(opts)
   end
 end
 
---- A provider to simply show a cloes button icon
+--- A provider to simply show a close button icon
 -- @param opts options passed to the stylize function and the kind of icon to use
 -- @return return the stylized icon
 -- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.close_button() }
@@ -801,14 +801,14 @@ function M.provider.str(opts)
 end
 
 --- A condition function if the window is currently active
--- @return boolean of wether or not the window is currently actie
+-- @return boolean of whether or not the window is currently actie
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_active }
 function M.condition.is_active() return vim.api.nvim_get_current_win() == tonumber(vim.g.actual_curwin) end
 
 --- A condition function if the buffer filetype,buftype,bufname match a pattern
 -- @param patterns the table of patterns to match
 -- @param bufnr number of the buffer to match (Default: 0 [current])
--- @return boolean of wether or not LSP is attached
+-- @return boolean of whether or not LSP is attached
 -- @usage local heirline_component = { provider = "Example Provider", condition = function() return require("astronvim.utils.status").condition.buffer_matches { buftype = { "terminal" } } end }
 function M.condition.buffer_matches(patterns, bufnr)
   for kind, pattern_list in pairs(patterns) do
@@ -818,18 +818,18 @@ function M.condition.buffer_matches(patterns, bufnr)
 end
 
 --- A condition function if a macro is being recorded
--- @return boolean of wether or not a macro is currently being recorded
+-- @return boolean of whether or not a macro is currently being recorded
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_macro_recording }
 function M.condition.is_macro_recording() return vim.fn.reg_recording() ~= "" end
 
 --- A condition function if search is visible
--- @return boolean of wether or not searching is currently visible
+-- @return boolean of whether or not searching is currently visible
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_hlsearch }
 function M.condition.is_hlsearch() return vim.v.hlsearch ~= 0 end
 
 --- A condition function if the current file is in a git repo
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not the current file is in a git repo
+-- @return boolean of whether or not the current file is in a git repo
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_git_repo }
 function M.condition.is_git_repo(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -838,7 +838,7 @@ end
 
 --- A condition function if there are any git changes
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not there are any git changes
+-- @return boolean of whether or not there are any git changes
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.git_changed }
 function M.condition.git_changed(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -848,7 +848,7 @@ end
 
 --- A condition function if the current buffer is modified
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not the current buffer is modified
+-- @return boolean of whether or not the current buffer is modified
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.file_modified }
 function M.condition.file_modified(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -857,7 +857,7 @@ end
 
 --- A condition function if the current buffer is read only
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not the current buffer is read only or not modifiable
+-- @return boolean of whether or not the current buffer is read only or not modifiable
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.file_read_only }
 function M.condition.file_read_only(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -867,7 +867,7 @@ end
 
 --- A condition function if the current file has any diagnostics
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not the current file has any diagnostics
+-- @return boolean of whether or not the current file has any diagnostics
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.has_diagnostics }
 function M.condition.has_diagnostics(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -876,7 +876,7 @@ end
 
 --- A condition function if there is a defined filetype
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not there is a filetype
+-- @return boolean of whether or not there is a filetype
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.has_filetype }
 function M.condition.has_filetype(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -884,14 +884,14 @@ function M.condition.has_filetype(bufnr)
 end
 
 --- A condition function if Aerial is available
--- @return boolean of wether or not aerial plugin is installed
+-- @return boolean of whether or not aerial plugin is installed
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.aerial_available }
 -- function M.condition.aerial_available() return is_available "aerial.nvim" end
 function M.condition.aerial_available() return package.loaded["aerial"] end
 
 --- A condition function if LSP is attached
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not LSP is attached
+-- @return boolean of whether or not LSP is attached
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.lsp_attached }
 function M.condition.lsp_attached(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
@@ -900,7 +900,7 @@ end
 
 --- A condition function if treesitter is in use
 -- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
--- @return boolean of wether or not treesitter is active
+-- @return boolean of whether or not treesitter is active
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.treesitter_available }
 function M.condition.treesitter_available(bufnr)
   if not package.loaded["nvim-treesitter"] then return false end
