@@ -1208,11 +1208,20 @@ function M.component.lsp(opts)
     lsp_progress = {
       str = "",
       padding = { right = 1 },
-      update = { "User", pattern = { "LspProgressUpdate", "LspRequest" } },
+      update = {
+        "User",
+        pattern = { "LspProgressUpdate", "LspRequest" },
+        callback = vim.schedule_wrap(function() vim.cmd.redrawstatus() end),
+      },
     },
     lsp_client_names = {
       str = "LSP",
-      update = { "LspAttach", "LspDetach", "BufEnter" },
+      update = {
+        "LspAttach",
+        "LspDetach",
+        "BufEnter",
+        callback = vim.schedule_wrap(function() vim.cmd.redrawstatus() end),
+      },
       icon = { kind = "ActiveLSP", padding = { right = 2 } },
     },
     hl = M.hl.get_attributes "lsp",
