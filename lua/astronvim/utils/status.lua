@@ -552,7 +552,7 @@ function M.provider.scrollbar(opts)
     local curr_line = vim.api.nvim_win_get_cursor(0)[1]
     local lines = vim.api.nvim_buf_line_count(0)
     local i = math.floor((curr_line - 1) / lines * #sbar) + 1
-    return M.utils.stylize(string.rep(sbar[i], 2), opts)
+    if sbar[i] then return M.utils.stylize(string.rep(sbar[i], 2), opts) end
   end
 end
 
