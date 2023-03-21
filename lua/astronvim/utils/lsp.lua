@@ -288,6 +288,22 @@ M.on_attach = function(client, bufnr)
     }
   end
 
+  if capabilities.semanticTokensProvider and vim.lsp["semantic_tokens"] ~= nil then
+    local semantic_highlight_on = true
+    lsp_mappings.n["<leader>uY"] = {
+      function()
+        if semantic_highlight_on then
+          vim.lsp.semantic_tokens.stop(bufnr, client.id)
+          semantic_highlight_on = false
+        else
+          vim.lsp.semantic_tokens.start(bufnr, client.id)
+          semantic_highlight_on = true
+        end
+      end,
+      desc = "Toggle LSP semantic highlight (buffer)",
+    }
+  end
+
   if is_available "telescope.nvim" then -- setup telescope mappings if available
     if lsp_mappings.n.gd then lsp_mappings.n.gd[1] = function() require("telescope.builtin").lsp_definitions() end end
     if lsp_mappings.n.gI then
