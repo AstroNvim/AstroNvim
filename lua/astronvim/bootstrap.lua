@@ -13,7 +13,7 @@ _G.astronvim = {}
 astronvim.install = _G["astronvim_installation"] or { home = vim.fn.stdpath "config" }
 astronvim.supported_configs = { astronvim.install.home }
 --- external astronvim configuration folder
-astronvim.install.config = vim.fn.stdpath("config"):gsub("nvim$", "astronvim")
+astronvim.install.config = vim.fn.stdpath("config"):gsub("[^/]+$", "astronvim")
 -- check if they are the same, protects against NVIM_APPNAME use for isolated install
 if astronvim.install.home ~= astronvim.install.config then
   vim.opt.rtp:append(astronvim.install.config)
