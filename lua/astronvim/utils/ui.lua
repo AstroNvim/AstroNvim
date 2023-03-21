@@ -81,6 +81,18 @@ function M.toggle_buffer_autoformat()
   ui_notify(string.format("Buffer autoformatting %s", bool2str(vim.b.autoformat_enabled)))
 end
 
+--- Toggle buffer semantic token highlighting for all language servers that support it
+-- @param bufnr the buffer to toggle the clients on
+function M.toggle_buffer_semantic_tokens(bufnr)
+  vim.b.semantic_tokens_enabled = vim.b.semantic_tokens_enabled == false
+
+  for _, client in ipairs(vim.lsp.get_active_clients()) do
+    if client.server_capabilities.semanticTokensProvider then
+      vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr or 0, client.id)
+    end
+  end
+end
+
 --- Toggle codelens refresh
 function M.toggle_codelens()
   vim.g.codelens_enabled = not vim.g.codelens_enabled
