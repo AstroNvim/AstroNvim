@@ -59,7 +59,7 @@ autocmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
 })
 
 local view_group = augroup("auto_view", { clear = true })
-autocmd("BufWinLeave", {
+autocmd({ "BufWinLeave", "BufWritePost", "WinLeave" }, {
   desc = "Save view with mkview for real files",
   group = view_group,
   callback = function(event)
