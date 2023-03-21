@@ -23,6 +23,23 @@ local setup_handlers = user_opts("lsp.setup_handlers", {
   function(server, opts) require("lspconfig")[server].setup(opts) end,
 })
 
+local toggle_semantic_highlights = function(bufnr)
+  if vim.b.semantic_highlight_enabled == nil then vim.b.semantic_highlight_enabled = true end
+
+  local lsp_clients = vim.lsp.get_active_clients()
+  for _, client in ipairs(lsp_clients) do
+    if client.server_capabilities["semanticTokensProvider"] ~= nil then
+      if vim.b.semantic_highlight_enabled then
+        vim.lsp.semantic_tokens.stop(bufnr, client.id)
+      else
+        vim.lsp.semantic_tokens.start(bufnr, client.id)
+      end
+    end
+  end
+
+  vim.b.semantic_highlight_enabled = not vim.b.semantic_highlight_enabled
+end
+
 M.diagnostics = { [0] = {}, {}, {}, {} }
 
 M.setup_diagnostics = function(signs)
@@ -289,17 +306,8 @@ M.on_attach = function(client, bufnr)
   end
 
   if capabilities.semanticTokensProvider and vim.lsp["semantic_tokens"] ~= nil then
-    local semantic_highlight_on = true
     lsp_mappings.n["<leader>uY"] = {
-      function()
-        if semantic_highlight_on then
-          vim.lsp.semantic_tokens.stop(bufnr, client.id)
-          semantic_highlight_on = false
-        else
-          vim.lsp.semantic_tokens.start(bufnr, client.id)
-          semantic_highlight_on = true
-        end
-      end,
+      function() toggle_semantic_highlights(bufnr) end,
       desc = "Toggle LSP semantic highlight (buffer)",
     }
   end
