@@ -57,7 +57,12 @@ end
 -- @return table of highlight group properties
 function M.get_hlgroup(name, fallback)
   if vim.fn.hlexists(name) == 1 then
-    local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
+    local hl -- simplify when drop neovim v0.8
+    if vim.api.nvim_get_hl then -- check for new neovim 0.9 API
+      hl = vim.api.nvim_get_hl(0, { name = name })
+    else
+      hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
+    end
     if not hl["foreground"] then hl["foreground"] = "NONE" end
     if not hl["background"] then hl["background"] = "NONE" end
     hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
