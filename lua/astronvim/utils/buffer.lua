@@ -15,7 +15,7 @@ local M = {}
 -- @return true if the buffer is valid or false
 function M.is_valid(bufnr)
   if not bufnr or bufnr < 1 then return false end
-  return vim.bo[bufnr].buflisted and vim.api.nvim_buf_is_valid(bufnr)
+  return vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted
 end
 
 --- Move the current buffer tab n places in the bufferline
