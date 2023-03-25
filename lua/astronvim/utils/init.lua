@@ -60,17 +60,15 @@ function M.get_hlgroup(name, fallback)
     local hl -- simplify when drop neovim v0.8
     if vim.api.nvim_get_hl then -- check for new neovim 0.9 API
       hl = vim.api.nvim_get_hl(0, { name = name })
-      if not hl["fg"] then hl["fg"] = "NONE" end
-      if not hl["bg"] then hl["bg"] = "NONE" end
-      hl.sp = hl.special
-      hl.ctermfg, hl.ctermbg = hl.fg, hl.bg
     else
       hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
-      if not hl["foreground"] then hl["foreground"] = "NONE" end
-      if not hl["background"] then hl["background"] = "NONE" end
-      hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
-      hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
+      hl.fg = hl.foreground
+      hl.bg = hl.background
     end
+    if not hl.fg then hl.fg = "NONE" end
+    if not hl.bg then hl.bg = "NONE" end
+    hl.sp = hl.special
+    hl.ctermfg, hl.ctermbg = hl.fg, hl.bg
     return hl
   end
   return fallback
