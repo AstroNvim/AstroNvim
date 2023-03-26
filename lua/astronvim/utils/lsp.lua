@@ -288,6 +288,13 @@ M.on_attach = function(client, bufnr)
     }
   end
 
+  if capabilities.semanticTokensProvider and vim.lsp.semantic_tokens then
+    lsp_mappings.n["<leader>uY"] = {
+      function() require("astronvim.utils.ui").toggle_buffer_semantic_tokens(bufnr) end,
+      desc = "Toggle LSP semantic highlight (buffer)",
+    }
+  end
+
   if is_available "telescope.nvim" then -- setup telescope mappings if available
     if lsp_mappings.n.gd then lsp_mappings.n.gd[1] = function() require("telescope.builtin").lsp_definitions() end end
     if lsp_mappings.n.gI then

@@ -19,6 +19,19 @@ function M.extend_tbl(default, opts)
   return default and vim.tbl_deep_extend("force", default, opts) or opts
 end
 
+--- Insert one or more values into a list like table and maintain that you do not insert non-unique values (THIS MODIFIES `lst`)
+-- @param lst the list like table that you want to insert into
+-- @param vals either a list like table of values to be inserted or a single value to be inserted
+-- @return the modified list like table
+function M.list_insert_unique(lst, vals)
+  assert(vim.tbl_islist(lst), "Provided table is not a list like table")
+  if not vim.tbl_islist(vals) then vals = { vals } end
+  for _, val in ipairs(vals) do
+    if not vim.tbl_contains(lst, val) then table.insert(lst, val) end
+  end
+  return lst
+end
+
 --- Call function if a condition is met
 -- @param func the function to run
 -- @param condition a boolean value of whether to run the function or not
@@ -143,9 +156,9 @@ function M.is_available(plugin)
 end
 
 --- A helper function to wrap a module function to require a plugin before running
--- @param plugin the plugin string to call `require("lazy").laod` with
+-- @param plugin the plugin string to call `require("lazy").load` with
 -- @param module the system module where the functions live (e.g. `vim.ui`)
--- @param func_names a string or a list like table of strings for functions to wrap in the given moduel (e.g. `{ "ui", "select }`)
+-- @param func_names a string or a list like table of strings for functions to wrap in the given module (e.g. `{ "ui", "select }`)
 function M.load_plugin_with_func(plugin, module, func_names)
   if type(func_names) == "string" then func_names = { func_names } end
   for _, func in ipairs(func_names) do

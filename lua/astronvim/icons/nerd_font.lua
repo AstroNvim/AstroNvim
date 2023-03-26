@@ -1,6 +1,6 @@
 return {
   ActiveLSP = "",
-  ActiveTS = "綠",
+  ActiveTS = "",
   ArrowLeft = "",
   ArrowRight = "",
   BufferClose = "",
