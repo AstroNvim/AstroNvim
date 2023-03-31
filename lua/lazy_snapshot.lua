@@ -6,7 +6,7 @@ return {
   { "NMAC427/guess-indent.nvim", commit = "c37467baa1a51b74ed767cbe0540fce44e03d828" },
   { "NvChad/nvim-colorizer.lua", commit = "dde3084106a70b9a79d48f426f6d6fec6fd203f7" },
   { "Shatur/neovim-session-manager", commit = "d1883f30921193f3cff4537e27514e454e0331e9" },
-  { "akinsho/toggleterm.nvim", commit = "ed6c92d6708e5208360347f2281de99602061dc8" },
+  { "akinsho/toggleterm.nvim", version = "^2" },
   { "b0o/SchemaStore.nvim", commit = "dde293000b626cca90804e7b82731173f195b3ee" },
   { "famiu/bufdelete.nvim", commit = "8933abc09df6c381d47dc271b1ee5d266541448e" },
   { "folke/lazy.nvim", version = "^9" },
