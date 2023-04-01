@@ -57,11 +57,19 @@ end
 -- @return table of highlight group properties
 function M.get_hlgroup(name, fallback)
   if vim.fn.hlexists(name) == 1 then
-    local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
-    if not hl["foreground"] then hl["foreground"] = "NONE" end
-    if not hl["background"] then hl["background"] = "NONE" end
-    hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
-    hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
+    local hl
+    if vim.api.nvim_get_hl then -- check for new neovim 0.9 API
+      hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+      if not hl.fg then hl.fg = "NONE" end
+      if not hl.bg then hl.bg = "NONE" end
+    else
+      hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
+      if not hl.foreground then hl.foreground = "NONE" end
+      if not hl.background then hl.background = "NONE" end
+      hl.fg, hl.bg = hl.foreground, hl.background
+      hl.ctermfg, hl.ctermbg = hl.fg, hl.bg
+      hl.sp = hl.special
+    end
     return hl
   end
   return fallback
@@ -86,14 +94,14 @@ end
 function M.system_open(path)
   local cmd
   if vim.fn.has "win32" == 1 and vim.fn.executable "explorer" == 1 then
-    cmd = "explorer"
+    cmd = { "cmd.exe", "/K", "explorer" }
   elseif vim.fn.has "unix" == 1 and vim.fn.executable "xdg-open" == 1 then
-    cmd = "xdg-open"
+    cmd = { "xdg-open" }
   elseif (vim.fn.has "mac" == 1 or vim.fn.has "unix" == 1) and vim.fn.executable "open" == 1 then
-    cmd = "open"
+    cmd = { "open" }
   end
   if not cmd then M.notify("Available system opening tool not found!", "error") end
-  vim.fn.jobstart({ cmd, path or vim.fn.expand "<cfile>" }, { detach = true })
+  vim.fn.jobstart(vim.fn.extend(cmd, { path or vim.fn.expand "<cfile>" }), { detach = true })
 end
 
 -- term_details can be either a string for just a command or
