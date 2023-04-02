@@ -85,9 +85,12 @@ autocmd("BufWinEnter", {
 autocmd("FileType", {
   desc = "Make q close help, man, quickfix, dap floats",
   group = augroup("q_close_windows", { clear = true }),
-  pattern = { "qf", "help", "man", "dap-float", "aerial-nav" },
   callback = function(event)
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, nowait = true })
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+    if buftype == "nofile" or filetype == "help" then
+      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, nowait = true })
+    end
   end,
 })
 
