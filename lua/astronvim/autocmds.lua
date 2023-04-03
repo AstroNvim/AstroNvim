@@ -82,7 +82,7 @@ autocmd("BufWinEnter", {
   end,
 })
 
-autocmd("FileType", {
+autocmd("BufWinEnter", {
   desc = "Make q close help, man, quickfix, dap floats",
   group = augroup("q_close_windows", { clear = true }),
   callback = function(event)
