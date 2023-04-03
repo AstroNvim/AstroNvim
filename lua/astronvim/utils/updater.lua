@@ -192,6 +192,10 @@ function M.update(opts)
   elseif not opts.branch then
     opts.branch = "nightly"
   end
+  -- setup branch if missing
+  if not git.ref_verify(opts.remote .. "/" .. opts.branch) then
+    git.remote_set_branches(opts.remote, opts.branch, false)
+  end
   -- fetch the latest remote
   if not git.fetch(opts.remote) then
     vim.api.nvim_err_writeln("Error fetching remote: " .. opts.remote)

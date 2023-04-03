@@ -75,6 +75,14 @@ function git.remote_update(remote, url, ...) return git.cmd("remote set-url " ..
 -- @return the url of the remote
 function git.remote_url(remote, ...) return trim_or_nil(git.cmd("remote get-url " .. remote, ...)) end
 
+--- Get branches from a git remote
+-- @param remote the remote to setup branches for
+-- @param branch the branch to setup
+-- @return the result of the command
+function git.remote_set_branches(remote, branch, ...)
+  return git.cmd(("remote set-branches %s '%s'"):format(remote, branch), ...)
+end
+
 --- Get the current version with git describe including tags
 -- @return the current git describe string
 function git.current_version(...) return trim_or_nil(git.cmd("describe --tags", ...)) end
@@ -82,6 +90,10 @@ function git.current_version(...) return trim_or_nil(git.cmd("describe --tags", 
 --- Get the current branch
 -- @return the branch of the AstroNvim installation
 function git.current_branch(...) return trim_or_nil(git.cmd("rev-parse --abbrev-ref HEAD", ...)) end
+
+--- Verify a reference
+-- @return the referenced commit
+function git.ref_verify(ref, ...) return trim_or_nil(git.cmd("rev-parse --verify " .. ref, ...)) end
 
 --- Get the current head of the git repo
 -- @return the head string
