@@ -193,7 +193,7 @@ function M.update(opts)
     opts.branch = "nightly"
   end
   -- setup branch if missing
-  if not git.ref_verify(opts.remote .. "/" .. opts.branch) then
+  if not git.ref_verify(opts.remote .. "/" .. opts.branch, false) then
     git.remote_set_branches(opts.remote, opts.branch, false)
   end
   -- fetch the latest remote
