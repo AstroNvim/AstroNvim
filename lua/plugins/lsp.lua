@@ -47,12 +47,7 @@ return {
       layout = { min_width = 28 },
       show_guides = true,
       filter_kind = false,
-      guides = {
-        mid_item = "├ ",
-        last_item = "└ ",
-        nested_top = "│ ",
-        whitespace = "  ",
-      },
+      guides = { mid_item = "├ ", last_item = "└ ", nested_top = "│ ", whitespace = "  ", },
       keymaps = {
         ["[y"] = "actions.prev",
         ["]y"] = "actions.next",

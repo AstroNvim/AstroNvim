@@ -15,16 +15,17 @@ function M.check()
   end
 
   local programs = {
-    { cmd = "git", type = "error", msg = "Used for core functionality such as updater and plugin management" },
+    { cmd = "git", type = "error", msg =
+    "Used for core functionality such as updater and plugin management" },
     {
       cmd = { "xdg-open", "open", "explorer" },
       type = "warn",
       msg = "Used for `gx` mapping for opening files with system opener (Optional)",
     },
-    { cmd = "lazygit", type = "warn", msg = "Used for mappings to pull up git TUI (Optional)" },
-    { cmd = "node", type = "warn", msg = "Used for mappings to pull up node REPL (Optional)" },
-    { cmd = "gdu", type = "warn", msg = "Used for mappings to pull up disk usage analyzer (Optional)" },
-    { cmd = "btm", type = "warn", msg = "Used for mappings to pull up system monitor (Optional)" },
+    { cmd = "lazygit",               type = "warn", msg = "Used for mappings to pull up git TUI (Optional)" },
+    { cmd = "node",                  type = "warn", msg = "Used for mappings to pull up node REPL (Optional)" },
+    { cmd = "gdu",                   type = "warn", msg = "Used for mappings to pull up disk usage analyzer (Optional)" },
+    { cmd = "btm",                   type = "warn", msg = "Used for mappings to pull up system monitor (Optional)" },
     { cmd = { "python", "python3" }, type = "warn", msg = "Used for mappings to pull up python REPL (Optional)" },
   }
 

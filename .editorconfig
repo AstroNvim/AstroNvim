@@ -1,0 +1,8 @@
+[*.lua]
+end_of_line = lf
+indent_style = space
+indent_size = 2
+max_line_length = 120
+
+auto_collapse_lines = true
+quote_style = double

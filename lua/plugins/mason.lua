@@ -7,18 +7,10 @@ return {
       "MasonUninstall",
       "MasonUninstallAll",
       "MasonLog",
-      "MasonUpdate", -- AstroNvim extension here as well
+      "MasonUpdate",    -- AstroNvim extension here as well
       "MasonUpdateAll", -- AstroNvim specific
     },
-    opts = {
-      ui = {
-        icons = {
-          package_installed = "✓",
-          package_uninstalled = "✗",
-          package_pending = "⟳",
-        },
-      },
-    },
+    opts = { ui = { icons = { package_installed = "✓", package_uninstalled = "✗", package_pending = "⟳", }, }, },
     config = require "plugins.configs.mason",
   },
 }

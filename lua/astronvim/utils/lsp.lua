@@ -32,14 +32,7 @@ M.setup_diagnostics = function(signs)
     update_in_insert = true,
     underline = true,
     severity_sort = true,
-    float = {
-      focused = false,
-      style = "minimal",
-      border = "rounded",
-      source = "always",
-      header = "",
-      prefix = "",
-    },
+    float = { focused = false, style = "minimal", border = "rounded", source = "always", header = "", prefix = "", },
   })
   M.diagnostics = {
     -- diagnostics off
@@ -138,10 +131,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if capabilities.codeActionProvider then
-    lsp_mappings.n["<leader>la"] = {
-      function() vim.lsp.buf.code_action() end,
-      desc = "LSP code action",
-    }
+    lsp_mappings.n["<leader>la"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action", }
     lsp_mappings.v["<leader>la"] = lsp_mappings.n["<leader>la"]
   end
 
@@ -154,35 +144,20 @@ M.on_attach = function(client, bufnr)
       end,
     })
     vim.lsp.codelens.refresh()
-    lsp_mappings.n["<leader>ll"] = {
-      function() vim.lsp.codelens.refresh() end,
-      desc = "LSP CodeLens refresh",
-    }
-    lsp_mappings.n["<leader>lL"] = {
-      function() vim.lsp.codelens.run() end,
-      desc = "LSP CodeLens run",
-    }
+    lsp_mappings.n["<leader>ll"] = { function() vim.lsp.codelens.refresh() end, desc = "LSP CodeLens refresh", }
+    lsp_mappings.n["<leader>lL"] = { function() vim.lsp.codelens.run() end, desc = "LSP CodeLens run", }
   end
 
   if capabilities.declarationProvider then
-    lsp_mappings.n["gD"] = {
-      function() vim.lsp.buf.declaration() end,
-      desc = "Declaration of current symbol",
-    }
+    lsp_mappings.n["gD"] = { function() vim.lsp.buf.declaration() end, desc = "Declaration of current symbol", }
   end
 
   if capabilities.definitionProvider then
-    lsp_mappings.n["gd"] = {
-      function() vim.lsp.buf.definition() end,
-      desc = "Show the definition of current symbol",
-    }
+    lsp_mappings.n["gd"] = { function() vim.lsp.buf.definition() end, desc = "Show the definition of current symbol", }
   end
 
   if capabilities.documentFormattingProvider and not tbl_contains(M.formatting.disabled, client.name) then
-    lsp_mappings.n["<leader>lf"] = {
-      function() vim.lsp.buf.format(M.format_opts) end,
-      desc = "Format buffer",
-    }
+    lsp_mappings.n["<leader>lf"] = { function() vim.lsp.buf.format(M.format_opts) end, desc = "Format buffer", }
     lsp_mappings.v["<leader>lf"] = lsp_mappings.n["<leader>lf"]
 
     vim.api.nvim_buf_create_user_command(
@@ -194,9 +169,9 @@ M.on_attach = function(client, bufnr)
     local autoformat = M.formatting.format_on_save
     local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
     if
-      autoformat.enabled
-      and (tbl_isempty(autoformat.allow_filetypes or {}) or tbl_contains(autoformat.allow_filetypes, filetype))
-      and (tbl_isempty(autoformat.ignore_filetypes or {}) or not tbl_contains(autoformat.ignore_filetypes, filetype))
+        autoformat.enabled
+        and (tbl_isempty(autoformat.allow_filetypes or {}) or tbl_contains(autoformat.allow_filetypes, filetype))
+        and (tbl_isempty(autoformat.ignore_filetypes or {}) or not tbl_contains(autoformat.ignore_filetypes, filetype))
     then
       add_buffer_autocmd("lsp_auto_format", bufnr, {
         events = "BufWritePre",
@@ -236,56 +211,32 @@ M.on_attach = function(client, bufnr)
   end
 
   if capabilities.hoverProvider then
-    lsp_mappings.n["K"] = {
-      function() vim.lsp.buf.hover() end,
-      desc = "Hover symbol details",
-    }
+    lsp_mappings.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details", }
   end
 
   if capabilities.implementationProvider then
-    lsp_mappings.n["gI"] = {
-      function() vim.lsp.buf.implementation() end,
-      desc = "Implementation of current symbol",
-    }
+    lsp_mappings.n["gI"] = { function() vim.lsp.buf.implementation() end, desc = "Implementation of current symbol", }
   end
 
   if capabilities.referencesProvider then
-    lsp_mappings.n["gr"] = {
-      function() vim.lsp.buf.references() end,
-      desc = "References of current symbol",
-    }
-    lsp_mappings.n["<leader>lR"] = {
-      function() vim.lsp.buf.references() end,
-      desc = "Search references",
-    }
+    lsp_mappings.n["gr"] = { function() vim.lsp.buf.references() end, desc = "References of current symbol", }
+    lsp_mappings.n["<leader>lR"] = { function() vim.lsp.buf.references() end, desc = "Search references", }
   end
 
   if capabilities.renameProvider then
-    lsp_mappings.n["<leader>lr"] = {
-      function() vim.lsp.buf.rename() end,
-      desc = "Rename current symbol",
-    }
+    lsp_mappings.n["<leader>lr"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol", }
   end
 
   if capabilities.signatureHelpProvider then
-    lsp_mappings.n["<leader>lh"] = {
-      function() vim.lsp.buf.signature_help() end,
-      desc = "Signature help",
-    }
+    lsp_mappings.n["<leader>lh"] = { function() vim.lsp.buf.signature_help() end, desc = "Signature help", }
   end
 
   if capabilities.typeDefinitionProvider then
-    lsp_mappings.n["gT"] = {
-      function() vim.lsp.buf.type_definition() end,
-      desc = "Definition of current type",
-    }
+    lsp_mappings.n["gT"] = { function() vim.lsp.buf.type_definition() end, desc = "Definition of current type", }
   end
 
   if capabilities.workspaceSymbolProvider then
-    lsp_mappings.n["<leader>lG"] = {
-      function() vim.lsp.buf.workspace_symbol() end,
-      desc = "Search workspace symbols",
-    }
+    lsp_mappings.n["<leader>lG"] = { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols", }
   end
 
   if capabilities.semanticTokensProvider and vim.lsp.semantic_tokens then
@@ -332,7 +283,7 @@ M.capabilities.textDocument.completion.completionItem.deprecatedSupport = true
 M.capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
 M.capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
 M.capabilities.textDocument.completion.completionItem.resolveSupport =
-  { properties = { "documentation", "detail", "additionalTextEdits" } }
+{ properties = { "documentation", "detail", "additionalTextEdits" } }
 M.capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
 M.capabilities = user_opts("lsp.capabilities", M.capabilities)
 M.flags = user_opts "lsp.flags"

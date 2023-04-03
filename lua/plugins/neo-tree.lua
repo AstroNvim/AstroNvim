@@ -20,7 +20,7 @@ return {
         if node.type == "directory" or node:has_children() then
           if not node:is_expanded() then -- if unexpanded, expand
             state.commands.toggle_node(state)
-          else -- if expanded and has children, seleect the next child
+          else                           -- if expanded and has children, seleect the next child
             require("neo-tree.ui.renderer").focus_node(state, node:get_child_ids()[1])
           end
         else -- if not a directory just open it
@@ -42,15 +42,13 @@ return {
           P = { val = filepath, msg = "Absolute path" },
         }
 
-        local messages = {
-          { "\nChoose to copy to clipboard:\n", "Normal" },
-        }
+        local messages = { { "\nChoose to copy to clipboard:\n", "Normal" }, }
         for i, result in pairs(results) do
           if result.val and result.val ~= "" then
             vim.list_extend(messages, {
-              { ("%s."):format(i), "Identifier" },
+              { ("%s."):format(i),           "Identifier" },
               { (" %s: "):format(result.msg) },
-              { result.val, "String" },
+              { result.val,                  "String" },
               { "\n" },
             })
           end
@@ -123,10 +121,7 @@ return {
       git_status = { commands = global_commands },
       diagnostics = { commands = global_commands },
       event_handlers = {
-        {
-          event = "neo_tree_buffer_enter",
-          handler = function(_) vim.opt_local.signcolumn = "auto" end,
-        },
+        { event = "neo_tree_buffer_enter", handler = function(_) vim.opt_local.signcolumn = "auto" end, },
       },
     }
   end,

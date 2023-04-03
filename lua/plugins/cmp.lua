@@ -1,18 +1,9 @@
 return {
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = { "rafamadriz/friendly-snippets" },
-    config = require "plugins.configs.luasnip",
-  },
+  { "L3MON4D3/LuaSnip", dependencies = { "rafamadriz/friendly-snippets" }, config = require "plugins.configs.luasnip", },
   {
     "hrsh7th/nvim-cmp",
     commit = "a9c701fa7e12e9257b3162000e5288a75d280c28", -- https://github.com/hrsh7th/nvim-cmp/issues/1382
-    dependencies = {
-      "saadparwaiz1/cmp_luasnip",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-nvim-lsp",
-    },
+    dependencies = { "saadparwaiz1/cmp_luasnip", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-nvim-lsp", },
     event = "InsertEnter",
     opts = function()
       local cmp = require "cmp"
@@ -39,20 +30,9 @@ return {
           fields = { "kind", "abbr", "menu" },
           format = lspkind_status_ok and lspkind.cmp_format(astronvim.lspkind) or nil,
         },
-        snippet = {
-          expand = function(args) luasnip.lsp_expand(args.body) end,
-        },
-        duplicates = {
-          nvim_lsp = 1,
-          luasnip = 1,
-          cmp_tabnine = 1,
-          buffer = 1,
-          path = 1,
-        },
-        confirm_opts = {
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = false,
-        },
+        snippet = { expand = function(args) luasnip.lsp_expand(args.body) end, },
+        duplicates = { nvim_lsp = 1, luasnip = 1, cmp_tabnine = 1, buffer = 1, path = 1, },
+        confirm_opts = { behavior = cmp.ConfirmBehavior.Replace, select = false, },
         window = {
           completion = cmp.config.window.bordered(border_opts),
           documentation = cmp.config.window.bordered(border_opts),
@@ -93,9 +73,9 @@ return {
         },
         sources = cmp.config.sources {
           { name = "nvim_lsp", priority = 1000 },
-          { name = "luasnip", priority = 750 },
-          { name = "buffer", priority = 500 },
-          { name = "path", priority = 250 },
+          { name = "luasnip",  priority = 750 },
+          { name = "buffer",   priority = 500 },
+          { name = "path",     priority = 250 },
         },
       }
     end,

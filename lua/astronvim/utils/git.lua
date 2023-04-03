@@ -145,7 +145,7 @@ end
 function git.parse_remote_url(str)
   return vim.fn.match(str, astronvim.url_matcher) == -1
       and git.url .. str .. (vim.fn.match(str, "/") == -1 and "/AstroNvim.git" or ".git")
-    or str
+      or str
 end
 
 --- Check if a Conventional Commit commit message is breaking or not

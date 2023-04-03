@@ -98,7 +98,7 @@ local function attempt_update(target, opts)
   -- if updating to a new stable version or a specific commit checkout the provided target
   if opts.channel == "stable" or opts.commit then
     return git.checkout(target, false)
-  -- if no target, pull the latest
+    -- if no target, pull the latest
   else
     return git.pull(false)
   end
@@ -167,16 +167,16 @@ function M.update(opts)
       git.remote_add(remote, url)
       check_needed = true
     elseif
-      current_url ~= url
-      and confirm_prompt {
-        { "Remote " },
-        { remote, "Title" },
-        { " is currently set to " },
-        { current_url, "WarningMsg" },
-        { "\nWould you like us to set it to " },
-        { url, "String" },
-        { "?" },
-      }
+        current_url ~= url
+        and confirm_prompt {
+          { "Remote " },
+          { remote,                             "Title" },
+          { " is currently set to " },
+          { current_url,                        "WarningMsg" },
+          { "\nWould you like us to set it to " },
+          { url,                                "String" },
+          { "?" },
+        }
     then
       git.remote_update(remote, url)
       check_needed = true
@@ -220,8 +220,8 @@ function M.update(opts)
     end
   end
   local source = git.local_head() -- calculate current commit
-  local target -- calculate target commit
-  if is_stable then -- if stable get tag commit
+  local target                    -- calculate target commit
+  if is_stable then               -- if stable get tag commit
     local version_search = opts.version or "latest"
     opts.version = git.latest_version(git.get_versions(version_search))
     if not opts.version then -- continue only if stable version is found
@@ -231,7 +231,7 @@ function M.update(opts)
     target = git.tag_commit(opts.version)
   elseif opts.commit then -- if commit specified use it
     target = git.branch_contains(opts.remote, opts.branch, opts.commit) and opts.commit or nil
-  else -- get most recent commit
+  else                    -- get most recent commit
     target = git.remote_head(opts.remote, opts.branch)
   end
   if not source or not target then -- continue if current and target commits were found
@@ -241,16 +241,16 @@ function M.update(opts)
     echo { { "No updates available", "String" } }
     return
   elseif -- prompt user if they want to accept update
-    not opts.skip_prompts
-    and not confirm_prompt {
-      { "Update available to ", "Title" },
-      { is_stable and opts.version or target, "String" },
-      { "\nUpdating requires a restart, continue?" },
-    }
+      not opts.skip_prompts
+      and not confirm_prompt {
+        { "Update available to ",                    "Title" },
+        { is_stable and opts.version or target,      "String" },
+        { "\nUpdating requires a restart, continue?" },
+      }
   then
     echo(cancelled_message)
     return
-  else -- perform update
+  else                      -- perform update
     M.create_rollback(true) -- create rollback file before updating
     -- calculate and print the changelog
     local changelog = git.get_commit_range(source, target)
@@ -266,16 +266,16 @@ function M.update(opts)
     local updated = attempt_update(target, opts)
     -- check for local file conflicts and prompt user to continue or abort
     if
-      not updated
-      and not opts.skip_prompts
-      and not confirm_prompt {
-        { "Unable to pull due to local modifications to base files.\n", "ErrorMsg" },
-        { "Reset local files and continue?" },
-      }
+        not updated
+        and not opts.skip_prompts
+        and not confirm_prompt {
+          { "Unable to pull due to local modifications to base files.\n", "ErrorMsg" },
+          { "Reset local files and continue?" },
+        }
     then
       echo(cancelled_message)
       return
-    -- if continued and there were errors reset the base config and attempt another update
+      -- if continued and there were errors reset the base config and attempt another update
     elseif not updated then
       git.hard_reset(source)
       updated = attempt_update(target, opts)
@@ -288,11 +288,11 @@ function M.update(opts)
     -- print a summary of the update with the changelog
     local summary = {
       { "AstroNvim updated successfully to ", "Title" },
-      { git.current_version(), "String" },
-      { "!\n", "Title" },
+      { git.current_version(),                "String" },
+      { "!\n",                                "Title" },
       {
         opts.auto_quit and "AstroNvim will now update plugins and quit.\n\n"
-          or "After plugins update, please restart.\n\n",
+        or "After plugins update, please restart.\n\n",
         "WarningMsg",
       },
     }
@@ -307,7 +307,7 @@ function M.update(opts)
       vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
     end
 
-    require("lazy.core.plugin").load() -- force immediate reload of lazy
+    require("lazy.core.plugin").load()   -- force immediate reload of lazy
     require("lazy").sync { wait = true } -- sync new plugin spec changes
     utils.event "UpdateComplete"
   end

@@ -54,10 +54,7 @@ return {
     "stevearc/dressing.nvim",
     init = function() require("astronvim.utils").load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
     opts = {
-      input = {
-        default_prompt = "➤ ",
-        win_options = { winhighlight = "Normal:Normal,NormalNC:Normal" },
-      },
+      input = { default_prompt = "➤ ", win_options = { winhighlight = "Normal:Normal,NormalNC:Normal" }, },
       select = {
         backend = { "telescope", "builtin" },
         builtin = { win_options = { winhighlight = "Normal:Normal,NormalNC:Normal" } },
@@ -74,10 +71,7 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = "User AstroFile",
     opts = {
-      buftype_exclude = {
-        "nofile",
-        "terminal",
-      },
+      buftype_exclude = { "nofile", "terminal", },
       filetype_exclude = {
         "help",
         "startify",
