@@ -5,15 +5,15 @@ local ui = require "astronvim.utils.ui"
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
 local sections = {
-  f = { name = "󰍉 Find" },
-  p = { name = "󰏖 Packages" },
-  l = { name = " LSP" },
-  u = { name = " UI" },
-  b = { name = "󰓩 Buffers" },
-  d = { name = " Debugger" },
-  g = { name = " Git" },
-  S = { name = "󱂬 Session" },
-  t = { name = " Terminal" },
+  f = { desc = "󰍉 Find" },
+  p = { desc = "󰏖 Packages" },
+  l = { desc = " LSP" },
+  u = { desc = " UI" },
+  b = { desc = "󰓩 Buffers" },
+  d = { desc = " Debugger" },
+  g = { desc = " Git" },
+  S = { desc = "󱂬 Session" },
+  t = { desc = " Terminal" },
 }
 if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.name = opts.name:gsub("^.* ", "") end, sections) end
 
