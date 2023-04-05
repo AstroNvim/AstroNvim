@@ -376,5 +376,6 @@ maps.n["<leader>ut"] = { ui.toggle_tabline, desc = "Toggle tabline" }
 maps.n["<leader>uu"] = { ui.toggle_url_match, desc = "Toggle URL highlight" }
 maps.n["<leader>uw"] = { ui.toggle_wrap, desc = "Toggle wrap" }
 maps.n["<leader>uy"] = { ui.toggle_syntax, desc = "Toggle syntax highlight" }
+if vim.fn.has "nvim-0.9" == 1 then maps.n["<leader>uh"] = { ui.toggle_foldcolumn, desc = "Toggle foldcolumn" } end
 
 utils.set_mappings(astronvim.user_opts("mappings", maps))
