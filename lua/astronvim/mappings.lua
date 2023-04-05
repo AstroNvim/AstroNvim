@@ -15,7 +15,7 @@ local sections = {
   S = { desc = "󱂬 Session" },
   t = { desc = " Terminal" },
 }
-if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.name = opts.name:gsub("^.* ", "") end, sections) end
+if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.desc = opts.desc:gsub("^.* ", "") end, sections) end
 
 -- Normal --
 -- Standard Operations
