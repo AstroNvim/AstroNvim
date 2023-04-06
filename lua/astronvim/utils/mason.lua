@@ -16,8 +16,8 @@ local notify = utils.notify
 local astroevent = utils.event
 
 --- Update specified mason packages, or just update the registries if no packages are listed
---- @param pkg_names nil|string|string[] The package names as defined in Mason (Not mason-lspconfig or mason-null-ls) if the value is nil then it will just update the registries
---- @param auto_install boolean whether or not to install a package that is not currently installed (default: True)
+---@param pkg_names? string|string[] The package names as defined in Mason (Not mason-lspconfig or mason-null-ls) if the value is nil then it will just update the registries
+---@param auto_install? boolean whether or not to install a package that is not currently installed (default: True)
 function M.update(pkg_names, auto_install)
   pkg_names = pkg_names or {}
   if type(pkg_names) == "string" then pkg_names = { pkg_names } end

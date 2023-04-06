@@ -82,7 +82,7 @@ function M.toggle_buffer_autoformat()
 end
 
 --- Toggle buffer semantic token highlighting for all language servers that support it
---- @param bufnr? number the buffer to toggle the clients on
+---@param bufnr? number the buffer to toggle the clients on
 function M.toggle_buffer_semantic_tokens(bufnr)
   vim.b.semantic_tokens_enabled = vim.b.semantic_tokens_enabled == false
 
