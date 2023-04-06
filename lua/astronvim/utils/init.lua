@@ -20,9 +20,9 @@ function M.extend_tbl(default, opts)
 end
 
 --- Insert one or more values into a list like table and maintain that you do not insert non-unique values (THIS MODIFIES `lst`)
---- @param lst table The list like table that you want to insert into
+--- @param lst any[] The list like table that you want to insert into
 --- @param vals any|any[] Either a list like table of values to be inserted or a single value to be inserted
---- @return table # The modified list like table
+--- @return any[] # The modified list like table
 function M.list_insert_unique(lst, vals)
   assert(vim.tbl_islist(lst), "Provided table is not a list like table")
   if not vim.tbl_islist(vals) then vals = { vals } end
@@ -35,6 +35,7 @@ end
 --- Call function if a condition is met
 --- @param func function The function to run
 --- @param condition boolean # Whether to run the function or not
+--- @return any|nil result # the result of the function running or nil
 function M.conditional_func(func, condition, ...)
   -- if the condition is true or no condition is provided, evaluate the function with the rest of the parameters and return the result
   if condition and type(func) == "function" then return func(...) end
@@ -240,7 +241,7 @@ end
 
 --- Run a shell command and capture the output and if the command succeeded or failed
 --- @param cmd string The terminal command to execute
---- @param show_error boolean Wwhether or not to show an unsuccessful command as an error to the user
+--- @param show_error? boolean Whether or not to show an unsuccessful command as an error to the user
 --- @return string|nil # The result of a successfully executed command or nil
 function M.cmd(cmd, show_error)
   local wind32_cmd
