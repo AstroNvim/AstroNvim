@@ -96,7 +96,7 @@ end
 --- User configuration entry point to override the default options of a configuration table with a user configuration file or table in the user/init.lua user settings
 --- @param module string The module path of the override setting
 --- @param default? table The default settings that will be overridden
---- @param extend boolean # Whether extend the default settings or overwrite them with the user settings entirely (default: true)
+--- @param extend? boolean # Whether extend the default settings or overwrite them with the user settings entirely (default: true)
 --- @return any # The new configuration settings with the user overrides applied
 function astronvim.user_opts(module, default, extend)
   -- default to extend = true
