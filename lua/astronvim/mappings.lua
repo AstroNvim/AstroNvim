@@ -82,6 +82,10 @@ maps.n["<leader>bd"] = {
   end,
   desc = "Delete buffer from tabline",
 }
+maps.n["<leader>bl"] =
+  { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
+maps.n["<leader>br"] =
+  { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
 maps.n["<leader>b\\"] = {
   function()
     require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
