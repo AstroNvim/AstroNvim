@@ -74,7 +74,7 @@ M.format_opts.filter = function(client)
 end
 
 --- Helper function to set up a given server with the Neovim LSP client
---- @param server string The name of the server to be setup
+---@param server string The name of the server to be setup
 M.setup = function(server)
   -- if server doesn't exist, set it up from user server definition
   local config_avail, config = pcall(require, "lspconfig.server_configurations." .. server)
@@ -103,8 +103,8 @@ local function add_buffer_autocmd(augroup, bufnr, autocmds)
 end
 
 --- The `on_attach` function used by AstroNvim
---- @param client table The LSP client details when attaching
---- @param bufnr number The buffer that the LSP client is attaching to
+---@param client table The LSP client details when attaching
+---@param bufnr number The buffer that the LSP client is attaching to
 M.on_attach = function(client, bufnr)
   local capabilities = client.server_capabilities
   local lsp_mappings = {
@@ -338,8 +338,8 @@ M.capabilities = user_opts("lsp.capabilities", M.capabilities)
 M.flags = user_opts "lsp.flags"
 
 --- Get the server configuration for a given language server to be provided to the server's `setup()` call
---- @param server_name string The name of the server
---- @return table # The table of LSP options used when setting up the given language server
+---@param server_name string The name of the server
+---@return table # The table of LSP options used when setting up the given language server
 function M.config(server_name)
   local server = require("lspconfig")[server_name]
   local lsp_opts = require("astronvim.utils").extend_tbl(
