@@ -31,8 +31,8 @@ local function confirm_prompt(messages)
 end
 
 --- Helper function to generate AstroNvim snapshots (For internal use only)
--- @param write boolean whether or not to write to the snapshot file (default: false)
--- @return the plugin specification table of the snapshot
+--- @param write boolean Whether or not to write to the snapshot file (default: false)
+--- @return table # The plugin specification table of the snapshot
 function M.generate_snapshot(write)
   local file
   local prev_snapshot = require(astronvim.updater.snapshot.module)
@@ -73,8 +73,8 @@ function M.generate_snapshot(write)
 end
 
 --- Get the current AstroNvim version
--- @param quiet boolean to quietly execute or send a notification
--- @return the current AstroNvim version string
+--- @param quiet boolean Whether to quietly execute or send a notification
+--- @return string # The current AstroNvim version string
 function M.version(quiet)
   local version = astronvim.install.version or git.current_version(false) or "unknown"
   if astronvim.updater.options.channel ~= "stable" then version = ("nightly (%s)"):format(version) end
@@ -83,8 +83,8 @@ function M.version(quiet)
 end
 
 --- Get the full AstroNvim changelog
--- @param quiet boolean to quietly execute or display the changelog
--- @return the current AstroNvim changelog table of commit messages
+--- @param quiet boolean Whether to quietly execute or display the changelog
+--- @return table # The current AstroNvim changelog table of commit messages
 function M.changelog(quiet)
   local summary = {}
   vim.list_extend(summary, git.pretty_changelog(git.get_commit_range()))
@@ -93,7 +93,7 @@ function M.changelog(quiet)
 end
 
 --- Attempt an update of AstroNvim
--- @param target the target if checking out a specific tag or commit or nil if just pulling
+--- @param target string The target if checking out a specific tag or commit or nil if just pulling
 local function attempt_update(target, opts)
   -- if updating to a new stable version or a specific commit checkout the provided target
   if opts.channel == "stable" or opts.commit then
@@ -114,7 +114,7 @@ function M.update_packages()
 end
 
 --- Create a table of options for the currently installed AstroNvim version
--- @return the table of updater options
+--- @return table # The table of updater options
 function M.create_rollback(write)
   local snapshot = { branch = git.current_branch(), commit = git.local_head() }
   if snapshot.branch == "HEAD" then snapshot.branch = "main" end

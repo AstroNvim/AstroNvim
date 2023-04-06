@@ -11,14 +11,14 @@ local git = { url = "https://github.com/" }
 local function trim_or_nil(str) return type(str) == "string" and vim.trim(str) or nil end
 
 --- Run a git command from the AstroNvim installation directory
--- @param args the git arguments
--- @return the result of the command or nil if unsuccessful
+--- @param args any the git arguments
+--- @return string|nil the result of the command or nil if unsuccessful
 function git.cmd(args, ...)
   return require("astronvim.utils").cmd("git -C " .. astronvim.install.home .. " " .. args, ...)
 end
 
 --- Check if the AstroNvim is able to reach the `git` command
--- @return the result of running `git --help`
+--- @return boolean the result of running `git --help`
 function git.available() return vim.fn.executable "git" == 1 end
 
 --- Check if the AstroNvim home is a git repo
