@@ -114,6 +114,7 @@ function M.sort(compare_func)
     local bufs = vim.t.bufs
     table.sort(bufs, compare_func)
     vim.t.bufs = bufs
+    require("astronvim.utils").event "BufsUpdated"
     vim.cmd.redrawtabline()
     return true
   end
