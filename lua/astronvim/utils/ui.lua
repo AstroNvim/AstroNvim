@@ -209,13 +209,12 @@ function M.toggle_url_match()
   require("astronvim.utils").set_url_match()
 end
 
+local last_active_foldcolumn
 --- Toggle foldcolumn=0|1
 function M.toggle_foldcolumn()
-  if vim.wo.foldcolumn == "0" then
-    vim.wo.foldcolumn = "1"
-  else
-    vim.wo.foldcolumn = "0"
-  end
+  local curr_foldcolumn = vim.wo.foldcolumn
+  if curr_foldcolumn ~= "0" then last_active_foldcolumn = curr_foldcolumn end
+  vim.wo.foldcolumn = curr_foldcolumn == "0" and (last_active_foldcolumn or "1") or "0"
   ui_notify(string.format("foldcolumn=%s", vim.wo.foldcolumn))
 end
 
