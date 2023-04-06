@@ -10,6 +10,7 @@ local sections = {
   l = { desc = " LSP" },
   u = { desc = " UI" },
   b = { desc = "󰓩 Buffers" },
+  bs = { desc = "󰒺 Sort Buffers" },
   d = { desc = " Debugger" },
   g = { desc = " Git" },
   S = { desc = "󱂬 Session" },
@@ -86,6 +87,17 @@ maps.n["<leader>bl"] =
   { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
 maps.n["<leader>br"] =
   { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
+maps.n["<leader>bs"] = sections.bs
+maps.n["<leader>bse"] =
+  { function() require("astronvim.utils.buffer").sort "extension" end, desc = "Sort by extension (buffers)" }
+maps.n["<leader>bsr"] =
+  { function() require("astronvim.utils.buffer").sort "unique_path" end, desc = "Sort by relative path (buffers)" }
+maps.n["<leader>bsp"] =
+  { function() require("astronvim.utils.buffer").sort "full_path" end, desc = "Sort by full path (buffers)" }
+maps.n["<leader>bsi"] =
+  { function() require("astronvim.utils.buffer").sort "bufnr" end, desc = "Sort by buffer number (buffers)" }
+maps.n["<leader>bsm"] =
+  { function() require("astronvim.utils.buffer").sort "modified" end, desc = "Sort by modification (buffers)" }
 maps.n["<leader>b\\"] = {
   function()
     require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
