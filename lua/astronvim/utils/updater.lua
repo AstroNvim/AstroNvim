@@ -134,7 +134,7 @@ end
 function M.rollback()
   local rollback_avail, rollback_opts = pcall(dofile, astronvim.updater.rollback_file)
   if not rollback_avail then
-    notify("No rollback file available", "error")
+    notify("No rollback file available", vim.log.levels.ERROR)
     return
   end
   M.update(rollback_opts)
@@ -148,14 +148,14 @@ function M.update(opts)
   if not git.available() then
     notify(
       "git command is not available, please verify it is accessible in a command line. This may be an issue with your PATH",
-      "error"
+      vim.log.levels.ERROR
     )
     return
   end
 
   -- if installed with an external package manager, disable the internal updater
   if not git.is_repo() then
-    notify("Updater not available for non-git installations", "error")
+    notify("Updater not available for non-git installations", vim.log.levels.ERROR)
     return
   end
   -- set up any remotes defined by the user if they do not exist

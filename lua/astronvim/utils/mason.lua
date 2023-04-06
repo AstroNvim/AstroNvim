@@ -37,14 +37,14 @@ function M.update(pkg_names, auto_install)
       for _, pkg_name in ipairs(pkg_names) do
         local pkg_avail, pkg = pcall(registry.get_package, pkg_name)
         if not pkg_avail then
-          notify(("Mason: %s is not available"):format(pkg_name), "error")
+          notify(("Mason: %s is not available"):format(pkg_name), vim.log.levels.ERROR)
         else
           if not pkg:is_installed() then
             if auto_install then
               notify(("Mason: Installing %s"):format(pkg.name))
               pkg:install()
             else
-              notify(("Mason: %s not installed"):format(pkg.name), "warn")
+              notify(("Mason: %s not installed"):format(pkg.name), vim.log.levels.WARN)
             end
           else
             pkg:check_new_version(function(update_available, version)
