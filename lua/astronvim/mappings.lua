@@ -222,7 +222,7 @@ if is_available "telescope.nvim" then
         if vim.fn.isdirectory(dir) == 1 then table.insert(search_dirs, dir) end -- add directory to search if exists
       end
       if vim.tbl_isempty(search_dirs) then -- if no config folders found, show warning
-        utils.notify("No user configuration files found", "warn")
+        utils.notify("No user configuration files found", vim.log.levels.WARN)
       else
         if #search_dirs == 1 then cwd = search_dirs[1] end -- if only one directory, focus cwd
         require("telescope.builtin").find_files {
