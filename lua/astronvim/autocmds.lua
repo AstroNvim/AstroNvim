@@ -164,7 +164,7 @@ if is_available "alpha-nvim" then
     group = group_name,
     callback = function()
       local should_skip = false
-      if vim.fn.argc() > 0 or vim.fn.line2byte "$" ~= -1 or not vim.o.modifiable then
+      if vim.fn.argc() > 0 or vim.fn.line2byte(vim.fn.line "$") ~= -1 or not vim.o.modifiable then
         should_skip = true
       else
         for _, arg in pairs(vim.v.argv) do
