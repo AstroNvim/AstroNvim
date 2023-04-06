@@ -11,15 +11,15 @@
 local M = {}
 
 --- Check if a buffer is valid
--- @param bufnr the buffer to check
--- @return true if the buffer is valid or false
+--- @param bufnr number The buffer to check
+--- @return boolean # Whether the buffer is valid or not
 function M.is_valid(bufnr)
   if not bufnr or bufnr < 1 then return false end
   return vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted
 end
 
 --- Move the current buffer tab n places in the bufferline
--- @param n number of tabs to move the current buffer over by (positive = right, negative = left)
+--- @param n number The number of tabs to move the current buffer over by (positive = right, negative = left)
 function M.move(n)
   if n == 0 then return end -- if n = 0 then no shifts are needed
   local bufs = vim.t.bufs -- make temp variable
@@ -46,7 +46,7 @@ function M.move(n)
 end
 
 --- Navigate left and right by n places in the bufferline
--- @param n the number of tabs to navigate to (positive = right, negative = left)
+-- @param n number The number of tabs to navigate to (positive = right, negative = left)
 function M.nav(n)
   local current = vim.api.nvim_get_current_buf()
   for i, v in ipairs(vim.t.bufs) do
@@ -58,12 +58,12 @@ function M.nav(n)
 end
 
 --- Navigate to a specific buffer by its position in the bufferline
--- @param tabnr the position of the buffer to navigate to
+--- @param tabnr number The position of the buffer to navigate to
 function M.nav_to(tabnr) vim.cmd.b(vim.t.bufs[tabnr]) end
 
 --- Close a given buffer
--- @param bufnr? the buffer number to close or the current buffer if not provided
--- @param force? whether or not to foce close the buffers or confirm changes (default: false)
+--- @param bufnr? number The buffer to close or the current buffer if not provided
+--- @param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
 function M.close(bufnr, force)
   if force == nil then force = false end
   if require("astronvim.utils").is_available "bufdelete.nvim" then
@@ -74,8 +74,8 @@ function M.close(bufnr, force)
 end
 
 --- Close all buffers
--- @param keep_current? whether or not to keep the current buffer (default: false)
--- @param force? whether or not to foce close the buffers or confirm changes (default: false)
+--- @param keep_current? boolean Whether or not to keep the current buffer (default: false)
+--- @param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
 function M.close_all(keep_current, force)
   if force == nil then force = false end
   if keep_current == nil then keep_current = false end
