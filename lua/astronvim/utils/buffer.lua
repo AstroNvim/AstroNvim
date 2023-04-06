@@ -109,9 +109,9 @@ end
 ---@param compare_func string|function a string of a comparator defined in require("astronvim.utils.buffer").comparator or a custom comparator function
 ---@return boolean # Whether or not the buffers were sorted
 function M.sort(compare_func)
-  local bufs = vim.t.bufs
   if type(compare_func) == "string" then compare_func = M.comparator[compare_func] end
   if type(compare_func) == "function" then
+    local bufs = vim.t.bufs
     table.sort(bufs, compare_func)
     vim.t.bufs = bufs
     vim.cmd.redrawtabline()
