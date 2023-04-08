@@ -4,7 +4,7 @@ return {
   cmd = "Neotree",
   init = function() vim.g.neo_tree_remove_legacy_commands = true end,
   opts = function()
-    -- TODO move after neo-tree improves (https://github.com/nvim-neo-tree/neo-tree.nvim/issues/707)
+    -- TODO: move after neo-tree improves (https://github.com/nvim-neo-tree/neo-tree.nvim/issues/707)
     local global_commands = {
       system_open = function(state) require("astronvim.utils").system_open(state.tree:get_node():get_id()) end,
       parent_or_close = function(state)
