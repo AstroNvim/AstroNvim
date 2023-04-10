@@ -282,10 +282,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if capabilities.workspaceSymbolProvider then
-    lsp_mappings.n["<leader>lG"] = {
-      function() vim.lsp.buf.workspace_symbol() end,
-      desc = "Search workspace symbols",
-    }
+    lsp_mappings.n["<leader>lG"] = { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols" }
   end
 
   if capabilities.semanticTokensProvider and vim.lsp.semantic_tokens then
@@ -308,7 +305,11 @@ M.on_attach = function(client, bufnr)
       lsp_mappings.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end
     end
     if lsp_mappings.n["<leader>lG"] then
-      lsp_mappings.n["<leader>lG"][1] = function() require("telescope.builtin").lsp_workspace_symbols() end
+      lsp_mappings.n["<leader>lG"][1] = function()
+        vim.ui.input({ prompt = "Symbol Query: " }, function(query)
+          if query then require("telescope.builtin").lsp_workspace_symbols { query = query } end
+        end)
+      end
     end
   end
 
