@@ -150,6 +150,7 @@ M.env.sign_handlers = astronvim.user_opts("heirline.sign_handlers", M.env.sign_h
 ---@param fallback string the color to fallback on if a lualine theme is not present
 ---@return string # The background color of the lualine theme or the fallback parameter if one doesn't exist
 function M.hl.lualine_mode(mode, fallback)
+  if not vim.g.colors_name then return fallback end
   local lualine_avail, lualine = pcall(require, "lualine.themes." .. vim.g.colors_name)
   local lualine_opts = lualine_avail and lualine[mode]
   return lualine_opts and type(lualine_opts.a) == "table" and lualine_opts.a.bg or fallback
