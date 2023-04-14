@@ -11,15 +11,15 @@
 local M = {}
 
 --- Check if a buffer is valid
--- @param bufnr the buffer to check
--- @return true if the buffer is valid or false
+---@param bufnr number The buffer to check
+---@return boolean # Whether the buffer is valid or not
 function M.is_valid(bufnr)
   if not bufnr or bufnr < 1 then return false end
   return vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted
 end
 
 --- Move the current buffer tab n places in the bufferline
--- @param n number of tabs to move the current buffer over by (positive = right, negative = left)
+---@param n number The number of tabs to move the current buffer over by (positive = right, negative = left)
 function M.move(n)
   if n == 0 then return end -- if n = 0 then no shifts are needed
   local bufs = vim.t.bufs -- make temp variable
@@ -46,7 +46,7 @@ function M.move(n)
 end
 
 --- Navigate left and right by n places in the bufferline
--- @param n the number of tabs to navigate to (positive = right, negative = left)
+-- @param n number The number of tabs to navigate to (positive = right, negative = left)
 function M.nav(n)
   local current = vim.api.nvim_get_current_buf()
   for i, v in ipairs(vim.t.bufs) do
@@ -58,12 +58,12 @@ function M.nav(n)
 end
 
 --- Navigate to a specific buffer by its position in the bufferline
--- @param tabnr the position of the buffer to navigate to
+---@param tabnr number The position of the buffer to navigate to
 function M.nav_to(tabnr) vim.cmd.b(vim.t.bufs[tabnr]) end
 
 --- Close a given buffer
--- @param bufnr? the buffer number to close or the current buffer if not provided
--- @param force? whether or not to foce close the buffers or confirm changes (default: false)
+---@param bufnr? number The buffer to close or the current buffer if not provided
+---@param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
 function M.close(bufnr, force)
   if force == nil then force = false end
   if require("astronvim.utils").is_available "bufdelete.nvim" then
@@ -74,21 +74,51 @@ function M.close(bufnr, force)
 end
 
 --- Close all buffers
--- @param keep_current? whether or not to keep the current buffer (default: false)
--- @param force? whether or not to foce close the buffers or confirm changes (default: false)
+---@param keep_current? boolean Whether or not to keep the current buffer (default: false)
+---@param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
 function M.close_all(keep_current, force)
-  if force == nil then force = false end
   if keep_current == nil then keep_current = false end
   local current = vim.api.nvim_get_current_buf()
   for _, bufnr in ipairs(vim.t.bufs) do
-    if not keep_current or bufnr ~= current then
-      if require("astronvim.utils").is_available "bufdelete.nvim" then
-        require("bufdelete").bufdelete(bufnr, force)
-      else
-        vim.cmd((force and "bd!" or "confirm bd") .. bufnr)
-      end
-    end
+    if not keep_current or bufnr ~= current then M.close(bufnr, force) end
   end
+end
+
+--- Close buffers to the left of the current buffer
+---@param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
+function M.close_left(force)
+  local current = vim.api.nvim_get_current_buf()
+  for _, bufnr in ipairs(vim.t.bufs) do
+    if bufnr == current then break end
+    M.close(bufnr, force)
+  end
+end
+
+--- Close buffers to the right of the current buffer
+---@param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
+function M.close_right(force)
+  local current = vim.api.nvim_get_current_buf()
+  local after_current = false
+  for _, bufnr in ipairs(vim.t.bufs) do
+    if after_current then M.close(bufnr, force) end
+    if bufnr == current then after_current = true end
+  end
+end
+
+--- Sort a the buffers in the current tab based on some comparator
+---@param compare_func string|function a string of a comparator defined in require("astronvim.utils.buffer").comparator or a custom comparator function
+---@return boolean # Whether or not the buffers were sorted
+function M.sort(compare_func)
+  if type(compare_func) == "string" then compare_func = M.comparator[compare_func] end
+  if type(compare_func) == "function" then
+    local bufs = vim.t.bufs
+    table.sort(bufs, compare_func)
+    vim.t.bufs = bufs
+    require("astronvim.utils").event "BufsUpdated"
+    vim.cmd.redrawtabline()
+    return true
+  end
+  return false
 end
 
 --- Close the current tab
@@ -99,5 +129,49 @@ function M.close_tab()
     vim.cmd.tabclose()
   end
 end
+
+--- A table of buffer comparator functions
+M.comparator = {}
+
+local fnamemodify = vim.fn.fnamemodify
+local function bufinfo(bufnr) return vim.fn.getbufinfo(bufnr)[1] end
+local function unique_path(bufnr)
+  return require("astronvim.utils.status").provider.unique_path() { bufnr = bufnr }
+    .. fnamemodify(bufinfo(bufnr).name, ":t")
+end
+
+--- Comparator of two buffer numbers
+---@param bufnr_a integer buffer number A
+---@param bufnr_b integer buffer number B
+---@return boolean comparison true if A is sorted before B, false if B should be sorted before A
+function M.comparator.bufnr(bufnr_a, bufnr_b) return bufnr_a < bufnr_b end
+
+--- Comparator of two buffer numbers based on the file extensions
+---@param bufnr_a integer buffer number A
+---@param bufnr_b integer buffer number B
+---@return boolean comparison true if A is sorted before B, false if B should be sorted before A
+function M.comparator.extension(bufnr_a, bufnr_b)
+  return fnamemodify(bufinfo(bufnr_a).name, ":e") < fnamemodify(bufinfo(bufnr_b).name, ":e")
+end
+
+--- Comparator of two buffer numbers based on the full path
+---@param bufnr_a integer buffer number A
+---@param bufnr_b integer buffer number B
+---@return boolean comparison true if A is sorted before B, false if B should be sorted before A
+function M.comparator.full_path(bufnr_a, bufnr_b)
+  return fnamemodify(bufinfo(bufnr_a).name, ":p") < fnamemodify(bufinfo(bufnr_b).name, ":p")
+end
+
+--- Comparator of two buffers based on their unique path
+---@param bufnr_a integer buffer number A
+---@param bufnr_b integer buffer number B
+---@return boolean comparison true if A is sorted before B, false if B should be sorted before A
+function M.comparator.unique_path(bufnr_a, bufnr_b) return unique_path(bufnr_a) < unique_path(bufnr_b) end
+
+--- Comparator of two buffers based on modification date
+---@param bufnr_a integer buffer number A
+---@param bufnr_b integer buffer number B
+---@return boolean comparison true if A is sorted before B, false if B should be sorted before A
+function M.comparator.modified(bufnr_a, bufnr_b) return bufinfo(bufnr_a).lastused > bufinfo(bufnr_b).lastused end
 
 return M

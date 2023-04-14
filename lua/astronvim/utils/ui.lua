@@ -82,13 +82,14 @@ function M.toggle_buffer_autoformat()
 end
 
 --- Toggle buffer semantic token highlighting for all language servers that support it
--- @param bufnr the buffer to toggle the clients on
+---@param bufnr? number the buffer to toggle the clients on
 function M.toggle_buffer_semantic_tokens(bufnr)
   vim.b.semantic_tokens_enabled = vim.b.semantic_tokens_enabled == false
 
   for _, client in ipairs(vim.lsp.get_active_clients()) do
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr or 0, client.id)
+      ui_notify(string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b.semantic_tokens_enabled)))
     end
   end
 end
@@ -206,6 +207,15 @@ end
 function M.toggle_url_match()
   vim.g.highlighturl_enabled = not vim.g.highlighturl_enabled
   require("astronvim.utils").set_url_match()
+end
+
+local last_active_foldcolumn
+--- Toggle foldcolumn=0|1
+function M.toggle_foldcolumn()
+  local curr_foldcolumn = vim.wo.foldcolumn
+  if curr_foldcolumn ~= "0" then last_active_foldcolumn = curr_foldcolumn end
+  vim.wo.foldcolumn = curr_foldcolumn == "0" and (last_active_foldcolumn or "1") or "0"
+  ui_notify(string.format("foldcolumn=%s", vim.wo.foldcolumn))
 end
 
 return M

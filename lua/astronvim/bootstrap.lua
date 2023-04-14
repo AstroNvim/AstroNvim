@@ -22,8 +22,8 @@ if astronvim.install.home ~= astronvim.install.config then
 end
 
 --- Looks to see if a module path references a lua file in a configuration folder and tries to load it. If there is an error loading the file, write an error and continue
--- @param module the module path to try and load
--- @return the loaded module if successful or nil
+---@param module string The module path to try and load
+---@return table|nil # The loaded module if successful or nil
 local function load_module_file(module)
   -- placeholder for final return value
   local found_module = nil
@@ -94,10 +94,10 @@ local function user_setting_table(module)
 end
 
 --- User configuration entry point to override the default options of a configuration table with a user configuration file or table in the user/init.lua user settings
--- @param module the module path of the override setting
--- @param default the default settings that will be overridden
--- @param extend boolean value to either extend the default settings or overwrite them with the user settings entirely (default: true)
--- @return the new configuration settings with the user overrides applied
+---@param module string The module path of the override setting
+---@param default? table The default settings that will be overridden
+---@param extend? boolean # Whether extend the default settings or overwrite them with the user settings entirely (default: true)
+---@return any # The new configuration settings with the user overrides applied
 function astronvim.user_opts(module, default, extend)
   -- default to extend = true
   if extend == nil then extend = true end

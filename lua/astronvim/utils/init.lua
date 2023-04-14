@@ -11,18 +11,18 @@
 local M = {}
 
 --- Merge extended options with a default table of options
--- @param default the default table that you want to merge into
--- @param opts the new options that should be merged with the default table
--- @return the merged table
+---@param default? table The default table that you want to merge into
+---@param opts? table The new options that should be merged with the default table
+---@return table # The merged table
 function M.extend_tbl(default, opts)
   opts = opts or {}
   return default and vim.tbl_deep_extend("force", default, opts) or opts
 end
 
 --- Insert one or more values into a list like table and maintain that you do not insert non-unique values (THIS MODIFIES `lst`)
--- @param lst the list like table that you want to insert into
--- @param vals either a list like table of values to be inserted or a single value to be inserted
--- @return the modified list like table
+---@param lst any[] The list like table that you want to insert into
+---@param vals any|any[] Either a list like table of values to be inserted or a single value to be inserted
+---@return any[] # The modified list like table
 function M.list_insert_unique(lst, vals)
   assert(vim.tbl_islist(lst), "Provided table is not a list like table")
   if not vim.tbl_islist(vals) then vals = { vals } end
@@ -33,16 +33,17 @@ function M.list_insert_unique(lst, vals)
 end
 
 --- Call function if a condition is met
--- @param func the function to run
--- @param condition a boolean value of whether to run the function or not
+---@param func function The function to run
+---@param condition boolean # Whether to run the function or not
+---@return any|nil result # the result of the function running or nil
 function M.conditional_func(func, condition, ...)
   -- if the condition is true or no condition is provided, evaluate the function with the rest of the parameters and return the result
   if condition and type(func) == "function" then return func(...) end
 end
 
 --- Get an icon from `lspkind` if it is available and return it
--- @param kind the kind of icon in `lspkind` to retrieve
--- @return the icon
+---@param kind string The kind of icon in `lspkind` to retrieve
+---@return string icon
 function M.get_icon(kind)
   local icon_pack = vim.g.icons_enabled and "icons" or "text_icons"
   if not M[icon_pack] then
@@ -53,8 +54,9 @@ function M.get_icon(kind)
 end
 
 --- Get highlight properties for a given highlight name
--- @param name highlight group name
--- @return table of highlight group properties
+---@param name string The highlight group name
+---@param fallback? table The fallback highlight properties
+---@return table properties # the highlight group properties
 function M.get_hlgroup(name, fallback)
   if vim.fn.hlexists(name) == 1 then
     local hl
@@ -72,25 +74,25 @@ function M.get_hlgroup(name, fallback)
     end
     return hl
   end
-  return fallback
+  return fallback or {}
 end
 
 --- Serve a notification with a title of AstroNvim
--- @param msg the notification body
--- @param type the type of the notification (:help vim.log.levels)
--- @param opts table of nvim-notify options to use (:help notify-options)
+---@param msg string The notification body
+---@param type number|nil The type of the notification (:help vim.log.levels)
+---@param opts? table The nvim-notify options to use (:help notify-options)
 function M.notify(msg, type, opts)
   vim.schedule(function() vim.notify(msg, type, M.extend_tbl({ title = "AstroNvim" }, opts)) end)
 end
 
 --- Trigger an AstroNvim user event
--- @param event the event name to be appended to Astro
+---@param event string The event name to be appended to Astro
 function M.event(event)
   vim.schedule(function() vim.api.nvim_exec_autocmds("User", { pattern = "Astro" .. event }) end)
 end
 
 --- Open a URL under the cursor with the current operating system
--- @param path the path of the file to open with the system opener
+---@param path string The path of the file to open with the system opener
 function M.system_open(path)
   local cmd
   if vim.fn.has "win32" == 1 and vim.fn.executable "explorer" == 1 then
@@ -100,15 +102,12 @@ function M.system_open(path)
   elseif (vim.fn.has "mac" == 1 or vim.fn.has "unix" == 1) and vim.fn.executable "open" == 1 then
     cmd = { "open" }
   end
-  if not cmd then M.notify("Available system opening tool not found!", "error") end
+  if not cmd then M.notify("Available system opening tool not found!", vim.log.levels.ERROR) end
   vim.fn.jobstart(vim.fn.extend(cmd, { path or vim.fn.expand "<cfile>" }), { detach = true })
 end
 
--- term_details can be either a string for just a command or
--- a complete table to provide full access to configuration when calling Terminal:new()
-
 --- Toggle a user terminal if it exists, if not then create a new one and save it
--- @param term_details a terminal command string or a table of options for Terminal:new() (Check toggleterm.nvim documentation for table format)
+---@param opts string|table A terminal command string or a table of options for Terminal:new() (Check toggleterm.nvim documentation for table format)
 function M.toggle_term_cmd(opts)
   local terms = astronvim.user_terminals
   -- if a command string is provided, create a basic table for Terminal:new() options
@@ -126,9 +125,9 @@ function M.toggle_term_cmd(opts)
 end
 
 --- Create a button entity to use with the alpha dashboard
--- @param sc the keybinding string to convert to a button
--- @param txt the explanation text of what the keybinding does
--- @return a button entity table for an alpha configuration
+---@param sc string The keybinding string to convert to a button
+---@param txt string The explanation text of what the keybinding does
+---@return table # A button entity table for an alpha configuration
 function M.alpha_button(sc, txt)
   -- replace <leader> in shortcut text with LDR for nicer printing
   local sc_ = sc:gsub("%s", ""):gsub("LDR", "<leader>")
@@ -156,17 +155,17 @@ function M.alpha_button(sc, txt)
 end
 
 --- Check if a plugin is defined in lazy. Useful with lazy loading when a plugin is not necessarily loaded yet
--- @param plugin the plugin string to search for
--- @return boolean value if the plugin is available
+---@param plugin string The plugin to search for
+---@return boolean available # Whether the plugin is available
 function M.is_available(plugin)
   local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
   return lazy_config_avail and lazy_config.plugins[plugin] ~= nil
 end
 
 --- A helper function to wrap a module function to require a plugin before running
--- @param plugin the plugin string to call `require("lazy").load` with
--- @param module the system module where the functions live (e.g. `vim.ui`)
--- @param func_names a string or a list like table of strings for functions to wrap in the given module (e.g. `{ "ui", "select }`)
+---@param plugin string The plugin to call `require("lazy").load` with
+---@param module table The system module where the functions live (e.g. `vim.ui`)
+---@param func_names string|string[] The functions to wrap in the given module (e.g. `{ "ui", "select }`)
 function M.load_plugin_with_func(plugin, module, func_names)
   if type(func_names) == "string" then func_names = { func_names } end
   for _, func in ipairs(func_names) do
@@ -193,8 +192,8 @@ function M.which_key_register()
 end
 
 --- Table based API for setting keybindings
--- @param map_table A nested table where the first key is the vim mode, the second key is the key to map, and the value is the function to set the mapping to
--- @param base A base set of options to set on every keybinding
+---@param map_table table A nested table where the first key is the vim mode, the second key is the key to map, and the value is the function to set the mapping to
+---@param base? table A base set of options to set on every keybinding
 function M.set_mappings(map_table, base)
   -- iterate over the first keys for each mode
   base = base or {}
@@ -241,12 +240,13 @@ function M.set_url_match()
 end
 
 --- Run a shell command and capture the output and if the command succeeded or failed
--- @param cmd the terminal command to execute
--- @param show_error boolean of whether or not to show an unsuccessful command as an error to the user
--- @return the result of a successfully executed command or nil
+---@param cmd string The terminal command to execute
+---@param show_error? boolean Whether or not to show an unsuccessful command as an error to the user
+---@return string|nil # The result of a successfully executed command or nil
 function M.cmd(cmd, show_error)
-  if vim.fn.has "win32" == 1 then cmd = { "cmd.exe", "/C", cmd } end
-  local result = vim.fn.system(cmd)
+  local wind32_cmd
+  if vim.fn.has "win32" == 1 then wind32_cmd = { "cmd.exe", "/C", cmd } end
+  local result = vim.fn.system(wind32_cmd or cmd)
   local success = vim.api.nvim_get_vvar "shell_error" == 0
   if not success and (show_error == nil or show_error) then
     vim.api.nvim_err_writeln("Error running command: " .. cmd .. "\nError message:\n" .. result)

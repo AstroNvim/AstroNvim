@@ -16,8 +16,8 @@ local notify = utils.notify
 local astroevent = utils.event
 
 --- Update specified mason packages, or just update the registries if no packages are listed
--- @param pkg_names nil|string|list of strings of the name of the packages as defined in Mason (Not mason-lspconfig or mason-null-ls) if the value is nil then it will just update the registries
--- @param auto_install boolean of whether or not to install a package that is not currently installed (default: True)
+---@param pkg_names? string|string[] The package names as defined in Mason (Not mason-lspconfig or mason-null-ls) if the value is nil then it will just update the registries
+---@param auto_install? boolean whether or not to install a package that is not currently installed (default: True)
 function M.update(pkg_names, auto_install)
   pkg_names = pkg_names or {}
   if type(pkg_names) == "string" then pkg_names = { pkg_names } end
@@ -37,14 +37,14 @@ function M.update(pkg_names, auto_install)
       for _, pkg_name in ipairs(pkg_names) do
         local pkg_avail, pkg = pcall(registry.get_package, pkg_name)
         if not pkg_avail then
-          notify(("Mason: %s is not available"):format(pkg_name), "error")
+          notify(("Mason: %s is not available"):format(pkg_name), vim.log.levels.ERROR)
         else
           if not pkg:is_installed() then
             if auto_install then
               notify(("Mason: Installing %s"):format(pkg.name))
               pkg:install()
             else
-              notify(("Mason: %s not installed"):format(pkg.name), "warn")
+              notify(("Mason: %s not installed"):format(pkg.name), vim.log.levels.WARN)
             end
           else
             pkg:check_new_version(function(update_available, version)

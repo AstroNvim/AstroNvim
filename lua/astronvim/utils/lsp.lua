@@ -74,7 +74,7 @@ M.format_opts.filter = function(client)
 end
 
 --- Helper function to set up a given server with the Neovim LSP client
--- @param server the name of the server to be setup
+---@param server string The name of the server to be setup
 M.setup = function(server)
   -- if server doesn't exist, set it up from user server definition
   local config_avail, config = pcall(require, "lspconfig.server_configurations." .. server)
@@ -103,8 +103,8 @@ local function add_buffer_autocmd(augroup, bufnr, autocmds)
 end
 
 --- The `on_attach` function used by AstroNvim
--- @param client the LSP client details when attaching
--- @param bufnr the number of the buffer that the LSP client is attaching to
+---@param client table The LSP client details when attaching
+---@param bufnr number The buffer that the LSP client is attaching to
 M.on_attach = function(client, bufnr)
   local capabilities = client.server_capabilities
   local lsp_mappings = {
@@ -282,10 +282,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if capabilities.workspaceSymbolProvider then
-    lsp_mappings.n["<leader>lG"] = {
-      function() vim.lsp.buf.workspace_symbol() end,
-      desc = "Search workspace symbols",
-    }
+    lsp_mappings.n["<leader>lG"] = { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols" }
   end
 
   if capabilities.semanticTokensProvider and vim.lsp.semantic_tokens then
@@ -308,12 +305,16 @@ M.on_attach = function(client, bufnr)
       lsp_mappings.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end
     end
     if lsp_mappings.n["<leader>lG"] then
-      lsp_mappings.n["<leader>lG"][1] = function() require("telescope.builtin").lsp_workspace_symbols() end
+      lsp_mappings.n["<leader>lG"][1] = function()
+        vim.ui.input({ prompt = "Symbol Query: " }, function(query)
+          if query then require("telescope.builtin").lsp_workspace_symbols { query = query } end
+        end)
+      end
     end
   end
 
   if not vim.tbl_isempty(lsp_mappings.v) then
-    lsp_mappings.v["<leader>l"] = { name = (vim.g.icons_enabled and " " or "") .. "LSP" }
+    lsp_mappings.v["<leader>l"] = { desc = (vim.g.icons_enabled and " " or "") .. "LSP" }
   end
   utils.set_mappings(user_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
 
@@ -338,8 +339,8 @@ M.capabilities = user_opts("lsp.capabilities", M.capabilities)
 M.flags = user_opts "lsp.flags"
 
 --- Get the server configuration for a given language server to be provided to the server's `setup()` call
--- @param  server_name the name of the server
--- @return the table of LSP options used when setting up the given language server
+---@param server_name string The name of the server
+---@return table # The table of LSP options used when setting up the given language server
 function M.config(server_name)
   local server = require("lspconfig")[server_name]
   local lsp_opts = require("astronvim.utils").extend_tbl(
