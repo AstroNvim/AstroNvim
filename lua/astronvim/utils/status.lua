@@ -150,6 +150,7 @@ M.env.sign_handlers = astronvim.user_opts("heirline.sign_handlers", M.env.sign_h
 ---@param fallback string the color to fallback on if a lualine theme is not present
 ---@return string # The background color of the lualine theme or the fallback parameter if one doesn't exist
 function M.hl.lualine_mode(mode, fallback)
+  if not vim.g.colors_name then return fallback end
   local lualine_avail, lualine = pcall(require, "lualine.themes." .. vim.g.colors_name)
   local lualine_opts = lualine_avail and lualine[mode]
   return lualine_opts and type(lualine_opts.a) == "table" and lualine_opts.a.bg or fallback
@@ -607,35 +608,30 @@ function M.provider.unique_path(opts)
     bufnr = 0,
     max_length = 16,
   }, opts)
+  local function path_parts(bufnr)
+    local parts = {}
+    for match in (vim.api.nvim_buf_get_name(bufnr) .. "/"):gmatch("(.-)" .. "/") do
+      table.insert(parts, match)
+    end
+    return parts
+  end
   return function(self)
     opts.bufnr = self and self.bufnr or opts.bufnr
     local name = opts.buf_name(opts.bufnr)
     local unique_path = ""
     -- check for same buffer names under different dirs
+    local current
     for _, value in ipairs(vim.t.bufs) do
       if name == opts.buf_name(value) and value ~= opts.bufnr then
-        local other = {}
-        for match in (vim.api.nvim_buf_get_name(value) .. "/"):gmatch("(.-)" .. "/") do
-          table.insert(other, match)
-        end
-
-        local current = {}
-        for match in (vim.api.nvim_buf_get_name(opts.bufnr) .. "/"):gmatch("(.-)" .. "/") do
-          table.insert(current, match)
-        end
-
-        unique_path = ""
+        if not current then current = path_parts(opts.bufnr) end
+        local other = path_parts(value)
 
         for i = #current - 1, 1, -1 do
-          local value_current = current[i]
-          local other_current = other[i]
-
-          if value_current ~= other_current then
-            unique_path = value_current .. "/"
+          if current[i] ~= other[i] then
+            unique_path = current[i] .. "/"
             break
           end
         end
-        break
       end
     end
     return M.utils.stylize(

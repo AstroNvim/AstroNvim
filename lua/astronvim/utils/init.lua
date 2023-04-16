@@ -55,7 +55,7 @@ end
 
 --- Get highlight properties for a given highlight name
 ---@param name string The highlight group name
----@param fallback table The fallback highlight properties
+---@param fallback? table The fallback highlight properties
 ---@return table properties # the highlight group properties
 function M.get_hlgroup(name, fallback)
   if vim.fn.hlexists(name) == 1 then
@@ -74,7 +74,7 @@ function M.get_hlgroup(name, fallback)
     end
     return hl
   end
-  return fallback
+  return fallback or {}
 end
 
 --- Serve a notification with a title of AstroNvim
