@@ -179,6 +179,16 @@ if is_available "alpha-nvim" then
   })
 end
 
+if is_available "resession.nvim" then
+  autocmd("VimLeavePre", {
+    callback = function()
+      local save = require("resession").save
+      save "Last Session"
+      save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+    end,
+  })
+end
+
 if is_available "neo-tree.nvim" then
   autocmd("BufEnter", {
     desc = "Open Neo-Tree on startup with directory",
