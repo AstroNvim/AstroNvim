@@ -69,7 +69,7 @@ function M.close(bufnr, force)
   if require("astronvim.utils").is_available "bufdelete.nvim" then
     require("bufdelete").bufdelete(bufnr, force)
   else
-    vim.cmd((force and "bd!" or "confirm bd") .. bufnr)
+    vim.cmd((force and "bd!" or "confirm bd") .. (bufnr == nil and "" or bufnr))
   end
 end
 
