@@ -48,7 +48,7 @@ function M.toggle_diagnostics()
   elseif vim.g.diagnostics_mode == 1 then
     ui_notify "only status diagnostics"
   elseif vim.g.diagnostics_mode == 2 then
-    ui_notify "virtual text off"
+    ui_notify "virtual lines/text off"
   else
     ui_notify "all diagnostics on"
   end

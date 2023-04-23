@@ -45,12 +45,12 @@ M.setup_diagnostics = function(signs)
     -- diagnostics off
     [0] = utils.extend_tbl(
       default_diagnostics,
-      { underline = false, virtual_text = false, signs = false, update_in_insert = false }
+      { underline = false, virtual_lines = false, virtual_text = false, signs = false, update_in_insert = false }
     ),
     -- status only
-    utils.extend_tbl(default_diagnostics, { virtual_text = false, signs = false }),
-    -- virtual text off, signs on
-    utils.extend_tbl(default_diagnostics, { virtual_text = false }),
+    utils.extend_tbl(default_diagnostics, { virtual_lines = false, virtual_text = false, signs = false }),
+    -- virtual lines/text off, signs on
+    utils.extend_tbl(default_diagnostics, { virtual_lines = false, virtual_text = false }),
     -- all diagnostics on
     default_diagnostics,
   }
