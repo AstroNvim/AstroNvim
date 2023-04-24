@@ -1,5 +1,3 @@
-if vim.loader then vim.loader.enable() end -- enable vim.loader early if available
-
 for _, source in ipairs {
   "astronvim.bootstrap",
   "astronvim.options",
