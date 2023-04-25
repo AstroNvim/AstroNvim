@@ -19,6 +19,7 @@ return {
         },
       },
     },
+    build = ":MasonUpdate",
     config = require "plugins.configs.mason",
   },
 }
