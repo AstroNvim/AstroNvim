@@ -5,24 +5,23 @@ local ui = require "astronvim.utils.ui"
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
 local sections = {
-  f = { name = "󰍉 Find" },
-  p = { name = "󰏖 Packages" },
-  l = { name = " LSP" },
-  u = { name = " UI" },
-  b = { name = "󰓩 Buffers" },
-  d = { name = " Debugger" },
-  g = { name = " Git" },
-  S = { name = "󱂬 Session" },
-  t = { name = " Terminal" },
+  f = { desc = "󰍉 Find" },
+  p = { desc = "󰏖 Packages" },
+  l = { desc = " LSP" },
+  u = { desc = " UI" },
+  b = { desc = "󰓩 Buffers" },
+  bs = { desc = "󰒺 Sort Buffers" },
+  d = { desc = " Debugger" },
+  g = { desc = " Git" },
+  S = { desc = "󱂬 Session" },
+  t = { desc = " Terminal" },
 }
-if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.name = opts.name:gsub("^.* ", "") end, sections) end
+if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.desc = opts.desc:gsub("^.* ", "") end, sections) end
 
 -- Normal --
 -- Standard Operations
-maps.n["j"] = { "v:count ? 'j' : 'gj'", expr = true, desc = "Move cursor down" }
-maps.n["k"] = { "v:count ? 'k' : 'gk'", expr = true, desc = "Move cursor up" }
-maps.v["j"] = maps.n.j
-maps.v["k"] = maps.n.k
+maps.n["j"] = { "v:count == 0 || mode(1)[0:1] == 'no' ? 'j' : 'gj'", expr = true, desc = "Move cursor down" }
+maps.n["k"] = { "v:count == 0 || mode(1)[0:1] == 'no' ? 'k' : 'gk'", expr = true, desc = "Move cursor up" }
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>confirm q<cr>", desc = "Quit" }
 maps.n["<leader>n"] = { "<cmd>enew<cr>", desc = "New File" }
@@ -82,6 +81,21 @@ maps.n["<leader>bd"] = {
   end,
   desc = "Delete buffer from tabline",
 }
+maps.n["<leader>bl"] =
+  { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
+maps.n["<leader>br"] =
+  { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
+maps.n["<leader>bs"] = sections.bs
+maps.n["<leader>bse"] =
+  { function() require("astronvim.utils.buffer").sort "extension" end, desc = "Sort by extension (buffers)" }
+maps.n["<leader>bsr"] =
+  { function() require("astronvim.utils.buffer").sort "unique_path" end, desc = "Sort by relative path (buffers)" }
+maps.n["<leader>bsp"] =
+  { function() require("astronvim.utils.buffer").sort "full_path" end, desc = "Sort by full path (buffers)" }
+maps.n["<leader>bsi"] =
+  { function() require("astronvim.utils.buffer").sort "bufnr" end, desc = "Sort by buffer number (buffers)" }
+maps.n["<leader>bsm"] =
+  { function() require("astronvim.utils.buffer").sort "modified" end, desc = "Sort by modification (buffers)" }
 maps.n["<leader>b\\"] = {
   function()
     require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
@@ -121,7 +135,10 @@ end
 
 -- Comment
 if is_available "Comment.nvim" then
-  maps.n["<leader>/"] = { function() require("Comment.api").toggle.linewise.current() end, desc = "Comment line" }
+  maps.n["<leader>/"] = {
+    function() require("Comment.api").toggle.linewise.count(vim.v.count > 0 and vim.v.count or 1) end,
+    desc = "Comment line",
+  }
   maps.v["<leader>/"] =
     { "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", desc = "Toggle comment line" }
 end
@@ -132,6 +149,7 @@ if is_available "gitsigns.nvim" then
   maps.n["]g"] = { function() require("gitsigns").next_hunk() end, desc = "Next Git hunk" }
   maps.n["[g"] = { function() require("gitsigns").prev_hunk() end, desc = "Previous Git hunk" }
   maps.n["<leader>gl"] = { function() require("gitsigns").blame_line() end, desc = "View Git blame" }
+  maps.n["<leader>gL"] = { function() require("gitsigns").blame_line { full = true } end, desc = "View full Git blame" }
   maps.n["<leader>gp"] = { function() require("gitsigns").preview_hunk() end, desc = "Preview Git hunk" }
   maps.n["<leader>gh"] = { function() require("gitsigns").reset_hunk() end, desc = "Reset Git hunk" }
   maps.n["<leader>gr"] = { function() require("gitsigns").reset_buffer() end, desc = "Reset Git buffer" }
@@ -165,6 +183,18 @@ if is_available "neovim-session-manager" then
   maps.n["<leader>Sf"] = { "<cmd>SessionManager! load_session<cr>", desc = "Search sessions" }
   maps.n["<leader>S."] =
     { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" }
+end
+if is_available "resession.nvim" then
+  maps.n["<leader>S"] = sections.S
+  maps.n["<leader>Sl"] = { function() require("resession").load "Last Session" end, desc = "Load last session" }
+  maps.n["<leader>Ss"] = { function() require("resession").save() end, desc = "Save this session" }
+  maps.n["<leader>St"] = { function() require("resession").save_tab() end, desc = "Save this tab's session" }
+  maps.n["<leader>Sd"] = { function() require("resession").delete() end, desc = "Delete a session" }
+  maps.n["<leader>Sf"] = { function() require("resession").load() end, desc = "Load a session" }
+  maps.n["<leader>S."] = {
+    function() require("resession").load(vim.fn.getcwd(), { dir = "dirsession" }) end,
+    desc = "Load current directory session",
+  }
 end
 
 -- Package Manager
@@ -218,7 +248,7 @@ if is_available "telescope.nvim" then
         if vim.fn.isdirectory(dir) == 1 then table.insert(search_dirs, dir) end -- add directory to search if exists
       end
       if vim.tbl_isempty(search_dirs) then -- if no config folders found, show warning
-        utils.notify("No user configuration files found", "warn")
+        utils.notify("No user configuration files found", vim.log.levels.WARN)
       else
         if #search_dirs == 1 then cwd = search_dirs[1] end -- if only one directory, focus cwd
         require("telescope.builtin").find_files {
@@ -362,7 +392,7 @@ maps.n["<leader>ud"] = { ui.toggle_diagnostics, desc = "Toggle diagnostics" }
 maps.n["<leader>ug"] = { ui.toggle_signcolumn, desc = "Toggle signcolumn" }
 maps.n["<leader>ui"] = { ui.set_indent, desc = "Change indent setting" }
 maps.n["<leader>ul"] = { ui.toggle_statusline, desc = "Toggle statusline" }
-maps.n["<leader>uL"] = { ui.toggle_codelens, desc = "Toggle CodeLens refresh" }
+maps.n["<leader>uL"] = { ui.toggle_codelens, desc = "Toggle CodeLens" }
 maps.n["<leader>un"] = { ui.change_number, desc = "Change line numbering" }
 maps.n["<leader>uN"] = { ui.toggle_ui_notifications, desc = "Toggle UI notifications" }
 maps.n["<leader>up"] = { ui.toggle_paste, desc = "Toggle paste mode" }
@@ -372,5 +402,6 @@ maps.n["<leader>ut"] = { ui.toggle_tabline, desc = "Toggle tabline" }
 maps.n["<leader>uu"] = { ui.toggle_url_match, desc = "Toggle URL highlight" }
 maps.n["<leader>uw"] = { ui.toggle_wrap, desc = "Toggle wrap" }
 maps.n["<leader>uy"] = { ui.toggle_syntax, desc = "Toggle syntax highlight" }
+maps.n["<leader>uh"] = { ui.toggle_foldcolumn, desc = "Toggle foldcolumn" }
 
 utils.set_mappings(astronvim.user_opts("mappings", maps))

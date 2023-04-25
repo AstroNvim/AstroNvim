@@ -20,6 +20,10 @@ return {
       {
         "williamboman/mason-lspconfig.nvim",
         cmd = { "LspInstall", "LspUninstall" },
+        opts = function(_, opts)
+          if not opts.handlers then opts.handlers = {} end
+          opts.handlers[1] = function(server) require("astronvim.utils.lsp").setup(server) end
+        end,
         config = require "plugins.configs.mason-lspconfig",
       },
     },
@@ -32,8 +36,7 @@ return {
       {
         "jay-babu/mason-null-ls.nvim",
         cmd = { "NullLsInstall", "NullLsUninstall" },
-        opts = { automatic_setup = true },
-        config = require "plugins.configs.mason-null-ls",
+        opts = { handlers = {} },
       },
     },
     event = "User AstroFile",

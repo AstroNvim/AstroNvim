@@ -2,11 +2,8 @@ name: Updater Comment
 
 on:
   pull_request_target:
-    paths:
-      - "**.lua"
-      - "packer_snapshot"
-    types:
-      - opened
+    paths: ["**.lua"]
+    types: ["opened"]
 
 jobs:
   updater-comment:
