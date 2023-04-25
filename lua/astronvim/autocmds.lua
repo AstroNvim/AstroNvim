@@ -15,7 +15,7 @@ vim.on_key(function(char)
 end, namespace "auto_hlsearch")
 
 local bufferline_group = augroup("bufferline", { clear = true })
-autocmd({ "BufAdd", "BufEnter" }, {
+autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
   desc = "Update buffers when adding new buffers",
   group = bufferline_group,
   callback = function(args)
