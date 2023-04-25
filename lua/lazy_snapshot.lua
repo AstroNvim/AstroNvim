@@ -44,7 +44,7 @@ return {
   { "saadparwaiz1/cmp_luasnip", commit = "18095520391186d634a0045dacaa346291096566" },
   { "stevearc/aerial.nvim", commit = "00cac8e96f932dca8f559849cbea3f0812621d0d" },
   { "stevearc/dressing.nvim", commit = "f5d7fa1fa5ce6bcebc8f07922f39b1eda4d01e37" },
-  { "williamboman/mason-lspconfig.nvim", commit = "22d17951315e22e602912c9629b97d183fb90d16" },
+  { "williamboman/mason-lspconfig.nvim", version = "^1.1" },
   { "williamboman/mason.nvim", commit = "9a68a4bd997b72cee4132459e0fd99eea0cdc627" },
   { "windwp/nvim-autopairs", commit = "7566a86f44bb72ba2b1a609f528a27d93241502d" },
   { "windwp/nvim-ts-autotag", commit = "26761ba6848d814605a629bc8d2694eeb1e48007" },
