@@ -20,6 +20,10 @@ return {
       {
         "williamboman/mason-lspconfig.nvim",
         cmd = { "LspInstall", "LspUninstall" },
+        opts = function(_, opts)
+          if not opts.handlers then opts.handlers = {} end
+          opts.handlers[1] = function(server) require("astronvim.utils.lsp").setup(server) end
+        end,
         config = require "plugins.configs.mason-lspconfig",
       },
     },
