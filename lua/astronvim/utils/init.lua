@@ -19,6 +19,34 @@ function M.extend_tbl(default, opts)
   return default and vim.tbl_deep_extend("force", default, opts) or opts
 end
 
+--- Partially reload AstroNvim user settings. Includes core vim options, mappings, and highlights. This is an experimental feature and may lead to instabilities until restart.
+---@param quiet? boolean Whether or not to notify on completion of reloading
+---@return boolean # True if the reload was successful, False otherwise
+function M.reload(quiet)
+  local core_modules = { "astronvim.bootstrap", "astronvim.options", "astronvim.mappings" }
+  local modules = vim.tbl_filter(function(module) return module:find "^user%." end, vim.tbl_keys(package.loaded))
+
+  vim.tbl_map(require("plenary.reload").reload_module, vim.list_extend(modules, core_modules))
+
+  local success = true
+  for _, module in ipairs(core_modules) do
+    local status_ok, fault = pcall(require, module)
+    if not status_ok then
+      vim.api.nvim_err_writeln("Failed to load " .. module .. "\n\n" .. fault)
+      success = false
+    end
+  end
+  if not quiet then -- if not quiet, then notify of result
+    if success then
+      M.notify("AstroNvim successfully reloaded", vim.log.levels.INFO)
+    else
+      M.notify("Error reloading AstroNvim...", vim.log.levels.ERROR)
+    end
+  end
+  pcall(vim.cmd.doautocmd, "ColorScheme")
+  return success
+end
+
 --- Insert one or more values into a list like table and maintain that you do not insert non-unique values (THIS MODIFIES `lst`)
 ---@param lst any[] The list like table that you want to insert into
 ---@param vals any|any[] Either a list like table of values to be inserted or a single value to be inserted
