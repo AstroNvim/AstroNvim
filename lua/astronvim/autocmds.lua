@@ -151,6 +151,8 @@ if is_available "alpha-nvim" then
       vim.opt.showtabline = 0
       vim.opt_local.winbar = nil
       autocmd("BufUnload", {
+        desc = "Reenable status and tablines for alpha",
+        group = group_name,
         pattern = "<buffer>",
         callback = function()
           vim.opt.laststatus = prev_status
@@ -226,6 +228,7 @@ autocmd({ "VimEnter", "ColorScheme" }, {
 })
 
 autocmd({ "BufReadPost", "BufNewFile" }, {
+  desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
   group = augroup("file_user_events", { clear = true }),
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
