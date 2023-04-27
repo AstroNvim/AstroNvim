@@ -181,6 +181,8 @@ end
 
 if is_available "resession.nvim" then
   autocmd("VimLeavePre", {
+    desc = "Save session on close",
+    group = augroup("resession_auto_save", { clear = true }),
     callback = function()
       local save = require("resession").save
       save "Last Session"
