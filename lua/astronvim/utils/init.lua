@@ -43,7 +43,7 @@ function M.reload(quiet)
       M.notify("Error reloading AstroNvim...", vim.log.levels.ERROR)
     end
   end
-  pcall(vim.cmd.doautocmd, "ColorScheme")
+  vim.cmd.doautocmd "ColorScheme"
   return success
 end
 
