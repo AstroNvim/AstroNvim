@@ -151,6 +151,8 @@ if is_available "alpha-nvim" then
       vim.opt.showtabline = 0
       vim.opt_local.winbar = nil
       autocmd("BufUnload", {
+        desc = "Reenable status and tablines for alpha",
+        group = group_name,
         pattern = "<buffer>",
         callback = function()
           vim.opt.laststatus = prev_status
@@ -181,6 +183,8 @@ end
 
 if is_available "resession.nvim" then
   autocmd("VimLeavePre", {
+    desc = "Save session on close",
+    group = augroup("resession_auto_save", { clear = true }),
     callback = function()
       local save = require("resession").save
       save "Last Session"
@@ -224,6 +228,7 @@ autocmd({ "VimEnter", "ColorScheme" }, {
 })
 
 autocmd({ "BufReadPost", "BufNewFile" }, {
+  desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
   group = augroup("file_user_events", { clear = true }),
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
@@ -246,3 +251,4 @@ cmd(
 cmd("AstroRollback", function() require("astronvim.utils.updater").rollback() end, { desc = "Rollback AstroNvim" })
 cmd("AstroUpdate", function() require("astronvim.utils.updater").update() end, { desc = "Update AstroNvim" })
 cmd("AstroVersion", function() require("astronvim.utils.updater").version() end, { desc = "Check AstroNvim Version" })
+cmd("AstroReload", function() require("astronvim.utils").reload() end, { desc = "Reload AstroNvim (Experimental)" })
