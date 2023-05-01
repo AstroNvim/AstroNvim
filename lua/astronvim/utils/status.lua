@@ -413,7 +413,8 @@ function M.provider.foldcolumn(opts)
         for col = 1, width do
           str = str
             .. (
-              ((closed and (col == foldinfo.level or col == width)) and foldclosed)
+              (vim.v.virtnum ~= 0 and foldsep)
+              or ((closed and (col == foldinfo.level or col == width)) and foldclosed)
               or ((foldinfo.start == vim.v.lnum and first_level + col > foldinfo.llevel) and foldopen)
               or foldsep
             )
