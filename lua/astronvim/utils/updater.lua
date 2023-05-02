@@ -24,7 +24,7 @@ end
 
 local function confirm_prompt(messages)
   if messages then echo(messages) end
-  local confirmed = string.lower(vim.fn.input "(y/n) ") == "y"
+  local confirmed = string.lower(vim.fn.input "(y/n)󰁔 ") == "y"
   echo()
   echo()
   return confirmed
