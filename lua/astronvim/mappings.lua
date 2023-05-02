@@ -12,7 +12,7 @@ local sections = {
   b = { desc = "󰓩 Buffers" },
   bs = { desc = "󰒺 Sort Buffers" },
   d = { desc = " Debugger" },
-  g = { desc = " Git" },
+  g = { desc = "󰊢 Git" },
   S = { desc = "󱂬 Session" },
   t = { desc = " Terminal" },
 }
