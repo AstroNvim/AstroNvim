@@ -472,6 +472,16 @@ function M.provider.macro_recording(opts)
   end
 end
 
+--- A provider function for displaying the current command
+---@param opts? table of options passed to the stylize function
+---@return string # the statusline string for showing the current command
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.showcmd() }
+-- @see astronvim.utils.status.utils.stylize
+function M.provider.showcmd(opts)
+  opts = extend_tbl({ minwid = 0, maxwid = 5, escape = false }, opts)
+  return M.utils.stylize(("%%%d.%d(%%S%%)"):format(opts.minwid, opts.maxwid), opts)
+end
+
 --- A provider function for displaying the current search count
 ---@param opts? table options for `vim.fn.searchcount` and options passed to the stylize function
 ---@return function # a function that returns a string of the current search location
@@ -837,6 +847,11 @@ function M.condition.is_macro_recording() return vim.fn.reg_recording() ~= "" en
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_hlsearch }
 function M.condition.is_hlsearch() return vim.v.hlsearch ~= 0 end
 
+--- A condition function if showcmdloc is set to statusline
+---@return boolean # whether or not statusline showcmd is enabled
+-- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_statusline_showcmd }
+function M.condition.is_statusline_showcmd() return vim.opt.showcmdloc:get() == "statusline" end
+
 --- A condition function if the current file is in a git repo
 ---@param bufnr table|integer a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 ---@return boolean # whether or not the current file is in a git repo
@@ -1047,15 +1062,21 @@ function M.component.cmd_info(opts)
       padding = { left = 1 },
       condition = M.condition.is_hlsearch,
     },
+    showcmd = {
+      padding = { left = 1 },
+      condition = M.condition.is_statusline_showcmd,
+    },
     surround = {
       separator = "center",
       color = "cmd_info_bg",
-      condition = function() return M.condition.is_hlsearch() or M.condition.is_macro_recording() end,
+      condition = function()
+        return M.condition.is_hlsearch() or M.condition.is_macro_recording() or M.condition.is_statusline_showcmd()
+      end,
     },
     condition = function() return vim.opt.cmdheight:get() == 0 end,
     hl = M.hl.get_attributes "cmd_info",
   }, opts)
-  return M.component.builder(M.utils.setup_providers(opts, { "macro_recording", "search_count" }))
+  return M.component.builder(M.utils.setup_providers(opts, { "macro_recording", "search_count", "showcmd" }))
 end
 
 --- A function to build a set of children components for a mode section
