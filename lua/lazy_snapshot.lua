@@ -35,7 +35,7 @@ return {
   { "nvim-telescope/telescope.nvim", version = "^0.1" },
   { "nvim-tree/nvim-web-devicons", commit = "b34362b20a4942b3245f958e73ebe1b09b020ad1" },
   { "nvim-treesitter/nvim-treesitter", commit = "e2cf8977fda35ad666d7b431b0254d8da710968a" },
-  { "onsails/lspkind.nvim", commit = "c68b3a003483cf382428a43035079f78474cd11e" },
+  { "onsails/lspkind.nvim", commit = "cec39a0651679931ce2e503123c633b0aeae5fc6" },
   { "rafamadriz/friendly-snippets", commit = "2308366ad625f61284e51d249ede4f795394b186" },
   { "rcarriga/nvim-dap-ui", version = "^3" },
   { "rcarriga/nvim-notify", version = "^3" },
