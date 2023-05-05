@@ -850,7 +850,9 @@ function M.condition.is_hlsearch() return vim.v.hlsearch ~= 0 end
 --- A condition function if showcmdloc is set to statusline
 ---@return boolean # whether or not statusline showcmd is enabled
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.is_statusline_showcmd }
-function M.condition.is_statusline_showcmd() return vim.opt.showcmdloc:get() == "statusline" end
+function M.condition.is_statusline_showcmd()
+  return vim.fn.has "nvim-0.9" == 1 and vim.opt.showcmdloc:get() == "statusline"
+end
 
 --- A condition function if the current file is in a git repo
 ---@param bufnr table|integer a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
