@@ -334,6 +334,7 @@ end
 
 if is_available "nvim-dap" then
   maps.n["<leader>d"] = sections.d
+  maps.v["<leader>d"] = sections.d
   -- modified function keys found with `showkey -a` in the terminal to get key code
   -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
   maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
@@ -355,7 +356,12 @@ if is_available "nvim-dap" then
   maps.n["<leader>dp"] = { function() require("dap").pause() end, desc = "Pause (F6)" }
   maps.n["<leader>dr"] = { function() require("dap").restart_frame() end, desc = "Restart (C-F5)" }
   maps.n["<leader>dR"] = { function() require("dap").repl.toggle() end, desc = "Toggle REPL" }
+  maps.n["<leader>ds"] = { function() require("dap").run_to_cursor() end, desc = "Run To Cursor" }
+  maps.n["<leader>dC"] = { function() require("dap").set_breakpoint(vim.fn.input '[Condition] > ') end, desc = "Conditional Breakpoint" }
+
   if is_available "nvim-dap-ui" then
+    maps.n["<leader>dE"] = { function() require("dapui").eval(vim.fn.input '[Expression] > ') end, desc = "Evaluate Input" }
+    maps.v["<leader>dE"] = { function() require("dapui").eval() end, desc = "Evaluate Input"}
     maps.n["<leader>du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
     maps.n["<leader>dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
   end
