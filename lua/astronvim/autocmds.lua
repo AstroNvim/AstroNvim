@@ -138,39 +138,27 @@ autocmd("BufEnter", {
   end,
 })
 
--- HACK: Make sure start in insert mode after selecting something from Telescope, remove once fixed upstream
--- Introduced in Neovim: https://github.com/neovim/neovim/pull/22984
--- Relevant Telescope Issues: https://github.com/nvim-telescope/telescope.nvim/issues/2027, https://github.com/nvim-telescope/telescope.nvim/issues/1457
-if is_available "telescope.nvim" then
-  autocmd("WinLeave", {
-    desc = "Make sure insert mode is left when leaving the telescope prompt",
-    group = augroup("telescope_exist_insert", { clear = true }),
-    callback = function()
-      if vim.bo.ft == "TelescopePrompt" and vim.fn.mode() == "i" then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
-      end
-    end,
-  })
-end
-
 if is_available "alpha-nvim" then
   local group_name = augroup("alpha_settings", { clear = true })
-  autocmd({ "User", "BufEnter" }, {
+  autocmd("User", {
     desc = "Disable status and tablines for alpha",
     group = group_name,
-    callback = function(event)
-      local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
-      local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
-      if
-        ((event.event == "User" and event.file == "AlphaReady") or (event.event == "BufEnter" and filetype == "alpha"))
-        and not vim.g.before_alpha
-      then
-        vim.g.before_alpha = { showtabline = vim.opt.showtabline:get(), laststatus = vim.opt.laststatus:get() }
-        vim.opt.showtabline, vim.opt.laststatus = 0, 0
-      elseif vim.g.before_alpha and event.event == "BufEnter" and buftype ~= "nofile" then
-        vim.opt.laststatus, vim.opt.showtabline = vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline
-        vim.g.before_alpha = nil
-      end
+    pattern = "AlphaReady",
+    callback = function()
+      local prev_showtabline = vim.opt.showtabline
+      local prev_status = vim.opt.laststatus
+      vim.opt.laststatus = 0
+      vim.opt.showtabline = 0
+      vim.opt_local.winbar = nil
+      autocmd("BufUnload", {
+        desc = "Reenable status and tablines for alpha",
+        group = group_name,
+        pattern = "<buffer>",
+        callback = function()
+          vim.opt.laststatus = prev_status
+          vim.opt.showtabline = prev_showtabline
+        end,
+      })
     end,
   })
   autocmd("VimEnter", {
@@ -215,8 +203,17 @@ if is_available "neo-tree.nvim" then
       else
         local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
         if stats and stats.type == "directory" then
+          require("neo-tree").setup {
+            filesystem = {
+              filtered_items = {
+                visible = true,
+                hide_dotfiles = false,
+                hide_gitignored = true,
+              }
+            }
+          }
           vim.api.nvim_del_augroup_by_name "neotree_start"
-          require "neo-tree"
+          vim.api.nvim_exec_autocmds("BufEnter", {})
         end
       end
     end,
