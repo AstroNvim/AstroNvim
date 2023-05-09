@@ -123,7 +123,7 @@ autocmd("BufEnter", {
         -- If any visible windows are not sidebars, early return
         if not sidebar_fts[filetype] then
           return
-          -- If the visible window is a sidebar
+        -- If the visible window is a sidebar
         else
           -- only count filetypes once, so remove a found sidebar from the detection
           sidebar_fts[filetype] = nil
@@ -162,8 +162,8 @@ if is_available "alpha-nvim" then
       local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
       local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
       if
-          ((event.event == "User" and event.file == "AlphaReady") or (event.event == "BufEnter" and filetype == "alpha"))
-          and not vim.g.before_alpha
+        ((event.event == "User" and event.file == "AlphaReady") or (event.event == "BufEnter" and filetype == "alpha"))
+        and not vim.g.before_alpha
       then
         vim.g.before_alpha = { showtabline = vim.opt.showtabline:get(), laststatus = vim.opt.laststatus:get() }
         vim.opt.showtabline, vim.opt.laststatus = 0, 0
