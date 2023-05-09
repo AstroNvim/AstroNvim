@@ -123,7 +123,7 @@ autocmd("BufEnter", {
         -- If any visible windows are not sidebars, early return
         if not sidebar_fts[filetype] then
           return
-        -- If the visible window is a sidebar
+          -- If the visible window is a sidebar
         else
           -- only count filetypes once, so remove a found sidebar from the detection
           sidebar_fts[filetype] = nil
@@ -138,27 +138,39 @@ autocmd("BufEnter", {
   end,
 })
 
+-- HACK: Make sure start in insert mode after selecting something from Telescope, remove once fixed upstream
+-- Introduced in Neovim: https://github.com/neovim/neovim/pull/22984
+-- Relevant Telescope Issues: https://github.com/nvim-telescope/telescope.nvim/issues/2027, https://github.com/nvim-telescope/telescope.nvim/issues/1457
+if is_available "telescope.nvim" then
+  autocmd("WinLeave", {
+    desc = "Make sure insert mode is left when leaving the telescope prompt",
+    group = augroup("telescope_exist_insert", { clear = true }),
+    callback = function()
+      if vim.bo.ft == "TelescopePrompt" and vim.fn.mode() == "i" then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
+      end
+    end,
+  })
+end
+
 if is_available "alpha-nvim" then
   local group_name = augroup("alpha_settings", { clear = true })
-  autocmd("User", {
+  autocmd({ "User", "BufEnter" }, {
     desc = "Disable status and tablines for alpha",
     group = group_name,
-    pattern = "AlphaReady",
-    callback = function()
-      local prev_showtabline = vim.opt.showtabline
-      local prev_status = vim.opt.laststatus
-      vim.opt.laststatus = 0
-      vim.opt.showtabline = 0
-      vim.opt_local.winbar = nil
-      autocmd("BufUnload", {
-        desc = "Reenable status and tablines for alpha",
-        group = group_name,
-        pattern = "<buffer>",
-        callback = function()
-          vim.opt.laststatus = prev_status
-          vim.opt.showtabline = prev_showtabline
-        end,
-      })
+    callback = function(event)
+      local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+      local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+      if
+          ((event.event == "User" and event.file == "AlphaReady") or (event.event == "BufEnter" and filetype == "alpha"))
+          and not vim.g.before_alpha
+      then
+        vim.g.before_alpha = { showtabline = vim.opt.showtabline:get(), laststatus = vim.opt.laststatus:get() }
+        vim.opt.showtabline, vim.opt.laststatus = 0, 0
+      elseif vim.g.before_alpha and event.event == "BufEnter" and buftype ~= "nofile" then
+        vim.opt.laststatus, vim.opt.showtabline = vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline
+        vim.g.before_alpha = nil
+      end
     end,
   })
   autocmd("VimEnter", {
