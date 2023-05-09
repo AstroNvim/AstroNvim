@@ -306,7 +306,11 @@ function M.update(opts)
 
     -- if the user wants to auto quit, create an autocommand to quit AstroNvim on the update completing
     if opts.auto_quit then
-      vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
+      vim.api.nvim_create_autocmd("User", {
+        desc = "Auto quit AstroNvim after update completes",
+        pattern = "AstroUpdateComplete",
+        command = "quitall",
+      })
     end
 
     require("lazy.core.plugin").load() -- force immediate reload of lazy
