@@ -119,7 +119,7 @@ end
 function M.create_rollback(write)
   local snapshot = { branch = git.current_branch(), commit = git.local_head() }
   if snapshot.branch == "HEAD" then snapshot.branch = "main" end
-  snapshot.remote = git.branch_remote(snapshot.branch)
+  snapshot.remote = git.branch_remote(snapshot.branch, false) or "origin"
   snapshot.remotes = { [snapshot.remote] = git.remote_url(snapshot.remote) }
 
   if write == true then

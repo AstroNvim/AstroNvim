@@ -18,7 +18,6 @@ end
 M.on_load = function(data)
   -- create map from old buffer numbers to new buffer numbers
   local new_bufnrs = {}
-  vim.print(vim.api.nvim_list_bufs())
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     local bufname = vim.api.nvim_buf_get_name(bufnr)
     if bufname and bufname ~= "" then new_bufnrs[data.bufnrs[bufname]] = bufnr end
