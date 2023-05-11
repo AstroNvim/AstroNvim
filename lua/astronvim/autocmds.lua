@@ -144,15 +144,19 @@ if is_available "alpha-nvim" then
     desc = "Disable status and tablines for alpha",
     group = group_name,
     callback = function(event)
-      local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
-      local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
       if
-        ((event.event == "User" and event.file == "AlphaReady") or (event.event == "BufEnter" and filetype == "alpha"))
-        and not vim.g.before_alpha
+        (
+          (event.event == "User" and event.file == "AlphaReady")
+          or (event.event == "BufEnter" and vim.api.nvim_get_option_value("filetype", { buf = event.buf }) == "alpha")
+        ) and not vim.g.before_alpha
       then
         vim.g.before_alpha = { showtabline = vim.opt.showtabline:get(), laststatus = vim.opt.laststatus:get() }
         vim.opt.showtabline, vim.opt.laststatus = 0, 0
-      elseif vim.g.before_alpha and event.event == "BufEnter" and buftype ~= "nofile" then
+      elseif
+        vim.g.before_alpha
+        and event.event == "BufEnter"
+        and vim.api.nvim_get_option_value("buftype", { buf = event.buf }) ~= "nofile"
+      then
         vim.opt.laststatus, vim.opt.showtabline = vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline
         vim.g.before_alpha = nil
       end
