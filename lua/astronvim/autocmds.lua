@@ -138,21 +138,6 @@ autocmd("BufEnter", {
   end,
 })
 
--- HACK: Make sure start in insert mode after selecting something from Telescope, remove once fixed upstream
--- Introduced in Neovim: https://github.com/neovim/neovim/pull/22984
--- Relevant Telescope Issues: https://github.com/nvim-telescope/telescope.nvim/issues/2027, https://github.com/nvim-telescope/telescope.nvim/issues/1457
-if is_available "telescope.nvim" then
-  autocmd("WinLeave", {
-    desc = "Make sure insert mode is left when leaving the telescope prompt",
-    group = augroup("telescope_exist_insert", { clear = true }),
-    callback = function()
-      if vim.bo.ft == "TelescopePrompt" and vim.fn.mode() == "i" then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "i", false)
-      end
-    end,
-  })
-end
-
 if is_available "alpha-nvim" then
   local group_name = augroup("alpha_settings", { clear = true })
   autocmd({ "User", "BufEnter" }, {
