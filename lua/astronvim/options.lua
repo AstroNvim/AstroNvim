@@ -38,7 +38,6 @@ local options = astronvim.user_opts("options", {
     smartcase = true, -- Case sensitivie searching
     smartindent = true, -- Smarter autoindentation
     splitbelow = true, -- Splitting a new window below the current one
-    splitkeep = vim.fn.has "nvim-0.9" == 1 and "screen" or nil, -- Maintain code view when splitting
     splitright = true, -- Splitting a new window at the right of the current one
     tabstop = 2, -- Number of space in a tab
     termguicolors = true, -- Enable 24-bit RGB color in the TUI
@@ -61,7 +60,7 @@ local options = astronvim.user_opts("options", {
     icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
     ui_notifications_enabled = true, -- disable notifications when toggling UI elements
   },
-  t = { bufs = vim.api.nvim_list_bufs() }, -- initialize buffers for the current tab
+  t = vim.t.bufs and vim.t.bufs or { bufs = vim.api.nvim_list_bufs() }, -- initialize buffers for the current tab
 })
 
 for scope, table in pairs(options) do

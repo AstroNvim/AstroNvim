@@ -94,10 +94,11 @@ function M.toggle_buffer_semantic_tokens(bufnr)
   end
 end
 
---- Toggle codelens refresh
+--- Toggle codelens
 function M.toggle_codelens()
   vim.g.codelens_enabled = not vim.g.codelens_enabled
-  ui_notify(string.format("CodeLens refresh %s", bool2str(vim.g.codelens_enabled)))
+  if not vim.g.codelens_enabled then vim.lsp.codelens.clear() end
+  ui_notify(string.format("CodeLens %s", bool2str(vim.g.codelens_enabled)))
 end
 
 --- Toggle showtabline=2|0

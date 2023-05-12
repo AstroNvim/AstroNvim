@@ -15,7 +15,7 @@ vim.on_key(function(char)
 end, namespace "auto_hlsearch")
 
 local bufferline_group = augroup("bufferline", { clear = true })
-autocmd({ "BufAdd", "BufEnter" }, {
+autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
   desc = "Update buffers when adding new buffers",
   group = bufferline_group,
   callback = function(args)
@@ -140,23 +140,26 @@ autocmd("BufEnter", {
 
 if is_available "alpha-nvim" then
   local group_name = augroup("alpha_settings", { clear = true })
-  autocmd("User", {
+  autocmd({ "User", "BufEnter" }, {
     desc = "Disable status and tablines for alpha",
     group = group_name,
-    pattern = "AlphaReady",
-    callback = function()
-      local prev_showtabline = vim.opt.showtabline
-      local prev_status = vim.opt.laststatus
-      vim.opt.laststatus = 0
-      vim.opt.showtabline = 0
-      vim.opt_local.winbar = nil
-      autocmd("BufUnload", {
-        pattern = "<buffer>",
-        callback = function()
-          vim.opt.laststatus = prev_status
-          vim.opt.showtabline = prev_showtabline
-        end,
-      })
+    callback = function(event)
+      if
+        (
+          (event.event == "User" and event.file == "AlphaReady")
+          or (event.event == "BufEnter" and vim.api.nvim_get_option_value("filetype", { buf = event.buf }) == "alpha")
+        ) and not vim.g.before_alpha
+      then
+        vim.g.before_alpha = { showtabline = vim.opt.showtabline:get(), laststatus = vim.opt.laststatus:get() }
+        vim.opt.showtabline, vim.opt.laststatus = 0, 0
+      elseif
+        vim.g.before_alpha
+        and event.event == "BufEnter"
+        and vim.api.nvim_get_option_value("buftype", { buf = event.buf }) ~= "nofile"
+      then
+        vim.opt.laststatus, vim.opt.showtabline = vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline
+        vim.g.before_alpha = nil
+      end
     end,
   })
   autocmd("VimEnter", {
@@ -179,6 +182,21 @@ if is_available "alpha-nvim" then
   })
 end
 
+if is_available "resession.nvim" then
+  autocmd("VimLeavePre", {
+    desc = "Save session on close",
+    group = augroup("resession_auto_save", { clear = true }),
+    callback = function(event)
+      local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+      if not vim.tbl_contains({ "gitcommit", "gitrebase" }, filetype) then
+        local save = require("resession").save
+        save "Last Session"
+        save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+      end
+    end,
+  })
+end
+
 if is_available "neo-tree.nvim" then
   autocmd("BufEnter", {
     desc = "Open Neo-Tree on startup with directory",
@@ -189,9 +207,8 @@ if is_available "neo-tree.nvim" then
       else
         local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
         if stats and stats.type == "directory" then
-          require "neo-tree"
           vim.api.nvim_del_augroup_by_name "neotree_start"
-          vim.api.nvim_exec_autocmds("BufEnter", {})
+          require "neo-tree"
         end
       end
     end,
@@ -214,6 +231,7 @@ autocmd({ "VimEnter", "ColorScheme" }, {
 })
 
 autocmd({ "BufReadPost", "BufNewFile" }, {
+  desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
   group = augroup("file_user_events", { clear = true }),
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
@@ -236,3 +254,4 @@ cmd(
 cmd("AstroRollback", function() require("astronvim.utils.updater").rollback() end, { desc = "Rollback AstroNvim" })
 cmd("AstroUpdate", function() require("astronvim.utils.updater").update() end, { desc = "Update AstroNvim" })
 cmd("AstroVersion", function() require("astronvim.utils.updater").version() end, { desc = "Check AstroNvim Version" })
+cmd("AstroReload", function() require("astronvim.utils").reload() end, { desc = "Reload AstroNvim (Experimental)" })

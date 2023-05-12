@@ -69,7 +69,7 @@ function M.close(bufnr, force)
   if require("astronvim.utils").is_available "bufdelete.nvim" then
     require("bufdelete").bufdelete(bufnr, force)
   else
-    vim.cmd((force and "bd!" or "confirm bd") .. bufnr)
+    vim.cmd((force and "bd!" or "confirm bd") .. (bufnr == nil and "" or bufnr))
   end
 end
 
@@ -107,14 +107,15 @@ end
 
 --- Sort a the buffers in the current tab based on some comparator
 ---@param compare_func string|function a string of a comparator defined in require("astronvim.utils.buffer").comparator or a custom comparator function
+---@param skip_autocmd boolean|nil whether or not to skip triggering AstroBufsUpdated autocmd event
 ---@return boolean # Whether or not the buffers were sorted
-function M.sort(compare_func)
+function M.sort(compare_func, skip_autocmd)
   if type(compare_func) == "string" then compare_func = M.comparator[compare_func] end
   if type(compare_func) == "function" then
     local bufs = vim.t.bufs
     table.sort(bufs, compare_func)
     vim.t.bufs = bufs
-    require("astronvim.utils").event "BufsUpdated"
+    if not skip_autocmd then require("astronvim.utils").event "BufsUpdated" end
     vim.cmd.redrawtabline()
     return true
   end

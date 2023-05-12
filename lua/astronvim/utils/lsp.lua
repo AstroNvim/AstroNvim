@@ -87,6 +87,20 @@ M.setup = function(server)
   if not vim.tbl_contains(astronvim.lsp.skip_setup, server) and setup_handler then setup_handler(server, opts) end
 end
 
+--- Helper function to check if any active LSP clients given a filter provide a specific capability
+---@param capability string The server capability to check for (example: "documentFormattingProvider")
+---@param filter vim.lsp.get_active_clients.filter|nil (table|nil) A table with
+---              key-value pairs used to filter the returned clients.
+---              The available keys are:
+---               - id (number): Only return clients with the given id
+---               - bufnr (number): Only return clients attached to this buffer
+---               - name (string): Only return clients with the given name
+---@return boolean # Whether or not any of the clients provide the capability
+function M.has_capability(capability, filter)
+  local clients = vim.lsp.get_active_clients(filter)
+  return not tbl_isempty(vim.tbl_map(function(client) return client.server_capabilities[capability] end, clients))
+end
+
 local function add_buffer_autocmd(augroup, bufnr, autocmds)
   if not vim.tbl_islist(autocmds) then autocmds = { autocmds } end
   local cmds_found, cmds = pcall(vim.api.nvim_get_autocmds, { group = augroup, buffer = bufnr })
@@ -100,6 +114,11 @@ local function add_buffer_autocmd(augroup, bufnr, autocmds)
       vim.api.nvim_create_autocmd(events, autocmd)
     end
   end
+end
+
+local function del_buffer_autocmd(augroup, bufnr)
+  local cmds_found, cmds = pcall(vim.api.nvim_get_autocmds, { group = augroup, buffer = bufnr })
+  if cmds_found then vim.tbl_map(function(cmd) vim.api.nvim_del_autocmd(cmd.id) end, cmds) end
 end
 
 --- The `on_attach` function used by AstroNvim
@@ -150,10 +169,14 @@ M.on_attach = function(client, bufnr)
       events = { "InsertLeave", "BufEnter" },
       desc = "Refresh codelens",
       callback = function()
+        if not M.has_capability("codeLensProvider", { bufnr = bufnr }) then
+          del_buffer_autocmd("lsp_codelens_refresh", bufnr)
+          return
+        end
         if vim.g.codelens_enabled then vim.lsp.codelens.refresh() end
       end,
     })
-    vim.lsp.codelens.refresh()
+    if vim.g.codelens_enabled then vim.lsp.codelens.refresh() end
     lsp_mappings.n["<leader>ll"] = {
       function() vim.lsp.codelens.refresh() end,
       desc = "LSP CodeLens refresh",
@@ -202,6 +225,10 @@ M.on_attach = function(client, bufnr)
         events = "BufWritePre",
         desc = "autoformat on save",
         callback = function()
+          if not M.has_capability("documentFormattingProvider", { bufnr = bufnr }) then
+            del_buffer_autocmd("lsp_auto_format", bufnr)
+            return
+          end
           local autoformat_enabled = vim.b.autoformat_enabled
           if autoformat_enabled == nil then autoformat_enabled = vim.g.autoformat_enabled end
           if autoformat_enabled and ((not autoformat.filter) or autoformat.filter(bufnr)) then
@@ -225,7 +252,13 @@ M.on_attach = function(client, bufnr)
       {
         events = { "CursorHold", "CursorHoldI" },
         desc = "highlight references when cursor holds",
-        callback = function() vim.lsp.buf.document_highlight() end,
+        callback = function()
+          if not M.has_capability("documentHighlightProvider", { bufnr = bufnr }) then
+            del_buffer_autocmd("lsp_document_highlight", bufnr)
+            return
+          end
+          vim.lsp.buf.document_highlight()
+        end,
       },
       {
         events = { "CursorMoved", "CursorMovedI" },

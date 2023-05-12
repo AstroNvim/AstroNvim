@@ -24,7 +24,7 @@ end
 
 local function confirm_prompt(messages)
   if messages then echo(messages) end
-  local confirmed = string.lower(vim.fn.input "(y/n) ") == "y"
+  local confirmed = string.lower(vim.fn.input "(y/n)󰁔 ") == "y"
   echo()
   echo()
   return confirmed
@@ -119,7 +119,7 @@ end
 function M.create_rollback(write)
   local snapshot = { branch = git.current_branch(), commit = git.local_head() }
   if snapshot.branch == "HEAD" then snapshot.branch = "main" end
-  snapshot.remote = git.branch_remote(snapshot.branch)
+  snapshot.remote = git.branch_remote(snapshot.branch, false) or "origin"
   snapshot.remotes = { [snapshot.remote] = git.remote_url(snapshot.remote) }
 
   if write == true then
@@ -306,7 +306,11 @@ function M.update(opts)
 
     -- if the user wants to auto quit, create an autocommand to quit AstroNvim on the update completing
     if opts.auto_quit then
-      vim.api.nvim_create_autocmd("User", { pattern = "AstroUpdateComplete", command = "quitall" })
+      vim.api.nvim_create_autocmd("User", {
+        desc = "Auto quit AstroNvim after update completes",
+        pattern = "AstroUpdateComplete",
+        command = "quitall",
+      })
     end
 
     require("lazy.core.plugin").load() -- force immediate reload of lazy

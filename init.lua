@@ -1,5 +1,3 @@
-if vim.loader then vim.loader.enable() end -- enable vim.loader early if available
-
 for _, source in ipairs {
   "astronvim.bootstrap",
   "astronvim.options",
@@ -15,7 +13,10 @@ astronvim.default_colorscheme = "PaperColor"
 
 if astronvim.default_colorscheme then
   if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
-    require("astronvim.utils").notify("Error setting up colorscheme: " .. astronvim.default_colorscheme, "error")
+    require("astronvim.utils").notify(
+      "Error setting up colorscheme: " .. astronvim.default_colorscheme,
+      vim.log.levels.ERROR
+    )
   end
 end
 
