@@ -186,10 +186,13 @@ if is_available "resession.nvim" then
   autocmd("VimLeavePre", {
     desc = "Save session on close",
     group = augroup("resession_auto_save", { clear = true }),
-    callback = function()
-      local save = require("resession").save
-      save "Last Session"
-      save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+    callback = function(event)
+      local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+      if not vim.tbl_contains({ "gitcommit", "gitrebase" }, filetype) then
+        local save = require("resession").save
+        save "Last Session"
+        save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+      end
     end,
   })
 end
