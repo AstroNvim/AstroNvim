@@ -1672,28 +1672,27 @@ M.heirline.make_tablist_new = function(component)
           minwid = function(self) return self.tabpage end,
           name = "heirline_tabline_tabpage_callback",
         },
-        -- Don't think this is needed...
-        -- {
-        --   -- add buffer picker functionality to each buffer
-        --   condition = function(self) return self._show_picker end,
-        --   update = false,
-        --   init = function(self)
-        --     if not (self.label and self._picker_labels[self.label]) then
-        --       local tabname = M.provider.filename()(self)
-        --       local label = tabname:sub(1, 1)
-        --       local i = 2
-        --       while label ~= " " and self._picker_labels[label] do
-        --         if i > #tabname then break end
-        --         label = tabname:sub(i, i)
-        --         i = i + 1
-        --       end
-        --       self._picker_labels[label] = self.tabnr
-        --       self.label = label
-        --     end
-        --   end,
-        --   provider = function(self) return M.provider.str { str = self.label, padding = { left = 1, right = 1 } } end,
-        --   hl = M.hl.get_attributes "buffer_picker",
-        -- },
+        {
+          -- add buffer picker functionality to each buffer
+          condition = function(self) return self._show_picker end,
+          update = false,
+          init = function(self)
+            if not (self.label and self._picker_labels[self.label]) then
+              local tabname = M.provider.filename()(self)
+              local label = tabname:sub(1, 1)
+              local i = 2
+              while label ~= " " and self._picker_labels[label] do
+                if i > #tabname then break end
+                label = tabname:sub(i, i)
+                i = i + 1
+              end
+              self._picker_labels[label] = self.tabnr
+              self.label = label
+            end
+          end,
+          provider = function(self) return M.provider.str { str = self.label, padding = { left = 1, right = 1 } } end,
+          hl = M.hl.get_attributes "buffer_picker",
+        },
         component, -- create buffer component
       },
       false        -- disable surrounding
