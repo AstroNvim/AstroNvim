@@ -10,6 +10,7 @@ local options = astronvim.user_opts("options", {
     clipboard = "unnamedplus", -- Connection to the system clipboard
     cmdheight = 0, -- hide command line unless needed
     completeopt = { "menuone", "noselect" }, -- Options for insert mode completion
+    copyindent = true, -- Copy the previous indentation on autoindenting
     cursorline = true, -- Highlight the text line of the cursor
     expandtab = true, -- Enable the use of space in tab
     fileencoding = "utf-8", -- File content encoding for the buffer
