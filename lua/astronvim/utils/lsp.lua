@@ -17,6 +17,7 @@ local user_opts = astronvim.user_opts
 local utils = require "astronvim.utils"
 local conditional_func = utils.conditional_func
 local is_available = utils.is_available
+local extend_tbl = utils.extend_tbl
 
 local server_config = "lsp.config."
 local setup_handlers = user_opts("lsp.setup_handlers", {
@@ -43,14 +44,14 @@ M.setup_diagnostics = function(signs)
   })
   M.diagnostics = {
     -- diagnostics off
-    [0] = utils.extend_tbl(
+    [0] = extend_tbl(
       default_diagnostics,
       { underline = false, virtual_text = false, signs = false, update_in_insert = false }
     ),
     -- status only
-    utils.extend_tbl(default_diagnostics, { virtual_text = false, signs = false }),
+    extend_tbl(default_diagnostics, { virtual_text = false, signs = false }),
     -- virtual text off, signs on
-    utils.extend_tbl(default_diagnostics, { virtual_text = false }),
+    extend_tbl(default_diagnostics, { virtual_text = false }),
     -- all diagnostics on
     default_diagnostics,
   }
@@ -232,7 +233,7 @@ M.on_attach = function(client, bufnr)
           local autoformat_enabled = vim.b.autoformat_enabled
           if autoformat_enabled == nil then autoformat_enabled = vim.g.autoformat_enabled end
           if autoformat_enabled and ((not autoformat.filter) or autoformat.filter(bufnr)) then
-            vim.lsp.buf.format(require("astronvim.utils").extend_tbl(M.format_opts, { bufnr = bufnr }))
+            vim.lsp.buf.format(extend_tbl(M.format_opts, { bufnr = bufnr }))
           end
         end,
       })
@@ -376,8 +377,8 @@ M.flags = user_opts "lsp.flags"
 ---@return table # The table of LSP options used when setting up the given language server
 function M.config(server_name)
   local server = require("lspconfig")[server_name]
-  local lsp_opts = require("astronvim.utils").extend_tbl(
-    { capabilities = server.capabilities, flags = server.flags },
+  local lsp_opts = extend_tbl(
+    extend_tbl(server.document_config.default_config, server),
     { capabilities = M.capabilities, flags = M.flags }
   )
   if server_name == "jsonls" then -- by default add json schemas
