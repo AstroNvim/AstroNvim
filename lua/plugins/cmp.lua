@@ -60,6 +60,10 @@ return {
         mapping = {
           ["<Up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
           ["<Down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
+          ["<PageUp>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select, count=8 },
+          ["<PageDown>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select, count=8 },
+          ["<C-PageUp>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select, count=16 },
+          ["<C-PageDown>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select, count=16 },
           ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
           ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
           ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
