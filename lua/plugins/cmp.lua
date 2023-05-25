@@ -31,7 +31,12 @@ return {
 
       return {
         enabled = function()
-          if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then return false end
+          local dap_prompt = require("astronvim.utils").is_available "cmp-dap" -- add interoperability with cmp-dap
+            and vim.tbl_contains(
+              { "dap-repl", "dapui_watches", "dapui_hover" },
+              vim.api.nvim_get_option_value("filetype", { buf = 0 })
+            )
+          if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" and not dap_prompt then return false end
           return vim.g.cmp_enabled
         end,
         preselect = cmp.PreselectMode.None,
