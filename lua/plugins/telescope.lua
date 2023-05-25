@@ -26,8 +26,8 @@ return {
     end
     return {
       defaults = {
-        prompt_prefix = string.format("%s ", get_icon "Search"),
-        selection_caret = string.format("%s ", get_icon "Selected"),
+        prompt_prefix = get_icon("Selected", 1),
+        selection_caret = get_icon("Selected", 1),
         path_display = { "truncate" },
         sorting_strategy = "ascending",
         layout_config = {
