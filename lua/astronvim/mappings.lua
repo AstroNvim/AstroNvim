@@ -1,22 +1,22 @@
 local utils = require "astronvim.utils"
+local get_icon = utils.get_icon
 local is_available = utils.is_available
 local ui = require "astronvim.utils.ui"
 
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
 local sections = {
-  f = { desc = "󰍉 Find" },
-  p = { desc = "󰏖 Packages" },
-  l = { desc = " LSP" },
-  u = { desc = " UI" },
-  b = { desc = "󰓩 Buffers" },
-  bs = { desc = "󰒺 Sort Buffers" },
-  d = { desc = " Debugger" },
-  g = { desc = "󰊢 Git" },
-  S = { desc = "󱂬 Session" },
-  t = { desc = " Terminal" },
+  f = { desc = get_icon("Search", 1, true) .. "Find" },
+  p = { desc = get_icon("Package", 1, true) .. "Packages" },
+  l = { desc = get_icon("ActiveLSP", 1, true) .. "LSP" },
+  u = { desc = get_icon("Window", 1, true) .. "UI" },
+  b = { desc = get_icon("Tab", 1, true) .. "Buffers" },
+  bs = { desc = get_icon("Sort", 1, true) .. "Sort Buffers" },
+  d = { desc = get_icon("Debugger", 1, true) .. "Debugger" },
+  g = { desc = get_icon("Git", 1, true) .. "Git" },
+  S = { desc = get_icon("Session", 1, true) .. "Session" },
+  t = { desc = get_icon("Terminal", 1, true) .. "Terminal" },
 }
-if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.desc = opts.desc:gsub("^.* ", "") end, sections) end
 
 -- Normal --
 -- Standard Operations

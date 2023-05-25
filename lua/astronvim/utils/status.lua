@@ -760,10 +760,12 @@ function M.provider.lsp_progress(opts)
             "Loading1",
             "Loading2",
             "Loading3",
-          })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1])
-          .. (Lsp.title and " " .. Lsp.title or "")
-          .. (Lsp.message and " " .. Lsp.message or "")
-          .. (Lsp.percentage and " (" .. Lsp.percentage .. "%)" or "")
+          })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1], 1)
+          .. table.concat({
+            Lsp.title or "",
+            Lsp.message or "",
+            Lsp.percentage and "(" .. Lsp.percentage .. "%)" or "",
+          }, " ")
         ),
       opts
     )
