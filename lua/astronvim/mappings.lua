@@ -401,8 +401,8 @@ if is_available "nvim-ufo" then
 end
 
 -- Stay in indent mode
-maps.v["<S-Tab>"] = { "<gv", desc = "unindent line" }
-maps.v["<Tab>"] = { ">gv", desc = "indent line" }
+maps.v["<S-Tab>"] = { "<gv", desc = "Unindent line" }
+maps.v["<Tab>"] = { ">gv", desc = "Indent line" }
 
 -- Improved Terminal Navigation
 maps.t["<C-h>"] = { "<cmd>wincmd h<cr>", desc = "Terminal left window navigation" }
