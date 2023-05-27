@@ -40,7 +40,7 @@ maps.n["<leader>pu"] = { function() require("lazy").check() end, desc = "Plugins
 maps.n["<leader>pU"] = { function() require("lazy").update() end, desc = "Plugins Update" }
 
 -- AstroNvim
-maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Plugins and Mason" }
+maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Plugins and Mason Packages" }
 maps.n["<leader>pA"] = { "<cmd>AstroUpdate<cr>", desc = "AstroNvim Update" }
 maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
@@ -79,7 +79,7 @@ maps.n["<leader>bd"] = {
       function(bufnr) require("astronvim.utils.buffer").close(bufnr) end
     )
   end,
-  desc = "Delete buffer from tabline",
+  desc = "Close buffer from tabline",
 }
 maps.n["<leader>bl"] =
   { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
@@ -137,10 +137,12 @@ end
 if is_available "Comment.nvim" then
   maps.n["<leader>/"] = {
     function() require("Comment.api").toggle.linewise.count(vim.v.count > 0 and vim.v.count or 1) end,
-    desc = "Comment line",
+    desc = "Toggle comment line",
   }
-  maps.v["<leader>/"] =
-    { "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", desc = "Toggle comment line" }
+  maps.v["<leader>/"] = {
+    "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
+    desc = "Toggle comment for selection",
+  }
 end
 
 -- GitSigns
