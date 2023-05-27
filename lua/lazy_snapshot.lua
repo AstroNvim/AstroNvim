@@ -2,7 +2,7 @@ return {
   { "AstroNvim/astrotheme", version = "^1.1", optional = true },
   { "JoosepAlviste/nvim-ts-context-commentstring", commit = "0bf8fbc2ca8f8cdb6efbd0a9e32740d7a991e4c3", optional = true },
   { "L3MON4D3/LuaSnip", version = "^1", optional = true },
-  { "MunifTanjim/nui.nvim", commit = "698e75814cd7c56b0dd8af4936bcef2d13807f3c", optional = true },
+  { "MunifTanjim/nui.nvim", version = "^0.1", optional = true },
   { "NMAC427/guess-indent.nvim", commit = "b8ae749fce17aa4c267eec80a6984130b94f80b2", optional = true },
   { "NvChad/nvim-colorizer.lua", commit = "dde3084106a70b9a79d48f426f6d6fec6fd203f7", optional = true },
   { "Shatur/neovim-session-manager", commit = "fd92e73506601a48adb843cdc0a15f2e63513754", optional = true },
