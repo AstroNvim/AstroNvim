@@ -288,7 +288,6 @@ if is_available "telescope.nvim" then
     desc = "Find words in all files",
   }
   maps.n["<leader>l"] = sections.l
-  maps.n["<leader>lD"] = { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
   maps.n["<leader>ls"] = {
     function()
       local aerial_avail, _ = pcall(require, "aerial")
