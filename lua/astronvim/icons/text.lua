@@ -28,6 +28,7 @@ return {
   GitDelete = "[-]",
   GitIgnored = "[I]",
   GitRenamed = "[R]",
+  GitSign = "|",
   GitStaged = "[S]",
   GitUnstaged = "[U]",
   GitUntracked = "[?]",
