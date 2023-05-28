@@ -148,6 +148,11 @@ M.on_attach = function(client, bufnr)
     v = {},
   }
 
+  if is_available "telescope.nvim" then
+    lsp_mappings.n["<leader>lD"] =
+      { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
+  end
+
   if is_available "mason-lspconfig.nvim" then
     lsp_mappings.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" }
   end
