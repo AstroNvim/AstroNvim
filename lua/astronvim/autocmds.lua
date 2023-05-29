@@ -88,7 +88,12 @@ autocmd("BufWinEnter", {
     local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
     if buftype == "nofile" or filetype == "help" then
-      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, nowait = true })
+      vim.keymap.set("n", "q", "<cmd>close<cr>", {
+        desc = "Close window",
+        buffer = event.buf,
+        silent = true,
+        nowait = true,
+      })
     end
   end,
 })
