@@ -24,6 +24,7 @@ return {
         folder_closed = get_icon "FolderClosed",
         folder_open = get_icon "FolderOpen",
         folder_empty = get_icon "FolderEmpty",
+        folder_empty_open = get_icon "FolderEmpty",
         default = get_icon "DefaultFile",
       },
       modified = { symbol = get_icon "FileModified" },
