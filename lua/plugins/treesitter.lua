@@ -27,6 +27,7 @@ return {
     indent = { enable = true },
     autotag = { enable = true },
     context_commentstring = { enable = true, enable_autocmd = false },
+    auto_install = true,
   },
   config = require "plugins.configs.nvim-treesitter",
 }
