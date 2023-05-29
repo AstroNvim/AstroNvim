@@ -780,16 +780,18 @@ function M.provider.lsp_progress(opts)
     local Lsp = vim.lsp.util.get_progress_messages()[1]
     return M.utils.stylize(
       Lsp
-      and (
-        get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
-          "Loading1",
-          "Loading2",
-          "Loading3",
-        })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1])
-        .. (Lsp.title and " " .. Lsp.title or "")
-        .. (Lsp.message and " " .. Lsp.message or "")
-        .. (Lsp.percentage and " (" .. Lsp.percentage .. "%)" or "")
-      ),
+        and (
+          get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
+            "Loading1",
+            "Loading2",
+            "Loading3",
+          })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1], 1)
+          .. table.concat({
+            Lsp.title or "",
+            Lsp.message or "",
+            Lsp.percentage and "(" .. Lsp.percentage .. "%)" or "",
+          }, " ")
+        ),
       opts
     )
   end

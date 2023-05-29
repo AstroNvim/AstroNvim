@@ -54,7 +54,6 @@ autocmd("BufDelete", {
 autocmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
   group = augroup("highlighturl", { clear = true }),
-  pattern = "*",
   callback = function() utils.set_url_match() end,
 })
 
@@ -211,6 +210,14 @@ if is_available "neo-tree.nvim" then
           require "neo-tree"
         end
       end
+    end,
+  })
+  autocmd("TermClose", {
+    pattern = "*lazygit",
+    desc = "Refresh Neo-Tree git when closing lazygit",
+    group = augroup("neotree_git_refresh", { clear = true }),
+    callback = function()
+      if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
     end,
   })
 end

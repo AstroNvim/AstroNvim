@@ -24,7 +24,7 @@ end
 
 local function confirm_prompt(messages)
   if messages then echo(messages) end
-  local confirmed = string.lower(vim.fn.input "(y/n)󰁔 ") == "y"
+  local confirmed = string.lower(vim.fn.input("(y/n)" .. utils.get_icon("DapStopped", 1))) == "y"
   echo()
   echo()
   return confirmed
@@ -57,11 +57,11 @@ function M.generate_snapshot(write)
     if file then
       file:write(("  { %q, "):format(plugin[1]))
       if plugin.version then
-        file:write(("version = %q "):format(plugin.version))
+        file:write(("version = %q"):format(plugin.version))
       else
-        file:write(("commit = %q "):format(plugin.commit))
+        file:write(("commit = %q"):format(plugin.commit))
       end
-      file:write "},\n"
+      file:write ", optional = true },\n"
     end
     return plugin
   end, plugins)
