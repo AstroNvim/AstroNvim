@@ -19,7 +19,7 @@ return {
   { "hrsh7th/nvim-cmp", commit = "fc0f694af1a742ada77e5b1c91ff405c746f4a26", optional = true },
   { "jay-babu/mason-null-ls.nvim", version = "^2", optional = true },
   { "jay-babu/mason-nvim-dap.nvim", version = "^2", optional = true },
-  { "jose-elias-alvarez/null-ls.nvim", commit = "4b055d84be42c90a7240785d3c83340d259d3d46", optional = true },
+  { "jose-elias-alvarez/null-ls.nvim", commit = "c89333e034a8daba654ebfcf9a4ec9f87765f01e", optional = true },
   { "kevinhwang91/nvim-ufo", version = "^1", optional = true },
   { "kevinhwang91/promise-async", version = "^1", optional = true },
   { "lewis6991/gitsigns.nvim", version = "^0.6", optional = true },
