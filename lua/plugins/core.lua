@@ -19,7 +19,17 @@ return {
       extensions = { astronvim = {} },
     },
   },
-  { "s1n7ax/nvim-window-picker", opts = { use_winbar = "smart" } },
+  {
+    "s1n7ax/nvim-window-picker",
+    name = "window-picker",
+    opts = {
+      picker_config = {
+        statusline_winbar_picker = {
+          use_winbar = "smart",
+        },
+      },
+    },
+  },
   {
     "mrjones2014/smart-splits.nvim",
     opts = { ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" }, ignored_buftypes = { "nofile" } },
