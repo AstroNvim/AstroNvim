@@ -43,7 +43,7 @@ return {
   { "rcarriga/nvim-dap-ui", version = "^3", optional = true },
   { "rcarriga/nvim-notify", version = "^3", optional = true },
   { "rebelot/heirline.nvim", commit = "2a151df2dc870e79b138a59ebaaaddf3d1b0d703", optional = true },
-  { "s1n7ax/nvim-window-picker", version = "^1", optional = true },
+  { "s1n7ax/nvim-window-picker", version = "^2", optional = true },
   { "saadparwaiz1/cmp_luasnip", commit = "18095520391186d634a0045dacaa346291096566", optional = true },
   { "stevearc/aerial.nvim", commit = "c30fb2c9bd09592351eed676f4c20e7a6411020e", optional = true },
   { "stevearc/dressing.nvim", commit = "5fb5cce0cbfcedeadbcee43e5674e8c9a9f28d4a", optional = true },
