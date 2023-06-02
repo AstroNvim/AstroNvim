@@ -1,22 +1,22 @@
 local utils = require "astronvim.utils"
+local get_icon = utils.get_icon
 local is_available = utils.is_available
 local ui = require "astronvim.utils.ui"
 
 local maps = { i = {}, n = {}, v = {}, t = {} }
 
 local sections = {
-  f = { desc = "󰍉 Find" },
-  p = { desc = "󰏖 Packages" },
-  l = { desc = " LSP" },
-  u = { desc = " UI" },
-  b = { desc = "󰓩 Buffers" },
-  bs = { desc = "󰒺 Sort Buffers" },
-  d = { desc = " Debugger" },
-  g = { desc = "󰊢 Git" },
-  S = { desc = "󱂬 Session" },
-  t = { desc = " Terminal" },
+  f = { desc = get_icon("Search", 1, true) .. "Find" },
+  p = { desc = get_icon("Package", 1, true) .. "Packages" },
+  l = { desc = get_icon("ActiveLSP", 1, true) .. "LSP" },
+  u = { desc = get_icon("Window", 1, true) .. "UI" },
+  b = { desc = get_icon("Tab", 1, true) .. "Buffers" },
+  bs = { desc = get_icon("Sort", 1, true) .. "Sort Buffers" },
+  d = { desc = get_icon("Debugger", 1, true) .. "Debugger" },
+  g = { desc = get_icon("Git", 1, true) .. "Git" },
+  S = { desc = get_icon("Session", 1, true) .. "Session" },
+  t = { desc = get_icon("Terminal", 1, true) .. "Terminal" },
 }
-if not vim.g.icons_enabled then vim.tbl_map(function(opts) opts.desc = opts.desc:gsub("^.* ", "") end, sections) end
 
 -- Normal --
 -- Standard Operations
@@ -40,7 +40,7 @@ maps.n["<leader>pu"] = { function() require("lazy").check() end, desc = "Plugins
 maps.n["<leader>pU"] = { function() require("lazy").update() end, desc = "Plugins Update" }
 
 -- AstroNvim
-maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Plugins and Mason" }
+maps.n["<leader>pa"] = { "<cmd>AstroUpdatePackages<cr>", desc = "Update Plugins and Mason Packages" }
 maps.n["<leader>pA"] = { "<cmd>AstroUpdate<cr>", desc = "AstroNvim Update" }
 maps.n["<leader>pv"] = { "<cmd>AstroVersion<cr>", desc = "AstroNvim Version" }
 maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
@@ -79,23 +79,19 @@ maps.n["<leader>bd"] = {
       function(bufnr) require("astronvim.utils.buffer").close(bufnr) end
     )
   end,
-  desc = "Delete buffer from tabline",
+  desc = "Close buffer from tabline",
 }
 maps.n["<leader>bl"] =
   { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
 maps.n["<leader>br"] =
   { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
 maps.n["<leader>bs"] = sections.bs
-maps.n["<leader>bse"] =
-  { function() require("astronvim.utils.buffer").sort "extension" end, desc = "Sort by extension (buffers)" }
+maps.n["<leader>bse"] = { function() require("astronvim.utils.buffer").sort "extension" end, desc = "By extension" }
 maps.n["<leader>bsr"] =
-  { function() require("astronvim.utils.buffer").sort "unique_path" end, desc = "Sort by relative path (buffers)" }
-maps.n["<leader>bsp"] =
-  { function() require("astronvim.utils.buffer").sort "full_path" end, desc = "Sort by full path (buffers)" }
-maps.n["<leader>bsi"] =
-  { function() require("astronvim.utils.buffer").sort "bufnr" end, desc = "Sort by buffer number (buffers)" }
-maps.n["<leader>bsm"] =
-  { function() require("astronvim.utils.buffer").sort "modified" end, desc = "Sort by modification (buffers)" }
+  { function() require("astronvim.utils.buffer").sort "unique_path" end, desc = "By relative path" }
+maps.n["<leader>bsp"] = { function() require("astronvim.utils.buffer").sort "full_path" end, desc = "By full path" }
+maps.n["<leader>bsi"] = { function() require("astronvim.utils.buffer").sort "bufnr" end, desc = "By buffer number" }
+maps.n["<leader>bsm"] = { function() require("astronvim.utils.buffer").sort "modified" end, desc = "By modification" }
 maps.n["<leader>b\\"] = {
   function()
     require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
@@ -137,10 +133,12 @@ end
 if is_available "Comment.nvim" then
   maps.n["<leader>/"] = {
     function() require("Comment.api").toggle.linewise.count(vim.v.count > 0 and vim.v.count or 1) end,
-    desc = "Comment line",
+    desc = "Toggle comment line",
   }
-  maps.v["<leader>/"] =
-    { "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", desc = "Toggle comment line" }
+  maps.v["<leader>/"] = {
+    "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
+    desc = "Toggle comment for selection",
+  }
 end
 
 -- GitSigns
@@ -290,7 +288,6 @@ if is_available "telescope.nvim" then
     desc = "Find words in all files",
   }
   maps.n["<leader>l"] = sections.l
-  maps.n["<leader>lD"] = { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
   maps.n["<leader>ls"] = {
     function()
       local aerial_avail, _ = pcall(require, "aerial")
@@ -399,8 +396,8 @@ if is_available "nvim-ufo" then
 end
 
 -- Stay in indent mode
-maps.v["<S-Tab>"] = { "<gv", desc = "unindent line" }
-maps.v["<Tab>"] = { ">gv", desc = "indent line" }
+maps.v["<S-Tab>"] = { "<gv", desc = "Unindent line" }
+maps.v["<Tab>"] = { ">gv", desc = "Indent line" }
 
 -- Improved Terminal Navigation
 maps.t["<C-h>"] = { "<cmd>wincmd h<cr>", desc = "Terminal left window navigation" }

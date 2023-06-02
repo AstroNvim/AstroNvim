@@ -11,6 +11,7 @@
 local M = { hl = {}, init = {}, provider = {}, condition = {}, component = {}, utils = {}, env = {}, heirline = {} }
 
 local utils = require "astronvim.utils"
+local buffer_utils = require "astronvim.utils.buffer"
 local extend_tbl = utils.extend_tbl
 local get_icon = utils.get_icon
 local is_available = utils.is_available
@@ -760,10 +761,12 @@ function M.provider.lsp_progress(opts)
             "Loading1",
             "Loading2",
             "Loading3",
-          })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1])
-          .. (Lsp.title and " " .. Lsp.title or "")
-          .. (Lsp.message and " " .. Lsp.message or "")
-          .. (Lsp.percentage and " (" .. Lsp.percentage .. "%)" or "")
+          })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1], 1)
+          .. table.concat({
+            Lsp.title or "",
+            Lsp.message or "",
+            Lsp.percentage and "(" .. Lsp.percentage .. "%)" or "",
+          }, " ")
         ),
       opts
     )
@@ -1013,7 +1016,7 @@ function M.component.tabline_file_info(opts)
       hl = function(self) return M.hl.get_attributes(self.tab_type .. "_close") end,
       padding = { left = 1, right = 1 },
       on_click = {
-        callback = function(_, minwid) require("astronvim.utils.buffer").close(minwid) end,
+        callback = function(_, minwid) buffer_utils.close(minwid) end,
         minwid = function(self) return self.bufnr end,
         name = "heirline_tabline_close_buffer_callback",
       },
@@ -1598,7 +1601,7 @@ M.heirline.make_buflist = function(component)
         },
         component, -- create buffer component
       },
-      false -- disable surrounding
+      function(self) return buffer_utils.is_valid(self.bufnr) end -- disable surrounding
     ),
     { provider = get_icon "ArrowLeft" .. " ", hl = overflow_hl },
     { provider = get_icon "ArrowRight" .. " ", hl = overflow_hl },

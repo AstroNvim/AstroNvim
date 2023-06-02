@@ -143,7 +143,7 @@ end
 ---@param str string the remote to parse to a full git url
 ---@return string # The full git url for the given remote string
 function git.parse_remote_url(str)
-  return vim.fn.match(str, astronvim.url_matcher) == -1
+  return vim.fn.match(str, require("astronvim.utils").url_matcher) == -1
       and git.url .. str .. (vim.fn.match(str, "/") == -1 and "/AstroNvim.git" or ".git")
     or str
 end

@@ -1,12 +1,14 @@
 return {
   {
     "L3MON4D3/LuaSnip",
+    build = vim.fn.has "win32" ~= 0
+        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
+      or nil,
     dependencies = { "rafamadriz/friendly-snippets" },
     config = require "plugins.configs.luasnip",
   },
   {
     "hrsh7th/nvim-cmp",
-    commit = "a9c701fa7e12e9257b3162000e5288a75d280c28", -- https://github.com/hrsh7th/nvim-cmp/issues/1382
     dependencies = {
       "saadparwaiz1/cmp_luasnip",
       "hrsh7th/cmp-buffer",
@@ -18,6 +20,7 @@ return {
       local cmp = require "cmp"
       local snip_status_ok, luasnip = pcall(require, "luasnip")
       local lspkind_status_ok, lspkind = pcall(require, "lspkind")
+      local utils = require "astronvim.utils"
       if not snip_status_ok then return end
       local border_opts = {
         border = "single",
@@ -31,13 +34,18 @@ return {
 
       return {
         enabled = function()
-          if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then return false end
+          local dap_prompt = utils.is_available "cmp-dap" -- add interoperability with cmp-dap
+            and vim.tbl_contains(
+              { "dap-repl", "dapui_watches", "dapui_hover" },
+              vim.api.nvim_get_option_value("filetype", { buf = 0 })
+            )
+          if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" and not dap_prompt then return false end
           return vim.g.cmp_enabled
         end,
         preselect = cmp.PreselectMode.None,
         formatting = {
           fields = { "kind", "abbr", "menu" },
-          format = lspkind_status_ok and lspkind.cmp_format(astronvim.lspkind) or nil,
+          format = lspkind_status_ok and lspkind.cmp_format(utils.plugin_opts "lspkind.nvim") or nil,
         },
         snippet = {
           expand = function(args) luasnip.lsp_expand(args.body) end,

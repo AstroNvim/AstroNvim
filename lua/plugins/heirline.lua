@@ -6,10 +6,11 @@ return {
     return {
       opts = {
         disable_winbar_cb = function(args)
-          return status.condition.buffer_matches({
-            buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-            filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
-          }, args.buf)
+          return not require("astronvim.utils.buffer").is_valid(args.buf)
+            or status.condition.buffer_matches({
+              buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
+              filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
+            }, args.buf)
         end,
       },
       statusline = { -- statusline
