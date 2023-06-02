@@ -20,6 +20,7 @@ return {
       local cmp = require "cmp"
       local snip_status_ok, luasnip = pcall(require, "luasnip")
       local lspkind_status_ok, lspkind = pcall(require, "lspkind")
+      local utils = require "astronvim.utils"
       if not snip_status_ok then return end
       local border_opts = {
         border = "single",
@@ -33,7 +34,7 @@ return {
 
       return {
         enabled = function()
-          local dap_prompt = require("astronvim.utils").is_available "cmp-dap" -- add interoperability with cmp-dap
+          local dap_prompt = utils.is_available "cmp-dap" -- add interoperability with cmp-dap
             and vim.tbl_contains(
               { "dap-repl", "dapui_watches", "dapui_hover" },
               vim.api.nvim_get_option_value("filetype", { buf = 0 })
@@ -44,7 +45,7 @@ return {
         preselect = cmp.PreselectMode.None,
         formatting = {
           fields = { "kind", "abbr", "menu" },
-          format = lspkind_status_ok and lspkind.cmp_format(astronvim.lspkind) or nil,
+          format = lspkind_status_ok and lspkind.cmp_format(utils.plugin_opts "lspkind.nvim") or nil,
         },
         snippet = {
           expand = function(args) luasnip.lsp_expand(args.body) end,
