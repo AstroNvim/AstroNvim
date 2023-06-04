@@ -138,11 +138,12 @@ function M.rollback()
   M.update(rollback_opts)
 end
 
---- AstroNvim's updater function
----@param opts? table the settings to use for the update
-function M.update(opts)
+--- Check if an update is available
+---@param opts? table the settings to use for checking for an update
+---@return table|boolean? # The information of an available update (`{ source = string, target = string }`), false if no update is available, or nil if there is an error
+function M.update_available(opts)
   if not opts then opts = astronvim.updater.options end
-  opts = require("astronvim.utils").extend_tbl({ remote = "origin", show_changelog = true, auto_quit = false }, opts)
+  opts = require("astronvim.utils").extend_tbl({ remote = "origin" }, opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
     notify(
@@ -227,21 +228,43 @@ function M.update(opts)
   else -- get most recent commit
     target = git.remote_head(opts.remote, opts.branch)
   end
+
   if not source or not target then -- continue if current and target commits were found
     vim.api.nvim_err_writeln "Error checking for updates"
     return
-  elseif source == target then
-    echo { { "No updates available", "String" } }
+  elseif source ~= target then
+    -- update available
+    return { source = source, target = target }
+  else
+    return false
+  end
+end
+
+--- AstroNvim's updater function
+---@param opts? table the settings to use for the update
+function M.update(opts)
+  if not opts then opts = astronvim.updater.options end
+  opts = require("astronvim.utils").extend_tbl(
+    { remote = "origin", show_changelog = true, sync_plugins = true, auto_quit = false },
+    opts
+  )
+  local available_update = M.update_available(opts)
+  if available_update == nil then
     return
+  elseif not available_update then -- continue if current and target commits were found
+    notify "No updates available"
   elseif -- prompt user if they want to accept update
     not opts.skip_prompts
     and not confirm_prompt(
-      ("Update avavilable to %s\nUpdating requires a restart, continue?"):format(is_stable and opts.version or target)
+      ("Update available to %s\nUpdating requires a restart, continue?"):format(
+        opts.channel == "stable" and opts.version or available_update.target
+      )
     )
   then
     echo(cancelled_message)
     return
   else -- perform update
+    local source, target = available_update.source, available_update.target
     M.create_rollback(true) -- create rollback file before updating
     -- calculate and print the changelog
     local changelog = git.get_commit_range(source, target)
@@ -309,7 +332,7 @@ function M.update(opts)
     end
 
     require("lazy.core.plugin").load() -- force immediate reload of lazy
-    require("lazy").sync { wait = true } -- sync new plugin spec changes
+    if opts.sync_plugins then require("lazy").sync { wait = true } end
     utils.event "UpdateComplete"
   end
 end
