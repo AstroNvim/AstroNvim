@@ -126,7 +126,7 @@ end
 --- Trigger an AstroNvim user event
 ---@param event string The event name to be appended to Astro
 function M.event(event)
-  vim.schedule(function() vim.api.nvim_exec_autocmds("User", { pattern = "Astro" .. event }) end)
+  vim.schedule(function() vim.api.nvim_exec_autocmds("User", { pattern = "Astro" .. event, modeline = false }) end)
 end
 
 --- Open a URL under the cursor with the current operating system
@@ -200,6 +200,20 @@ function M.is_available(plugin)
   return lazy_config_avail and lazy_config.plugins[plugin] ~= nil
 end
 
+--- Resolve the options table for a given plugin with lazy
+---@param plugin string The plugin to search for
+---@return table opts # The plugin options
+function M.plugin_opts(plugin)
+  local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
+  local lazy_plugin_avail, lazy_plugin = pcall(require, "lazy.core.plugin")
+  local opts = {}
+  if lazy_config_avail and lazy_plugin_avail then
+    local spec = lazy_config.plugins[plugin]
+    if spec then opts = lazy_plugin.values(spec, "opts") end
+  end
+  return opts
+end
+
 --- A helper function to wrap a module function to require a plugin before running
 ---@param plugin string The plugin to call `require("lazy").load` with
 ---@param module table The system module where the functions live (e.g. `vim.ui`)
@@ -261,7 +275,7 @@ function M.set_mappings(map_table, base)
 end
 
 --- regex used for matching a valid URL/URI string
-local url_matcher =
+M.url_matcher =
   "\\v\\c%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)%([&:#*@~%_\\-=?!+;/0-9a-z]+%(%([.;/?]|[.][.]+)[&:#*@~%_\\-=?!+/0-9a-z]+|:\\d+|,%(%(%(h?ttps?|ftp|file|ssh|git)://|[a-z]+[@][a-z]+[.][a-z]+:)@![0-9a-z]+))*|\\([&:#*@~%_\\-=?!+;/.0-9a-z]*\\)|\\[[&:#*@~%_\\-=?!+;/.0-9a-z]*\\]|\\{%([&:#*@~%_\\-=?!+;/.0-9a-z]*|\\{[&:#*@~%_\\-=?!+;/.0-9a-z]*})\\})+"
 
 --- Delete the syntax matching rules for URLs/URIs if set
@@ -274,7 +288,7 @@ end
 --- Add syntax matching rules for highlighting URLs/URIs
 function M.set_url_match()
   M.delete_url_match()
-  if vim.g.highlighturl_enabled then vim.fn.matchadd("HighlightURL", url_matcher, 15) end
+  if vim.g.highlighturl_enabled then vim.fn.matchadd("HighlightURL", M.url_matcher, 15) end
 end
 
 --- Run a shell command and capture the output and if the command succeeded or failed

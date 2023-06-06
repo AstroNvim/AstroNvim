@@ -88,7 +88,12 @@ autocmd("BufWinEnter", {
     local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
     if buftype == "nofile" or filetype == "help" then
-      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, nowait = true })
+      vim.keymap.set("n", "q", "<cmd>close<cr>", {
+        desc = "Close window",
+        buffer = event.buf,
+        silent = true,
+        nowait = true,
+      })
     end
   end,
 })
@@ -138,10 +143,9 @@ autocmd("BufEnter", {
 })
 
 if is_available "alpha-nvim" then
-  local group_name = augroup("alpha_settings", { clear = true })
   autocmd({ "User", "BufEnter" }, {
     desc = "Disable status and tablines for alpha",
-    group = group_name,
+    group = augroup("alpha_settings", { clear = true }),
     callback = function(event)
       if
         (
@@ -163,7 +167,7 @@ if is_available "alpha-nvim" then
   })
   autocmd("VimEnter", {
     desc = "Start Alpha when vim is opened with no arguments",
-    group = group_name,
+    group = augroup("alpha_autostart", { clear = true }),
     callback = function()
       local should_skip = false
       if vim.fn.argc() > 0 or vim.fn.line2byte(vim.fn.line "$") ~= -1 or not vim.o.modifiable then

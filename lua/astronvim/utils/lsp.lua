@@ -99,7 +99,7 @@ end
 ---@return boolean # Whether or not any of the clients provide the capability
 function M.has_capability(capability, filter)
   local clients = vim.lsp.get_active_clients(filter)
-  return not tbl_isempty(vim.tbl_map(function(client) return client.server_capabilities[capability] end, clients))
+  return not tbl_isempty(vim.tbl_map(function(client) return client.supports_method(capability) end, clients))
 end
 
 local function add_buffer_autocmd(augroup, bufnr, autocmds)
@@ -126,7 +126,6 @@ end
 ---@param client table The LSP client details when attaching
 ---@param bufnr number The buffer that the LSP client is attaching to
 M.on_attach = function(client, bufnr)
-  local capabilities = client.server_capabilities
   local lsp_mappings = {
     n = {
       ["<leader>ld"] = {
@@ -149,6 +148,11 @@ M.on_attach = function(client, bufnr)
     v = {},
   }
 
+  if is_available "telescope.nvim" then
+    lsp_mappings.n["<leader>lD"] =
+      { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
+  end
+
   if is_available "mason-lspconfig.nvim" then
     lsp_mappings.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" }
   end
@@ -157,7 +161,7 @@ M.on_attach = function(client, bufnr)
     lsp_mappings.n["<leader>lI"] = { "<cmd>NullLsInfo<cr>", desc = "Null-ls information" }
   end
 
-  if capabilities.codeActionProvider then
+  if client.supports_method "textDocument/codeAction" then
     lsp_mappings.n["<leader>la"] = {
       function() vim.lsp.buf.code_action() end,
       desc = "LSP code action",
@@ -165,12 +169,12 @@ M.on_attach = function(client, bufnr)
     lsp_mappings.v["<leader>la"] = lsp_mappings.n["<leader>la"]
   end
 
-  if capabilities.codeLensProvider then
+  if client.supports_method "textDocument/codeLens" then
     add_buffer_autocmd("lsp_codelens_refresh", bufnr, {
       events = { "InsertLeave", "BufEnter" },
       desc = "Refresh codelens",
       callback = function()
-        if not M.has_capability("codeLensProvider", { bufnr = bufnr }) then
+        if not M.has_capability("textDocument/codeLens", { bufnr = bufnr }) then
           del_buffer_autocmd("lsp_codelens_refresh", bufnr)
           return
         end
@@ -188,21 +192,21 @@ M.on_attach = function(client, bufnr)
     }
   end
 
-  if capabilities.declarationProvider then
+  if client.supports_method "textDocument/declaration" then
     lsp_mappings.n["gD"] = {
       function() vim.lsp.buf.declaration() end,
       desc = "Declaration of current symbol",
     }
   end
 
-  if capabilities.definitionProvider then
+  if client.supports_method "textDocument/definition" then
     lsp_mappings.n["gd"] = {
       function() vim.lsp.buf.definition() end,
       desc = "Show the definition of current symbol",
     }
   end
 
-  if capabilities.documentFormattingProvider and not tbl_contains(M.formatting.disabled, client.name) then
+  if client.supports_method "textDocument/formatting" and not tbl_contains(M.formatting.disabled, client.name) then
     lsp_mappings.n["<leader>lf"] = {
       function() vim.lsp.buf.format(M.format_opts) end,
       desc = "Format buffer",
@@ -226,7 +230,7 @@ M.on_attach = function(client, bufnr)
         events = "BufWritePre",
         desc = "autoformat on save",
         callback = function()
-          if not M.has_capability("documentFormattingProvider", { bufnr = bufnr }) then
+          if not M.has_capability("textDocument/formatting", { bufnr = bufnr }) then
             del_buffer_autocmd("lsp_auto_format", bufnr)
             return
           end
@@ -248,13 +252,13 @@ M.on_attach = function(client, bufnr)
     end
   end
 
-  if capabilities.documentHighlightProvider then
+  if client.supports_method "textDocument/documentHighlight" then
     add_buffer_autocmd("lsp_document_highlight", bufnr, {
       {
         events = { "CursorHold", "CursorHoldI" },
         desc = "highlight references when cursor holds",
         callback = function()
-          if not M.has_capability("documentHighlightProvider", { bufnr = bufnr }) then
+          if not M.has_capability("textDocument/documentHighlight", { bufnr = bufnr }) then
             del_buffer_autocmd("lsp_document_highlight", bufnr)
             return
           end
@@ -269,21 +273,21 @@ M.on_attach = function(client, bufnr)
     })
   end
 
-  if capabilities.hoverProvider then
+  if client.supports_method "textDocument/hover" then
     lsp_mappings.n["K"] = {
       function() vim.lsp.buf.hover() end,
       desc = "Hover symbol details",
     }
   end
 
-  if capabilities.implementationProvider then
+  if client.supports_method "textDocument/implementation" then
     lsp_mappings.n["gI"] = {
       function() vim.lsp.buf.implementation() end,
       desc = "Implementation of current symbol",
     }
   end
 
-  if capabilities.referencesProvider then
+  if client.supports_method "textDocument/references" then
     lsp_mappings.n["gr"] = {
       function() vim.lsp.buf.references() end,
       desc = "References of current symbol",
@@ -294,32 +298,32 @@ M.on_attach = function(client, bufnr)
     }
   end
 
-  if capabilities.renameProvider then
+  if client.supports_method "textDocument/rename" then
     lsp_mappings.n["<leader>lr"] = {
       function() vim.lsp.buf.rename() end,
       desc = "Rename current symbol",
     }
   end
 
-  if capabilities.signatureHelpProvider then
+  if client.supports_method "textDocument/signatureHelp" then
     lsp_mappings.n["<leader>lh"] = {
       function() vim.lsp.buf.signature_help() end,
       desc = "Signature help",
     }
   end
 
-  if capabilities.typeDefinitionProvider then
+  if client.supports_method "textDocument/typeDefinition" then
     lsp_mappings.n["gT"] = {
       function() vim.lsp.buf.type_definition() end,
       desc = "Definition of current type",
     }
   end
 
-  if capabilities.workspaceSymbolProvider then
+  if client.supports_method "workspace/symbol" then
     lsp_mappings.n["<leader>lG"] = { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols" }
   end
 
-  if capabilities.semanticTokensProvider and vim.lsp.semantic_tokens then
+  if client.supports_method "textDocument/semanticTokens" and vim.lsp.semantic_tokens then
     lsp_mappings.n["<leader>uY"] = {
       function() require("astronvim.utils.ui").toggle_buffer_semantic_tokens(bufnr) end,
       desc = "Toggle LSP semantic highlight (buffer)",
