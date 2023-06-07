@@ -98,8 +98,10 @@ end
 ---               - name (string): Only return clients with the given name
 ---@return boolean # Whether or not any of the clients provide the capability
 function M.has_capability(capability, filter)
-  local clients = vim.lsp.get_active_clients(filter)
-  return not tbl_isempty(vim.tbl_map(function(client) return client.supports_method(capability) end, clients))
+  for _, client in ipairs(vim.lsp.get_active_clients(filter)) do
+    if client.supports_method(capability) then return true end
+  end
+  return false
 end
 
 local function add_buffer_autocmd(augroup, bufnr, autocmds)
