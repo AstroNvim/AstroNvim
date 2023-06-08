@@ -20,7 +20,7 @@ M.on_load = function(data)
   local new_bufnrs = {}
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     local bufname = vim.api.nvim_buf_get_name(bufnr)
-    if bufname and bufname ~= "" then new_bufnrs[data.bufnrs[bufname]] = bufnr end
+    if bufname and data.bufnrs[bufname] then new_bufnrs[data.bufnrs[bufname]] = bufnr end
   end
   -- build new tab scoped buffer lists
   for tabpage, tabs in pairs(data.tabs) do

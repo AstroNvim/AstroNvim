@@ -49,15 +49,17 @@ local options = astronvim.user_opts("options", {
     writebackup = false, -- Disable making a backup before overwriting a file
   },
   g = {
-    highlighturl_enabled = true, -- highlight URLs by default
     mapleader = " ", -- set leader key
+    maplocalleader = ",", -- set default local leader key
+    -- AstroNvim specific global options
     autoformat_enabled = true, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled)
-    codelens_enabled = true, -- enable or disable automatic codelens refreshing for lsp that support it
-    lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signatureHelp)
-    cmp_enabled = true, -- enable completion at start
     autopairs_enabled = true, -- enable autopairs at start
+    cmp_enabled = true, -- enable completion at start
+    codelens_enabled = true, -- enable or disable automatic codelens refreshing for lsp that support it
     diagnostics_mode = 3, -- set the visibility of diagnostics in the UI (0=off, 1=only show in status line, 2=virtual text off, 3=all on)
+    highlighturl_enabled = true, -- highlight URLs by default
     icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
+    lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signatureHelp)
     ui_notifications_enabled = true, -- disable notifications when toggling UI elements
   },
   t = vim.t.bufs and vim.t.bufs or { bufs = vim.api.nvim_list_bufs() }, -- initialize buffers for the current tab
