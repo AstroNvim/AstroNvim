@@ -69,13 +69,13 @@ maps.n["<leader>bc"] =
 maps.n["<leader>bC"] = { function() require("astronvim.utils.buffer").close_all() end, desc = "Close all buffers" }
 maps.n["<leader>bb"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
+    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
   end,
   desc = "Select buffer from tabline",
 }
 maps.n["<leader>bd"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(
+    require("astronvim.utils.status.heirline").buffer_picker(
       function(bufnr) require("astronvim.utils.buffer").close(bufnr) end
     )
   end,
@@ -94,7 +94,7 @@ maps.n["<leader>bsi"] = { function() require("astronvim.utils.buffer").sort "buf
 maps.n["<leader>bsm"] = { function() require("astronvim.utils.buffer").sort "modified" end, desc = "By modification" }
 maps.n["<leader>b\\"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
+    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
       vim.cmd.split()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
@@ -103,7 +103,7 @@ maps.n["<leader>b\\"] = {
 }
 maps.n["<leader>b|"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
+    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
       vim.cmd.vsplit()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
