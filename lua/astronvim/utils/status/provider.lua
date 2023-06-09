@@ -309,6 +309,18 @@ function M.file_encoding(opts)
   end
 end
 
+--- A provider function for showing the current file format
+---@param opts? table options passed to the stylize function
+---@return function  # the function for outputting the file format
+-- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.file_format() }
+-- @see astronvim.utils.status.utils.stylize
+function M.file_format(opts)
+  return function(self)
+    local buf_format = vim.bo[self and self.bufnr or 0].fileformat
+    return status_utils.stylize(string.upper(buf_format ~= "" and buf_format or vim.o.fileformat), opts)
+  end
+end
+
 --- Get a unique filepath between all buffers
 ---@param opts? table options for function to get the buffer name, a buffer number, max length, and options passed to the stylize function
 ---@return function # path to file that uniquely identifies each buffer
