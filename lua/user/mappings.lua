@@ -12,23 +12,28 @@ return {
     -- quick save
     -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
     -- NeoTest
-      ["<leader>T"] = { "Tests" },
-      ["<leader>Tn"] = {
-        function() require("neotest").run.run() end,
-        desc = "Run nearest test",
-      },
-      ["<leader>Tf"] = {
-        function() require("neotest").run.run(vim.fn.expand "%") end,
-        desc = "Run tests in current file",
-      },
-      ["<leader>To"] = {
-        function() require("neotest").output.open() end,
-        desc = "Display output of tests",
-      },
-      ["<leader>Ts"] = {
-        function() require("neotest").summary.toggle() end,
-        desc = "Open the summary window",
-      },
+    ["<leader>T"] = { "Tests" },
+    ["<leader>Tn"] = {
+      function() require("neotest").run.run() end,
+      desc = "Run nearest test",
+    },
+    ["<leader>Tf"] = {
+      function() require("neotest").run.run(vim.fn.expand "%") end,
+      desc = "Run tests in current file",
+    },
+    ["<leader>To"] = {
+      function() require("neotest").output.open() end,
+      desc = "Display output of tests",
+    },
+    ["<leader>Ts"] = {
+      function() require("neotest").summary.toggle() end,
+      desc = "Open the summary window",
+    },
+    ["<leader>E"] = { "Environment" },
+    ["<leader>Es"] = {
+      function() require("swenv.api").pick_venv() end,
+      desc = "Switch Environment",
+    },
   },
   t = {
     -- setting a mapping to false will disable it

@@ -72,6 +72,7 @@ sudo gitflow-toolkit install
 
 gh extension install dlvhdr/gh-dash
 
+pip install -U pip
 pip install flake8 black isort cmake-language-server djlint pynvim
 
 npm i -g eslint vscode-langservers-extracted markdownlint-cli write-good \
