@@ -304,8 +304,8 @@ end
 -- @see astronvim.utils.status.utils.stylize
 function M.file_encoding(opts)
   return function(self)
-    local buf_fileformat = vim.bo[self and self.bufnr or 0].fileformat
-    return status_utils.stylize(string.upper(buf_fileformat ~= "" and buf_fileformat or vim.o.fileformat), opts)
+    local buf_enc = vim.bo[self and self.bufnr or 0].fenc
+    return status_utils.stylize(string.upper(buf_enc ~= "" and buf_enc or vim.o.enc), opts)
   end
 end
 
