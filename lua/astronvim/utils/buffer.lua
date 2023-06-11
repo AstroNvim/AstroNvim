@@ -137,7 +137,7 @@ M.comparator = {}
 local fnamemodify = vim.fn.fnamemodify
 local function bufinfo(bufnr) return vim.fn.getbufinfo(bufnr)[1] end
 local function unique_path(bufnr)
-  return require("astronvim.utils.status").provider.unique_path() { bufnr = bufnr }
+  return require("astronvim.utils.status.provider").unique_path() { bufnr = bufnr }
     .. fnamemodify(bufinfo(bufnr).name, ":t")
 end
 
