@@ -213,28 +213,27 @@ function M.update_available(opts)
       return
     end
   end
-  local source = git.local_head() -- calculate current commit
-  local target -- calculate target commit
+  local update = { source = git.local_head() }
   if is_stable then -- if stable get tag commit
     local version_search = opts.version or "latest"
-    opts.version = git.latest_version(git.get_versions(version_search))
-    if not opts.version then -- continue only if stable version is found
+    update.version = git.latest_version(git.get_versions(version_search))
+    if not update.version then -- continue only if stable version is found
       vim.api.nvim_err_writeln("Error finding version: " .. version_search)
       return
     end
-    target = git.tag_commit(opts.version)
+    update.target = git.tag_commit(update.version)
   elseif opts.commit then -- if commit specified use it
-    target = git.branch_contains(opts.remote, opts.branch, opts.commit) and opts.commit or nil
+    update.target = git.branch_contains(opts.remote, opts.branch, opts.commit) and opts.commit or nil
   else -- get most recent commit
-    target = git.remote_head(opts.remote, opts.branch)
+    update.target = git.remote_head(opts.remote, opts.branch)
   end
 
-  if not source or not target then -- continue if current and target commits were found
+  if not update.source or not update.target then -- continue if current and target commits were found
     vim.api.nvim_err_writeln "Error checking for updates"
     return
-  elseif source ~= target then
+  elseif update.source ~= update.target then
     -- update available
-    return { source = source, target = target }
+    return update
   else
     return false
   end
@@ -257,7 +256,7 @@ function M.update(opts)
     not opts.skip_prompts
     and not confirm_prompt(
       ("Update available to %s\nUpdating requires a restart, continue?"):format(
-        opts.channel == "stable" and opts.version or available_update.target
+        available_update.version or available_update.target
       )
     )
   then
