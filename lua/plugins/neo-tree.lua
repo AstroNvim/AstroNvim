@@ -19,7 +19,7 @@ return {
       },
     },
     default_component_configs = {
-      indent = { padding = 0, indent_size = 1 },
+      indent = { padding = 0 },
       icon = {
         folder_closed = get_icon "FolderClosed",
         folder_open = get_icon "FolderOpen",

@@ -1,7 +1,7 @@
 return function(_, opts)
   local heirline = require "heirline"
-  local status = require "astronvim.utils.status"
-  local C = status.env.fallback_colors
+  local hl = require "astronvim.utils.status.hl"
+  local C = require("astronvim.utils.status.env").fallback_colors
   local get_hlgroup = require("astronvim.utils").get_hlgroup
 
   local function setup_colors()
@@ -25,16 +25,15 @@ return function(_, opts)
     local DiagnosticInfo = get_hlgroup("DiagnosticInfo", { fg = C.white, bg = C.dark_bg })
     local DiagnosticHint = get_hlgroup("DiagnosticHint", { fg = C.bright_yellow, bg = C.dark_bg })
     local HeirlineInactive = get_hlgroup("HeirlineInactive", { bg = nil }).bg
-      or status.hl.lualine_mode("inactive", C.dark_grey)
-    local HeirlineNormal = get_hlgroup("HeirlineNormal", { bg = nil }).bg or status.hl.lualine_mode("normal", C.blue)
-    local HeirlineInsert = get_hlgroup("HeirlineInsert", { bg = nil }).bg or status.hl.lualine_mode("insert", C.green)
-    local HeirlineVisual = get_hlgroup("HeirlineVisual", { bg = nil }).bg or status.hl.lualine_mode("visual", C.purple)
-    local HeirlineReplace = get_hlgroup("HeirlineReplace", { bg = nil }).bg
-      or status.hl.lualine_mode("replace", C.bright_red)
+      or hl.lualine_mode("inactive", C.dark_grey)
+    local HeirlineNormal = get_hlgroup("HeirlineNormal", { bg = nil }).bg or hl.lualine_mode("normal", C.blue)
+    local HeirlineInsert = get_hlgroup("HeirlineInsert", { bg = nil }).bg or hl.lualine_mode("insert", C.green)
+    local HeirlineVisual = get_hlgroup("HeirlineVisual", { bg = nil }).bg or hl.lualine_mode("visual", C.purple)
+    local HeirlineReplace = get_hlgroup("HeirlineReplace", { bg = nil }).bg or hl.lualine_mode("replace", C.bright_red)
     local HeirlineCommand = get_hlgroup("HeirlineCommand", { bg = nil }).bg
-      or status.hl.lualine_mode("command", C.bright_yellow)
+      or hl.lualine_mode("command", C.bright_yellow)
     local HeirlineTerminal = get_hlgroup("HeirlineTerminal", { bg = nil }).bg
-      or status.hl.lualine_mode("insert", HeirlineInsert)
+      or hl.lualine_mode("insert", HeirlineInsert)
 
     local colors = astronvim.user_opts("heirline.colors", {
       close_fg = Error.fg,
