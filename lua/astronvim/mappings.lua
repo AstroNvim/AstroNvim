@@ -9,7 +9,7 @@ local sections = {
   f = { desc = get_icon("Search", 1, true) .. "Find" },
   p = { desc = get_icon("Package", 1, true) .. "Packages" },
   l = { desc = get_icon("ActiveLSP", 1, true) .. "LSP" },
-  u = { desc = get_icon("Window", 1, true) .. "UI" },
+  u = { desc = get_icon("Window", 1, true) .. "UI/UX" },
   b = { desc = get_icon("Tab", 1, true) .. "Buffers" },
   bs = { desc = get_icon("Sort", 1, true) .. "Sort Buffers" },
   d = { desc = get_icon("Debugger", 1, true) .. "Debugger" },
