@@ -42,6 +42,7 @@ return {
         TypeParameter = "󰊄",
         Unit = "",
       },
+      menu = {},
     },
     enabled = vim.g.icons_enabled,
     config = require "plugins.configs.lspkind",
