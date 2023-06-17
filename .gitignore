@@ -2,7 +2,6 @@
 !colors/astronvim.lua
 docs
 ginit.vim
-lua/user
 plugin
 ftplugin
 spell
