@@ -35,7 +35,7 @@ return {
               end
             end
           end
-          return { global_settings = string.rep("../", depth):sub(1, -2) .. global_settings }
+          return { global_settings = global_settings and string.rep("../", depth):sub(1, -2) .. global_settings }
         end,
       },
       {
