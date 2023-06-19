@@ -50,7 +50,13 @@ return {
   {
     "rcarriga/nvim-notify",
     init = function() require("astronvim.utils").load_plugin_with_func("nvim-notify", vim, "notify") end,
-    opts = { on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 1000 }) end },
+    opts = {
+      on_open = function(win)
+        vim.api.nvim_win_set_config(win, { zindex = 1000 })
+        -- close notification immediately if notifications disabled
+        if not vim.g.ui_notifications_enabled then vim.api.nvim_win_close(win, true) end
+      end,
+    },
     config = require "plugins.configs.notify",
   },
   {
