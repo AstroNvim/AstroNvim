@@ -16,7 +16,7 @@ local notify = require("astronvim.utils").notify
 local function bool2str(bool) return bool and "on" or "off" end
 
 --- Toggle notifications for UI toggles
-function M.toggle_ui_notifications()
+function M.toggle_ui_notifications() -- TODO: rename to toggle_notifications in AstroNvim v4
   vim.g.ui_notifications_enabled = not vim.g.ui_notifications_enabled
   notify(string.format("Notifications %s", bool2str(vim.g.ui_notifications_enabled)))
 end
