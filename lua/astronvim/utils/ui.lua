@@ -82,8 +82,7 @@ end
 --- Toggle buffer semantic token highlighting for all language servers that support it
 ---@param bufnr? number the buffer to toggle the clients on
 function M.toggle_buffer_semantic_tokens(bufnr)
-  vim.b.semantic_tokens_enabled = vim.b.semantic_tokens_enabled == false
-
+  vim.b.semantic_tokens_enabled = not vim.b.semantic_tokens_enabled
   for _, client in ipairs(vim.lsp.get_active_clients()) do
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr or 0, client.id)
