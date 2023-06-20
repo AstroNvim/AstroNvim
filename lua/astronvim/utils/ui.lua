@@ -91,6 +91,17 @@ function M.toggle_buffer_semantic_tokens(bufnr)
   end
 end
 
+--- Toggle buffer LSP inlay hints
+---@param bufnr? number the buffer to toggle the clients on
+function M.toggle_buffer_inlay_hints(bufnr)
+  vim.b.inlay_hints_enabled = not vim.b.inlay_hints_enabled
+  -- TODO: remove check after dropping support for Neovim v0.9
+  if vim.lsp.buf.inlay_hint then
+    vim.lsp.buf.inlay_hint(bufnr or 0, vim.b.inlay_hints_enabled)
+    notify(string.format("Inlay hints %s", bool2str(vim.b.inlay_hints_enabled)))
+  end
+end
+
 --- Toggle codelens
 function M.toggle_codelens()
   vim.g.codelens_enabled = not vim.g.codelens_enabled
