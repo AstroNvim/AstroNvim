@@ -21,8 +21,19 @@ end
 ---@return boolean # The result of running `git --help`
 function git.available() return vim.fn.executable "git" == 1 end
 
+--- Check the git client version number
+---@return table|nil # A table with version information or nil if there is an error
+function git.git_version()
+  local output = git.cmd({ "--version" }, false)
+  if output then
+    local version_str = output:match "%d+%.%d+%.%d"
+    local major, min, patch = unpack(vim.tbl_map(tonumber, vim.split(version_str, "%.")))
+    return { major = major, min = min, patch = patch, str = version_str }
+  end
+end
+
 --- Check if the AstroNvim home is a git repo
----@return string|nil # ~he result of the command
+---@return string|nil # The result of the command
 function git.is_repo() return git.cmd({ "rev-parse", "--is-inside-work-tree" }, false) end
 
 --- Fetch git remote
