@@ -220,7 +220,7 @@ function M.plugin_opts(plugin)
   local lazy_plugin_avail, lazy_plugin = pcall(require, "lazy.core.plugin")
   local opts = {}
   if lazy_config_avail and lazy_plugin_avail then
-    local spec = lazy_config.plugins[plugin]
+    local spec = lazy_config.spec.plugins[plugin]
     if spec then opts = lazy_plugin.values(spec, "opts") end
   end
   return opts
