@@ -358,6 +358,10 @@ M.on_attach = function(client, bufnr)
   end
   utils.set_mappings(user_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
 
+  for id, _ in pairs(astronvim.lsp.progress) do -- clear lingering progress messages
+    if not next(vim.lsp.get_active_clients { id = tonumber(id:match "^%d+") }) then astronvim.lsp.progress[id] = nil end
+  end
+
   local on_attach_override = user_opts("lsp.on_attach", nil, false)
   conditional_func(on_attach_override, true, client, bufnr)
 end

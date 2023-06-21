@@ -7,6 +7,7 @@ plugin
 ftplugin
 spell
 .luarc.json
+neoconf.json
 
 # Global gitignore
 # ----------------
