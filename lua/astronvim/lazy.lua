@@ -1,10 +1,11 @@
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   local result
-  local lazy_cmd = { "git", "clone", "-b", "stable", "https://github.com/folke/lazy.nvim.git", lazypath }
+  local lazy_cmd =
+    { "git", "clone", "--filter=blob:none", "--branch=stable", "https://github.com/folke/lazy.nvim.git", lazypath }
   if vim.system then
     result = vim.system(lazy_cmd, { text = true }):wait()
-  else
+  else -- TODO: remove vim.fn.system usage after dropping support for Neovim v0.9
     local output = vim.fn.system(lazy_cmd)
     result = { code = vim.api.nvim_get_vvar "shell_error", signal = 0, stdout = output, stderr = output }
   end
