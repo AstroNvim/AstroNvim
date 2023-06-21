@@ -1,15 +1,16 @@
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  local result
-  local lazy_cmd =
-    { "git", "clone", "--filter=blob:none", "--branch=stable", "https://github.com/folke/lazy.nvim.git", lazypath }
-  if vim.system then
-    result = vim.system(lazy_cmd, { text = true }):wait()
-  else -- TODO: remove vim.fn.system usage after dropping support for Neovim v0.9
-    local output = vim.fn.system(lazy_cmd)
-    result = { code = vim.api.nvim_get_vvar "shell_error", signal = 0, stdout = output, stderr = output }
+  local output = vim.fn.system {
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "--branch=stable",
+    "https://github.com/folke/lazy.nvim.git",
+    lazypath,
+  }
+  if vim.api.nvim_get_vvar "shell_error" ~= 0 then
+    vim.api.nvim_err_writeln("Error cloning lazy.nvim repository...\n\n" .. output)
   end
-  if result.code ~= 0 then vim.api.nvim_err_writeln("Error cloning lazy.nvim repository...\n\n" .. result.stderr) end
   local oldcmdheight = vim.opt.cmdheight:get()
   vim.opt.cmdheight = 1
   vim.notify "Please wait while plugins are installed..."
