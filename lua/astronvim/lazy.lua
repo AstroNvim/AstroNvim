@@ -1,13 +1,11 @@
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   local result
+  local lazy_cmd = { "git", "clone", "-b", "stable", "https://github.com/folke/lazy.nvim.git", lazypath }
   if vim.system then
-    result = vim
-      .system({ "git", "clone", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath }, { text = true })
-      :wait()
+    result = vim.system(lazy_cmd, { text = true }):wait()
   else
-    local output =
-      vim.fn.system { "git", "clone", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath }
+    local output = vim.fn.system(lazy_cmd)
     result = { code = vim.api.nvim_get_vvar "shell_error", signal = 0, stdout = output, stderr = output }
   end
   if result.code ~= 0 then vim.api.nvim_err_writeln("Error cloning lazy.nvim repository...\n\n" .. result.stderr) end
