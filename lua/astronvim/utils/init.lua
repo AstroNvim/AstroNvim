@@ -310,19 +310,12 @@ end
 function M.cmd(cmd, show_error)
   if type(cmd) == "string" then cmd = vim.split(cmd, " ") end -- HACK: remove in AstroNvim v4 and require cmd to be a string[]
   if vim.fn.has "win32" == 1 then cmd = vim.list_extend({ "cmd.exe", "/C" }, cmd) end
-  local result
-  if vim.system then
-    result = vim.system(cmd, { text = true }):wait()
-  else -- TODO: remove vim.fn.system usage after dropping support for Neovim v0.9
-    local output = vim.fn.system(cmd)
-    result = { code = vim.api.nvim_get_vvar "shell_error", signal = 0, stdout = output, stderr = output }
+  local result = vim.fn.system(cmd)
+  local success = vim.api.nvim_get_vvar "shell_error" == 0
+  if not success and (show_error == nil or show_error) then
+    vim.api.nvim_err_writeln(("Error running command %s\nError message:\n%s"):format(table.concat(cmd, " "), result))
   end
-  if result.code ~= 0 and (show_error == nil or show_error) then
-    vim.api.nvim_err_writeln(
-      ("Error running command %s\nError message:\n%s"):format(table.concat(cmd, " "), result.stderr)
-    )
-  end
-  return result.code == 0 and result.stdout:gsub("[\27\155][][()#;?%d]*[A-PRZcf-ntqry=><~]", "") or nil
+  return success and result:gsub("[\27\155][][()#;?%d]*[A-PRZcf-ntqry=><~]", "") or nil
 end
 
 return M
