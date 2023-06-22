@@ -202,7 +202,7 @@ if is_available "resession.nvim" then
       local autosave = buf_utils.sessions.autosave
       if autosave and buf_utils.is_valid_session() then
         local save = require("resession").save
-        if autosave.last then save "Last Session" end
+        if autosave.last then save("Last Session", { notify = false }) end
         if autosave.cwd then save(vim.fn.getcwd(), { dir = "dirsession", notify = false }) end
       end
     end,
