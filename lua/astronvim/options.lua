@@ -59,8 +59,10 @@ local options = astronvim.user_opts("options", {
     diagnostics_mode = 3, -- set the visibility of diagnostics in the UI (0=off, 1=only show in status line, 2=virtual text off, 3=all on)
     highlighturl_enabled = true, -- highlight URLs by default
     icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
+    inlay_hints_enabled = false, -- enable or disable LSP inlay hints on startup (Neovim v0.10 only)
     lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signatureHelp)
-    ui_notifications_enabled = true, -- disable notifications when toggling UI elements
+    semantic_tokens_enabled = true, -- enable or disable LSP semantic tokens on startup
+    ui_notifications_enabled = true, -- disable notifications (TODO: rename to  notifications_enabled in AstroNvim v4)
   },
   t = vim.t.bufs and vim.t.bufs or { bufs = vim.api.nvim_list_bufs() }, -- initialize buffers for the current tab
 })

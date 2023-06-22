@@ -189,12 +189,13 @@ if is_available "resession.nvim" then
   autocmd("VimLeavePre", {
     desc = "Save session on close",
     group = augroup("resession_auto_save", { clear = true }),
-    callback = function(event)
-      local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
-      if not vim.tbl_contains({ "gitcommit", "gitrebase" }, filetype) then
+    callback = function()
+      local buf_utils = require "astronvim.utils.buffer"
+      local autosave = buf_utils.sessions.autosave
+      if autosave and buf_utils.is_valid_session() then
         local save = require("resession").save
-        save "Last Session"
-        save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+        if autosave.last then save "Last Session" end
+        if autosave.cwd then save(vim.fn.getcwd(), { dir = "dirsession", notify = false }) end
       end
     end,
   })
@@ -247,7 +248,7 @@ autocmd({ "BufReadPost", "BufNewFile" }, {
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
       utils.event "File"
-      if utils.cmd('git -C "' .. vim.fn.expand "%:p:h" .. '" rev-parse', false) then utils.event "GitFile" end
+      if utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false) then utils.event "GitFile" end
     end
   end,
 })
