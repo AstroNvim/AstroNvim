@@ -2,7 +2,12 @@ local M = {}
 
 M.on_save = function()
   -- initiate astronvim data
-  local data = { last_bufnr = vim.fn.bufnr(), bufnrs = {}, tabs = {} }
+  local data = { bufnrs = {}, tabs = {} }
+
+  local buf_utils = require "astronvim.utils.buffer"
+
+  data.current_buf = buf_utils.current_buf
+  data.last_buf = buf_utils.last_buf
 
   -- save tab scoped buffers and buffer numbers from buffer name
   for new_tabpage, tabpage in ipairs(vim.api.nvim_list_tabpages()) do
@@ -26,8 +31,14 @@ M.on_load = function(data)
   for tabpage, tabs in pairs(data.tabs) do
     vim.t[tabpage].bufs = vim.tbl_map(function(bufnr) return new_bufnrs[bufnr] end, tabs)
   end
+
+  local buf_utils = require "astronvim.utils.buffer"
+  buf_utils.current_buf = new_bufnrs[data.current_buf]
+  buf_utils.last_buf = new_bufnrs[data.last_buf]
+
   require("astronvim.utils").event "BufsUpdated"
-  if vim.fn.bufnr() ~= new_bufnrs[data.last_bufnr] then vim.cmd.b(new_bufnrs[data.last_bufnr]) end
+
+  if vim.fn.bufnr() ~= buf_utils.current_buf then vim.cmd.b(buf_utils.current_buf) end
 end
 
 return M
