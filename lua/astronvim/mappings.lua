@@ -84,6 +84,7 @@ maps.n["<leader>bd"] = {
 }
 maps.n["<leader>bl"] =
   { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
+maps.n["<leader>bp"] = { function() require("astronvim.utils.buffer").prev() end, desc = "Previous buffer" }
 maps.n["<leader>br"] =
   { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
 maps.n["<leader>bs"] = sections.bs
