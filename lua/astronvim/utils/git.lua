@@ -11,9 +11,10 @@ local git = { url = "https://github.com/" }
 local function trim_or_nil(str) return type(str) == "string" and vim.trim(str) or nil end
 
 --- Run a git command from the AstroNvim installation directory
----@param args string[] the git arguments
+---@param args string|string[] the git arguments
 ---@return string|nil # The result of the command or nil if unsuccessful
 function git.cmd(args, ...)
+  if type(args) == "string" then args = { args } end
   return require("astronvim.utils").cmd(vim.list_extend({ "git", "-C", astronvim.install.home }, args), ...)
 end
 
