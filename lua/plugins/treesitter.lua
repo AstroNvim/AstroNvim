@@ -81,14 +81,14 @@ return {
       swap = {
         enable = true,
         swap_next = {
-          [">k"] = { query = "@block.outer", desc = "Swap next block" },
-          [">f"] = { query = "@function.outer", desc = "Swap next function" },
-          [">a"] = { query = "@parameter.inner", desc = "Swap next parameter" },
+          [">K"] = { query = "@block.outer", desc = "Swap next block" },
+          [">F"] = { query = "@function.outer", desc = "Swap next function" },
+          [">A"] = { query = "@parameter.inner", desc = "Swap next parameter" },
         },
         swap_previous = {
-          ["<k"] = { query = "@block.outer", desc = "Swap previous block" },
-          ["<f"] = { query = "@function.outer", desc = "Swap previous function" },
-          ["<a"] = { query = "@parameter.inner", desc = "Swap previous parameter" },
+          ["<K"] = { query = "@block.outer", desc = "Swap previous block" },
+          ["<F"] = { query = "@function.outer", desc = "Swap previous function" },
+          ["<A"] = { query = "@parameter.inner", desc = "Swap previous parameter" },
         },
       },
     },
