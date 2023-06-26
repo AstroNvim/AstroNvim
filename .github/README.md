@@ -53,6 +53,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 ![Debugging Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dap.png)
 
 ## ✨ Features
+
 - Common plugin specifications with [AstroCommunity](https://github.com/AstroNvim/astrocommunity)
 - File explorer with [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim)
 - Autocompletion with [Cmp](https://github.com/hrsh7th/nvim-cmp)
@@ -82,7 +83,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 > <sup id="1">[1]</sup> All downloadable Nerd Fonts contain icons which are used by AstroNvim. Install the Nerd Font of your choice to your system and in your terminal emulator settings, set its font face to that Nerd Font. If you are using AstroNvim on a remote system via SSH, you do not need to install the font on the remote system.
 
-> <sup id="2">[2]</sup>  Note when using default theme: For MacOS, the default terminal does not have true color support. You will need to use [iTerm2](https://iterm2.com/) or another [terminal emulator](https://gist.github.com/XVilka/8346728#terminal-emulators) that has true color support.
+> <sup id="2">[2]</sup> Note when using default theme: For MacOS, the default terminal does not have true color support. You will need to use [iTerm2](https://iterm2.com/), [Kitty](https://sw.kovidgoyal.net/kitty/), [WezTerm](https://wezfurlong.org/wezterm/), or another [terminal emulator](https://gist.github.com/XVilka/8346728#terminal-emulators) that has true color support.
 
 ## 🛠️ Installation
 
