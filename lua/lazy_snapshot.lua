@@ -8,7 +8,7 @@ return {
   { "Shatur/neovim-session-manager", commit = "fd92e73506601a48adb843cdc0a15f2e63513754", optional = true },
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
   { "b0o/SchemaStore.nvim", commit = "4f96b7bb1a0d5973a249e654f02adf2973422dcc", optional = true },
-  { "famiu/bufdelete.nvim", commit = "8d15a0a3189b02ac7ad9dd6dc089cc62edf095c6", optional = true },
+  { "echasnovski/mini.bufremove", version = "^0.9", optional = true },
   { "folke/lazy.nvim", version = "^9", optional = true },
   { "folke/neoconf.nvim", version = "^1", optional = true },
   { "folke/neodev.nvim", version = "^2", optional = true },
