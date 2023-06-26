@@ -22,7 +22,7 @@ autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
     local buf_utils = require "astronvim.utils.buffer"
     if not buf_utils.is_valid(args.buf) then return end
     if args.buf ~= buf_utils.current_buf then
-      buf_utils.last_buf = buf_utils.current_buf
+      buf_utils.last_buf = buf_utils.is_valid(buf_utils.current_buf) and buf_utils.current_buf or nil
       buf_utils.current_buf = args.buf
     end
     if not vim.t.bufs then vim.t.bufs = {} end
