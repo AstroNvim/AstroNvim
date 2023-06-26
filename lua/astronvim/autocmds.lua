@@ -59,6 +59,17 @@ autocmd("BufDelete", {
   end,
 })
 
+autocmd("BufWritePre", {
+  desc = "When writing a buffer with no filetype, reload it so lsp kicks in.",
+  group = bufferline_group,
+  callback = function()
+    if vim.bo.buftype == '' then
+      local delay_ms = 100
+      vim.defer_fn(function() vim.cmd('edit') end, delay_ms)
+    end
+  end,
+})
+
 autocmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
   group = augroup("highlighturl", { clear = true }),
