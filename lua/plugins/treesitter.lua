@@ -59,9 +59,9 @@ return {
           ["]a"] = { query = "@parameter.outer", desc = "Next parameter start" },
         },
         goto_next_end = {
-          ["]k"] = { query = "@block.outer", desc = "Next block end" },
-          ["]f"] = { query = "@function.outer", desc = "Next function end" },
-          ["]a"] = { query = "@parameter.outer", desc = "Next parameter end" },
+          ["]K"] = { query = "@block.outer", desc = "Next block end" },
+          ["]F"] = { query = "@function.outer", desc = "Next function end" },
+          ["]A"] = { query = "@parameter.outer", desc = "Next parameter end" },
         },
         goto_previous_start = {
           ["[k"] = { query = "@block.outer", desc = "Previous block start" },
