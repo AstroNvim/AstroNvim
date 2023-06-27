@@ -32,24 +32,6 @@ return {
     incremental_selection = { enable = true },
     indent = { enable = true },
     textobjects = {
-      select = {
-        enable = true,
-        lookahead = true,
-        keymaps = {
-          ["ak"] = "@block.outer",
-          ["ik"] = "@block.inner",
-          ["ac"] = "@class.outer",
-          ["ic"] = "@class.inner",
-          ["a?"] = "@conditional.outer",
-          ["i?"] = "@conditional.inner",
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-          ["al"] = "@loop.outer",
-          ["il"] = "@loop.inner",
-          ["aa"] = "@parameter.outer",
-          ["ia"] = "@parameter.inner",
-        },
-      },
       move = {
         enable = true,
         set_jumps = true,
