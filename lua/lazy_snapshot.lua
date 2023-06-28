@@ -5,7 +5,7 @@ return {
   { "MunifTanjim/nui.nvim", version = "^0.1", optional = true },
   { "NMAC427/guess-indent.nvim", commit = "b8ae749fce17aa4c267eec80a6984130b94f80b2", optional = true },
   { "NvChad/nvim-colorizer.lua", commit = "dde3084106a70b9a79d48f426f6d6fec6fd203f7", optional = true },
-  { "Shatur/neovim-session-manager", commit = "bb47cab66c385bd76e561365b361b3478cffcee4", optional = true },
+  { "Shatur/neovim-session-manager", commit = "51827268c5ee56567b7033af9ed547ab704553b9", optional = true },
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
   { "b0o/SchemaStore.nvim", commit = "7322390c9abff6f137774d9e04bddb3cd725afd1", optional = true },
   { "echasnovski/mini.ai", version = "^0.9", optional = true },
