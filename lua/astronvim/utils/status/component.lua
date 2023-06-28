@@ -196,8 +196,7 @@ function M.git_branch(opts)
         end
       end,
     },
-    update = { "User", pattern = "GitSignsUpdate" },
-    init = init.update_events { "BufEnter" },
+    update = { "User", pattern = { "GitSignsUpdate", "AstroGitFile" } },
   }, opts)
   return M.builder(status_utils.setup_providers(opts, { "git_branch" }))
 end
@@ -222,7 +221,6 @@ function M.git_diff(opts)
     },
     surround = { separator = "left", color = "git_diff_bg", condition = condition.git_changed },
     update = { "User", pattern = "GitSignsUpdate" },
-    init = init.update_events { "BufEnter" },
   }, opts)
   return M.builder(status_utils.setup_providers(opts, { "added", "changed", "removed" }, function(p_opts, p)
     local out = status_utils.build_provider(p_opts, p)
