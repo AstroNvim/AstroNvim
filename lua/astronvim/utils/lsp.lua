@@ -344,7 +344,7 @@ M.on_attach = function(client, bufnr)
     ) and vim.lsp.semantic_tokens
   then
     if vim.b.semantic_tokens_enabled == nil then vim.b.semantic_tokens_enabled = vim.g.semantic_tokens_enabled end
-    vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr, client.id)
+    if not vim.g.semantic_tokens_enabled then vim.lsp.semantic_tokens["stop"](bufnr, client.id) end
     lsp_mappings.n["<leader>uY"] = {
       function() require("astronvim.utils.ui").toggle_buffer_semantic_tokens(bufnr) end,
       desc = "Toggle LSP semantic highlight (buffer)",
