@@ -1,7 +1,7 @@
 return {
   "nvim-lua/plenary.nvim",
+  "echasnovski/mini.bufremove",
   { "AstroNvim/astrotheme", opts = { plugins = { ["dashboard-nvim"] = true } } },
-  { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
   { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
   { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "plugins.configs.guess-indent" },
   { -- TODO: REMOVE neovim-session-manager with AstroNvim v4
@@ -14,15 +14,36 @@ return {
     "stevearc/resession.nvim",
     enabled = vim.g.resession_enabled == true,
     opts = {
-      buf_filter = function(bufnr) return require("astronvim.utils.buffer").is_valid(bufnr) end,
+      buf_filter = function(bufnr) return require("astronvim.utils.buffer").is_restorable(bufnr) end,
       tab_buf_filter = function(tabpage, bufnr) return vim.tbl_contains(vim.t[tabpage].bufs, bufnr) end,
       extensions = { astronvim = {} },
     },
   },
-  { "s1n7ax/nvim-window-picker", opts = { use_winbar = "smart" } },
+  {
+    "s1n7ax/nvim-window-picker",
+    name = "window-picker",
+    opts = { picker_config = { statusline_winbar_picker = { use_winbar = "smart" } } },
+  },
   {
     "mrjones2014/smart-splits.nvim",
     opts = { ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" }, ignored_buftypes = { "nofile" } },
+  },
+  {
+    "echasnovski/mini.ai",
+    event = { "User AstroFile", "InsertEnter" },
+    dependencies = "nvim-treesitter/nvim-treesitter-textobjects",
+    opts = function()
+      local treesitter = require("mini.ai").gen_spec.treesitter
+      return {
+        n_lines = 500,
+        custom_textobjects = {
+          c = treesitter { a = "@class.outer", i = "@class.inner" },
+          f = treesitter { a = "@function.outer", i = "@function.inner" },
+          k = treesitter { a = "@block.outer", i = "@block.inner" },
+          o = treesitter { a = { "@conditional.outer", "@loop.outer" }, i = { "@conditional.inner", "@loop.inner" } },
+        },
+      }
+    end,
   },
   {
     "windwp/nvim-autopairs",

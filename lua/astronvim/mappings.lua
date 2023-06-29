@@ -1,3 +1,4 @@
+-- TODO: replace <leader> to <Leader> everywhere in AstroNvim v4 to match vimdoc
 local utils = require "astronvim.utils"
 local get_icon = utils.get_icon
 local is_available = utils.is_available
@@ -83,6 +84,7 @@ maps.n["<leader>bd"] = {
 }
 maps.n["<leader>bl"] =
   { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
+maps.n["<leader>bp"] = { function() require("astronvim.utils.buffer").prev() end, desc = "Previous buffer" }
 maps.n["<leader>br"] =
   { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
 maps.n["<leader>bs"] = sections.bs
@@ -114,6 +116,23 @@ maps.n["<leader>b|"] = {
 -- Navigate tabs
 maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
 maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
+
+-- mini.ai
+if is_available "mini.ai" then
+  local a_maps = {
+    [" "] = "around whitespace",
+    ["?"] = "around user prompt",
+    _ = "around underscore",
+    a = "around argument",
+    c = "around class",
+    f = "around function",
+    k = "around block",
+    o = "around conditional or loop",
+    q = "around quote `, \", '",
+  }
+  maps.o = { a = a_maps, i = vim.tbl_map(function(m) return m:gsub("^around", "inside") end, a_maps) }
+  maps.x = vim.deepcopy(maps.o)
+end
 
 -- Alpha
 if is_available "alpha-nvim" then
@@ -336,7 +355,7 @@ if is_available "nvim-dap" then
   -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
   maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
   maps.n["<F17>"] = { function() require("dap").terminate() end, desc = "Debugger: Stop" } -- Shift+F5
-  maps.n["<F21>"] = {
+  maps.n["<F21>"] = { -- Shift+F9
     function()
       vim.ui.input({ prompt = "Condition: " }, function(condition)
         if condition then require("dap").set_breakpoint(condition) end
