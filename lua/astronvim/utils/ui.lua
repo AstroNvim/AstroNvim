@@ -82,13 +82,23 @@ end
 --- Toggle buffer semantic token highlighting for all language servers that support it
 ---@param bufnr? number the buffer to toggle the clients on
 function M.toggle_buffer_semantic_tokens(bufnr)
-  vim.b.semantic_tokens_enabled = vim.b.semantic_tokens_enabled == false
-
+  vim.b.semantic_tokens_enabled = not vim.b.semantic_tokens_enabled
   for _, client in ipairs(vim.lsp.get_active_clients()) do
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr or 0, client.id)
       notify(string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b.semantic_tokens_enabled)))
     end
+  end
+end
+
+--- Toggle buffer LSP inlay hints
+---@param bufnr? number the buffer to toggle the clients on
+function M.toggle_buffer_inlay_hints(bufnr)
+  vim.b.inlay_hints_enabled = not vim.b.inlay_hints_enabled
+  -- TODO: remove check after dropping support for Neovim v0.9
+  if vim.lsp.buf.inlay_hint then
+    vim.lsp.buf.inlay_hint(bufnr or 0, vim.b.inlay_hints_enabled)
+    notify(string.format("Inlay hints %s", bool2str(vim.b.inlay_hints_enabled)))
   end
 end
 

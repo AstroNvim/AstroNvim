@@ -10,12 +10,67 @@
 
 local M = {}
 
+local utils = require "astronvim.utils"
+
+--- Placeholders for keeping track of most recent and previous buffer
+M.current_buf, M.last_buf = nil, nil
+
+-- TODO: Add user configuration table for this once resession is default
+--- Configuration table for controlling session options
+M.sessions = {
+  autosave = {
+    last = true, -- auto save last session
+    cwd = true, -- auto save session for each working directory
+  },
+  ignore = {
+    dirs = {}, -- working directories to ignore sessions in
+    filetypes = { "gitcommit", "gitrebase" }, -- filetypes to ignore sessions
+    buftypes = {}, -- buffer types to ignore sessions
+  },
+}
+
 --- Check if a buffer is valid
 ---@param bufnr number The buffer to check
 ---@return boolean # Whether the buffer is valid or not
 function M.is_valid(bufnr)
   if not bufnr or bufnr < 1 then return false end
   return vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted
+end
+
+--- Check if a buffer can be restored
+---@param bufnr number The buffer to check
+---@return boolean # Whether the buffer is restorable or not
+function M.is_restorable(bufnr)
+  if not M.is_valid(bufnr) or vim.api.nvim_get_option_value("bufhidden", { buf = bufnr }) ~= "" then return false end
+
+  local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
+  if buftype == "" then
+    -- Normal buffer, check if it listed.
+    if not vim.api.nvim_get_option_value("buflisted", { buf = bufnr }) then return false end
+    -- Check if it has a filename.
+    if vim.api.nvim_buf_get_name(bufnr) == "" then return false end
+  end
+
+  if
+    vim.tbl_contains(M.sessions.ignore.filetypes, vim.api.nvim_get_option_value("filetype", { buf = bufnr }))
+    or vim.tbl_contains(M.sessions.ignore.buftypes, vim.api.nvim_get_option_value("buftype", { buf = bufnr }))
+  then
+    return false
+  end
+  return true
+end
+
+--- Check if the current buffers form a valid session
+---@return boolean # Whether the current session of buffers is a valid session
+function M.is_valid_session()
+  local cwd = vim.fn.getcwd()
+  for _, dir in ipairs(M.sessions.ignore.dirs) do
+    if vim.fn.expand(dir) == cwd then return false end
+  end
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if M.is_restorable(bufnr) then return true end
+  end
+  return false
 end
 
 --- Move the current buffer tab n places in the bufferline
@@ -41,7 +96,7 @@ function M.move(n)
     end
   end
   vim.t.bufs = bufs -- set buffers
-  require("astronvim.utils").event "BufsUpdated"
+  utils.event "BufsUpdated"
   vim.cmd.redrawtabline() -- redraw tabline
 end
 
@@ -61,13 +116,39 @@ end
 ---@param tabnr number The position of the buffer to navigate to
 function M.nav_to(tabnr) vim.cmd.b(vim.t.bufs[tabnr]) end
 
+--- Navigate to the previously used buffer
+function M.prev()
+  if vim.fn.bufnr() == M.current_buf then
+    if M.last_buf then
+      vim.cmd.b(M.last_buf)
+    else
+      utils.notify "No previous buffer found"
+    end
+  else
+    utils.notify "Must be in a main editor window to switch the window buffer"
+  end
+end
+
 --- Close a given buffer
 ---@param bufnr? number The buffer to close or the current buffer if not provided
 ---@param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
 function M.close(bufnr, force)
-  if force == nil then force = false end
-  if require("astronvim.utils").is_available "bufdelete.nvim" then
-    require("bufdelete").bufdelete(bufnr, force)
+  if utils.is_available "mini.bufremove" then
+    if not force and vim.api.nvim_get_option_value("modified", { buf = bufnr }) then
+      local bufname = vim.fn.expand "%"
+      local empty = bufname == ""
+      if empty then bufname = "Untitled" end
+      local confirm = vim.fn.confirm(('Save changes to "%s"?'):format(bufname), "&Yes\n&No\n&Cancel", 1, "Question")
+      if confirm == 1 then
+        if empty then return end
+        vim.cmd.write()
+      elseif confirm == 2 then
+        force = true
+      else
+        return
+      end
+    end
+    require("mini.bufremove").delete(bufnr, force)
   else
     vim.cmd((force and "bd!" or "confirm bd") .. (bufnr == nil and "" or bufnr))
   end
@@ -115,7 +196,7 @@ function M.sort(compare_func, skip_autocmd)
     local bufs = vim.t.bufs
     table.sort(bufs, compare_func)
     vim.t.bufs = bufs
-    if not skip_autocmd then require("astronvim.utils").event "BufsUpdated" end
+    if not skip_autocmd then utils.event "BufsUpdated" end
     vim.cmd.redrawtabline()
     return true
   end
@@ -126,7 +207,7 @@ end
 function M.close_tab()
   if #vim.api.nvim_list_tabpages() > 1 then
     vim.t.bufs = nil
-    require("astronvim.utils").event "BufsUpdated"
+    utils.event "BufsUpdated"
     vim.cmd.tabclose()
   end
 end

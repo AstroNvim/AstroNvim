@@ -24,7 +24,23 @@ function M.check()
   end
 
   local programs = {
-    { cmd = { "git" }, type = "error", msg = "Used for core functionality such as updater and plugin management" },
+    {
+      cmd = { "git" },
+      type = "error",
+      msg = "Used for core functionality such as updater and plugin management",
+      extra_check = function(program)
+        local git_version = require("astronvim.utils.git").git_version()
+        if git_version then
+          if git_version.major < 2 or (git_version.major == 2 and git_version.min < 19) then
+            program.msg = ("Git %s installed, >= 2.19.0 is required"):format(git_version.str)
+          else
+            return true
+          end
+        else
+          program.msg = "Unable to validate git version"
+        end
+      end,
+    },
     {
       cmd = { "xdg-open", "open", "explorer" },
       type = "warn",
@@ -43,7 +59,7 @@ function M.check()
     for _, cmd in ipairs(program.cmd) do
       if vim.fn.executable(cmd) == 1 then
         name = cmd
-        found = true
+        if not program.extra_check or program.extra_check(program) then found = true end
         break
       end
     end
