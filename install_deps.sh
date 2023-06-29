@@ -11,17 +11,17 @@ fi
 if [ "$platform" = "linux" ]; then
 	distro=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
 	echo "Determined platform: $distro"
-	if [ "$distro" = "Garuda Linux" ]; then
+	if [[ "$distro" = "Garuda Linux" || "$distro" = "EndeavourOS" ]]; then
 		sudo pacman -Syy
 		sudo pacman -Su
 		sudo pacman -S git curl nodejs python erlang elixir ruby rust lua go \
-			typescript ghc perl shellcheck ripgrep fd lazygit ncdu nvm \
-			checkmake postgresql github-cli sqlite openssl readline xz zlib gum \
+			typescript ghc perl shellcheck ripgrep fd lazygit ncdu \
+			postgresql github-cli sqlite openssl readline xz zlib gum \
 			rust-analyzer iniparser fftw ncurses base-devel espeak-ng prettier \
 			luarocks hledger libtool automake portaudio astyle shfmt cppcheck \
 			lua-language-server bash-language-server haskell-language-server gopls \
-			gradle tmux
-		yay -S rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls
+			gradle tmux python-pip npm
+		yay -S nvm checkmake rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls
 	elif [ "$distro" = "Ubuntu Linux" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
