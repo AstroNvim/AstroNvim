@@ -63,7 +63,7 @@ function M.generate_snapshot(write)
     return plugin
   end, plugins)
   if file then
-    file:write "}"
+    file:write "}\n"
     file:close()
   end
   return snapshot
