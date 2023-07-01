@@ -19,13 +19,19 @@ autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
   desc = "Update buffers when adding new buffers",
   group = bufferline_group,
   callback = function(args)
+    local buf_utils = require "astronvim.utils.buffer"
     if not vim.t.bufs then vim.t.bufs = {} end
+    if not buf_utils.is_valid(args.buf) then return end
+    if args.buf ~= buf_utils.current_buf then
+      buf_utils.last_buf = buf_utils.is_valid(buf_utils.current_buf) and buf_utils.current_buf or nil
+      buf_utils.current_buf = args.buf
+    end
     local bufs = vim.t.bufs
     if not vim.tbl_contains(bufs, args.buf) then
       table.insert(bufs, args.buf)
       vim.t.bufs = bufs
     end
-    vim.t.bufs = vim.tbl_filter(require("astronvim.utils.buffer").is_valid, vim.t.bufs)
+    vim.t.bufs = vim.tbl_filter(buf_utils.is_valid, vim.t.bufs)
     astroevent "BufsUpdated"
   end,
 })
@@ -33,11 +39,13 @@ autocmd("BufDelete", {
   desc = "Update buffers when deleting buffers",
   group = bufferline_group,
   callback = function(args)
+    local removed
     for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
       local bufs = vim.t[tab].bufs
       if bufs then
         for i, bufnr in ipairs(bufs) do
           if bufnr == args.buf then
+            removed = true
             table.remove(bufs, i)
             vim.t[tab].bufs = bufs
             break
@@ -46,7 +54,7 @@ autocmd("BufDelete", {
       end
     end
     vim.t.bufs = vim.tbl_filter(require("astronvim.utils.buffer").is_valid, vim.t.bufs)
-    astroevent "BufsUpdated"
+    if removed then astroevent "BufsUpdated" end
     vim.cmd.redrawtabline()
   end,
 })
@@ -194,7 +202,7 @@ if is_available "resession.nvim" then
       local autosave = buf_utils.sessions.autosave
       if autosave and buf_utils.is_valid_session() then
         local save = require("resession").save
-        if autosave.last then save "Last Session" end
+        if autosave.last then save("Last Session", { notify = false }) end
         if autosave.cwd then save(vim.fn.getcwd(), { dir = "dirsession", notify = false }) end
       end
     end,
@@ -242,13 +250,16 @@ autocmd({ "VimEnter", "ColorScheme" }, {
   end,
 })
 
-autocmd({ "BufReadPost", "BufNewFile" }, {
+autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
   desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
   group = augroup("file_user_events", { clear = true }),
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
       utils.event "File"
-      if utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false) then utils.event "GitFile" end
+      if utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false) then
+        utils.event "GitFile"
+        vim.api.nvim_del_augroup_by_name "file_user_events"
+      end
     end
   end,
 })
