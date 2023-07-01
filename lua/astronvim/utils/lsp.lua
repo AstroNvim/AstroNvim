@@ -292,8 +292,8 @@ M.on_attach = function(client, bufnr)
   if client.supports_method "textDocument/inlayHint" then
     if vim.b.inlay_hints_enabled == nil then vim.b.inlay_hints_enabled = vim.g.inlay_hints_enabled end
     -- TODO: remove check after dropping support for Neovim v0.9
-    if vim.lsp.buf.inlay_hint then
-      if vim.b.inlay_hints_enabled then vim.lsp.buf.inlay_hint(bufnr, true) end
+    if vim.lsp.inlay_hint then
+      if vim.b.inlay_hints_enabled then vim.lsp.inlay_hint(bufnr, true) end
       lsp_mappings.n["<leader>uH"] = {
         function() require("astronvim.utils.ui").toggle_buffer_inlay_hints(bufnr) end,
         desc = "Toggle LSP inlay hints (buffer)",
