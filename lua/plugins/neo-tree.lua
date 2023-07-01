@@ -1,4 +1,6 @@
 local get_icon = require("astronvim.utils").get_icon
+local utils = require "astronvim.utils"
+local is_available = utils.is_available
 return {
   "nvim-neo-tree/neo-tree.nvim",
   dependencies = { "MunifTanjim/nui.nvim" },
@@ -99,7 +101,7 @@ return {
           vim.fn.setreg("+", result.val)
         end
       end,
-      find_in_dir = function(state) 
+      find_in_dir = function(state)
         local node = state.tree:get_node()
         local path = node:get_id()
         local dir_path = ""
@@ -109,8 +111,12 @@ return {
           dir_path = vim.fn.fnamemodify(path, ":h")
         end
 
-        require("telescope.builtin").find_files({ cwd = dir_path })
-      end
+        if is_available "telescope.nvim" then
+          require("telescope.builtin").find_files { cwd = dir_path }
+        else
+          require("astronvim.utils").notify("Telescope must be installed", vim.log.levels.INFO)
+        end
+      end,
     },
     window = {
       width = 30,
