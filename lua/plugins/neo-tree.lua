@@ -99,6 +99,18 @@ return {
           vim.fn.setreg("+", result.val)
         end
       end,
+      find_in_dir = function(state) 
+        local node = state.tree:get_node()
+        local path = node:get_id()
+        local dir_path = ""
+        if node.type == "directory" then
+          dir_path = path
+        else
+          dir_path = vim.fn.fnamemodify(path, ":h")
+        end
+
+        require("telescope.builtin").find_files({ cwd = dir_path })
+      end
     },
     window = {
       width = 30,
@@ -111,6 +123,7 @@ return {
         h = "parent_or_close",
         l = "child_or_open",
         Y = "copy_selector",
+        F = "find_in_dir",
       },
     },
     filesystem = {
