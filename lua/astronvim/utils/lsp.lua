@@ -368,7 +368,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if not vim.tbl_isempty(lsp_mappings.v) then
-    lsp_mappings.v["<leader>l"] = { desc = (vim.g.icons_enabled and " " or "") .. "LSP" }
+    lsp_mappings.v["<leader>l"] = { desc = utils.get_icon("ActiveLSP", 1, true) .. "LSP" }
   end
   utils.set_mappings(user_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
 
