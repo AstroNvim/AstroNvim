@@ -1,6 +1,7 @@
 return {
   {
     "L3MON4D3/LuaSnip",
+    -- `make` is usually not available on Windows systems, so skip the build in case of Windows.
     build = vim.fn.has "win32" ~= 1
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
       or nil,
