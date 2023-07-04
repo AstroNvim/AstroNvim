@@ -117,23 +117,6 @@ maps.n["<leader>b|"] = {
 maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
 maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
 
--- mini.ai
-if is_available "mini.ai" then
-  local a_maps = {
-    [" "] = "around whitespace",
-    ["?"] = "around user prompt",
-    _ = "around underscore",
-    a = "around argument",
-    c = "around class",
-    f = "around function",
-    k = "around block",
-    o = "around conditional or loop",
-    q = "around quote `, \", '",
-  }
-  maps.o = { a = a_maps, i = vim.tbl_map(function(m) return m:gsub("^around", "inside") end, a_maps) }
-  maps.x = vim.deepcopy(maps.o)
-end
-
 -- Alpha
 if is_available "alpha-nvim" then
   maps.n["<leader>h"] = {
