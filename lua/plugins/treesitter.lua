@@ -26,6 +26,7 @@ return {
     return {
       autotag = { enable = true },
       context_commentstring = { enable = true, enable_autocmd = false },
+      ensure_installed = { "markdown" },
       highlight = {
         enable = true,
         disable = function(_, bufnr) return vim.api.nvim_buf_line_count(bufnr) > 10000 end,
