@@ -144,6 +144,8 @@ function M.notify(msg, type, opts)
         on_open = function(win)
           vim.bo[vim.api.nvim_win_get_buf(win)].filetype = "markdown"
           vim.wo[win].spell = false
+          vim.wo[win].conceallevel = 3
+          vim.wo[win].concealcursor = "n"
         end,
       }, opts)
     )
