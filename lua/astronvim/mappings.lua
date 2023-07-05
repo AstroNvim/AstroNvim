@@ -312,10 +312,9 @@ if is_available "toggleterm.nvim" then
       function()
         local worktree = vim.g.git_worktrees
           and require("astronvim.utils.git").file_worktree(vim.fn.expand "%", vim.g.git_worktrees)
-        local lazygit_cmd = worktree
-            and ("lazygit --work-tree=" .. worktree.toplevel .. " --git-dir=" .. worktree.gitdir)
-          or "lazygit"
-        utils.toggle_term_cmd(lazygit_cmd)
+        utils.toggle_term_cmd(
+          "lazygit" .. (worktree and (" --work-tree=%s --git-dir=%s"):format(worktree.toplevel, worktree.gitdir) or "")
+        )
       end,
       desc = "ToggleTerm lazygit",
     }
