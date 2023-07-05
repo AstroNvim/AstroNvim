@@ -308,8 +308,28 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>t"] = sections.t
   if vim.fn.executable "lazygit" == 1 then
     maps.n["<leader>g"] = sections.g
-    maps.n["<leader>gg"] = { function() utils.toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
-    maps.n["<leader>tl"] = { function() utils.toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+    maps.n["<leader>gg"] = {
+      function()
+        local worktree = vim.g.git_worktrees
+          and require("astronvim.utils.git").file_worktree(vim.fn.expand "%", vim.g.git_worktrees)
+        local lazygit_cmd = worktree
+            and ("lazygit --work-tree=" .. worktree.toplevel .. " --git-dir=" .. worktree.gitdir)
+          or "lazygit"
+        utils.toggle_term_cmd(lazygit_cmd)
+      end,
+      desc = "ToggleTerm lazygit",
+    }
+    maps.n["<leader>tl"] = {
+      function()
+        local worktree = vim.g.git_worktrees
+          and require("astronvim.utils.git").file_worktree(vim.fn.expand "%", vim.g.git_worktrees)
+        local lazygit_cmd = worktree
+            and ("lazygit --work-tree=" .. worktree.toplevel .. " --git-dir=" .. worktree.gitdir)
+          or "lazygit"
+        utils.toggle_term_cmd(lazygit_cmd)
+      end,
+      desc = "ToggleTerm lazygit",
+    }
   end
   if vim.fn.executable "node" == 1 then
     maps.n["<leader>tn"] = { function() utils.toggle_term_cmd "node" end, desc = "ToggleTerm node" }
