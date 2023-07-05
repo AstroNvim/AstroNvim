@@ -142,10 +142,11 @@ function M.notify(msg, type, opts)
       M.extend_tbl({
         title = "AstroNvim",
         on_open = function(win)
-          vim.bo[vim.api.nvim_win_get_buf(win)].filetype = "markdown"
+          pcall(require, "nvim-treesitter")
           vim.wo[win].spell = false
           vim.wo[win].conceallevel = 3
           vim.wo[win].concealcursor = "n"
+          pcall(vim.treesitter.start, vim.api.nvim_win_get_buf(win), "markdown")
         end,
       }, opts)
     )
