@@ -186,4 +186,27 @@ function git.pretty_changelog(commits)
   return changelog
 end
 
+--- Get the first worktree that a file belongs to
+---@param file string the file to check
+---@param worktrees table<string, string>[] an array like table of worktrees with entries `toplevel` and `gitdir`
+---@return table<string, string>|nil # a table specifying the `toplevel` and `gitdir` of a worktree or nil if not found
+function git.file_worktree(file, worktrees)
+  for _, worktree in ipairs(worktrees) do
+    if
+      require("astronvim.utils").cmd({
+        "git",
+        "--work-tree",
+        worktree.toplevel,
+        "--git-dir",
+        worktree.gitdir,
+        "ls-files",
+        "--error-unmatch",
+        file,
+      }, false)
+    then
+      return worktree
+    end
+  end
+end
+
 return git
