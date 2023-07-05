@@ -1,5 +1,6 @@
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9
+if not luv.fs_stat(lazypath) then
   local output = vim.fn.system {
     "git",
     "clone",
