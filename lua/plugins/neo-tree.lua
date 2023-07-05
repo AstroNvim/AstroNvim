@@ -97,7 +97,7 @@ return {
           vim.api.nvim_echo(messages, false, {})
           local result = results[vim.fn.getcharstr()]
           if result and result.val and result.val ~= "" then
-            vim.notify("Copied: " .. result.val)
+            utils.notify(("Copied: `%s`"):format(result.val))
             vim.fn.setreg("+", result.val)
           end
         end,
