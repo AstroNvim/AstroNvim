@@ -139,10 +139,13 @@ function M.notify(msg, type, opts)
     vim.notify(
       msg,
       type,
-      M.extend_tbl(
-        { title = "AstroNvim", on_open = function(win) vim.bo[vim.api.nvim_win_get_buf(win)].filetype = "markdown" end },
-        opts
-      )
+      M.extend_tbl({
+        title = "AstroNvim",
+        on_open = function(win)
+          vim.bo[vim.api.nvim_win_get_buf(win)].filetype = "markdown"
+          vim.wo[win].spell = false
+        end,
+      }, opts)
     )
   end)
 end
