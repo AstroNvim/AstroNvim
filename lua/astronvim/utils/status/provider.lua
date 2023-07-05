@@ -17,6 +17,7 @@ local status_utils = require "astronvim.utils.status.utils"
 local utils = require "astronvim.utils"
 local extend_tbl = utils.extend_tbl
 local get_icon = utils.get_icon
+local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9
 
 --- A provider function for the fill string
 ---@return string # the statusline string for filling the empty space
@@ -459,7 +460,7 @@ function M.lsp_progress(opts)
   local spinner = utils.get_spinner("LSPLoading", 1) or { "" }
   return function()
     local _, Lsp = next(astronvim.lsp.progress)
-    return status_utils.stylize(Lsp and (spinner[math.floor(vim.loop.hrtime() / 12e7) % #spinner + 1] .. table.concat({
+    return status_utils.stylize(Lsp and (spinner[math.floor(luv.hrtime() / 12e7) % #spinner + 1] .. table.concat({
       Lsp.title or "",
       Lsp.message or "",
       Lsp.percentage and "(" .. Lsp.percentage .. "%)" or "",

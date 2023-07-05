@@ -2,6 +2,7 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 local cmd = vim.api.nvim_create_user_command
 local namespace = vim.api.nvim_create_namespace
+local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9
 
 local utils = require "astronvim.utils"
 local is_available = utils.is_available
@@ -217,7 +218,7 @@ if is_available "neo-tree.nvim" then
       if package.loaded["neo-tree"] then
         vim.api.nvim_del_augroup_by_name "neotree_start"
       else
-        local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+        local stats = luv.fs_stat(vim.api.nvim_buf_get_name(0))
         if stats and stats.type == "directory" then
           vim.api.nvim_del_augroup_by_name "neotree_start"
           require "neo-tree"
