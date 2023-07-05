@@ -12,5 +12,6 @@ return {
       changedelete = { text = get_icon "GitSign" },
       untracked = { text = get_icon "GitSign" },
     },
+    worktrees = vim.g.git_worktrees,
   },
 }
