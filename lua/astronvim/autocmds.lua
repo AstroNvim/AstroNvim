@@ -258,9 +258,8 @@ autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
       astroevent "File"
       if
-        utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false)
-        or vim.g.git_worktrees
-          and require("astronvim.utils.git").file_worktree(vim.fn.expand "%", vim.g.git_worktrees)
+        require("astronvim.utils.git").file_worktree()
+        or utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false)
       then
         astroevent "GitFile"
         vim.api.nvim_del_augroup_by_name "file_user_events"
