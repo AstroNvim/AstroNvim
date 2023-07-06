@@ -4,7 +4,7 @@ local get_icon = utils.get_icon
 local is_available = utils.is_available
 local ui = require "astronvim.utils.ui"
 
-local maps = { i = {}, n = {}, v = {}, t = {} }
+local maps = require("astronvim.utils").empty_map_table()
 
 local sections = {
   f = { desc = get_icon("Search", 1, true) .. "Find" },
