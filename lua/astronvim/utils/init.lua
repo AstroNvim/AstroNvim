@@ -213,7 +213,7 @@ function M.alpha_button(sc, txt)
       position = "center",
       text = txt,
       shortcut = sc,
-      cursor = 5,
+      cursor = -2,
       width = 36,
       align_shortcut = "right",
       hl = "DashboardCenter",
