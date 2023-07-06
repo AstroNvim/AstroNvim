@@ -162,6 +162,8 @@ end
 --- Open a URL under the cursor with the current operating system
 ---@param path string The path of the file to open with the system opener
 function M.system_open(path)
+  -- TODO: REMOVE WHEN DROPPING NEOVIM <0.10
+  if vim.ui.open then return vim.ui.open(path) end
   local cmd
   if vim.fn.has "win32" == 1 and vim.fn.executable "explorer" == 1 then
     cmd = { "cmd.exe", "/K", "explorer" }
