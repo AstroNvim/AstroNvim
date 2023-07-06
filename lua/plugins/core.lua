@@ -29,23 +29,6 @@ return {
     opts = { ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" }, ignored_buftypes = { "nofile" } },
   },
   {
-    "echasnovski/mini.ai",
-    event = { "User AstroFile", "InsertEnter" },
-    dependencies = "nvim-treesitter/nvim-treesitter-textobjects",
-    opts = function()
-      local treesitter = require("mini.ai").gen_spec.treesitter
-      return {
-        n_lines = 500,
-        custom_textobjects = {
-          c = treesitter { a = "@class.outer", i = "@class.inner" },
-          f = treesitter { a = "@function.outer", i = "@function.inner" },
-          k = treesitter { a = "@block.outer", i = "@block.inner" },
-          o = treesitter { a = { "@conditional.outer", "@loop.outer" }, i = { "@conditional.inner", "@loop.inner" } },
-        },
-      }
-    end,
-  },
-  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     opts = {

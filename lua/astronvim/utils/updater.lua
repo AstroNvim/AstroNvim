@@ -75,7 +75,7 @@ end
 function M.version(quiet)
   local version = astronvim.install.version or git.current_version(false) or "unknown"
   if astronvim.updater.options.channel ~= "stable" then version = ("nightly (%s)"):format(version) end
-  if version and not quiet then notify("Version: " .. version) end
+  if version and not quiet then notify(("Version: *%s*"):format(version)) end
   return version
 end
 
@@ -147,7 +147,7 @@ function M.update_available(opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
     notify(
-      "git command is not available, please verify it is accessible in a command line. This may be an issue with your PATH",
+      "`git` command is not available, please verify it is accessible in a command line. This may be an issue with your `PATH`",
       vim.log.levels.ERROR
     )
     return

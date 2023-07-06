@@ -1,5 +1,6 @@
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9
+if not luv.fs_stat(lazypath) then
   local output = vim.fn.system {
     "git",
     "clone",
@@ -22,7 +23,7 @@ if not vim.loop.fs_stat(lazypath) then
       vim.cmd.bw()
       vim.opt.cmdheight = oldcmdheight
       vim.tbl_map(function(module) pcall(require, module) end, { "nvim-treesitter", "mason" })
-      require("astronvim.utils").notify "Mason is installing packages if configured, check status with :Mason"
+      require("astronvim.utils").notify "Mason is installing packages if configured, check status with `:Mason`"
     end,
   })
 end
