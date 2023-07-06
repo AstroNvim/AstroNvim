@@ -45,7 +45,10 @@ return {
         },
       },
       commands = {
-        system_open = function(state) require("astronvim.utils").system_open(state.tree:get_node():get_id()) end,
+        system_open = function(state)
+          -- TODO: just use vim.ui.open when dropping support for Neovim <0.10
+          (vim.ui.open or require("astronvim.utils").system_open)(state.tree:get_node():get_id())
+        end,
         parent_or_close = function(state)
           local node = state.tree:get_node()
           if (node.type == "directory" or node:has_children()) and node:is_expanded() then
