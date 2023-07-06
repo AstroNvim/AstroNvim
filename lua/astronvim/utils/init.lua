@@ -214,7 +214,7 @@ end
 ---@return boolean available # Whether the plugin is available
 function M.is_available(plugin)
   local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
-  return lazy_config_avail and lazy_config.plugins[plugin] ~= nil
+  return lazy_config_avail and lazy_config.spec.plugins[plugin] ~= nil
 end
 
 --- Resolve the options table for a given plugin with lazy
