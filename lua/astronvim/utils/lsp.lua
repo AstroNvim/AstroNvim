@@ -85,12 +85,6 @@ M.setup = function(server)
   end
   local opts = M.config(server)
   local setup_handler = setup_handlers[server] or setup_handlers[1]
-
-  -- HACK: set up neoconf before setting up any language servers if it's not setup
-  if not package.loaded["neoconf"] and utils.is_available "neoconf.nvim" then
-    require("neoconf").setup(utils.plugin_opts "neoconf.nvim")
-  end
-
   if not vim.tbl_contains(astronvim.lsp.skip_setup, server) and setup_handler then setup_handler(server, opts) end
 end
 
