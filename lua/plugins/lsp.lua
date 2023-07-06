@@ -37,6 +37,8 @@ return {
           end
           return { global_settings = global_settings and string.rep("../", depth):sub(1, -2) .. global_settings }
         end,
+        -- HACK: defer neoconf loading until after lspconfig is loaded but before servers are set up
+        config = function() pcall(require, "lspconfig") end, -- actual setup happens in astronvim.utils.lsp
       },
       {
         "williamboman/mason-lspconfig.nvim",
