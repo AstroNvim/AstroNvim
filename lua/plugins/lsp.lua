@@ -19,7 +19,6 @@ return {
     dependencies = {
       {
         "folke/neoconf.nvim",
-        cmd = "Neoconf",
         opts = function()
           local global_settings, file_found
           local _, depth = vim.fn.stdpath("config"):gsub("/", "")
@@ -48,6 +47,9 @@ return {
         config = require "plugins.configs.mason-lspconfig",
       },
     },
+    cmd = function(_, cmds) -- HACK: lazy load lspconfig on `:Neoconf` if neoconf is available
+      if require("astronvim.utils").is_available "neoconf.nvim" then table.insert(cmds, "Neoconf") end
+    end,
     event = "User AstroFile",
     config = require "plugins.configs.lspconfig",
   },
