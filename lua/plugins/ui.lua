@@ -57,8 +57,8 @@ return {
         if require("astronvim.utils").is_available "nvim-treesitter" then
           if not package.loaded["nvim-treesitter"] then require "nvim-treesitter" end
           vim.wo[win].conceallevel = 3
-          vim.bo[vim.api.nvim_win_get_buf(win)].filetype = "markdown"
           vim.wo[win].spell = false
+          pcall(vim.treesitter.start, vim.api.nvim_win_get_buf(win), "markdown")
         end
       end,
     },
