@@ -1,5 +1,5 @@
 return {
-  { "AstroNvim/astrotheme", version = "^1.1", optional = true },
+  { "AstroNvim/astrotheme", version = "^2", optional = true },
   { "JoosepAlviste/nvim-ts-context-commentstring", commit = "7f625207f225eea97ef7a6abe7611e556c396d2f", optional = true },
   { "L3MON4D3/LuaSnip", version = "^1", optional = true },
   { "MunifTanjim/nui.nvim", version = "^0.1", optional = true },
