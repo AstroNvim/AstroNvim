@@ -312,7 +312,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/typeDefinition" then
-    lsp_mappings.n["gT"] = {
+    lsp_mappings.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,
       desc = "Definition of current type",
     }
@@ -340,8 +340,8 @@ M.on_attach = function(client, bufnr)
     if lsp_mappings.n["<leader>lR"] then
       lsp_mappings.n["<leader>lR"][1] = function() require("telescope.builtin").lsp_references() end
     end
-    if lsp_mappings.n.gT then
-      lsp_mappings.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end
+    if lsp_mappings.n.gy then
+      lsp_mappings.n.gy[1] = function() require("telescope.builtin").lsp_type_definitions() end
     end
     if lsp_mappings.n["<leader>lG"] then
       lsp_mappings.n["<leader>lG"][1] = function()
