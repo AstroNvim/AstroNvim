@@ -2,6 +2,7 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 local cmd = vim.api.nvim_create_user_command
 local namespace = vim.api.nvim_create_namespace
+local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9
 
 local utils = require "astronvim.utils"
 local is_available = utils.is_available
@@ -93,9 +94,8 @@ autocmd("BufWinEnter", {
   desc = "Make q close help, man, quickfix, dap floats",
   group = augroup("q_close_windows", { clear = true }),
   callback = function(event)
-    local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
-    if buftype == "nofile" or filetype == "help" then
+    if vim.tbl_contains({ "help", "nofile", "quickfix" }, buftype) then
       vim.keymap.set("n", "q", "<cmd>close<cr>", {
         desc = "Close window",
         buffer = event.buf,
@@ -217,7 +217,7 @@ if is_available "neo-tree.nvim" then
       if package.loaded["neo-tree"] then
         vim.api.nvim_del_augroup_by_name "neotree_start"
       else
-        local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+        local stats = luv.fs_stat(vim.api.nvim_buf_get_name(0))
         if stats and stats.type == "directory" then
           vim.api.nvim_del_augroup_by_name "neotree_start"
           require "neo-tree"
@@ -255,9 +255,12 @@ autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
   group = augroup("file_user_events", { clear = true }),
   callback = function(args)
     if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
-      utils.event "File"
-      if utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false) then
-        utils.event "GitFile"
+      astroevent "File"
+      if
+        require("astronvim.utils.git").file_worktree()
+        or utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false)
+      then
+        astroevent "GitFile"
         vim.api.nvim_del_augroup_by_name "file_user_events"
       end
     end

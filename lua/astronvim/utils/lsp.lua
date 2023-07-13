@@ -128,27 +128,12 @@ end
 ---@param client table The LSP client details when attaching
 ---@param bufnr number The buffer that the LSP client is attaching to
 M.on_attach = function(client, bufnr)
-  local lsp_mappings = {
-    n = {
-      ["<leader>ld"] = {
-        function() vim.diagnostic.open_float() end,
-        desc = "Hover diagnostics",
-      },
-      ["[d"] = {
-        function() vim.diagnostic.goto_prev() end,
-        desc = "Previous diagnostic",
-      },
-      ["]d"] = {
-        function() vim.diagnostic.goto_next() end,
-        desc = "Next diagnostic",
-      },
-      ["gl"] = {
-        function() vim.diagnostic.open_float() end,
-        desc = "Hover diagnostics",
-      },
-    },
-    v = {},
-  }
+  local lsp_mappings = require("astronvim.utils").empty_map_table()
+
+  lsp_mappings.n["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
+  lsp_mappings.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
+  lsp_mappings.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+  lsp_mappings.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
   if is_available "telescope.nvim" then
     lsp_mappings.n["<leader>lD"] =
@@ -368,7 +353,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if not vim.tbl_isempty(lsp_mappings.v) then
-    lsp_mappings.v["<leader>l"] = { desc = (vim.g.icons_enabled and " " or "") .. "LSP" }
+    lsp_mappings.v["<leader>l"] = { desc = utils.get_icon("ActiveLSP", 1, true) .. "LSP" }
   end
   utils.set_mappings(user_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
 

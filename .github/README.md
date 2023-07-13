@@ -31,8 +31,8 @@
     <a href="https://www.twitter.com/AstroNvim">
       <img src="https://img.shields.io/twitter/follow/AstroNvim?style=for-the-badge&logo=twitter&color=fab387&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://social.mehalter.com/@AstroNvim">
-      <img src="https://img.shields.io/mastodon/follow/109649751340616771?domain=https%3A%2F%2Fsocial.mehalter.com&style=for-the-badge&logo=mastodon&color=eebebe&logoColor=D9E0EE&labelColor=302D41"/>
+    <a href="https://hachyderm.io/@AstroNvim">
+      <img src="https://img.shields.io/mastodon/follow/110685512385862046?domain=https%3A%2F%2Fhachyderm.io&style=for-the-badge&logo=mastodon&color=eebebe&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
     <a href="https://www.reddit.com/r/AstroNvim/">
       <img src="https://img.shields.io/reddit/subreddit-subscribers/AstroNvim?style=for-the-badge&logo=reddit&color=ee99a0&logoColor=D9E0EE&labelColor=302D41"/>
@@ -48,9 +48,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🌟 Preview
 
-![Dashboard Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dashboard.png)
-![Coding Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/overview.png)
-![Debugging Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/dap.png)
+![Preview Image](https://github.com/AstroNvim/astronvim.github.io/raw/main/static/img/themes/overview.png)
 
 ## ✨ Features
 
