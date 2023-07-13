@@ -312,7 +312,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/typeDefinition" then
-    lsp_mappings.n["gT"] = {
+    lsp_mappings.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,
       desc = "Definition of current type",
     }
