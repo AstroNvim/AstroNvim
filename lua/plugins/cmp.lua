@@ -25,7 +25,7 @@ return {
       if not snip_status_ok then return end
       local border_opts = {
         border = "single",
-        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+        winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
       }
 
       local function has_words_before()
