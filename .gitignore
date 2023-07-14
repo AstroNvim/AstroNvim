@@ -1,46 +1,49 @@
 # Project gitignore
-!colors/astronvim.lua
-colors/*
+.luarc.json
+after
+coc-settings.json
+colors
 docs
+ftplugin
 ginit.vim
 lua/user
+neoconf.json
 plugin
-ftplugin
+queries
 spell
-.luarc.json
 
 # Global gitignore
 # ----------------
 
 # Mac OS X
-.DS_Store
 .AppleDouble
+.DS_Store
 .LSOverride
 ._*
 
 # Windoze
+$RECYCLE.BIN/
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
-$RECYCLE.BIN/
 
 # (Neo)Vim
+*~
+.netrwhist
+Session.vim
+Sessionx.vim
 [._]*.s[a-v][a-z]
 [._]*.sw[a-p]
 [._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
 [._]sw[a-p]
-Session.vim
-Sessionx.vim
-.netrwhist
-*~
-tags
 [._]*.un~
+tags
 
 # VS Code
-.vscode
 .history
+.vscode
 
 # JetBrains
 .idea

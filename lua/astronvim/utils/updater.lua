@@ -37,8 +37,9 @@ function M.generate_snapshot(write)
     prev_snapshot[plugin[1]] = plugin
   end
   local plugins = assert(require("lazy").plugins())
+  table.sort(plugins, function(l, r) return l[1] < r[1] end)
   local function git_commit(dir)
-    local commit = assert(utils.cmd("git -C " .. dir .. " rev-parse HEAD", false))
+    local commit = assert(utils.cmd({ "git", "-C", dir, "rev-parse", "HEAD" }, false))
     if commit then return vim.trim(commit) end
   end
   if write == true then
@@ -46,7 +47,6 @@ function M.generate_snapshot(write)
     file:write "return {\n"
   end
   local snapshot = vim.tbl_map(function(plugin)
-    if not plugin[1] and plugin.name == "lazy.nvim" then plugin[1] = "folke/lazy.nvim" end
     plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
     if prev_snapshot[plugin[1]] and prev_snapshot[plugin[1]].version then
       plugin.version = prev_snapshot[plugin[1]].version
@@ -63,7 +63,7 @@ function M.generate_snapshot(write)
     return plugin
   end, plugins)
   if file then
-    file:write "}"
+    file:write "}\n"
     file:close()
   end
   return snapshot
@@ -75,7 +75,7 @@ end
 function M.version(quiet)
   local version = astronvim.install.version or git.current_version(false) or "unknown"
   if astronvim.updater.options.channel ~= "stable" then version = ("nightly (%s)"):format(version) end
-  if version and not quiet then notify("Version: " .. version) end
+  if version and not quiet then notify(("Version: *%s*"):format(version)) end
   return version
 end
 
@@ -147,7 +147,7 @@ function M.update_available(opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
     notify(
-      "git command is not available, please verify it is accessible in a command line. This may be an issue with your PATH",
+      "`git` command is not available, please verify it is accessible in a command line. This may be an issue with your `PATH`",
       vim.log.levels.ERROR
     )
     return
@@ -213,28 +213,27 @@ function M.update_available(opts)
       return
     end
   end
-  local source = git.local_head() -- calculate current commit
-  local target -- calculate target commit
+  local update = { source = git.local_head() }
   if is_stable then -- if stable get tag commit
     local version_search = opts.version or "latest"
-    opts.version = git.latest_version(git.get_versions(version_search))
-    if not opts.version then -- continue only if stable version is found
+    update.version = git.latest_version(git.get_versions(version_search))
+    if not update.version then -- continue only if stable version is found
       vim.api.nvim_err_writeln("Error finding version: " .. version_search)
       return
     end
-    target = git.tag_commit(opts.version)
+    update.target = git.tag_commit(update.version)
   elseif opts.commit then -- if commit specified use it
-    target = git.branch_contains(opts.remote, opts.branch, opts.commit) and opts.commit or nil
+    update.target = git.branch_contains(opts.remote, opts.branch, opts.commit) and opts.commit or nil
   else -- get most recent commit
-    target = git.remote_head(opts.remote, opts.branch)
+    update.target = git.remote_head(opts.remote, opts.branch)
   end
 
-  if not source or not target then -- continue if current and target commits were found
+  if not update.source or not update.target then -- continue if current and target commits were found
     vim.api.nvim_err_writeln "Error checking for updates"
     return
-  elseif source ~= target then
+  elseif update.source ~= update.target then
     -- update available
-    return { source = source, target = target }
+    return update
   else
     return false
   end
@@ -257,7 +256,7 @@ function M.update(opts)
     not opts.skip_prompts
     and not confirm_prompt(
       ("Update available to %s\nUpdating requires a restart, continue?"):format(
-        opts.channel == "stable" and opts.version or available_update.target
+        available_update.version or available_update.target
       )
     )
   then

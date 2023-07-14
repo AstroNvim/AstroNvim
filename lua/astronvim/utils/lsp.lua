@@ -128,27 +128,12 @@ end
 ---@param client table The LSP client details when attaching
 ---@param bufnr number The buffer that the LSP client is attaching to
 M.on_attach = function(client, bufnr)
-  local lsp_mappings = {
-    n = {
-      ["<leader>ld"] = {
-        function() vim.diagnostic.open_float() end,
-        desc = "Hover diagnostics",
-      },
-      ["[d"] = {
-        function() vim.diagnostic.goto_prev() end,
-        desc = "Previous diagnostic",
-      },
-      ["]d"] = {
-        function() vim.diagnostic.goto_next() end,
-        desc = "Next diagnostic",
-      },
-      ["gl"] = {
-        function() vim.diagnostic.open_float() end,
-        desc = "Hover diagnostics",
-      },
-    },
-    v = {},
-  }
+  local lsp_mappings = require("astronvim.utils").empty_map_table()
+
+  lsp_mappings.n["<leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
+  lsp_mappings.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
+  lsp_mappings.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+  lsp_mappings.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
   if is_available "telescope.nvim" then
     lsp_mappings.n["<leader>lD"] =
@@ -289,6 +274,18 @@ M.on_attach = function(client, bufnr)
     }
   end
 
+  if client.supports_method "textDocument/inlayHint" then
+    if vim.b.inlay_hints_enabled == nil then vim.b.inlay_hints_enabled = vim.g.inlay_hints_enabled end
+    -- TODO: remove check after dropping support for Neovim v0.9
+    if vim.lsp.inlay_hint then
+      if vim.b.inlay_hints_enabled then vim.lsp.inlay_hint(bufnr, true) end
+      lsp_mappings.n["<leader>uH"] = {
+        function() require("astronvim.utils.ui").toggle_buffer_inlay_hints(bufnr) end,
+        desc = "Toggle LSP inlay hints (buffer)",
+      }
+    end
+  end
+
   if client.supports_method "textDocument/references" then
     lsp_mappings.n["gr"] = {
       function() vim.lsp.buf.references() end,
@@ -325,7 +322,9 @@ M.on_attach = function(client, bufnr)
     lsp_mappings.n["<leader>lG"] = { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols" }
   end
 
-  if client.supports_method "textDocument/semanticTokens" and vim.lsp.semantic_tokens then
+  if client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens then
+    if vim.b.semantic_tokens_enabled == nil then vim.b.semantic_tokens_enabled = vim.g.semantic_tokens_enabled end
+    if not vim.g.semantic_tokens_enabled then vim.lsp.semantic_tokens["stop"](bufnr, client.id) end
     lsp_mappings.n["<leader>uY"] = {
       function() require("astronvim.utils.ui").toggle_buffer_semantic_tokens(bufnr) end,
       desc = "Toggle LSP semantic highlight (buffer)",
@@ -354,9 +353,13 @@ M.on_attach = function(client, bufnr)
   end
 
   if not vim.tbl_isempty(lsp_mappings.v) then
-    lsp_mappings.v["<leader>l"] = { desc = (vim.g.icons_enabled and " " or "") .. "LSP" }
+    lsp_mappings.v["<leader>l"] = { desc = utils.get_icon("ActiveLSP", 1, true) .. "LSP" }
   end
   utils.set_mappings(user_opts("lsp.mappings", lsp_mappings), { buffer = bufnr })
+
+  for id, _ in pairs(astronvim.lsp.progress) do -- clear lingering progress messages
+    if not next(vim.lsp.get_active_clients { id = tonumber(id:match "^%d+") }) then astronvim.lsp.progress[id] = nil end
+  end
 
   local on_attach_override = user_opts("lsp.on_attach", nil, false)
   conditional_func(on_attach_override, true, client, bufnr)

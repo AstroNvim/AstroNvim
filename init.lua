@@ -1,3 +1,5 @@
+if vim.loader and vim.fn.has "nvim-0.9.1" == 1 then vim.loader.enable() end
+
 for _, source in ipairs {
   "astronvim.bootstrap",
   "astronvim.options",
@@ -12,7 +14,7 @@ end
 if astronvim.default_colorscheme then
   if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
     require("astronvim.utils").notify(
-      "Error setting up colorscheme: " .. astronvim.default_colorscheme,
+      ("Error setting up colorscheme: `%s`"):format(astronvim.default_colorscheme),
       vim.log.levels.ERROR
     )
   end

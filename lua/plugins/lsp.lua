@@ -18,6 +18,26 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       {
+        "folke/neoconf.nvim",
+        opts = function()
+          local global_settings, file_found
+          local _, depth = vim.fn.stdpath("config"):gsub("/", "")
+          for _, dir in ipairs(astronvim.supported_configs) do
+            dir = dir .. "/lua/user"
+            if vim.fn.isdirectory(dir) == 1 then
+              local path = dir .. "/neoconf.json"
+              if vim.fn.filereadable(path) == 1 then
+                file_found = true
+                global_settings = path
+              elseif not file_found then
+                global_settings = path
+              end
+            end
+          end
+          return { global_settings = global_settings and string.rep("../", depth):sub(1, -2) .. global_settings }
+        end,
+      },
+      {
         "williamboman/mason-lspconfig.nvim",
         cmd = { "LspInstall", "LspUninstall" },
         opts = function(_, opts)
@@ -27,6 +47,9 @@ return {
         config = require "plugins.configs.mason-lspconfig",
       },
     },
+    cmd = function(_, cmds) -- HACK: lazy load lspconfig on `:Neoconf` if neoconf is available
+      if require("astronvim.utils").is_available "neoconf.nvim" then table.insert(cmds, "Neoconf") end
+    end,
     event = "User AstroFile",
     config = require "plugins.configs.lspconfig",
   },

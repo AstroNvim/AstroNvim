@@ -1,6 +1,7 @@
 return function(_, _)
   local lsp = require "astronvim.utils.lsp"
-  local get_icon = require("astronvim.utils").get_icon
+  local utils = require "astronvim.utils"
+  local get_icon = utils.get_icon
   local signs = {
     { name = "DiagnosticSignError", text = get_icon "DiagnosticError", texthl = "DiagnosticSignError" },
     { name = "DiagnosticSignWarn", text = get_icon "DiagnosticWarn", texthl = "DiagnosticSignWarn" },
@@ -17,6 +18,20 @@ return function(_, _)
     vim.fn.sign_define(sign.name, sign)
   end
   lsp.setup_diagnostics(signs)
+
+  local orig_handler = vim.lsp.handlers["$/progress"]
+  vim.lsp.handlers["$/progress"] = function(_, msg, info)
+    local progress, id = astronvim.lsp.progress, ("%s.%s"):format(info.client_id, msg.token)
+    progress[id] = progress[id] and utils.extend_tbl(progress[id], msg.value) or msg.value
+    if progress[id].kind == "end" then
+      vim.defer_fn(function()
+        progress[id] = nil
+        utils.event "LspProgress"
+      end, 100)
+    end
+    utils.event "LspProgress"
+    orig_handler(_, msg, info)
+  end
 
   if vim.g.lsp_handlers_enabled then
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", silent = true })

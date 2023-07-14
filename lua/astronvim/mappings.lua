@@ -1,15 +1,16 @@
+-- TODO: replace <leader> to <Leader> everywhere in AstroNvim v4 to match vimdoc
 local utils = require "astronvim.utils"
 local get_icon = utils.get_icon
 local is_available = utils.is_available
 local ui = require "astronvim.utils.ui"
 
-local maps = { i = {}, n = {}, v = {}, t = {} }
+local maps = require("astronvim.utils").empty_map_table()
 
 local sections = {
   f = { desc = get_icon("Search", 1, true) .. "Find" },
   p = { desc = get_icon("Package", 1, true) .. "Packages" },
   l = { desc = get_icon("ActiveLSP", 1, true) .. "LSP" },
-  u = { desc = get_icon("Window", 1, true) .. "UI" },
+  u = { desc = get_icon("Window", 1, true) .. "UI/UX" },
   b = { desc = get_icon("Tab", 1, true) .. "Buffers" },
   bs = { desc = get_icon("Sort", 1, true) .. "Sort Buffers" },
   d = { desc = get_icon("Debugger", 1, true) .. "Debugger" },
@@ -25,11 +26,12 @@ maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Move cursor up
 maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>confirm q<cr>", desc = "Quit" }
 maps.n["<leader>n"] = { "<cmd>enew<cr>", desc = "New File" }
-maps.n["gx"] = { utils.system_open, desc = "Open the file under cursor with system app" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
 maps.n["<C-q>"] = { "<cmd>q!<cr>", desc = "Force quit" }
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
 maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
+-- TODO: Remove when dropping support for <Neovim v0.10
+if not vim.ui.open then maps.n["gx"] = { utils.system_open, desc = "Open the file under cursor with system app" } end
 
 -- Plugin Manager
 maps.n["<leader>p"] = sections.p
@@ -69,13 +71,13 @@ maps.n["<leader>bc"] =
 maps.n["<leader>bC"] = { function() require("astronvim.utils.buffer").close_all() end, desc = "Close all buffers" }
 maps.n["<leader>bb"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
+    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
   end,
   desc = "Select buffer from tabline",
 }
 maps.n["<leader>bd"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(
+    require("astronvim.utils.status.heirline").buffer_picker(
       function(bufnr) require("astronvim.utils.buffer").close(bufnr) end
     )
   end,
@@ -83,6 +85,7 @@ maps.n["<leader>bd"] = {
 }
 maps.n["<leader>bl"] =
   { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
+maps.n["<leader>bp"] = { function() require("astronvim.utils.buffer").prev() end, desc = "Previous buffer" }
 maps.n["<leader>br"] =
   { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
 maps.n["<leader>bs"] = sections.bs
@@ -94,7 +97,7 @@ maps.n["<leader>bsi"] = { function() require("astronvim.utils.buffer").sort "buf
 maps.n["<leader>bsm"] = { function() require("astronvim.utils.buffer").sort "modified" end, desc = "By modification" }
 maps.n["<leader>b\\"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
+    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
       vim.cmd.split()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
@@ -103,7 +106,7 @@ maps.n["<leader>b\\"] = {
 }
 maps.n["<leader>b|"] = {
   function()
-    require("astronvim.utils.status").heirline.buffer_picker(function(bufnr)
+    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
       vim.cmd.vsplit()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
@@ -233,7 +236,10 @@ if is_available "telescope.nvim" then
   maps.n["<leader>f"] = sections.f
   maps.n["<leader>g"] = sections.g
   maps.n["<leader>gb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
-  maps.n["<leader>gc"] = { function() require("telescope.builtin").git_commits() end, desc = "Git commits" }
+  maps.n["<leader>gc"] =
+    { function() require("telescope.builtin").git_commits() end, desc = "Git commits (repository)" }
+  maps.n["<leader>gC"] =
+    { function() require("telescope.builtin").git_bcommits() end, desc = "Git commits (current file)" }
   maps.n["<leader>gt"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" }
   maps.n["<leader>f<CR>"] = { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
   maps.n["<leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }
@@ -306,8 +312,15 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>t"] = sections.t
   if vim.fn.executable "lazygit" == 1 then
     maps.n["<leader>g"] = sections.g
-    maps.n["<leader>gg"] = { function() utils.toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
-    maps.n["<leader>tl"] = { function() utils.toggle_term_cmd "lazygit" end, desc = "ToggleTerm lazygit" }
+    maps.n["<leader>gg"] = {
+      function()
+        local worktree = require("astronvim.utils.git").file_worktree()
+        local flags = worktree and (" --work-tree=%s --git-dir=%s"):format(worktree.toplevel, worktree.gitdir) or ""
+        utils.toggle_term_cmd("lazygit " .. flags)
+      end,
+      desc = "ToggleTerm lazygit",
+    }
+    maps.n["<leader>tl"] = maps.n["<leader>gg"]
   end
   if vim.fn.executable "node" == 1 then
     maps.n["<leader>tn"] = { function() utils.toggle_term_cmd "node" end, desc = "ToggleTerm node" }
@@ -336,7 +349,7 @@ if is_available "nvim-dap" then
   -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
   maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
   maps.n["<F17>"] = { function() require("dap").terminate() end, desc = "Debugger: Stop" } -- Shift+F5
-  maps.n["<F21>"] = {
+  maps.n["<F21>"] = { -- Shift+F9
     function()
       vim.ui.input({ prompt = "Condition: " }, function(condition)
         if condition then require("dap").set_breakpoint(condition) end
@@ -419,7 +432,7 @@ maps.n["<leader>ui"] = { ui.set_indent, desc = "Change indent setting" }
 maps.n["<leader>ul"] = { ui.toggle_statusline, desc = "Toggle statusline" }
 maps.n["<leader>uL"] = { ui.toggle_codelens, desc = "Toggle CodeLens" }
 maps.n["<leader>un"] = { ui.change_number, desc = "Change line numbering" }
-maps.n["<leader>uN"] = { ui.toggle_ui_notifications, desc = "Toggle UI notifications" }
+maps.n["<leader>uN"] = { ui.toggle_ui_notifications, desc = "Toggle Notifications" }
 maps.n["<leader>up"] = { ui.toggle_paste, desc = "Toggle paste mode" }
 maps.n["<leader>us"] = { ui.toggle_spell, desc = "Toggle spellcheck" }
 maps.n["<leader>uS"] = { ui.toggle_conceal, desc = "Toggle conceal" }
