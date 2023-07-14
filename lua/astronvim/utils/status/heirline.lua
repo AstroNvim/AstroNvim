@@ -107,7 +107,7 @@ function M.make_tablist_new(component)
         }
       end,
       {
-        -- bufferlist
+        -- tablist
         init = function(self) self.tab_type = M.tab_type(self) end,
         on_click = {
           -- add clickable component to each tab
