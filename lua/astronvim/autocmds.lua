@@ -198,7 +198,10 @@ if is_available "alpha-nvim" then
           end
         end
       end
-      if not should_skip then require("alpha").start(true, require("alpha").default_config) end
+      if not should_skip then
+        require("alpha").start(true, require("alpha").default_config)
+        vim.schedule(function() vim.cmd.doautocmd "FileType" end)
+      end
     end,
   })
 end
