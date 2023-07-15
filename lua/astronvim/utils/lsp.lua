@@ -261,10 +261,13 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/hover" then
-    lsp_mappings.n["K"] = {
-      function() vim.lsp.buf.hover() end,
-      desc = "Hover symbol details",
-    }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      lsp_mappings.n["K"] = {
+        function() vim.lsp.buf.hover() end,
+        desc = "Hover symbol details",
+      }
+    end
   end
 
   if client.supports_method "textDocument/implementation" then
