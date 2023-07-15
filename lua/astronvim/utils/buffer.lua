@@ -148,6 +148,10 @@ function M.close(bufnr, force)
         return
       end
     end
+    if #vim.t.bufs < 2 then
+      bufnr = vim.api.nvim_get_current_buf()
+      vim.cmd.tabclose()
+    end
     require("mini.bufremove").delete(bufnr, force)
   else
     vim.cmd((force and "bd!" or "confirm bd") .. (bufnr == nil and "" or bufnr))
