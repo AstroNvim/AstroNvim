@@ -316,7 +316,22 @@ if is_available "toggleterm.nvim" then
       function()
         local worktree = require("astronvim.utils.git").file_worktree()
         local flags = worktree and (" --work-tree=%s --git-dir=%s"):format(worktree.toplevel, worktree.gitdir) or ""
-        utils.toggle_term_cmd("lazygit " .. flags)
+        utils.toggle_term_cmd {
+          cmd = "lazygit " .. flags,
+          hidden = true,
+          on_open = function()
+            vim.api.nvim_del_keymap("t", "<C-h>")
+            vim.api.nvim_del_keymap("t", "<C-j>")
+            vim.api.nvim_del_keymap("t", "<C-k>")
+            vim.api.nvim_del_keymap("t", "<C-l>")
+          end,
+          on_close = function()
+            vim.api.nvim_set_keymap("t", "<C-h>", "<cmd>wincmd h<cr>", { silent = true, noremap = true })
+            vim.api.nvim_set_keymap("t", "<C-j>", "<cmd>wincmd j<cr>", { silent = true, noremap = true })
+            vim.api.nvim_set_keymap("t", "<C-k>", "<cmd>wincmd k<cr>", { silent = true, noremap = true })
+            vim.api.nvim_set_keymap("t", "<C-l>", "<cmd>wincmd l<cr>", { silent = true, noremap = true })
+          end,
+        }
       end,
       desc = "ToggleTerm lazygit",
     }
