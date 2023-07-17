@@ -97,7 +97,7 @@ end
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.has_filetype }
 function M.has_filetype(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
-  return vim.fn.empty(vim.fn.expand "%:t") ~= 1 and vim.bo[bufnr or 0].filetype and vim.bo[bufnr or 0].filetype ~= ""
+  return vim.bo[bufnr or 0].filetype and vim.bo[bufnr or 0].filetype ~= ""
 end
 
 --- A condition function if Aerial is available
