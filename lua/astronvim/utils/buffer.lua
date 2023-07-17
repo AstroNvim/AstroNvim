@@ -114,7 +114,13 @@ end
 
 --- Navigate to a specific buffer by its position in the bufferline
 ---@param tabnr number The position of the buffer to navigate to
-function M.nav_to(tabnr) vim.cmd.b(vim.t.bufs[tabnr]) end
+function M.nav_to(tabnr)
+  if tabnr > #vim.t.bufs or tabnr < 1 then
+    utils.notify(("No tab #%d"):format(tabnr), vim.log.levels.WARN)
+  else
+    vim.cmd.b(vim.t.bufs[tabnr])
+  end
+end
 
 --- Navigate to the previously used buffer
 function M.prev()
@@ -122,10 +128,10 @@ function M.prev()
     if M.last_buf then
       vim.cmd.b(M.last_buf)
     else
-      utils.notify "No previous buffer found"
+      utils.notify("No previous buffer found", vim.log.levels.WARN)
     end
   else
-    utils.notify "Must be in a main editor window to switch the window buffer"
+    utils.notify("Must be in a main editor window to switch the window buffer", vim.log.levels.ERROR)
   end
 end
 
