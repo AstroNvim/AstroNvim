@@ -36,7 +36,6 @@ local options = astronvim.user_opts("options", {
     sidescrolloff = 8, -- Number of columns to keep at the sides of the cursor
     signcolumn = "yes", -- Always show the sign column
     smartcase = true, -- Case sensitivie searching
-    smartindent = true, -- Smarter autoindentation
     splitbelow = true, -- Splitting a new window below the current one
     splitright = true, -- Splitting a new window at the right of the current one
     tabstop = 2, -- Number of space in a tab
