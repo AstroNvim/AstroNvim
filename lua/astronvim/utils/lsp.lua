@@ -1,5 +1,8 @@
 --- ### AstroNvim LSP Utils
 --
+-- DEPRECATED and is currently unused. replaced by `astrolsp`
+-- TODO: Delete this file with AstroNvim v4
+--
 -- LSP related utility functions to use within AstroNvim and user configurations.
 --
 -- This module can be loaded with `local lsp_utils = require("astronvim.utils.lsp")`

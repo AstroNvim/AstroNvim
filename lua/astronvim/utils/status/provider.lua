@@ -460,11 +460,15 @@ end
 function M.lsp_progress(opts)
   local spinner = utils.get_spinner("LSPLoading", 1) or { "" }
   return function()
-    local _, Lsp = next(astronvim.lsp.progress)
-    return status_utils.stylize(Lsp and (spinner[math.floor(luv.hrtime() / 12e7) % #spinner + 1] .. table.concat({
-      Lsp.title or "",
-      Lsp.message or "",
-      Lsp.percentage and "(" .. Lsp.percentage .. "%)" or "",
+    local astrolsp_avail, astrolsp = pcall(require, "astrolsp")
+    local _, status
+    if astrolsp_avail and astrolsp.lsp_progress then
+      _, status = next(astrolsp.lsp_progress)
+    end
+    return status_utils.stylize(status and (spinner[math.floor(luv.hrtime() / 12e7) % #spinner + 1] .. table.concat({
+      status.title or "",
+      status.message or "",
+      status.percentage and "(" .. status.percentage .. "%)" or "",
     }, " ")), opts)
   end
 end
