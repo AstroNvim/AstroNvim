@@ -3,7 +3,7 @@ return function(_, opts)
 
   -- TODO: AstroNvim v4: change these auto command names to not conflict with core Mason commands
   local cmd = vim.api.nvim_create_user_command
-  cmd("MasonUpdate", function(options) require("astronvim.utils.mason").update(options.fargs) end, {
+  cmd("MasonUpdate", function(options) require("astrocore.mason").update(options.fargs) end, {
     nargs = "*",
     desc = "Update Mason Package",
     complete = function(arg_lead)
@@ -14,11 +14,7 @@ return function(_, opts)
       )
     end,
   })
-  cmd(
-    "MasonUpdateAll",
-    function() require("astronvim.utils.mason").update_all() end,
-    { desc = "Update Mason Packages" }
-  )
+  cmd("MasonUpdateAll", function() require("astrocore.mason").update_all() end, { desc = "Update Mason Packages" })
 
   for _, plugin in ipairs { "mason-lspconfig", "mason-null-ls", "mason-nvim-dap" } do
     pcall(require, plugin)

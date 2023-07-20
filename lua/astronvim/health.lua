@@ -12,7 +12,7 @@ local health = {
 function M.check()
   health.start "AstroNvim"
 
-  health.info("AstroNvim Version: " .. require("astronvim.utils.updater").version(true))
+  health.info("AstroNvim Version: " .. require("astrocore.updater").version(true))
   health.info("Neovim Version: v" .. vim.fn.matchstr(vim.fn.execute "version", "NVIM v\\zs[^\n]*"))
 
   if vim.version().prerelease then
@@ -29,7 +29,7 @@ function M.check()
       type = "error",
       msg = "Used for core functionality such as updater and plugin management",
       extra_check = function(program)
-        local git_version = require("astronvim.utils.git").git_version()
+        local git_version = require("astrocore.git").git_version()
         if git_version then
           if git_version.major < 2 or (git_version.major == 2 and git_version.min < 19) then
             program.msg = ("Git %s installed, >= 2.19.0 is required"):format(git_version.str)

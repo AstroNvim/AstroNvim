@@ -206,7 +206,7 @@ return {
               maps.n["<leader>g"] = opts._map_section.g
               maps.n["<leader>gg"] = {
                 function()
-                  local worktree = require("astronvim.utils.git").file_worktree()
+                  local worktree = require("astrocore.git").file_worktree()
                   local flags = worktree and (" --work-tree=%s --git-dir=%s"):format(worktree.toplevel, worktree.gitdir)
                     or ""
                   utils.toggle_term_cmd("lazygit " .. flags)

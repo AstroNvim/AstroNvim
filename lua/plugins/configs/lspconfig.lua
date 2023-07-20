@@ -1,6 +1,6 @@
 return function(_, _)
   local setup_servers = function()
-    vim.tbl_map(require("astrolsp").lsp_setup, require("astrolsp").options.servers)
+    vim.tbl_map(require("astrolsp").lsp_setup, require("astrolsp").config.servers)
     vim.api.nvim_exec_autocmds("FileType", {})
     require("astrocore.utils").event "LspSetup"
   end

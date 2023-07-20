@@ -88,7 +88,7 @@ end
 -- @usage local heirline_component = { provider = "Example Provider", condition = require("astronvim.utils.status").condition.has_diagnostics }
 function M.has_diagnostics(bufnr)
   if type(bufnr) == "table" then bufnr = bufnr.bufnr end
-  if package.loaded["astrolsp"] and require("astrolsp").options.features.diagnostics_mode == 0 then return false end
+  if package.loaded["astrolsp"] and require("astrolsp").config.features.diagnostics_mode == 0 then return false end
   return #vim.diagnostic.get(bufnr or 0) > 0
 end
 
