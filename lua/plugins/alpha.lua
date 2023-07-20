@@ -1,6 +1,26 @@
 return {
   "goolord/alpha-nvim",
   cmd = "Alpha",
+  dependencies = {
+    {
+      "astrocore",
+      opts = function(_, opts)
+        local maps = opts.mappings
+        if require("astrocore.utils").is_available "alpha-nvim" then
+          maps.n["<leader>h"] = {
+            function()
+              local wins = vim.api.nvim_tabpage_list_wins(0)
+              if #wins > 1 and vim.api.nvim_get_option_value("filetype", { win = wins[1] }) == "neo-tree" then
+                vim.fn.win_gotoid(wins[2]) -- go to non-neo-tree window to toggle alpha
+              end
+              require("alpha").start(false, require("alpha").default_config)
+            end,
+            desc = "Home Screen",
+          }
+        end
+      end,
+    },
+  },
   opts = function()
     local dashboard = require "alpha.themes.dashboard"
     dashboard.section.header.val = {

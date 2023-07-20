@@ -38,23 +38,6 @@ function M.toggle_autopairs(silent)
   end
 end
 
---- Toggle diagnostics
----@param silent? boolean if true then don't sent a notification
---- DEPRECATED moved to `astrolsp` (TODO: Remove in AstroNvim v4)
-function M.toggle_diagnostics(silent)
-  vim.g.diagnostics_mode = (vim.g.diagnostics_mode - 1) % 4
-  vim.diagnostic.config(require("astrolsp").diagnostics[vim.g.diagnostics_mode])
-  if vim.g.diagnostics_mode == 0 then
-    ui_notify(silent, "diagnostics off")
-  elseif vim.g.diagnostics_mode == 1 then
-    ui_notify(silent, "only status diagnostics")
-  elseif vim.g.diagnostics_mode == 2 then
-    ui_notify(silent, "virtual text off")
-  else
-    ui_notify(silent, "all diagnostics on")
-  end
-end
-
 --- Toggle background="dark"|"light"
 ---@param silent? boolean if true then don't sent a notification
 function M.toggle_background(silent)
@@ -68,69 +51,6 @@ function M.toggle_cmp(silent)
   vim.g.cmp_enabled = not vim.g.cmp_enabled
   local ok, _ = pcall(require, "cmp")
   ui_notify(silent, ok and string.format("completion %s", bool2str(vim.g.cmp_enabled)) or "completion not available")
-end
-
---- Toggle auto format
----@param silent? boolean if true then don't sent a notification
---- DEPRECATED moved to `astrolsp` (TODO: Remove in AstroNvim v4)
-function M.toggle_autoformat(silent)
-  vim.g.autoformat_enabled = not vim.g.autoformat_enabled
-  ui_notify(silent, string.format("Global autoformatting %s", bool2str(vim.g.autoformat_enabled)))
-end
-
---- Toggle buffer local auto format
----@param bufnr? number the buffer to toggle syntax on
----@param silent? boolean if true then don't sent a notification
---- DEPRECATED moved to `astrolsp` (TODO: Remove in AstroNvim v4)
-function M.toggle_buffer_autoformat(bufnr, silent)
-  bufnr = bufnr or 0
-  local old_val = vim.b[bufnr].autoformat_enabled
-  if old_val == nil then old_val = vim.g.autoformat_enabled end
-  vim.b[bufnr].autoformat_enabled = not old_val
-  ui_notify(silent, string.format("Buffer autoformatting %s", bool2str(vim.b[bufnr].autoformat_enabled)))
-end
-
---- Toggle buffer semantic token highlighting for all language servers that support it
---- DEPRECATED moved to `astrolsp` (TODO: Remove in AstroNvim v4)
----@param bufnr? number the buffer to toggle the clients on
----@param silent? boolean if true then don't sent a notification
-function M.toggle_buffer_semantic_tokens(bufnr, silent)
-  bufnr = bufnr or 0
-  vim.b[bufnr].semantic_tokens_enabled = not vim.b[bufnr].semantic_tokens_enabled
-  local toggled = false
-  for _, client in ipairs(vim.lsp.get_active_clients { bufnr = bufnr }) do
-    if client.server_capabilities.semanticTokensProvider then
-      vim.lsp.semantic_tokens[vim.b[bufnr].semantic_tokens_enabled and "start" or "stop"](bufnr, client.id)
-      toggled = true
-    end
-  end
-  ui_notify(
-    not toggled or silent,
-    string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b[bufnr].semantic_tokens_enabled))
-  )
-end
-
---- Toggle buffer LSP inlay hints
---- DEPRECATED moved to `astrolsp` (TODO: Remove in AstroNvim v4)
----@param bufnr? number the buffer to toggle the clients on
----@param silent? boolean if true then don't sent a notification
-function M.toggle_buffer_inlay_hints(bufnr, silent)
-  bufnr = bufnr or 0
-  vim.b[bufnr].inlay_hints_enabled = not vim.b[bufnr].inlay_hints_enabled
-  -- TODO: remove check after dropping support for Neovim v0.9
-  if vim.lsp.inlay_hint then
-    vim.lsp.inlay_hint(bufnr, vim.b[bufnr].inlay_hints_enabled)
-    ui_notify(silent, string.format("Inlay hints %s", bool2str(vim.b[bufnr].inlay_hints_enabled)))
-  end
-end
-
---- Toggle codelens
----@param silent? boolean if true then don't sent a notification
---- DEPRECATED moved to `astrolsp` (TODO: Remove in AstroNvim v4)
-function M.toggle_codelens(silent)
-  vim.g.codelens_enabled = not vim.g.codelens_enabled
-  if not vim.g.codelens_enabled then vim.lsp.codelens.clear() end
-  ui_notify(silent, string.format("CodeLens %s", bool2str(vim.g.codelens_enabled)))
 end
 
 --- Toggle showtabline=2|0

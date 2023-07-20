@@ -52,16 +52,10 @@ local options = astronvim.user_opts("options", {
     maplocalleader = ",", -- set default local leader key
     -- AstroNvim specific global options
     max_file = { size = 1024 * 100, lines = 10000 }, -- set global limits for large files
-    autoformat_enabled = true, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled) (TODO: deprecated, remove in AstroNvim v4)
     autopairs_enabled = true, -- enable autopairs at start
     cmp_enabled = true, -- enable completion at start
-    codelens_enabled = true, -- enable or disable automatic codelens refreshing for lsp that support it (TODO: deprecated, remove in AstroNvim v4)
-    diagnostics_mode = 3, -- set the visibility of diagnostics in the UI (0=off, 1=only show in status line, 2=virtual text off, 3=all on) (TODO: deprecated, remove in AstroNvim v4)
     highlighturl_enabled = true, -- highlight URLs by default
     icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
-    inlay_hints_enabled = false, -- enable or disable LSP inlay hints on startup (Neovim v0.10 only) (TODO: deprecated, remove in AstroNvim v4)
-    lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signatureHelp) (TODO: deprecated, remove in AstroNvim v4)
-    semantic_tokens_enabled = true, -- enable or disable LSP semantic tokens on startup (TODO: deprecated, remove in AstroNvim v4)
     ui_notifications_enabled = true, -- disable notifications (TODO: rename to  notifications_enabled in AstroNvim v4)
     git_worktrees = nil, -- enable git integration for detached worktrees (specify a table where each entry is of the form { toplevel = vim.env.HOME, gitdir=vim.env.HOME .. "/.dotfiles" })
   },

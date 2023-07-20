@@ -1,7 +1,28 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   branch = "main", -- HACK: force neo-tree to checkout `main` for initial v3 migration since default branch has changed
-  dependencies = { "MunifTanjim/nui.nvim" },
+  dependencies = {
+    "MunifTanjim/nui.nvim",
+    {
+      "astrocore",
+      opts = function(_, opts)
+        local maps = opts.mappings
+        if require("astrocore.utils").is_available "neo-tree.nvim" then
+          maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "Toggle Explorer" }
+          maps.n["<leader>o"] = {
+            function()
+              if vim.bo.filetype == "neo-tree" then
+                vim.cmd.wincmd "p"
+              else
+                vim.cmd.Neotree "focus"
+              end
+            end,
+            desc = "Toggle Explorer Focus",
+          }
+        end
+      end,
+    },
+  },
   cmd = "Neotree",
   init = function() vim.g.neo_tree_remove_legacy_commands = true end,
   opts = function()
