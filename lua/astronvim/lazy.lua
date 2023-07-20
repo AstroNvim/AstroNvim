@@ -24,7 +24,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then -- TODO: REMOVE vim.loop WHEN
       vim.cmd.bw()
       vim.opt.cmdheight = oldcmdheight
       vim.tbl_map(function(module) pcall(require, module) end, { "nvim-treesitter", "mason" })
-      require("astronvim.utils").notify "Mason is installing packages if configured, check status with `:Mason`"
+      vim.notify("Mason is installing packages if configured, check status with `:Mason`", nil, { title = "AstroNvim" })
     end,
   })
 end

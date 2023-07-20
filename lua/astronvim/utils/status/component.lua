@@ -17,7 +17,7 @@ local init = require "astronvim.utils.status.init"
 local provider = require "astronvim.utils.status.provider"
 local status_utils = require "astronvim.utils.status.utils"
 
-local utils = require "astronvim.utils"
+local utils = require "astrocore.utils"
 local buffer_utils = require "astronvim.utils.buffer"
 local extend_tbl = utils.extend_tbl
 local get_icon = utils.get_icon

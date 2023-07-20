@@ -5,7 +5,7 @@ return {
   cmd = "Neotree",
   init = function() vim.g.neo_tree_remove_legacy_commands = true end,
   opts = function()
-    local utils = require "astronvim.utils"
+    local utils = require "astrocore.utils"
     local get_icon = utils.get_icon
     return {
       auto_clean_after_session_restore = true,
@@ -48,7 +48,7 @@ return {
       commands = {
         system_open = function(state)
           -- TODO: just use vim.ui.open when dropping support for Neovim <0.10
-          (vim.ui.open or require("astronvim.utils").system_open)(state.tree:get_node():get_id())
+          (vim.ui.open or utils.system_open)(state.tree:get_node():get_id())
         end,
         parent_or_close = function(state)
           local node = state.tree:get_node()

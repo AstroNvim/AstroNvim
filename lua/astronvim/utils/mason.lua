@@ -11,7 +11,7 @@
 
 local M = {}
 
-local utils = require "astronvim.utils"
+local utils = require "astrocore.utils"
 local astroevent = utils.event
 local function mason_notify(msg, type) utils.notify(msg, type, { title = "Mason" }) end
 

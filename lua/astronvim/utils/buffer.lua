@@ -10,7 +10,7 @@
 
 local M = {}
 
-local utils = require "astronvim.utils"
+local utils = require "astrocore.utils"
 
 --- Placeholders for keeping track of most recent and previous buffer
 M.current_buf, M.last_buf = nil, nil

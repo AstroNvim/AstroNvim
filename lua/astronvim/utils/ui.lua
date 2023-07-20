@@ -12,7 +12,7 @@
 local M = {}
 
 local function bool2str(bool) return bool and "on" or "off" end
-local function ui_notify(silent, ...) return not silent and require("astronvim.utils").notify(...) end
+local function ui_notify(silent, ...) return not silent and require("astrocore.utils").notify(...) end
 
 --- Toggle notifications for UI toggles
 ---@param silent? boolean if true then don't sent a notification
@@ -260,7 +260,7 @@ M.toggle_syntax = M.toggle_buffer_syntax
 ---@param silent? boolean if true then don't sent a notification
 function M.toggle_url_match(silent)
   vim.g.highlighturl_enabled = not vim.g.highlighturl_enabled
-  require("astronvim.utils").set_url_match()
+  require("astrocore.utils").set_url_match()
   ui_notify(silent, string.format("URL highlighting %s", bool2str(vim.g.highlighturl_enabled)))
 end
 

@@ -12,7 +12,7 @@ local M = {}
 
 local env = require "astronvim.utils.status.env"
 
-local utils = require "astronvim.utils"
+local utils = require "astrocore.utils"
 local extend_tbl = utils.extend_tbl
 local get_icon = utils.get_icon
 

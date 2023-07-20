@@ -1,5 +1,8 @@
 --- ### AstroNvim Utilities
 --
+-- DEPRECATED and is currently unused. replaced by `astrocore`
+-- TODO: Delete this file with AstroNvim v4
+--
 -- Various utility functions to use within AstroNvim and user configurations.
 --
 -- This module can be loaded with `local utils = require "astronvim.utils"`

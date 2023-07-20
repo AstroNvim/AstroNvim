@@ -2,23 +2,25 @@ return {
   {
     "nvim-tree/nvim-web-devicons",
     enabled = vim.g.icons_enabled,
-    opts = {
-      override = {
-        default_icon = { icon = require("astronvim.utils").get_icon "DefaultFile" },
-        deb = { icon = "", name = "Deb" },
-        lock = { icon = "󰌾", name = "Lock" },
-        mp3 = { icon = "󰎆", name = "Mp3" },
-        mp4 = { icon = "", name = "Mp4" },
-        out = { icon = "", name = "Out" },
-        ["robots.txt"] = { icon = "󰚩", name = "Robots" },
-        ttf = { icon = "", name = "TrueTypeFont" },
-        rpm = { icon = "", name = "Rpm" },
-        woff = { icon = "", name = "WebOpenFontFormat" },
-        woff2 = { icon = "", name = "WebOpenFontFormat2" },
-        xz = { icon = "", name = "Xz" },
-        zip = { icon = "", name = "Zip" },
-      },
-    },
+    opts = function()
+      return {
+        override = {
+          default_icon = { icon = require("astrocore.utils").get_icon "DefaultFile" },
+          deb = { icon = "", name = "Deb" },
+          lock = { icon = "󰌾", name = "Lock" },
+          mp3 = { icon = "󰎆", name = "Mp3" },
+          mp4 = { icon = "", name = "Mp4" },
+          out = { icon = "", name = "Out" },
+          ["robots.txt"] = { icon = "󰚩", name = "Robots" },
+          ttf = { icon = "", name = "TrueTypeFont" },
+          rpm = { icon = "", name = "Rpm" },
+          woff = { icon = "", name = "WebOpenFontFormat" },
+          woff2 = { icon = "", name = "WebOpenFontFormat2" },
+          xz = { icon = "", name = "Xz" },
+          zip = { icon = "", name = "Zip" },
+        },
+      }
+    end,
   },
   {
     "onsails/lspkind.nvim",
@@ -49,7 +51,7 @@ return {
   },
   {
     "rcarriga/nvim-notify",
-    init = function() require("astronvim.utils").load_plugin_with_func("nvim-notify", vim, "notify") end,
+    init = function() require("astrocore.utils").load_plugin_with_func("nvim-notify", vim, "notify") end,
     opts = {
       on_open = function(win)
         vim.api.nvim_win_set_config(win, { zindex = 175 })
@@ -65,7 +67,7 @@ return {
   },
   {
     "stevearc/dressing.nvim",
-    init = function() require("astronvim.utils").load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
+    init = function() require("astrocore.utils").load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
     opts = {
       input = { default_prompt = "➤ " },
       select = { backend = { "telescope", "builtin" } },

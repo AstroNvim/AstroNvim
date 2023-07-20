@@ -72,7 +72,7 @@ return {
       },
     },
     cmd = function(_, cmds) -- HACK: lazy load lspconfig on `:Neoconf` if neoconf is available
-      if require("astronvim.utils").is_available "neoconf.nvim" then table.insert(cmds, "Neoconf") end
+      if require("lazy.core.config").spec.plugins["neoconf.nvim"] then table.insert(cmds, "Neoconf") end
     end,
     event = "User AstroFile",
     config = require "plugins.configs.lspconfig",

@@ -1,5 +1,14 @@
 return {
-  "nvim-lua/plenary.nvim",
+  {
+    "AstroNvim/astrocore",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = false,
+    priority = 10000,
+    opts = function()
+      local user_opts = astronvim.user_opts
+      return { mappings = function(default) return user_opts("mappings", default) end }
+    end,
+  },
   "echasnovski/mini.bufremove",
   { "AstroNvim/astrotheme", opts = { plugins = { ["dashboard-nvim"] = true } } },
   { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },

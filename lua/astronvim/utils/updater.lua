@@ -13,7 +13,7 @@ local git = require "astronvim.utils.git"
 
 local M = {}
 
-local utils = require "astronvim.utils"
+local utils = require "astrocore.utils"
 local notify = utils.notify
 
 local function echo(messages)
@@ -143,7 +143,7 @@ end
 ---@return table|boolean? # The information of an available update (`{ source = string, target = string }`), false if no update is available, or nil if there is an error
 function M.update_available(opts)
   if not opts then opts = astronvim.updater.options end
-  opts = require("astronvim.utils").extend_tbl({ remote = "origin" }, opts)
+  opts = utils.extend_tbl({ remote = "origin" }, opts)
   -- if the git command is not available, then throw an error
   if not git.available() then
     notify(
@@ -243,10 +243,7 @@ end
 ---@param opts? table the settings to use for the update
 function M.update(opts)
   if not opts then opts = astronvim.updater.options end
-  opts = require("astronvim.utils").extend_tbl(
-    { remote = "origin", show_changelog = true, sync_plugins = true, auto_quit = false },
-    opts
-  )
+  opts = utils.extend_tbl({ remote = "origin", show_changelog = true, sync_plugins = true, auto_quit = false }, opts)
   local available_update = M.update_available(opts)
   if available_update == nil then
     return

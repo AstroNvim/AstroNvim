@@ -14,7 +14,7 @@ local condition = require "astronvim.utils.status.condition"
 local env = require "astronvim.utils.status.env"
 local status_utils = require "astronvim.utils.status.utils"
 
-local utils = require "astronvim.utils"
+local utils = require "astrocore.utils"
 local extend_tbl = utils.extend_tbl
 local get_icon = utils.get_icon
 local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9

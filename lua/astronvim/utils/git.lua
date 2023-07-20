@@ -15,7 +15,7 @@ local function trim_or_nil(str) return type(str) == "string" and vim.trim(str) o
 ---@return string|nil # The result of the command or nil if unsuccessful
 function git.cmd(args, ...)
   if type(args) == "string" then args = { args } end
-  return require("astronvim.utils").cmd(vim.list_extend({ "git", "-C", astronvim.install.home }, args), ...)
+  return require("astrocore.utils").cmd(vim.list_extend({ "git", "-C", astronvim.install.home }, args), ...)
 end
 
 --- Get the first worktree that a file belongs to
@@ -28,7 +28,7 @@ function git.file_worktree(file, worktrees)
   file = file or vim.fn.expand "%"
   for _, worktree in ipairs(worktrees) do
     if
-      require("astronvim.utils").cmd({
+      require("astrocore.utils").cmd({
         "git",
         "--work-tree",
         worktree.toplevel,
@@ -178,7 +178,7 @@ end
 ---@param str string the remote to parse to a full git url
 ---@return string # The full git url for the given remote string
 function git.parse_remote_url(str)
-  return vim.fn.match(str, require("astronvim.utils").url_matcher) == -1
+  return vim.fn.match(str, require("astrocore.utils").url_matcher) == -1
       and git.url .. str .. (vim.fn.match(str, "/") == -1 and "/AstroNvim.git" or ".git")
     or str
 end
