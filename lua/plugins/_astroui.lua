@@ -1,6 +1,7 @@
 return {
   "astroui",
   opts = {
+    colorscheme = "astrodark",
     icons = {
       ActiveLSP = "",
       ActiveTS = "",

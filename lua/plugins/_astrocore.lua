@@ -1,7 +1,6 @@
 return {
   "AstroNvim/astrocore",
-  dev = true,
-  dependencies = { "AstroNvim/astroui", dev = true },
+  dependencies = { "AstroNvim/astroui" },
   lazy = false,
   priority = 10000,
   opts = function(_, opts)

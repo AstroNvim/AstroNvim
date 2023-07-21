@@ -126,5 +126,3 @@ if options.pin_plugins == nil then options.pin_plugins = options.channel == "sta
 
 --- table of user created terminals
 astronvim.user_terminals = {}
---- the default colorscheme to apply on startup
-astronvim.default_colorscheme = astronvim.user_opts("colorscheme", "astrotheme", false)
