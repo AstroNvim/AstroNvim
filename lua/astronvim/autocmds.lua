@@ -104,7 +104,7 @@ autocmd("BufWinEnter", {
   group = augroup("q_close_windows", { clear = true }),
   callback = function(event)
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
-    if vim.tbl_contains({ "help", "nofile", "quickfix" }, buftype) then
+    if vim.tbl_contains({ "help", "nofile", "quickfix" }, buftype) and vim.fn.maparg("q", "n") == "" then
       vim.keymap.set("n", "q", "<cmd>close<cr>", {
         desc = "Close window",
         buffer = event.buf,
