@@ -261,10 +261,13 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/hover" then
-    lsp_mappings.n["K"] = {
-      function() vim.lsp.buf.hover() end,
-      desc = "Hover symbol details",
-    }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      lsp_mappings.n["K"] = {
+        function() vim.lsp.buf.hover() end,
+        desc = "Hover symbol details",
+      }
+    end
   end
 
   if client.supports_method "textDocument/implementation" then
@@ -312,7 +315,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/typeDefinition" then
-    lsp_mappings.n["gT"] = {
+    lsp_mappings.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,
       desc = "Definition of current type",
     }
@@ -340,8 +343,8 @@ M.on_attach = function(client, bufnr)
     if lsp_mappings.n["<leader>lR"] then
       lsp_mappings.n["<leader>lR"][1] = function() require("telescope.builtin").lsp_references() end
     end
-    if lsp_mappings.n.gT then
-      lsp_mappings.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end
+    if lsp_mappings.n.gy then
+      lsp_mappings.n.gy[1] = function() require("telescope.builtin").lsp_type_definitions() end
     end
     if lsp_mappings.n["<leader>lG"] then
       lsp_mappings.n["<leader>lG"][1] = function()

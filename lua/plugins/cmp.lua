@@ -24,8 +24,8 @@ return {
       local utils = require "astronvim.utils"
       if not snip_status_ok then return end
       local border_opts = {
-        border = "single",
-        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+        border = "rounded",
+        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
       }
 
       local function has_words_before()

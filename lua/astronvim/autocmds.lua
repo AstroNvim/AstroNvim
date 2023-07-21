@@ -2,7 +2,6 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 local cmd = vim.api.nvim_create_user_command
 local namespace = vim.api.nvim_create_namespace
-local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9
 
 local utils = require "astronvim.utils"
 local is_available = utils.is_available
@@ -14,6 +13,16 @@ vim.on_key(function(char)
     if vim.opt.hlsearch:get() ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
   end
 end, namespace "auto_hlsearch")
+
+autocmd("BufReadPre", {
+  desc = "Disable certain functionality on very large files",
+  group = augroup("large_buf", { clear = true }),
+  callback = function(args)
+    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
+    vim.b[args.buf].large_buf = (ok and stats and stats.size > vim.g.max_file.size)
+      or vim.api.nvim_buf_line_count(args.buf) > vim.g.max_file.lines
+  end,
+})
 
 local bufferline_group = augroup("bufferline", { clear = true })
 autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
@@ -188,7 +197,10 @@ if is_available "alpha-nvim" then
           end
         end
       end
-      if not should_skip then require("alpha").start(true, require("alpha").default_config) end
+      if not should_skip then
+        require("alpha").start(true, require("alpha").default_config)
+        vim.schedule(function() vim.cmd.doautocmd "FileType" end)
+      end
     end,
   })
 end
@@ -217,7 +229,7 @@ if is_available "neo-tree.nvim" then
       if package.loaded["neo-tree"] then
         vim.api.nvim_del_augroup_by_name "neotree_start"
       else
-        local stats = luv.fs_stat(vim.api.nvim_buf_get_name(0))
+        local stats = (vim.uv or vim.loop).fs_stat(vim.api.nvim_buf_get_name(0)) -- TODO: REMOVE vim.loop WHEN DROPPING SUPPORT FOR Neovim v0.9
         if stats and stats.type == "directory" then
           vim.api.nvim_del_augroup_by_name "neotree_start"
           require "neo-tree"
