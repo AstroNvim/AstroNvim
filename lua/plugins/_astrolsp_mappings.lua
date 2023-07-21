@@ -11,7 +11,7 @@ return {
     maps.n["<leader>lD"] = {
       function() require("telescope.builtin").diagnostics() end,
       desc = "Search diagnostics",
-      cond = function(_, _) return true end, -- client, bufnr parameters
+      cond = function() return require("astrocore.utils").is_available "telescope.nvim" end,
     }
 
     maps.n["<leader>la"] = {
@@ -91,7 +91,7 @@ return {
     maps.n["<leader>uY"] = {
       function() require("astrolsp.toggles").buffer_semantic_tokens() end,
       desc = "Toggle LSP semantic highlight (buffer)",
-      cond = "textDocument/semanticTokens/full",
+      cond = function(client) return client.server_capabilities.semanticTokensProvider and vim.lsp.semantic_tokens end,
     }
 
     -- TODO: FIX this
