@@ -2,7 +2,7 @@ return {
   "rebelot/heirline.nvim",
   event = "BufEnter",
   opts = function()
-    local status = require "astronvim.utils.status"
+    local status = require "astroui.status"
     return {
       opts = {
         disable_winbar_cb = function(args)

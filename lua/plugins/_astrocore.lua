@@ -1,6 +1,7 @@
 return {
   "AstroNvim/astrocore",
-  dependencies = { "AstroNvim/astroui" },
+  dev = true,
+  dependencies = { "AstroNvim/astroui", dev = true },
   lazy = false,
   priority = 10000,
   opts = function(_, opts)
@@ -82,15 +83,13 @@ return {
     maps.n["<leader>bC"] = { function() require("astrocore.buffer").close_all() end, desc = "Close all buffers" }
     maps.n["<leader>bb"] = {
       function()
-        require("astronvim.utils.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
+        require("astroui.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
       end,
       desc = "Select buffer from tabline",
     }
     maps.n["<leader>bd"] = {
       function()
-        require("astronvim.utils.status.heirline").buffer_picker(
-          function(bufnr) require("astrocore.buffer").close(bufnr) end
-        )
+        require("astroui.status.heirline").buffer_picker(function(bufnr) require("astrocore.buffer").close(bufnr) end)
       end,
       desc = "Close buffer from tabline",
     }
@@ -107,7 +106,7 @@ return {
     maps.n["<leader>bsm"] = { function() require("astrocore.buffer").sort "modified" end, desc = "By modification" }
     maps.n["<leader>b\\"] = {
       function()
-        require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
+        require("astroui.status.heirline").buffer_picker(function(bufnr)
           vim.cmd.split()
           vim.api.nvim_win_set_buf(0, bufnr)
         end)
@@ -116,7 +115,7 @@ return {
     }
     maps.n["<leader>b|"] = {
       function()
-        require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
+        require("astroui.status.heirline").buffer_picker(function(bufnr)
           vim.cmd.vsplit()
           vim.api.nvim_win_set_buf(0, bufnr)
         end)

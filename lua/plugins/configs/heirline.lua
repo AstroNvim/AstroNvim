@@ -1,8 +1,8 @@
 return function(_, opts)
   local heirline = require "heirline"
-  local C = require("astronvim.utils.status.env").fallback_colors
+  local C = require("astroui").config.status.fallback_colors
   local get_hlgroup = require("astrocore.utils").get_hlgroup
-  local lualine_mode = require("astronvim.utils.status.hl").lualine_mode
+  local lualine_mode = require("astroui.status.hl").lualine_mode
   local function resolve_lualine(orig, ...) return (not orig or orig == "NONE") and lualine_mode(...) or orig end
 
   local function setup_colors()
