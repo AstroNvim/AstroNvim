@@ -94,8 +94,7 @@ return {
       cond = function(client) return client.server_capabilities.semanticTokensProvider and vim.lsp.semantic_tokens end,
     }
 
-    -- TODO: FIX this
-    -- if not vim.tbl_isempty(maps.v) then maps.v["<leader>l"] = { desc = " LSP" } end
+    if not vim.tbl_isempty(maps.v) then maps.v["<leader>l"] = { desc = " LSP" } end
 
     if vim.fn.exists ":LspInfo" > 0 then maps.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" } end
     --
