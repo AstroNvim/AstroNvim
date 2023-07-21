@@ -99,7 +99,7 @@ return {
   cmd = "Telescope",
   opts = function()
     local actions = require "telescope.actions"
-    local get_icon = require("astrocore.utils").get_icon
+    local get_icon = require("astroui").get_icon
     return {
       defaults = {
         git_worktrees = vim.g.git_worktrees,

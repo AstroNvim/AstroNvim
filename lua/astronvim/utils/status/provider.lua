@@ -15,8 +15,9 @@ local env = require "astronvim.utils.status.env"
 local status_utils = require "astronvim.utils.status.utils"
 
 local utils = require "astrocore.utils"
+local ui_utils = require "astroui"
 local extend_tbl = utils.extend_tbl
-local get_icon = utils.get_icon
+local get_icon = ui_utils.get_icon
 local luv = vim.uv or vim.loop -- TODO: REMOVE WHEN DROPPING SUPPORT FOR Neovim v0.9
 
 --- A provider function for the fill string
@@ -347,7 +348,7 @@ function M.unique_path(opts)
     local unique_path = ""
     -- check for same buffer names under different dirs
     local current
-    for _, value in ipairs(vim.t.bufs) do
+    for _, value in ipairs(vim.t.bufs or {}) do
       if name == opts.buf_name(value) and value ~= opts.bufnr then
         if not current then current = path_parts(opts.bufnr) end
         local other = path_parts(value)
@@ -458,7 +459,7 @@ end
 -- @usage local heirline_component = { provider = require("astronvim.utils.status").provider.lsp_progress() }
 -- @see astronvim.utils.status.utils.stylize
 function M.lsp_progress(opts)
-  local spinner = utils.get_spinner("LSPLoading", 1) or { "" }
+  local spinner = ui_utils.get_spinner("LSPLoading", 1) or { "" }
   return function()
     local astrolsp_avail, astrolsp = pcall(require, "astrolsp")
     local _, status

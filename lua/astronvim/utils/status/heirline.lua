@@ -14,9 +14,8 @@ local hl = require "astronvim.utils.status.hl"
 local provider = require "astronvim.utils.status.provider"
 local status_utils = require "astronvim.utils.status.utils"
 
-local utils = require "astrocore.utils"
-local buffer_utils = require "astronvim.utils.buffer"
-local get_icon = utils.get_icon
+local buf_utils = require "astrocore.buffer"
+local get_icon = require("astroui").get_icon
 
 --- A helper function to get the type a tab or buffer is
 ---@param self table the self table from a heirline component function
@@ -76,11 +75,11 @@ M.make_buflist = function(component)
         },
         component, -- create buffer component
       },
-      function(self) return buffer_utils.is_valid(self.bufnr) end -- disable surrounding
+      function(self) return buf_utils.is_valid(self.bufnr) end -- disable surrounding
     ),
     { provider = get_icon "ArrowLeft" .. " ", hl = overflow_hl },
     { provider = get_icon "ArrowRight" .. " ", hl = overflow_hl },
-    function() return vim.t.bufs end, -- use astronvim bufs variable
+    function() return vim.t.bufs or {} end, -- use astronvim bufs variable
     false -- disable internal caching
   )
 end

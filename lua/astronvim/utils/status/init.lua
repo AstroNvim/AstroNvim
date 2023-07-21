@@ -15,6 +15,7 @@ local provider = require "astronvim.utils.status.provider"
 local status_utils = require "astronvim.utils.status.utils"
 
 local utils = require "astrocore.utils"
+local get_icon = require("astroui").get_icon
 local extend_tbl = utils.extend_tbl
 
 --- An `init` function to build a set of children components for LSP breadcrumbs
@@ -38,7 +39,7 @@ function M.breadcrumbs(opts)
     local start_idx = 0
     if opts.max_depth and opts.max_depth > 0 then
       start_idx = #data - opts.max_depth
-      if start_idx > 0 then table.insert(children, { provider = utils.get_icon "Ellipsis" .. opts.separator }) end
+      if start_idx > 0 then table.insert(children, { provider = get_icon "Ellipsis" .. opts.separator }) end
     end
     -- create a child for each level
     for i, d in ipairs(data) do
@@ -103,7 +104,7 @@ function M.separated_path(opts)
     local start_idx = 0
     if opts.max_depth and opts.max_depth > 0 then
       start_idx = #data - opts.max_depth
-      if start_idx > 0 then table.insert(children, { provider = utils.get_icon "Ellipsis" .. opts.separator }) end
+      if start_idx > 0 then table.insert(children, { provider = get_icon "Ellipsis" .. opts.separator }) end
     end
     -- create a child for each level
     for i, d in ipairs(data) do

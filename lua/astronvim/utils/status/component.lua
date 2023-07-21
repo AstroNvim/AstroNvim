@@ -18,9 +18,9 @@ local provider = require "astronvim.utils.status.provider"
 local status_utils = require "astronvim.utils.status.utils"
 
 local utils = require "astrocore.utils"
-local buffer_utils = require "astronvim.utils.buffer"
+local buf_utils = require "astrocore.buffer"
+local get_icon = require("astroui").get_icon
 local extend_tbl = utils.extend_tbl
-local get_icon = utils.get_icon
 local is_available = utils.is_available
 
 --- A Heirline component for filling in the empty space of the bar
@@ -70,7 +70,7 @@ function M.tabline_file_info(opts)
       hl = function(self) return hl.get_attributes(self.tab_type .. "_close") end,
       padding = { left = 1, right = 1 },
       on_click = {
-        callback = function(_, minwid) buffer_utils.close(minwid) end,
+        callback = function(_, minwid) buf_utils.close(minwid) end,
         minwid = function(self) return self.bufnr end,
         name = "heirline_tabline_close_buffer_callback",
       },

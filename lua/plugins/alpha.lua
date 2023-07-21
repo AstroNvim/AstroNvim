@@ -39,7 +39,7 @@ return {
     dashboard.section.header.opts.hl = "DashboardHeader"
 
     local button = require("astrocore.utils").alpha_button
-    local get_icon = require("astrocore.utils").get_icon
+    local get_icon = require("astroui").get_icon
     dashboard.section.buttons.val = {
       button("LDR n  ", get_icon("FileNew", 2, true) .. "New File  "),
       button("LDR f f", get_icon("Search", 2, true) .. "Find File  "),

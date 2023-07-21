@@ -6,7 +6,7 @@ return {
     return {
       opts = {
         disable_winbar_cb = function(args)
-          return not require("astronvim.utils.buffer").is_valid(args.buf)
+          return not require("astrocore.buffer").is_valid(args.buf)
             or status.condition.buffer_matches({
               buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
               filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
@@ -69,7 +69,7 @@ return {
             provider = status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
             hl = status.hl.get_attributes("tab_close", true),
             on_click = {
-              callback = function() require("astronvim.utils.buffer").close_tab() end,
+              callback = function() require("astrocore.buffer").close_tab() end,
               name = "heirline_tabline_close_tab_callback",
             },
           },

@@ -27,7 +27,7 @@ return {
   },
   event = "User AstroGitFile",
   opts = function()
-    local get_icon = require("astrocore.utils").get_icon
+    local get_icon = require("astroui").get_icon
     return {
       signs = {
         add = { text = get_icon "GitSign" },

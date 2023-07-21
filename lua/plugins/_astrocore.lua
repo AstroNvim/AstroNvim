@@ -1,10 +1,11 @@
 return {
   "AstroNvim/astrocore",
+  dependencies = { "AstroNvim/astroui" },
   lazy = false,
   priority = 10000,
   opts = function(_, opts)
     local utils = require "astrocore.utils"
-    local get_icon = utils.get_icon
+    local get_icon = require("astroui").get_icon
     local is_available = utils.is_available
     local ui = require "astronvim.utils.ui"
     -- initialize internally use mapping section titles
@@ -56,30 +57,29 @@ return {
     maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog" }
 
     -- Manage Buffers
-    maps.n["<leader>c"] = { function() require("astronvim.utils.buffer").close() end, desc = "Close buffer" }
-    maps.n["<leader>C"] =
-      { function() require("astronvim.utils.buffer").close(0, true) end, desc = "Force close buffer" }
+    maps.n["<leader>c"] = { function() require("astrocore.buffer").close() end, desc = "Close buffer" }
+    maps.n["<leader>C"] = { function() require("astrocore.buffer").close(0, true) end, desc = "Force close buffer" }
     maps.n["]b"] = {
-      function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end,
+      function() require("astrocore.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end,
       desc = "Next buffer",
     }
     maps.n["[b"] = {
-      function() require("astronvim.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
+      function() require("astrocore.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
       desc = "Previous buffer",
     }
     maps.n[">b"] = {
-      function() require("astronvim.utils.buffer").move(vim.v.count > 0 and vim.v.count or 1) end,
+      function() require("astrocore.buffer").move(vim.v.count > 0 and vim.v.count or 1) end,
       desc = "Move buffer tab right",
     }
     maps.n["<b"] = {
-      function() require("astronvim.utils.buffer").move(-(vim.v.count > 0 and vim.v.count or 1)) end,
+      function() require("astrocore.buffer").move(-(vim.v.count > 0 and vim.v.count or 1)) end,
       desc = "Move buffer tab left",
     }
 
     maps.n["<leader>b"] = sections.b
     maps.n["<leader>bc"] =
-      { function() require("astronvim.utils.buffer").close_all(true) end, desc = "Close all buffers except current" }
-    maps.n["<leader>bC"] = { function() require("astronvim.utils.buffer").close_all() end, desc = "Close all buffers" }
+      { function() require("astrocore.buffer").close_all(true) end, desc = "Close all buffers except current" }
+    maps.n["<leader>bC"] = { function() require("astrocore.buffer").close_all() end, desc = "Close all buffers" }
     maps.n["<leader>bb"] = {
       function()
         require("astronvim.utils.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
@@ -89,24 +89,22 @@ return {
     maps.n["<leader>bd"] = {
       function()
         require("astronvim.utils.status.heirline").buffer_picker(
-          function(bufnr) require("astronvim.utils.buffer").close(bufnr) end
+          function(bufnr) require("astrocore.buffer").close(bufnr) end
         )
       end,
       desc = "Close buffer from tabline",
     }
     maps.n["<leader>bl"] =
-      { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
-    maps.n["<leader>bp"] = { function() require("astronvim.utils.buffer").prev() end, desc = "Previous buffer" }
+      { function() require("astrocore.buffer").close_left() end, desc = "Close all buffers to the left" }
+    maps.n["<leader>bp"] = { function() require("astrocore.buffer").prev() end, desc = "Previous buffer" }
     maps.n["<leader>br"] =
-      { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
+      { function() require("astrocore.buffer").close_right() end, desc = "Close all buffers to the right" }
     maps.n["<leader>bs"] = sections.bs
-    maps.n["<leader>bse"] = { function() require("astronvim.utils.buffer").sort "extension" end, desc = "By extension" }
-    maps.n["<leader>bsr"] =
-      { function() require("astronvim.utils.buffer").sort "unique_path" end, desc = "By relative path" }
-    maps.n["<leader>bsp"] = { function() require("astronvim.utils.buffer").sort "full_path" end, desc = "By full path" }
-    maps.n["<leader>bsi"] = { function() require("astronvim.utils.buffer").sort "bufnr" end, desc = "By buffer number" }
-    maps.n["<leader>bsm"] =
-      { function() require("astronvim.utils.buffer").sort "modified" end, desc = "By modification" }
+    maps.n["<leader>bse"] = { function() require("astrocore.buffer").sort "extension" end, desc = "By extension" }
+    maps.n["<leader>bsr"] = { function() require("astrocore.buffer").sort "unique_path" end, desc = "By relative path" }
+    maps.n["<leader>bsp"] = { function() require("astrocore.buffer").sort "full_path" end, desc = "By full path" }
+    maps.n["<leader>bsi"] = { function() require("astrocore.buffer").sort "bufnr" end, desc = "By buffer number" }
+    maps.n["<leader>bsm"] = { function() require("astrocore.buffer").sort "modified" end, desc = "By modification" }
     maps.n["<leader>b\\"] = {
       function()
         require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)

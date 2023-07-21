@@ -4,7 +4,7 @@ M.on_save = function()
   -- initiate astronvim data
   local data = { bufnrs = {}, tabs = {} }
 
-  local buf_utils = require "astronvim.utils.buffer"
+  local buf_utils = require "astrocore.buffer"
 
   data.current_buf = buf_utils.current_buf
   data.last_buf = buf_utils.last_buf
@@ -32,7 +32,7 @@ M.on_load = function(data)
     vim.t[tabpage].bufs = vim.tbl_map(function(bufnr) return new_bufnrs[bufnr] end, tabs)
   end
 
-  local buf_utils = require "astronvim.utils.buffer"
+  local buf_utils = require "astrocore.buffer"
   buf_utils.current_buf = new_bufnrs[data.current_buf]
   buf_utils.last_buf = new_bufnrs[data.last_buf]
 

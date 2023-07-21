@@ -14,7 +14,7 @@ local env = require "astronvim.utils.status.env"
 
 local utils = require "astrocore.utils"
 local extend_tbl = utils.extend_tbl
-local get_icon = utils.get_icon
+local get_icon = require("astroui").get_icon
 
 --- Convert a component parameter table to a table that can be used with the component builder
 ---@param opts? table a table of provider options
