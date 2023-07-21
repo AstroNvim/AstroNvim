@@ -4,32 +4,8 @@ return {
   { "AstroNvim/astrotheme", opts = { plugins = { ["dashboard-nvim"] = true } } },
   { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
   { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "plugins.configs.guess-indent" },
-  { -- TODO: REMOVE neovim-session-manager with AstroNvim v4
-    "Shatur/neovim-session-manager",
-    event = "BufWritePost",
-    cmd = "SessionManager",
-    dependencies = {
-      {
-        "astrocore",
-        opts = function(_, opts)
-          local maps = opts.mappings
-          if require("astrocore.utils").is_available "neovim-session-manager" then
-            maps.n["<leader>S"] = opts._map_section.S
-            maps.n["<leader>Sl"] = { "<cmd>SessionManager! load_last_session<cr>", desc = "Load last session" }
-            maps.n["<leader>Ss"] = { "<cmd>SessionManager! save_current_session<cr>", desc = "Save this session" }
-            maps.n["<leader>Sd"] = { "<cmd>SessionManager! delete_session<cr>", desc = "Delete session" }
-            maps.n["<leader>Sf"] = { "<cmd>SessionManager! load_session<cr>", desc = "Search sessions" }
-            maps.n["<leader>S."] =
-              { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" }
-          end
-        end,
-      },
-    },
-    enabled = vim.g.resession_enabled ~= true,
-  },
   {
     "stevearc/resession.nvim",
-    enabled = vim.g.resession_enabled == true,
     dependencies = {
       {
         "astrocore",
