@@ -216,6 +216,7 @@ end
 function M.toggle_url_match()
   vim.g.highlighturl_enabled = not vim.g.highlighturl_enabled
   require("astronvim.utils").set_url_match()
+  notify(string.format("URL highlighting %s", bool2str(vim.g.highlighturl_enabled)))
 end
 
 local last_active_foldcolumn
