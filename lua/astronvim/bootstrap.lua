@@ -123,6 +123,3 @@ astronvim.updater = {
 local options = astronvim.updater.options
 if astronvim.install.is_stable ~= nil then options.channel = astronvim.install.is_stable and "stable" or "nightly" end
 if options.pin_plugins == nil then options.pin_plugins = options.channel == "stable" end
-
---- table of user created terminals
-astronvim.user_terminals = {}
