@@ -245,6 +245,10 @@ if is_available "telescope.nvim" then
     function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
     desc = "Git commits (current file)",
   }
+  maps.x["<leader>gc"] = {
+    function() require("telescope.builtin").git_bcommits_range { use_file_path = true } end,
+    desc = "Git commits (selected range)",
+  }
   maps.n["<leader>gt"] =
     { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
   maps.n["<leader>f<CR>"] = { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
