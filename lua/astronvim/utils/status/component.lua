@@ -110,7 +110,12 @@ function M.cmd_info(opts)
     macro_recording = {
       icon = { kind = "MacroRecording", padding = { right = 1 } },
       condition = condition.is_macro_recording,
-      update = { "RecordingEnter", "RecordingLeave" },
+      update = {
+        "RecordingEnter",
+        "RecordingLeave",
+        -- TODO: remove when dropping support for Neovim v0.8
+        callback = vim.fn.has "nvim-0.9" == 0 and vim.schedule_wrap(function() vim.cmd.redrawstatus() end) or nil,
+      },
     },
     search_count = {
       icon = { kind = "Search", padding = { right = 1 } },
