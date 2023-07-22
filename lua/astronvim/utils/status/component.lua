@@ -110,11 +110,7 @@ function M.cmd_info(opts)
     macro_recording = {
       icon = { kind = "MacroRecording", padding = { right = 1 } },
       condition = condition.is_macro_recording,
-      update = {
-        "RecordingEnter",
-        "RecordingLeave",
-        callback = vim.schedule_wrap(function() vim.cmd.redrawstatus() end),
-      },
+      update = { "RecordingEnter", "RecordingLeave" },
     },
     search_count = {
       icon = { kind = "Search", padding = { right = 1 } },
