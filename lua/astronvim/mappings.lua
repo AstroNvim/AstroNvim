@@ -246,7 +246,7 @@ if is_available "telescope.nvim" then
     desc = "Git commits (current file)",
   }
   maps.x["<leader>gc"] = {
-    '<cmd>lua require("telescope.builtin").git_bcommits_range { use_file_path = true }<cr><esc>',
+    function() require("telescope.builtin").git_bcommits_range { use_file_path = true } end,
     desc = "Git commits (selected range)",
   }
   maps.n["<leader>gt"] =
