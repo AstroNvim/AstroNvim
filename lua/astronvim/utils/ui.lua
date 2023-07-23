@@ -231,6 +231,7 @@ end
 ---@param bufnr? number the buffer to toggle syntax on
 ---@param silent? boolean if true then don't sent a notification
 function M.toggle_buffer_syntax(bufnr, silent)
+  -- HACK: this should just be `bufnr = bufnr or 0` but it looks like `vim.treesitter.stop` has a bug with `0` being current
   bufnr = (bufnr and bufnr ~= 0) and bufnr or vim.api.nvim_win_get_buf(0)
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
   if vim.bo[bufnr].syntax == "off" then
