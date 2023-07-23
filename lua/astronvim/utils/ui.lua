@@ -203,9 +203,10 @@ function M.toggle_wrap()
 end
 
 --- Toggle syntax highlighting and treesitter
-function M.toggle_syntax()
+---@param bufnr? number the buffer to toggle syntax on
+function M.toggle_buffer_syntax(bufnr)
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
-  local buf = vim.api.nvim_win_get_buf(0)
+  local buf = bufnr or vim.api.nvim_win_get_buf(0)
   if vim.bo[buf].syntax == "off" then
     if ts_avail and parsers.has_parser() then vim.cmd.TSBufEnable "highlight" end
     vim.cmd.setlocal "syntax=on"
