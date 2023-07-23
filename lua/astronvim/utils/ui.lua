@@ -239,11 +239,11 @@ function M.toggle_buffer_syntax(bufnr, silent)
   if vim.bo[bufnr].syntax == "off" then
     if ts_avail and parsers.has_parser() then vim.treesitter.start(bufnr) end
     vim.bo[bufnr].syntax = "on"
-    if not vim.b.semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(bufnr, true) end
+    if not vim.b[bufnr].semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(bufnr, true) end
   else
     if ts_avail and parsers.has_parser() then vim.treesitter.stop(bufnr) end
     vim.bo[bufnr].syntax = "off"
-    if vim.b.semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(bufnr, true) end
+    if vim.b[bufnr].semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(bufnr, true) end
   end
   ui_notify(silent, string.format("syntax %s", vim.bo[bufnr].syntax))
 end
