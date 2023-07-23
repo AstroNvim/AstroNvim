@@ -204,7 +204,7 @@ end
 
 --- Toggle syntax highlighting and treesitter
 ---@param bufnr? number the buffer to toggle syntax on
-function M.toggle_buffer_syntax(bufnr)
+function M.toggle_syntax(bufnr)
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
   local buf = bufnr or vim.api.nvim_win_get_buf(0)
   if vim.bo[buf].syntax == "off" then
