@@ -232,7 +232,7 @@ end
 --- @param bufnr? number the buffer to toggle syntax on
 --- @param silent? boolean if true then don't sent a notification
 function M.toggle_syntax(bufnr, silent)
-  bufnr = bufnr == 0 and vim.api.nvim_win_get_buf(0) or bufnr
+  bufnr = bufnr or vim.api.nvim_win_get_buf(0)
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
   if vim.bo[bufnr].syntax == "off" then
     if ts_avail and parsers.has_parser() then vim.treesitter.start(bufnr) end
