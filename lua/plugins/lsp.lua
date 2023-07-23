@@ -18,6 +18,15 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       {
+        "astrolsp",
+        opts = function(_, opts)
+          local maps = opts.mappings
+          if vim.fn.exists ":LspInfo" > 0 then
+            maps.n["<leader>li"] = { "<cmd>LspInfo<cr>", desc = "LSP information" }
+          end
+        end,
+      },
+      {
         "folke/neoconf.nvim",
         opts = function()
           local global_settings, file_found
@@ -56,9 +65,20 @@ return {
   {
     "jose-elias-alvarez/null-ls.nvim",
     dependencies = {
-      "jay-babu/mason-null-ls.nvim",
-      cmd = { "NullLsInstall", "NullLsUninstall" },
-      opts = { handlers = {} },
+      {
+        "astrolsp",
+        opts = function(_, opts)
+          local maps = opts.mappings
+          if vim.fn.exists ":NullLsInfo" > 0 then
+            maps.n["<leader>lI"] = { "<cmd>NullLsInfo<cr>", desc = "Null-ls information" }
+          end
+        end,
+      },
+      {
+        "jay-babu/mason-null-ls.nvim",
+        cmd = { "NullLsInstall", "NullLsUninstall" },
+        opts = { handlers = {} },
+      },
     },
     event = "User AstroFile",
     opts = function() return { on_attach = require("astrolsp").on_attach } end,

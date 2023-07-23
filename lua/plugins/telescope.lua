@@ -95,6 +95,30 @@ return {
         end
       end,
     },
+    {
+      "astrolsp",
+      opts = function(_, opts)
+        local maps = opts.mappings
+        if vim.fn.exists ":Telescope" > 0 or pcall(require, "telescope") then -- setup telescope mappings if available
+          maps.n["<leader>lD"] =
+            { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
+          if maps.n.gd then maps.n.gd[1] = function() require("telescope.builtin").lsp_definitions() end end
+          if maps.n.gI then maps.n.gI[1] = function() require("telescope.builtin").lsp_implementations() end end
+          if maps.n.gr then maps.n.gr[1] = function() require("telescope.builtin").lsp_references() end end
+          if maps.n["<leader>lR"] then
+            maps.n["<leader>lR"][1] = function() require("telescope.builtin").lsp_references() end
+          end
+          if maps.n.gT then maps.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end end
+          if maps.n["<leader>lG"] then
+            maps.n["<leader>lG"][1] = function()
+              vim.ui.input({ prompt = "Symbol Query: " }, function(query)
+                if query then require("telescope.builtin").lsp_workspace_symbols { query = query } end
+              end)
+            end
+          end
+        end
+      end,
+    },
   },
   cmd = "Telescope",
   opts = function()
