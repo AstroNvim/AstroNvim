@@ -89,10 +89,11 @@ end
 ---@param bufnr? number the buffer to toggle the clients on
 ---@param silent? boolean if true then don't sent a notification
 function M.toggle_buffer_semantic_tokens(bufnr, silent)
+  bufnr = (bufnr and bufnr ~= 0) and bufnr or vim.api.nvim_win_get_buf(0)
   vim.b.semantic_tokens_enabled = not vim.b.semantic_tokens_enabled
   for _, client in ipairs(vim.lsp.get_active_clients()) do
     if client.server_capabilities.semanticTokensProvider then
-      vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr or 0, client.id)
+      vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr, client.id)
       ui_notify(silent, string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b.semantic_tokens_enabled)))
     end
   end
