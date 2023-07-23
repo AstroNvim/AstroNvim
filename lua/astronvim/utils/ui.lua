@@ -81,12 +81,15 @@ end
 
 --- Toggle buffer semantic token highlighting for all language servers that support it
 ---@param bufnr? number the buffer to toggle the clients on
-function M.toggle_buffer_semantic_tokens(bufnr)
+--- @param silent? boolean if true then don't sent a notification
+function M.toggle_buffer_semantic_tokens(bufnr, silent)
   vim.b.semantic_tokens_enabled = not vim.b.semantic_tokens_enabled
   for _, client in ipairs(vim.lsp.get_active_clients()) do
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr or 0, client.id)
-      notify(string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b.semantic_tokens_enabled)))
+      if not silent then
+        notify(string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b.semantic_tokens_enabled)))
+      end
     end
   end
 end
@@ -206,9 +209,11 @@ function M.toggle_syntax()
   if vim.bo[buf].syntax == "off" then
     if ts_avail and parsers.has_parser() then vim.cmd.TSBufEnable "highlight" end
     vim.cmd.setlocal "syntax=on"
+    if not vim.b.semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(buf, true) end
   else
     if ts_avail and parsers.has_parser() then vim.cmd.TSBufDisable "highlight" end
     vim.cmd.setlocal "syntax=off"
+    if vim.b.semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(buf, true) end
   end
   notify(string.format("syntax %s", bool2str(vim.bo[buf].syntax ~= "off")))
 end
