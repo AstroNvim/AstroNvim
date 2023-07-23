@@ -1,46 +1,46 @@
-local function pattern_match(str, pattern_list)
-  for _, pattern in ipairs(pattern_list) do
-    if str:find(pattern) then return true end
-  end
-  return false
-end
-
-local sign_handlers = {}
--- gitsigns handlers
-local gitsigns = function(_)
-  local gitsigns_avail, gitsigns = pcall(require, "gitsigns")
-  if gitsigns_avail then vim.schedule(gitsigns.preview_hunk) end
-end
-for _, sign in ipairs { "Topdelete", "Untracked", "Add", "Changedelete", "Delete" } do
-  local name = "GitSigns" .. sign
-  if not sign_handlers[name] then sign_handlers[name] = gitsigns end
-end
--- diagnostic handlers
-local diagnostics = function(args)
-  if args.mods:find "c" then
-    vim.schedule(vim.lsp.buf.code_action)
-  else
-    vim.schedule(vim.diagnostic.open_float)
-  end
-end
-for _, sign in ipairs { "Error", "Hint", "Info", "Warn" } do
-  local name = "DiagnosticSign" .. sign
-  if not sign_handlers[name] then sign_handlers[name] = diagnostics end
-end
--- DAP handlers
-local dap_breakpoint = function(_)
-  local dap_avail, dap = pcall(require, "dap")
-  if dap_avail then vim.schedule(dap.toggle_breakpoint) end
-end
-for _, sign in ipairs { "", "Rejected", "Condition" } do
-  local name = "DapBreakpoint" .. sign
-  if not sign_handlers[name] then sign_handlers[name] = dap_breakpoint end
-end
-
 return {
   "astroui",
-  opts = {
-    status = {
+  opts = function(_, opts)
+    local function pattern_match(str, pattern_list)
+      for _, pattern in ipairs(pattern_list) do
+        if str:find(pattern) then return true end
+      end
+      return false
+    end
+
+    local sign_handlers = {}
+    -- gitsigns handlers
+    local gitsigns = function(_)
+      local gitsigns_avail, gitsigns = pcall(require, "gitsigns")
+      if gitsigns_avail then vim.schedule(gitsigns.preview_hunk) end
+    end
+    for _, sign in ipairs { "Topdelete", "Untracked", "Add", "Changedelete", "Delete" } do
+      local name = "GitSigns" .. sign
+      if not sign_handlers[name] then sign_handlers[name] = gitsigns end
+    end
+    -- diagnostic handlers
+    local diagnostics = function(args)
+      if args.mods:find "c" then
+        vim.schedule(vim.lsp.buf.code_action)
+      else
+        vim.schedule(vim.diagnostic.open_float)
+      end
+    end
+    for _, sign in ipairs { "Error", "Hint", "Info", "Warn" } do
+      local name = "DiagnosticSign" .. sign
+      if not sign_handlers[name] then sign_handlers[name] = diagnostics end
+    end
+    -- DAP handlers
+    local dap_breakpoint = function(_)
+      local dap_avail, dap = pcall(require, "dap")
+      if dap_avail then vim.schedule(dap.toggle_breakpoint) end
+    end
+    for _, sign in ipairs { "", "Rejected", "Condition" } do
+      local name = "DapBreakpoint" .. sign
+      if not sign_handlers[name] then sign_handlers[name] = dap_breakpoint end
+    end
+
+    opts.status = {
       fallback_colors = {
         none = "NONE",
         fg = "#abb2bf",
@@ -126,6 +126,6 @@ return {
         end,
       },
       sign_handlers = sign_handlers,
-    },
-  },
+    }
+  end,
 }
