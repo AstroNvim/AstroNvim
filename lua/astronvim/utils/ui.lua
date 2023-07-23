@@ -81,12 +81,15 @@ end
 
 --- Toggle buffer semantic token highlighting for all language servers that support it
 ---@param bufnr? number the buffer to toggle the clients on
-function M.toggle_buffer_semantic_tokens(bufnr)
+--- @param silent? boolean if true then don't sent a notification
+function M.toggle_buffer_semantic_tokens(bufnr, silent)
   vim.b.semantic_tokens_enabled = not vim.b.semantic_tokens_enabled
   for _, client in ipairs(vim.lsp.get_active_clients()) do
     if client.server_capabilities.semanticTokensProvider then
       vim.lsp.semantic_tokens[vim.b.semantic_tokens_enabled and "start" or "stop"](bufnr or 0, client.id)
-      notify(string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b.semantic_tokens_enabled)))
+      if not silent then
+        notify(string.format("Buffer lsp semantic highlighting %s", bool2str(vim.b.semantic_tokens_enabled)))
+      end
     end
   end
 end
@@ -200,16 +203,21 @@ function M.toggle_wrap()
 end
 
 --- Toggle syntax highlighting and treesitter
-function M.toggle_syntax()
+---@param bufnr? number the buffer to toggle syntax on
+function M.toggle_syntax(bufnr)
+  bufnr = bufnr or 0
+  bufnr = bufnr == 0 and vim.api.nvim_win_get_buf(0) or bufnr
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
-  if vim.g.syntax_on then -- global var for on//off
-    if ts_avail and parsers.has_parser() then vim.cmd.TSBufDisable "highlight" end
-    vim.cmd.syntax "off" -- set vim.g.syntax_on = false
+  if vim.bo[bufnr].syntax == "off" then
+    if ts_avail and parsers.has_parser() then vim.treesitter.start(bufnr) end
+    vim.bo[bufnr].syntax = "on"
+    if not vim.b.semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(bufnr, true) end
   else
-    if ts_avail and parsers.has_parser() then vim.cmd.TSBufEnable "highlight" end
-    vim.cmd.syntax "on" -- set vim.g.syntax_on = true
+    if ts_avail and parsers.has_parser() then vim.treesitter.stop(bufnr) end
+    vim.bo[bufnr].syntax = "off"
+    if vim.b.semantic_tokens_enabled then M.toggle_buffer_semantic_tokens(bufnr, true) end
   end
-  notify(string.format("syntax %s", bool2str(vim.g.syntax_on)))
+  notify(string.format("syntax %s", vim.bo[bufnr].syntax))
 end
 
 --- Toggle URL/URI syntax highlighting rules
