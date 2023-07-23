@@ -202,14 +202,15 @@ end
 --- Toggle syntax highlighting and treesitter
 function M.toggle_syntax()
   local ts_avail, parsers = pcall(require, "nvim-treesitter.parsers")
-  if vim.g.syntax_on then -- global var for on//off
-    if ts_avail and parsers.has_parser() then vim.cmd.TSBufDisable "highlight" end
-    vim.cmd.syntax "off" -- set vim.g.syntax_on = false
-  else
+  local buf = vim.api.nvim_win_get_buf(0)
+  if vim.bo[buf].syntax == "off" then
     if ts_avail and parsers.has_parser() then vim.cmd.TSBufEnable "highlight" end
-    vim.cmd.syntax "on" -- set vim.g.syntax_on = true
+    vim.cmd.setlocal "syntax=on"
+  else
+    if ts_avail and parsers.has_parser() then vim.cmd.TSBufDisable "highlight" end
+    vim.cmd.setlocal "syntax=off"
   end
-  notify(string.format("syntax %s", bool2str(vim.g.syntax_on)))
+  notify(string.format("syntax %s", bool2str(vim.bo[buf].syntax ~= "off")))
 end
 
 --- Toggle URL/URI syntax highlighting rules
