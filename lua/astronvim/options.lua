@@ -50,14 +50,6 @@ local options = astronvim.user_opts("options", {
   g = {
     mapleader = " ", -- set leader key
     maplocalleader = ",", -- set default local leader key
-    -- AstroNvim specific global options
-    max_file = { size = 1024 * 100, lines = 10000 }, -- set global limits for large files
-    autopairs_enabled = true, -- enable autopairs at start
-    cmp_enabled = true, -- enable completion at start
-    highlighturl_enabled = true, -- highlight URLs by default
-    icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
-    ui_notifications_enabled = true, -- disable notifications (TODO: rename to  notifications_enabled in AstroNvim v4)
-    git_worktrees = nil, -- enable git integration for detached worktrees (specify a table where each entry is of the form { toplevel = vim.env.HOME, gitdir=vim.env.HOME .. "/.dotfiles" })
   },
 })
 

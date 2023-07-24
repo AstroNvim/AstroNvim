@@ -155,8 +155,9 @@ return {
           desc = "Disable certain functionality on very large files",
           callback = function(args)
             local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
-            vim.b[args.buf].large_buf = (ok and stats and stats.size > vim.g.max_file.size)
-              or vim.api.nvim_buf_line_count(args.buf) > vim.g.max_file.lines
+            local max_file = require("astrocore").config.features.max_file
+            vim.b[args.buf].large_buf = (ok and stats and stats.size > max_file.size)
+              or vim.api.nvim_buf_line_count(args.buf) > max_file.lines
           end,
         },
       },

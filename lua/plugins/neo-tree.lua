@@ -53,7 +53,6 @@ return {
     },
   },
   cmd = "Neotree",
-  init = function() vim.g.neo_tree_remove_legacy_commands = true end,
   opts = function()
     local utils = require "astrocore.utils"
     local get_icon = require("astroui").get_icon

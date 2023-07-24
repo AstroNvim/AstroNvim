@@ -41,7 +41,7 @@ return {
               vim.api.nvim_get_option_value("filetype", { buf = 0 })
             )
           if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" and not dap_prompt then return false end
-          return vim.g.cmp_enabled
+          return require("astrocore").config.features.cmp
         end,
         preselect = cmp.PreselectMode.None,
         formatting = {

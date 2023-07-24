@@ -37,7 +37,7 @@ return {
         changedelete = { text = get_icon "GitSign" },
         untracked = { text = get_icon "GitSign" },
       },
-      worktrees = vim.g.git_worktrees,
+      worktrees = require("astrocore").config.git_worktrees,
     }
   end,
 }
