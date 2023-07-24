@@ -108,8 +108,7 @@ return function(_, opts)
   heirline.setup(opts)
 
   local augroup = vim.api.nvim_create_augroup("Heirline", { clear = true })
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "AstroColorScheme",
+  vim.api.nvim_create_autocmd("ColorScheme", {
     group = augroup,
     desc = "Refresh heirline colors",
     callback = function() require("heirline.utils").on_colorscheme(setup_colors()) end,
