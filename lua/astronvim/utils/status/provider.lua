@@ -335,7 +335,7 @@ end
 function M.unique_path(opts)
   opts = extend_tbl({
     buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t") end,
-    bufnr = 0,
+    bufnr = function(self) return self and self.bufnr or 0 end,
     max_length = 16,
   }, opts)
   local function path_parts(bufnr)
@@ -392,7 +392,7 @@ function M.file_modified(opts)
     str = "",
     icon = { kind = "FileModified" },
     show_empty = true,
-    bufnr = function(self) return (self or {}).bufnr end,
+    bufnr = function(self) return self and self.bufnr or 0 end,
   }, opts)
   return function(self)
     local bufnr = opts.bufnr(self)
