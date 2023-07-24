@@ -1,10 +1,9 @@
 return {
   "astrocore",
-  opts = function(_, opts)
-    local utils = require "astrocore.utils"
-    opts.commands = {
+  opts = {
+    commands = {
       AstroChangelog = { function() require("astrocore.updater").changelog() end, desc = "Check AstroNvim Changelog" },
-      AstroReload = { function() utils.reload() end, desc = "Reload AstroNvim (Experimental)" },
+      AstroReload = { function() require("astrocore.utils").reload() end, desc = "Reload AstroNvim (Experimental)" },
       AstroRollback = { function() require("astrocore.updater").rollback() end, desc = "Rollback AstroNvim" },
       AstroUpdate = { function() require("astrocore.updater").update() end, desc = "Update AstroNvim" },
       AstroUpdatePackages = {
@@ -12,8 +11,8 @@ return {
         desc = "Update Plugins and Mason",
       },
       AstroVersion = { function() require("astrocore.updater").version() end, desc = "Check AstroNvim Version" },
-    }
-    opts.autocmds = {
+    },
+    autocmds = {
       auto_quit = {
         {
           event = "BufEnter",
@@ -87,7 +86,7 @@ return {
               vim.t.bufs = bufs
             end
             vim.t.bufs = vim.tbl_filter(buf_utils.is_valid, vim.t.bufs)
-            utils.event "BufsUpdated"
+            require("astrocore.utils").event "BufsUpdated"
           end,
         },
         {
@@ -109,7 +108,7 @@ return {
               end
             end
             vim.t.bufs = vim.tbl_filter(require("astrocore.buffer").is_valid, vim.t.bufs)
-            if removed then utils.event "BufsUpdated" end
+            if removed then require("astrocore.utils").event "BufsUpdated" end
             vim.cmd.redrawtabline()
           end,
         },
@@ -119,6 +118,7 @@ return {
           event = { "BufReadPost", "BufNewFile", "BufWritePost" },
           desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
           callback = function(args)
+            local utils = require "astrocore.utils"
             if
               not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile")
             then
@@ -138,7 +138,7 @@ return {
         {
           event = { "VimEnter", "FileType", "BufEnter", "WinEnter" },
           desc = "URL Highlighting",
-          callback = function() utils.set_url_match() end,
+          callback = function() require("astrocore.utils").set_url_match() end,
         },
       },
       highlightyank = {
@@ -185,6 +185,16 @@ return {
           callback = function() vim.opt_local.buflisted = false end,
         },
       },
-    }
-  end,
+    },
+    on_keys = {
+      auto_hlsearch = {
+        function(char)
+          if vim.fn.mode() == "n" then
+            local new_hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
+            if vim.opt.hlsearch:get() ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
+          end
+        end,
+      },
+    },
+  },
 }
