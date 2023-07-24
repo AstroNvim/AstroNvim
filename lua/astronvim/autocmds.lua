@@ -250,7 +250,7 @@ end
 autocmd({ "VimEnter", "ColorScheme" }, {
   desc = "Load custom highlights from user configuration",
   group = augroup("astronvim_highlights", { clear = true }),
-  callback = function()
+  callback = function(args)
     if vim.g.colors_name then
       for _, module in ipairs { "init", vim.g.colors_name } do
         for group, spec in pairs(astronvim.user_opts("highlights." .. module)) do
@@ -258,7 +258,7 @@ autocmd({ "VimEnter", "ColorScheme" }, {
         end
       end
     end
-    astroevent "ColorScheme"
+    if args.event == "ColorScheme" then astroevent "ColorScheme" end
   end,
 })
 
