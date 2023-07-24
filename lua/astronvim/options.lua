@@ -36,7 +36,6 @@ local options = astronvim.user_opts("options", {
     sidescrolloff = 8, -- Number of columns to keep at the sides of the cursor
     signcolumn = "yes", -- Always show the sign column
     smartcase = true, -- Case sensitivie searching
-    smartindent = true, -- Smarter autoindentation
     splitbelow = true, -- Splitting a new window below the current one
     splitright = true, -- Splitting a new window at the right of the current one
     tabstop = 2, -- Number of space in a tab
@@ -52,6 +51,7 @@ local options = astronvim.user_opts("options", {
     mapleader = " ", -- set leader key
     maplocalleader = ",", -- set default local leader key
     -- AstroNvim specific global options
+    max_file = { size = 1024 * 100, lines = 10000 }, -- set global limits for large files
     autoformat_enabled = true, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled)
     autopairs_enabled = true, -- enable autopairs at start
     cmp_enabled = true, -- enable completion at start

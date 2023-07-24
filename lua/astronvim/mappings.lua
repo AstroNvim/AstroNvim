@@ -235,14 +235,22 @@ end
 if is_available "telescope.nvim" then
   maps.n["<leader>f"] = sections.f
   maps.n["<leader>g"] = sections.g
-  maps.n["<leader>gb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
-  maps.n["<leader>gc"] =
-    { function() require("telescope.builtin").git_commits() end, desc = "Git commits (repository)" }
-  maps.n["<leader>gC"] =
-    { function() require("telescope.builtin").git_bcommits() end, desc = "Git commits (current file)" }
-  maps.n["<leader>gt"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" }
+  maps.n["<leader>gb"] =
+    { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
+  maps.n["<leader>gc"] = {
+    function() require("telescope.builtin").git_commits { use_file_path = true } end,
+    desc = "Git commits (repository)",
+  }
+  maps.n["<leader>gC"] = {
+    function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
+    desc = "Git commits (current file)",
+  }
+  maps.n["<leader>gt"] =
+    { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
   maps.n["<leader>f<CR>"] = { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
   maps.n["<leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }
+  maps.n["<leader>f/"] =
+    { function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Find words in current buffer" }
   maps.n["<leader>fa"] = {
     function()
       local cwd = vim.fn.stdpath "config" .. "/.."
@@ -265,8 +273,7 @@ if is_available "telescope.nvim" then
     desc = "Find AstroNvim config files",
   }
   maps.n["<leader>fb"] = { function() require("telescope.builtin").buffers() end, desc = "Find buffers" }
-  maps.n["<leader>fc"] =
-    { function() require("telescope.builtin").grep_string() end, desc = "Find for word under cursor" }
+  maps.n["<leader>fc"] = { function() require("telescope.builtin").grep_string() end, desc = "Find word under cursor" }
   maps.n["<leader>fC"] = { function() require("telescope.builtin").commands() end, desc = "Find commands" }
   maps.n["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find files" }
   maps.n["<leader>fF"] = {

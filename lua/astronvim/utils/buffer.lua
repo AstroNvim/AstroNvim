@@ -30,10 +30,10 @@ M.sessions = {
 }
 
 --- Check if a buffer is valid
----@param bufnr number The buffer to check
+---@param bufnr number? The buffer to check, default to current buffer
 ---@return boolean # Whether the buffer is valid or not
 function M.is_valid(bufnr)
-  if not bufnr or bufnr < 1 then return false end
+  if not bufnr then bufnr = 0 end
   return vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted
 end
 
@@ -114,7 +114,13 @@ end
 
 --- Navigate to a specific buffer by its position in the bufferline
 ---@param tabnr number The position of the buffer to navigate to
-function M.nav_to(tabnr) vim.cmd.b(vim.t.bufs[tabnr]) end
+function M.nav_to(tabnr)
+  if tabnr > #vim.t.bufs or tabnr < 1 then
+    utils.notify(("No tab #%d"):format(tabnr), vim.log.levels.WARN)
+  else
+    vim.cmd.b(vim.t.bufs[tabnr])
+  end
+end
 
 --- Navigate to the previously used buffer
 function M.prev()
@@ -122,10 +128,10 @@ function M.prev()
     if M.last_buf then
       vim.cmd.b(M.last_buf)
     else
-      utils.notify "No previous buffer found"
+      utils.notify("No previous buffer found", vim.log.levels.WARN)
     end
   else
-    utils.notify "Must be in a main editor window to switch the window buffer"
+    utils.notify("Must be in a main editor window to switch the window buffer", vim.log.levels.ERROR)
   end
 end
 
@@ -133,7 +139,7 @@ end
 ---@param bufnr? number The buffer to close or the current buffer if not provided
 ---@param force? boolean Whether or not to foce close the buffers or confirm changes (default: false)
 function M.close(bufnr, force)
-  if utils.is_available "mini.bufremove" then
+  if utils.is_available "mini.bufremove" and M.is_valid(bufnr) and #vim.t.bufs > 1 then
     if not force and vim.api.nvim_get_option_value("modified", { buf = bufnr }) then
       local bufname = vim.fn.expand "%"
       local empty = bufname == ""
