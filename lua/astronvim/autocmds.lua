@@ -79,20 +79,20 @@ local view_group = augroup("auto_view", { clear = true })
 autocmd({ "BufWinLeave", "BufWritePost", "WinLeave" }, {
   desc = "Save view with mkview for real files",
   group = view_group,
-  callback = function(event)
-    if vim.b[event.buf].view_activated then vim.cmd.mkview { mods = { emsg_silent = true } } end
+  callback = function(args)
+    if vim.b[args.buf].view_activated then vim.cmd.mkview { mods = { emsg_silent = true } } end
   end,
 })
 autocmd("BufWinEnter", {
   desc = "Try to load file view if available and enable view saving for real files",
   group = view_group,
-  callback = function(event)
-    if not vim.b[event.buf].view_activated then
-      local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
-      local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+  callback = function(args)
+    if not vim.b[args.buf].view_activated then
+      local filetype = vim.api.nvim_get_option_value("filetype", { buf = args.buf })
+      local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
       local ignore_filetypes = { "gitcommit", "gitrebase", "svg", "hgcommit" }
       if buftype == "" and filetype and filetype ~= "" and not vim.tbl_contains(ignore_filetypes, filetype) then
-        vim.b[event.buf].view_activated = true
+        vim.b[args.buf].view_activated = true
         vim.cmd.loadview { mods = { emsg_silent = true } }
       end
     end
@@ -102,12 +102,12 @@ autocmd("BufWinEnter", {
 autocmd("BufWinEnter", {
   desc = "Make q close help, man, quickfix, dap floats",
   group = augroup("q_close_windows", { clear = true }),
-  callback = function(event)
-    local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
-    if vim.tbl_contains({ "help", "nofile", "quickfix" }, buftype) then
+  callback = function(args)
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
+    if vim.tbl_contains({ "help", "nofile", "quickfix" }, buftype) and vim.fn.maparg("q", "n") == "" then
       vim.keymap.set("n", "q", "<cmd>close<cr>", {
         desc = "Close window",
-        buffer = event.buf,
+        buffer = args.buf,
         silent = true,
         nowait = true,
       })
@@ -163,19 +163,19 @@ if is_available "alpha-nvim" then
   autocmd({ "User", "BufEnter" }, {
     desc = "Disable status and tablines for alpha",
     group = augroup("alpha_settings", { clear = true }),
-    callback = function(event)
+    callback = function(args)
       if
         (
-          (event.event == "User" and event.file == "AlphaReady")
-          or (event.event == "BufEnter" and vim.api.nvim_get_option_value("filetype", { buf = event.buf }) == "alpha")
+          (args.event == "User" and args.file == "AlphaReady")
+          or (args.event == "BufEnter" and vim.api.nvim_get_option_value("filetype", { buf = args.buf }) == "alpha")
         ) and not vim.g.before_alpha
       then
         vim.g.before_alpha = { showtabline = vim.opt.showtabline:get(), laststatus = vim.opt.laststatus:get() }
         vim.opt.showtabline, vim.opt.laststatus = 0, 0
       elseif
         vim.g.before_alpha
-        and event.event == "BufEnter"
-        and vim.api.nvim_get_option_value("buftype", { buf = event.buf }) ~= "nofile"
+        and args.event == "BufEnter"
+        and vim.api.nvim_get_option_value("buftype", { buf = args.buf }) ~= "nofile"
       then
         vim.opt.laststatus, vim.opt.showtabline = vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline
         vim.g.before_alpha = nil
@@ -247,7 +247,7 @@ if is_available "neo-tree.nvim" then
   })
 end
 
-autocmd({ "VimEnter", "ColorScheme" }, {
+autocmd("ColorScheme", {
   desc = "Load custom highlights from user configuration",
   group = augroup("astronvim_highlights", { clear = true }),
   callback = function()
