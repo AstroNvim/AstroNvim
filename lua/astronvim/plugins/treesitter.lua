@@ -91,5 +91,5 @@ return {
       },
     }
   end,
-  config = require "plugins.configs.nvim-treesitter",
+  config = require "astronvim.plugins.configs.nvim-treesitter",
 }

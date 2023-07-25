@@ -11,12 +11,12 @@ return {
     {
       "rcarriga/nvim-dap-ui",
       opts = { floating = { border = "rounded" } },
-      config = require "plugins.configs.nvim-dap-ui",
+      config = require "astronvim.plugins.configs.nvim-dap-ui",
     },
     {
       "rcarriga/cmp-dap",
       dependencies = { "nvim-cmp" },
-      config = require "plugins.configs.cmp-dap",
+      config = require "astronvim.plugins.configs.cmp-dap",
     },
     {
       "astrocore",

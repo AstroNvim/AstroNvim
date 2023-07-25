@@ -36,7 +36,7 @@ for _, config_dir in ipairs(astronvim.supported_configs) do
 end
 
 local spec = astronvim.updater.options.pin_plugins and { { import = astronvim.updater.snapshot.module } } or {}
-vim.list_extend(spec, { { import = "plugins" }, user_plugins })
+vim.list_extend(spec, { { import = "astronvim.plugins" }, user_plugins })
 
 local colorscheme = astronvim.default_colorscheme and { astronvim.default_colorscheme } or nil
 

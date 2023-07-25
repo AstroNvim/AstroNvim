@@ -1,3 +1,4 @@
+require "astronvim.options"
 return {
   "AstroNvim/astrocore",
   dependencies = { "AstroNvim/astroui" },

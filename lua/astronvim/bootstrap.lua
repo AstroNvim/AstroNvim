@@ -117,7 +117,7 @@ end
 --- Updater settings overridden with any user provided configuration
 astronvim.updater = {
   options = astronvim.user_opts("updater", { remote = "origin", channel = "stable" }),
-  snapshot = { module = "lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" },
+  snapshot = { module = "astronvim.lazy_snapshot", path = vim.fn.stdpath "config" .. "/lua/lazy_snapshot.lua" },
   rollback_file = vim.fn.stdpath "cache" .. "/astronvim_rollback.lua",
 }
 local options = astronvim.updater.options

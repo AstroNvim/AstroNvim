@@ -53,14 +53,14 @@ return {
           if not opts.handlers then opts.handlers = {} end
           opts.handlers[1] = function(server) require("astrolsp").lsp_setup(server) end
         end,
-        config = require "plugins.configs.mason-lspconfig",
+        config = require "astronvim.plugins.configs.mason-lspconfig",
       },
     },
     cmd = function(_, cmds) -- HACK: lazy load lspconfig on `:Neoconf` if neoconf is available
       if require("lazy.core.config").spec.plugins["neoconf.nvim"] then table.insert(cmds, "Neoconf") end
     end,
     event = "User AstroFile",
-    config = require "plugins.configs.lspconfig",
+    config = require "astronvim.plugins.configs.lspconfig",
   },
   {
     "jose-elias-alvarez/null-ls.nvim",

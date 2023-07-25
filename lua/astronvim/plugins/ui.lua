@@ -47,7 +47,7 @@ return {
       menu = {},
     },
     enabled = vim.g.icons_enabled ~= false,
-    config = require "plugins.configs.lspkind",
+    config = require "astronvim.plugins.configs.lspkind",
   },
   {
     "rcarriga/nvim-notify",
@@ -63,7 +63,7 @@ return {
         vim.wo[win].spell = false
       end,
     },
-    config = require "plugins.configs.notify",
+    config = require "astronvim.plugins.configs.notify",
   },
   {
     "stevearc/dressing.nvim",

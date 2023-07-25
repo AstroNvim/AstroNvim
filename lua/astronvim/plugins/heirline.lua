@@ -83,5 +83,5 @@ return {
       } or nil,
     }
   end,
-  config = require "plugins.configs.heirline",
+  config = require "astronvim.plugins.configs.heirline",
 }

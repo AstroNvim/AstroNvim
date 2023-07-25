@@ -6,7 +6,7 @@ return {
       or nil,
     dependencies = { "rafamadriz/friendly-snippets" },
     opts = { store_selection_keys = "<C-x>" },
-    config = require "plugins.configs.luasnip",
+    config = require "astronvim.plugins.configs.luasnip",
   },
   {
     "hrsh7th/nvim-cmp",

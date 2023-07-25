@@ -4,7 +4,7 @@ vim.opt.backspace:append { "nostop" } -- Don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then
   vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
 end
-local options = astronvim.user_opts("options", {
+local options = {
   opt = {
     breakindent = true, -- Wrap indent to match  line start
     clipboard = "unnamedplus", -- Connection to the system clipboard
@@ -51,10 +51,13 @@ local options = astronvim.user_opts("options", {
     mapleader = " ", -- set leader key
     maplocalleader = ",", -- set default local leader key
   },
-})
+}
+if astronvim and astronvim.user_opts then options = astronvim.user_opts("options", options) end
 
 for scope, table in pairs(options) do
   for setting, value in pairs(table) do
     vim[scope][setting] = value
   end
 end
+
+pcall(require, "config.options")

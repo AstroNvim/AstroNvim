@@ -150,5 +150,5 @@ return {
       },
     }
   end,
-  config = require "plugins.configs.telescope",
+  config = require "astronvim.plugins.configs.telescope",
 }

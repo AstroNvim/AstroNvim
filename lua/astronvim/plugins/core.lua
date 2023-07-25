@@ -3,7 +3,7 @@ return {
   "echasnovski/mini.bufremove",
   { "AstroNvim/astrotheme", opts = { plugins = { ["dashboard-nvim"] = true } } },
   { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
-  { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "plugins.configs.guess-indent" },
+  { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "astronvim.plugins.configs.guess-indent" },
   {
     "stevearc/resession.nvim",
     dependencies = {
@@ -95,7 +95,7 @@ return {
         highlight_grey = "LineNr",
       },
     },
-    config = require "plugins.configs.nvim-autopairs",
+    config = require "astronvim.plugins.configs.nvim-autopairs",
   },
   {
     "folke/which-key.nvim",
@@ -104,7 +104,7 @@ return {
       icons = { group = vim.g.icons_enabled ~= false and "" or "+", separator = "" },
       disable = { filetypes = { "TelescopePrompt" } },
     },
-    config = require "plugins.configs.which-key",
+    config = require "astronvim.plugins.configs.which-key",
   },
   {
     "kevinhwang91/nvim-ufo",
