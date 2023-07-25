@@ -132,7 +132,7 @@ end
 
 --- Serve a notification with a title of AstroNvim
 ---@param msg string The notification body
----@param type number|nil The type of the notification (:help vim.log.levels)
+---@param type? number The type of the notification (:help vim.log.levels)
 ---@param opts? table The nvim-notify options to use (:help notify-options)
 function M.notify(msg, type, opts)
   vim.schedule(function() vim.notify(msg, type, M.extend_tbl({ title = "AstroNvim" }, opts)) end)
@@ -140,8 +140,14 @@ end
 
 --- Trigger an AstroNvim user event
 ---@param event string The event name to be appended to Astro
-function M.event(event)
-  vim.schedule(function() vim.api.nvim_exec_autocmds("User", { pattern = "Astro" .. event, modeline = false }) end)
+---@param delay? boolean Whether or not to delay the event asynchronously (Default: true)
+function M.event(event, delay)
+  local emit_event = function() vim.api.nvim_exec_autocmds("User", { pattern = "Astro" .. event, modeline = false }) end
+  if delay == false then
+    emit_event()
+  else
+    vim.schedule(emit_event)
+  end
 end
 
 --- Open a URL under the cursor with the current operating system
