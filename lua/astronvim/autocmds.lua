@@ -129,6 +129,21 @@ autocmd("FileType", {
   callback = function() vim.opt_local.buflisted = false end,
 })
 
+autocmd("BufWritePre", {
+  desc = "Remove trailing whitespace on save",
+  group = augroup("autoremove_trailing_whitespace", { clear = true }),
+  pattern = "*",
+  callback = function()
+    if not vim.g.autoremove_trailing_whitespace then return end
+    local view = vim.fn.winsaveview()
+    local success = pcall(function() vim.cmd "%s/\\s\\+$//" end)
+    if success then
+      utils.notify "Automatically removed trailing whitespace"
+      vim.fn.winrestview(view)
+    end
+  end,
+})
+
 autocmd("BufEnter", {
   desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
   group = augroup("auto_quit", { clear = true }),

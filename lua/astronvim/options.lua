@@ -52,6 +52,7 @@ local options = astronvim.user_opts("options", {
     maplocalleader = ",", -- set default local leader key
     -- AstroNvim specific global options
     max_file = { size = 1024 * 100, lines = 10000 }, -- set global limits for large files
+    autoremove_trailing_whitespace = false, -- automatically remove trailing whitespace on save (useful when lsp/formatter doesn't support it)
     autoformat_enabled = true, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled)
     autopairs_enabled = true, -- enable autopairs at start
     cmp_enabled = true, -- enable completion at start
