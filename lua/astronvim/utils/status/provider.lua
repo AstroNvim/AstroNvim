@@ -404,11 +404,11 @@ function M.file_icon(opts)
   return function(self)
     local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
     if not devicons_avail then return "" end
-    local ft_icon, _ = devicons.get_icon(
-      vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ":t"),
-      nil,
-      { default = true }
-    )
+    local bufnr = self and self.bufnr or 0
+    local filename = vim.api.nvim_buf_get_name(bufnr)
+    local ft_icon, _ =
+      devicons.get_icon(vim.fn.fnamemodify(filename, ":t"), vim.fn.fnamemodify(filename, ":e"), { default = false })
+    if not ft_icon then ft_icon = devicons.get_icon_by_filetype(vim.bo[bufnr].filetype, { default = true }) end
     return status_utils.stylize(ft_icon, opts)
   end
 end
