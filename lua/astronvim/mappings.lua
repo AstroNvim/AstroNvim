@@ -27,7 +27,7 @@ maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>confirm q<cr>", desc = "Quit" }
 maps.n["<leader>n"] = { "<cmd>enew<cr>", desc = "New File" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
-maps.n["<C-q>"] = { "<cmd>q!<cr>", desc = "Force quit" }
+maps.n["<C-q>"] = { "<cmd>qa!<cr>", desc = "Force quit" }
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
 maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
 -- TODO: Remove when dropping support for <Neovim v0.10
@@ -267,6 +267,7 @@ if is_available "telescope.nvim" then
           prompt_title = "Config Files",
           search_dirs = search_dirs,
           cwd = cwd,
+          follow = true,
         } -- call telescope
       end
     end,
@@ -395,7 +396,7 @@ if is_available "nvim-dap" then
     maps.n["<leader>dE"] = {
       function()
         vim.ui.input({ prompt = "Expression: " }, function(expr)
-          if expr then require("dapui").eval(expr) end
+          if expr then require("dapui").eval(expr, { enter = true }) end
         end)
       end,
       desc = "Evaluate Input",
@@ -446,7 +447,7 @@ maps.n["<leader>uS"] = { ui.toggle_conceal, desc = "Toggle conceal" }
 maps.n["<leader>ut"] = { ui.toggle_tabline, desc = "Toggle tabline" }
 maps.n["<leader>uu"] = { ui.toggle_url_match, desc = "Toggle URL highlight" }
 maps.n["<leader>uw"] = { ui.toggle_wrap, desc = "Toggle wrap" }
-maps.n["<leader>uy"] = { ui.toggle_syntax, desc = "Toggle syntax highlight" }
+maps.n["<leader>uy"] = { ui.toggle_syntax, desc = "Toggle syntax highlighting (buffer)" }
 maps.n["<leader>uh"] = { ui.toggle_foldcolumn, desc = "Toggle foldcolumn" }
 
 utils.set_mappings(astronvim.user_opts("mappings", maps))

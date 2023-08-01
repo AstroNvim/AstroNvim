@@ -1,51 +1,51 @@
 vim.opt.viewoptions:remove "curdir" -- disable saving current directory with views
 vim.opt.shortmess:append { s = true, I = true } -- disable startup message
-vim.opt.backspace:append { "nostop" } -- Don't stop backspace at insert
+vim.opt.backspace:append { "nostop" } -- don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then
   vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
 end
 local options = astronvim.user_opts("options", {
   opt = {
-    breakindent = true, -- Wrap indent to match  line start
-    clipboard = "unnamedplus", -- Connection to the system clipboard
+    breakindent = true, -- wrap indent to match  line start
+    clipboard = "unnamedplus", -- connection to the system clipboard
     cmdheight = 0, -- hide command line unless needed
     completeopt = { "menu", "menuone", "noselect" }, -- Options for insert mode completion
-    copyindent = true, -- Copy the previous indentation on autoindenting
-    cursorline = true, -- Highlight the text line of the cursor
-    expandtab = true, -- Enable the use of space in tab
-    fileencoding = "utf-8", -- File content encoding for the buffer
-    fillchars = { eob = " " }, -- Disable `~` on nonexistent lines
+    copyindent = true, -- copy the previous indentation on autoindenting
+    cursorline = true, -- highlight the text line of the cursor
+    expandtab = true, -- enable the use of space in tab
+    fileencoding = "utf-8", -- file content encoding for the buffer
+    fillchars = { eob = " " }, -- disable `~` on nonexistent lines
     foldenable = true, -- enable fold for nvim-ufo
     foldlevel = 99, -- set high foldlevel for nvim-ufo
     foldlevelstart = 99, -- start with all code unfolded
     foldcolumn = vim.fn.has "nvim-0.9" == 1 and "1" or nil, -- show foldcolumn in nvim 0.9
-    history = 100, -- Number of commands to remember in a history table
-    ignorecase = true, -- Case insensitive searching
-    infercase = true, -- Infer cases in keyword completion
-    laststatus = 3, -- globalstatus
-    linebreak = true, -- Wrap lines at 'breakat'
-    mouse = "a", -- Enable mouse support
-    number = true, -- Show numberline
-    preserveindent = true, -- Preserve indent structure as much as possible
-    pumheight = 10, -- Height of the pop up menu
-    relativenumber = true, -- Show relative numberline
-    scrolloff = 8, -- Number of lines to keep above and below the cursor
-    shiftwidth = 2, -- Number of space inserted for indentation
-    showmode = false, -- Disable showing modes in command line
+    history = 100, -- number of commands to remember in a history table
+    ignorecase = true, -- case insensitive searching
+    infercase = true, -- infer cases in keyword completion
+    laststatus = 3, -- global statusline
+    linebreak = true, -- wrap lines at 'breakat'
+    mouse = "a", -- enable mouse support
+    number = true, -- show numberline
+    preserveindent = true, -- preserve indent structure as much as possible
+    pumheight = 10, -- height of the pop up menu
+    relativenumber = true, -- show relative numberline
+    scrolloff = 8, -- number of lines to keep above and below the cursor
+    shiftwidth = 2, -- number of space inserted for indentation
+    showmode = false, -- disable showing modes in command line
     showtabline = 2, -- always display tabline
-    sidescrolloff = 8, -- Number of columns to keep at the sides of the cursor
-    signcolumn = "yes", -- Always show the sign column
-    smartcase = true, -- Case sensitivie searching
-    splitbelow = true, -- Splitting a new window below the current one
-    splitright = true, -- Splitting a new window at the right of the current one
-    tabstop = 2, -- Number of space in a tab
-    termguicolors = true, -- Enable 24-bit RGB color in the TUI
-    timeoutlen = 500, -- Shorten key timeout length a little bit for which-key
-    undofile = true, -- Enable persistent undo
-    updatetime = 300, -- Length of time to wait before triggering the plugin
+    sidescrolloff = 8, -- number of columns to keep at the sides of the cursor
+    signcolumn = "yes", -- always show the sign column
+    smartcase = true, -- case sensitive searching
+    splitbelow = true, -- splitting a new window below the current one
+    splitright = true, -- splitting a new window at the right of the current one
+    tabstop = 2, -- number of space in a tab
+    termguicolors = true, -- enable 24-bit RGB color in the TUI
+    timeoutlen = 500, -- shorten key timeout length a little bit for which-key
+    undofile = true, -- enable persistent undo
+    updatetime = 300, -- length of time to wait before triggering the plugin
     virtualedit = "block", -- allow going past end of line in visual block mode
-    wrap = false, -- Disable wrapping of lines longer than the width of window
-    writebackup = false, -- Disable making a backup before overwriting a file
+    wrap = false, -- disable wrapping of lines longer than the width of window
+    writebackup = false, -- disable making a backup before overwriting a file
   },
   g = {
     mapleader = " ", -- set leader key
@@ -60,7 +60,7 @@ local options = astronvim.user_opts("options", {
     highlighturl_enabled = true, -- highlight URLs by default
     icons_enabled = true, -- disable icons in the UI (disable if no nerd font is available)
     inlay_hints_enabled = false, -- enable or disable LSP inlay hints on startup (Neovim v0.10 only)
-    lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signatureHelp)
+    lsp_handlers_enabled = true, -- enable or disable default vim.lsp.handlers (hover and signature help)
     semantic_tokens_enabled = true, -- enable or disable LSP semantic tokens on startup
     ui_notifications_enabled = true, -- disable notifications (TODO: rename to  notifications_enabled in AstroNvim v4)
     git_worktrees = nil, -- enable git integration for detached worktrees (specify a table where each entry is of the form { toplevel = vim.env.HOME, gitdir=vim.env.HOME .. "/.dotfiles" })
