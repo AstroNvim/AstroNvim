@@ -173,7 +173,7 @@ There have been some great review videos released by members of the community! H
 
 ## 🚀 Contributing
 
-If you plan to contribute, please check the [contribution guidelines](CONTRIBUTING.md) first.
+If you plan to contribute, please check the [contribution guidelines](https://github.com/AstroNvim/.github/blob/main/CONTRIBUTING.md) first.
 
 ## ⭐ Credits
 
