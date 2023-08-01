@@ -1,0 +1,14 @@
+name: AstroNvim
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  CI:
+    uses: AstroNvim/.github/.github/workflows/plugin_ci.yml@main
+    secrets: inherit
+    with:
+      plugin_name: ${{ github.event.repository.name }}
+      is_production: ${{ github.event_name == 'push' }}
+      docs: false
