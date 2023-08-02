@@ -352,9 +352,12 @@ M.on_attach = function(client, bufnr)
     if lsp_mappings.n["<leader>lG"] then
       lsp_mappings.n["<leader>lG"][1] = function()
         vim.ui.input(
-          { prompt = "Symbol Query: " },
+          { prompt = "Symbol Query: (leave empty for word under cursor)" },
           function(query)
             if query then
+              if query == "" then
+                query = vim.fn.expand("<cword>")  -- word under cursor if given query is empty
+              end
               require("telescope.builtin").lsp_workspace_symbols {
                 query = query,
                 prompt_title = string.format("Find word (%s)", query),
