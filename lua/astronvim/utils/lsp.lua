@@ -351,8 +351,15 @@ M.on_attach = function(client, bufnr)
     end
     if lsp_mappings.n["<leader>lG"] then
       lsp_mappings.n["<leader>lG"][1] = function()
-        vim.ui.input({ prompt = "Symbol Query: " }, function(query)
-          if query then require("telescope.builtin").lsp_workspace_symbols { query = query } end
+        vim.ui.input(
+          { prompt = "Symbol Query: " },
+          function(query)
+            if query then
+              require("telescope.builtin").lsp_workspace_symbols {
+                query = query,
+                prompt_title = string.format("Find word (%s)", query),
+              }
+            end
         end)
       end
     end
