@@ -399,10 +399,7 @@ M.flags = user_opts "lsp.flags"
 ---@return table # The table of LSP options used when setting up the given language server
 function M.config(server_name)
   local server = require("lspconfig")[server_name]
-  local lsp_opts = extend_tbl(
-    extend_tbl(server.document_config.default_config, server),
-    { capabilities = M.capabilities, flags = M.flags }
-  )
+  local lsp_opts = extend_tbl(server, { capabilities = M.capabilities, flags = M.flags })
   if server_name == "jsonls" then -- by default add json schemas
     local schemastore_avail, schemastore = pcall(require, "schemastore")
     if schemastore_avail then
