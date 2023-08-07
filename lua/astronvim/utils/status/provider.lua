@@ -347,7 +347,7 @@ function M.unique_path(opts)
     local unique_path = ""
     -- check for same buffer names under different dirs
     local current
-    for _, value in ipairs(vim.t.bufs) do
+    for _, value in ipairs(vim.t.bufs or {}) do
       if name == opts.buf_name(value) and value ~= opts.bufnr then
         if not current then current = path_parts(opts.bufnr) end
         local other = path_parts(value)
