@@ -261,10 +261,13 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/hover" then
-    lsp_mappings.n["K"] = {
-      function() vim.lsp.buf.hover() end,
-      desc = "Hover symbol details",
-    }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      lsp_mappings.n["K"] = {
+        function() vim.lsp.buf.hover() end,
+        desc = "Hover symbol details",
+      }
+    end
   end
 
   if client.supports_method "textDocument/implementation" then
@@ -312,7 +315,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/typeDefinition" then
-    lsp_mappings.n["gT"] = {
+    lsp_mappings.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,
       desc = "Definition of current type",
     }
@@ -323,12 +326,15 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens then
-    if vim.b.semantic_tokens_enabled == nil then vim.b.semantic_tokens_enabled = vim.g.semantic_tokens_enabled end
-    if not vim.g.semantic_tokens_enabled then vim.lsp.semantic_tokens["stop"](bufnr, client.id) end
-    lsp_mappings.n["<leader>uY"] = {
-      function() require("astronvim.utils.ui").toggle_buffer_semantic_tokens(bufnr) end,
-      desc = "Toggle LSP semantic highlight (buffer)",
-    }
+    if vim.g.semantic_tokens_enabled then
+      vim.b[bufnr].semantic_tokens_enabled = true
+      lsp_mappings.n["<leader>uY"] = {
+        function() require("astronvim.utils.ui").toggle_buffer_semantic_tokens(bufnr) end,
+        desc = "Toggle LSP semantic highlight (buffer)",
+      }
+    else
+      client.server_capabilities.semanticTokensProvider = nil
+    end
   end
 
   if is_available "telescope.nvim" then -- setup telescope mappings if available
@@ -340,13 +346,20 @@ M.on_attach = function(client, bufnr)
     if lsp_mappings.n["<leader>lR"] then
       lsp_mappings.n["<leader>lR"][1] = function() require("telescope.builtin").lsp_references() end
     end
-    if lsp_mappings.n.gT then
-      lsp_mappings.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end
+    if lsp_mappings.n.gy then
+      lsp_mappings.n.gy[1] = function() require("telescope.builtin").lsp_type_definitions() end
     end
     if lsp_mappings.n["<leader>lG"] then
       lsp_mappings.n["<leader>lG"][1] = function()
-        vim.ui.input({ prompt = "Symbol Query: " }, function(query)
-          if query then require("telescope.builtin").lsp_workspace_symbols { query = query } end
+        vim.ui.input({ prompt = "Symbol Query: (leave empty for word under cursor)" }, function(query)
+          if query then
+            -- word under cursor if given query is empty
+            if query == "" then query = vim.fn.expand "<cword>" end
+            require("telescope.builtin").lsp_workspace_symbols {
+              query = query,
+              prompt_title = ("Find word (%s)"):format(query),
+            }
+          end
         end)
       end
     end
@@ -386,10 +399,7 @@ M.flags = user_opts "lsp.flags"
 ---@return table # The table of LSP options used when setting up the given language server
 function M.config(server_name)
   local server = require("lspconfig")[server_name]
-  local lsp_opts = extend_tbl(
-    extend_tbl(server.document_config.default_config, server),
-    { capabilities = M.capabilities, flags = M.flags }
-  )
+  local lsp_opts = extend_tbl(server, { capabilities = M.capabilities, flags = M.flags })
   if server_name == "jsonls" then -- by default add json schemas
     local schemastore_avail, schemastore = pcall(require, "schemastore")
     if schemastore_avail then

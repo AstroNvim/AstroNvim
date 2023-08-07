@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Lua
-        uses: leafo/gh-actions-lua@v8
+        uses: leafo/gh-actions-lua@v10
         with:
           luaVersion: 5.4
       - name: Install LDoc
@@ -23,12 +23,12 @@ jobs:
       - name: Build Docs
         run: |
           ldoc .
-      - name: Set CNAME
-        run: |
-          echo "api.astronvim.com" > docs/CNAME
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: nwtgck/actions-netlify@v2.0
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          publish-dir: docs
+          production-deploy: ${{ github.ref == 'refs/heads/main' }}

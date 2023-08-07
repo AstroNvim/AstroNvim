@@ -113,7 +113,7 @@ function M.separated_path(opts)
     for i, d in ipairs(data) do
       if i > start_idx then
         local child = { { provider = d } }
-        local separator = i < #data and opts.separtor or opts.suffix
+        local separator = i < #data and opts.separator or opts.suffix
         if separator then table.insert(child, { provider = separator }) end
         table.insert(children, child)
       end

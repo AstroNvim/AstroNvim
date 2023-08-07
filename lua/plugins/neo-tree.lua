@@ -1,5 +1,6 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
+  branch = "main", -- HACK: force neo-tree to checkout `main` for initial v3 migration since default branch has changed
   dependencies = { "MunifTanjim/nui.nvim" },
   cmd = "Neotree",
   init = function() vim.g.neo_tree_remove_legacy_commands = true end,
@@ -125,9 +126,13 @@ return {
           l = "child_or_open",
           o = "open",
         },
+        fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
+          ["<C-j>"] = "move_cursor_down",
+          ["<C-k>"] = "move_cursor_up",
+        },
       },
       filesystem = {
-        follow_current_file = true,
+        follow_current_file = { enabled = true },
         hijack_netrw_behavior = "open_current",
         use_libuv_file_watcher = true,
       },

@@ -27,7 +27,7 @@ maps.n["<leader>w"] = { "<cmd>w<cr>", desc = "Save" }
 maps.n["<leader>q"] = { "<cmd>confirm q<cr>", desc = "Quit" }
 maps.n["<leader>n"] = { "<cmd>enew<cr>", desc = "New File" }
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
-maps.n["<C-q>"] = { "<cmd>q!<cr>", desc = "Force quit" }
+maps.n["<C-q>"] = { "<cmd>qa!<cr>", desc = "Force quit" }
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
 maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
 -- TODO: Remove when dropping support for <Neovim v0.10
@@ -235,14 +235,22 @@ end
 if is_available "telescope.nvim" then
   maps.n["<leader>f"] = sections.f
   maps.n["<leader>g"] = sections.g
-  maps.n["<leader>gb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
-  maps.n["<leader>gc"] =
-    { function() require("telescope.builtin").git_commits() end, desc = "Git commits (repository)" }
-  maps.n["<leader>gC"] =
-    { function() require("telescope.builtin").git_bcommits() end, desc = "Git commits (current file)" }
-  maps.n["<leader>gt"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" }
+  maps.n["<leader>gb"] =
+    { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
+  maps.n["<leader>gc"] = {
+    function() require("telescope.builtin").git_commits { use_file_path = true } end,
+    desc = "Git commits (repository)",
+  }
+  maps.n["<leader>gC"] = {
+    function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
+    desc = "Git commits (current file)",
+  }
+  maps.n["<leader>gt"] =
+    { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
   maps.n["<leader>f<CR>"] = { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
   maps.n["<leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }
+  maps.n["<leader>f/"] =
+    { function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Find words in current buffer" }
   maps.n["<leader>fa"] = {
     function()
       local cwd = vim.fn.stdpath "config" .. "/.."
@@ -259,14 +267,14 @@ if is_available "telescope.nvim" then
           prompt_title = "Config Files",
           search_dirs = search_dirs,
           cwd = cwd,
+          follow = true,
         } -- call telescope
       end
     end,
     desc = "Find AstroNvim config files",
   }
   maps.n["<leader>fb"] = { function() require("telescope.builtin").buffers() end, desc = "Find buffers" }
-  maps.n["<leader>fc"] =
-    { function() require("telescope.builtin").grep_string() end, desc = "Find for word under cursor" }
+  maps.n["<leader>fc"] = { function() require("telescope.builtin").grep_string() end, desc = "Find word under cursor" }
   maps.n["<leader>fC"] = { function() require("telescope.builtin").commands() end, desc = "Find commands" }
   maps.n["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find files" }
   maps.n["<leader>fF"] = {
@@ -388,7 +396,7 @@ if is_available "nvim-dap" then
     maps.n["<leader>dE"] = {
       function()
         vim.ui.input({ prompt = "Expression: " }, function(expr)
-          if expr then require("dapui").eval(expr) end
+          if expr then require("dapui").eval(expr, { enter = true }) end
         end)
       end,
       desc = "Evaluate Input",
@@ -439,7 +447,7 @@ maps.n["<leader>uS"] = { ui.toggle_conceal, desc = "Toggle conceal" }
 maps.n["<leader>ut"] = { ui.toggle_tabline, desc = "Toggle tabline" }
 maps.n["<leader>uu"] = { ui.toggle_url_match, desc = "Toggle URL highlight" }
 maps.n["<leader>uw"] = { ui.toggle_wrap, desc = "Toggle wrap" }
-maps.n["<leader>uy"] = { ui.toggle_syntax, desc = "Toggle syntax highlight" }
+maps.n["<leader>uy"] = { ui.toggle_syntax, desc = "Toggle syntax highlighting (buffer)" }
 maps.n["<leader>uh"] = { ui.toggle_foldcolumn, desc = "Toggle foldcolumn" }
 
 utils.set_mappings(astronvim.user_opts("mappings", maps))

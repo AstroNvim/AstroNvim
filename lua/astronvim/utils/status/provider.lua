@@ -288,13 +288,14 @@ end
 -- @see astronvim.utils.status.utils.stylize
 function M.filename(opts)
   opts = extend_tbl({
-    fallback = "Empty",
+    fallback = "Untitled",
     fname = function(nr) return vim.api.nvim_buf_get_name(nr) end,
     modify = ":t",
   }, opts)
   return function(self)
-    local filename = vim.fn.fnamemodify(opts.fname(self and self.bufnr or 0), opts.modify)
-    return status_utils.stylize((filename == "" and opts.fallback or filename), opts)
+    local path = opts.fname(self and self.bufnr or 0)
+    local filename = vim.fn.fnamemodify(path, opts.modify)
+    return status_utils.stylize((path == "" and opts.fallback or filename), opts)
   end
 end
 
@@ -403,11 +404,11 @@ function M.file_icon(opts)
   return function(self)
     local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
     if not devicons_avail then return "" end
-    local ft_icon, _ = devicons.get_icon(
-      vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ":t"),
-      nil,
-      { default = true }
-    )
+    local bufnr = self and self.bufnr or 0
+    local ft_icon, _ = devicons.get_icon(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t"))
+    if not ft_icon then
+      ft_icon, _ = devicons.get_icon_by_filetype(vim.bo[bufnr].filetype, { default = true })
+    end
     return status_utils.stylize(ft_icon, opts)
   end
 end
