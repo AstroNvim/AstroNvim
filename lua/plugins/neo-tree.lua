@@ -83,6 +83,7 @@ return {
             h = { val = modify(filepath, ":~"), msg = "Path relative to Home" },
             p = { val = modify(filepath, ":."), msg = "Path relative to CWD" },
             P = { val = filepath, msg = "Absolute path" },
+            u = { val = vim.uri_from_fname(filepath), msg = "URI" },
           }
 
           local messages = {
