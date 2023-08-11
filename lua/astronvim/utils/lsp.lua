@@ -253,7 +253,7 @@ M.on_attach = function(client, bufnr)
         end,
       },
       {
-        events = { "CursorMoved", "CursorMovedI" },
+        events = { "CursorMoved", "CursorMovedI", "BufLeave" },
         desc = "clear references when cursor moves",
         callback = function() vim.lsp.buf.clear_references() end,
       },
