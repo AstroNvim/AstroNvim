@@ -1,7 +1,7 @@
 require("astronvim").init()
 
 return {
-  { "AstroNvim", priority = 10000, lazy = false },
+  { "AstroNvim/AstroNvim", priority = 10000, lazy = false },
   {
     "AstroNvim/astrocore",
     dependencies = { "AstroNvim/astroui" },
