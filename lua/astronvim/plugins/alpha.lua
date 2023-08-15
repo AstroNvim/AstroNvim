@@ -84,6 +84,15 @@ return {
   },
   opts = function()
     local dashboard = require "alpha.themes.dashboard"
+
+    local orig_button = dashboard.button -- customize button function
+    dashboard.button = function(...)
+      return vim.tbl_deep_extend("force", orig_button(...), {
+        opts = { cursor = -2, width = 36, hl = "DashboardCenter", hl_shortcut = "DashboardShortcut" },
+      })
+    end
+    dashboard.leader = "LDR"
+
     dashboard.section.header.val = {
       " █████  ███████ ████████ ██████   ██████",
       "██   ██ ██         ██    ██   ██ ██    ██",
@@ -100,15 +109,14 @@ return {
     dashboard.section.header.opts.hl = "DashboardHeader"
     dashboard.section.footer.opts.hl = "DashboardFooter"
 
-    local button = require("astrocore").alpha_button
     local get_icon = require("astroui").get_icon
     dashboard.section.buttons.val = {
-      button("LDR n  ", get_icon("FileNew", 2, true) .. "New File  "),
-      button("LDR f f", get_icon("Search", 2, true) .. "Find File  "),
-      button("LDR f o", get_icon("DefaultFile", 2, true) .. "Recents  "),
-      button("LDR f w", get_icon("WordFile", 2, true) .. "Find Word  "),
-      button("LDR f '", get_icon("Bookmarks", 2, true) .. "Bookmarks  "),
-      button("LDR S l", get_icon("Refresh", 2, true) .. "Last Session  "),
+      dashboard.button("LDR n  ", get_icon("FileNew", 2, true) .. "New File  "),
+      dashboard.button("LDR f f", get_icon("Search", 2, true) .. "Find File  "),
+      dashboard.button("LDR f o", get_icon("DefaultFile", 2, true) .. "Recents  "),
+      dashboard.button("LDR f w", get_icon("WordFile", 2, true) .. "Find Word  "),
+      dashboard.button("LDR f '", get_icon("Bookmarks", 2, true) .. "Bookmarks  "),
+      dashboard.button("LDR S l", get_icon("Refresh", 2, true) .. "Last Session  "),
     }
 
     dashboard.config.layout = {
