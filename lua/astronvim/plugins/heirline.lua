@@ -67,6 +67,7 @@ return {
         status.component.cmd_info(),
         status.component.fill(),
         status.component.lsp(),
+        status.component.virtual_env(),
         status.component.treesitter(),
         status.component.nav(),
         status.component.mode { surround = { separator = "right" } },
