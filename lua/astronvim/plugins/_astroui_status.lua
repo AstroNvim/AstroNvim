@@ -112,6 +112,7 @@ return {
         macro_recording = { bold = true },
         git_branch = { bold = true },
         git_diff = { bold = true },
+        virtual_env = { bold = true },
       },
       icon_highlights = {
         file_icon = {
@@ -148,6 +149,7 @@ return {
         local Conditional = get_hlgroup("Conditional", { fg = color.bright_purple, bg = color.dark_bg })
         local String = get_hlgroup("String", { fg = color.green, bg = color.dark_bg })
         local TypeDef = get_hlgroup("TypeDef", { fg = color.yellow, bg = color.dark_bg })
+        local NvimEnvironmentName = get_hlgroup("NvimEnvironmentName", { fg = color.yellow, bg = color.dark_bg })
         local GitSignsAdd = get_hlgroup("GitSignsAdd", { fg = color.green, bg = color.dark_bg })
         local GitSignsChange = get_hlgroup("GitSignsChange", { fg = color.orange, bg = color.dark_bg })
         local GitSignsDelete = get_hlgroup("GitSignsDelete", { fg = color.bright_red, bg = color.dark_bg })
@@ -176,6 +178,7 @@ return {
           git_branch_fg = Conditional.fg,
           mode_fg = StatusLine.bg,
           treesitter_fg = String.fg,
+          virtual_env_fg = NvimEnvironmentName.fg,
           scrollbar = TypeDef.fg,
           git_added = GitSignsAdd.fg,
           git_changed = GitSignsChange.fg,
@@ -238,6 +241,7 @@ return {
           "cmd_info",
           "treesitter",
           "nav",
+          "virtual_env",
         } do
           if not colors[section .. "_bg"] then colors[section .. "_bg"] = colors["section_bg"] end
           if not colors[section .. "_fg"] then colors[section .. "_fg"] = colors["section_fg"] end
