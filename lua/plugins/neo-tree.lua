@@ -76,34 +76,32 @@ return {
           local filename = node.name
           local modify = vim.fn.fnamemodify
 
-          local results = {
-            e = { val = modify(filename, ":e"), msg = "Extension only" },
-            f = { val = filename, msg = "Filename" },
-            F = { val = modify(filename, ":r"), msg = "Filename w/o extension" },
-            h = { val = modify(filepath, ":~"), msg = "Path relative to Home" },
-            p = { val = modify(filepath, ":."), msg = "Path relative to CWD" },
-            P = { val = filepath, msg = "Absolute path" },
+          local vals = {
+            ["BASENAME"] = modify(filename, ":r"),
+            ["EXTENSION"] = modify(filename, ":e"),
+            ["FILENAME"] = filename,
+            ["PATH (CWD)"] = modify(filepath, ":."),
+            ["PATH (HOME)"] = modify(filepath, ":~"),
+            ["PATH"] = filepath,
+            ["URI"] = vim.uri_from_fname(filepath),
           }
 
-          local messages = {
-            { "\nChoose to copy to clipboard:\n", "Normal" },
-          }
-          for i, result in pairs(results) do
-            if result.val and result.val ~= "" then
-              vim.list_extend(messages, {
-                { ("%s."):format(i), "Identifier" },
-                { (" %s: "):format(result.msg) },
-                { result.val, "String" },
-                { "\n" },
-              })
+          local options = vim.tbl_filter(function(val) return vals[val] ~= "" end, vim.tbl_keys(vals))
+          if vim.tbl_isempty(options) then
+            utils.notify("No values to copy", vim.log.levels.WARN)
+            return
+          end
+          table.sort(options)
+          vim.ui.select(options, {
+            prompt = "Choose to copy to clipboard:",
+            format_item = function(item) return ("%s: %s"):format(item, vals[item]) end,
+          }, function(choice)
+            local result = vals[choice]
+            if result then
+              utils.notify(("Copied: `%s`"):format(result))
+              vim.fn.setreg("+", result)
             end
-          end
-          vim.api.nvim_echo(messages, false, {})
-          local result = results[vim.fn.getcharstr()]
-          if result and result.val and result.val ~= "" then
-            utils.notify(("Copied: `%s`"):format(result.val))
-            vim.fn.setreg("+", result.val)
-          end
+          end)
         end,
         find_in_dir = function(state)
           local node = state.tree:get_node()

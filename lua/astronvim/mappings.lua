@@ -69,20 +69,6 @@ maps.n["<leader>b"] = sections.b
 maps.n["<leader>bc"] =
   { function() require("astronvim.utils.buffer").close_all(true) end, desc = "Close all buffers except current" }
 maps.n["<leader>bC"] = { function() require("astronvim.utils.buffer").close_all() end, desc = "Close all buffers" }
-maps.n["<leader>bb"] = {
-  function()
-    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
-  end,
-  desc = "Select buffer from tabline",
-}
-maps.n["<leader>bd"] = {
-  function()
-    require("astronvim.utils.status.heirline").buffer_picker(
-      function(bufnr) require("astronvim.utils.buffer").close(bufnr) end
-    )
-  end,
-  desc = "Close buffer from tabline",
-}
 maps.n["<leader>bl"] =
   { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
 maps.n["<leader>bp"] = { function() require("astronvim.utils.buffer").prev() end, desc = "Previous buffer" }
@@ -95,24 +81,41 @@ maps.n["<leader>bsr"] =
 maps.n["<leader>bsp"] = { function() require("astronvim.utils.buffer").sort "full_path" end, desc = "By full path" }
 maps.n["<leader>bsi"] = { function() require("astronvim.utils.buffer").sort "bufnr" end, desc = "By buffer number" }
 maps.n["<leader>bsm"] = { function() require("astronvim.utils.buffer").sort "modified" end, desc = "By modification" }
-maps.n["<leader>b\\"] = {
-  function()
-    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
-      vim.cmd.split()
-      vim.api.nvim_win_set_buf(0, bufnr)
-    end)
-  end,
-  desc = "Horizontal split buffer from tabline",
-}
-maps.n["<leader>b|"] = {
-  function()
-    require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
-      vim.cmd.vsplit()
-      vim.api.nvim_win_set_buf(0, bufnr)
-    end)
-  end,
-  desc = "Vertical split buffer from tabline",
-}
+
+if is_available "heirline.nvim" then
+  maps.n["<leader>bb"] = {
+    function()
+      require("astronvim.utils.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
+    end,
+    desc = "Select buffer from tabline",
+  }
+  maps.n["<leader>bd"] = {
+    function()
+      require("astronvim.utils.status.heirline").buffer_picker(
+        function(bufnr) require("astronvim.utils.buffer").close(bufnr) end
+      )
+    end,
+    desc = "Close buffer from tabline",
+  }
+  maps.n["<leader>b\\"] = {
+    function()
+      require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
+        vim.cmd.split()
+        vim.api.nvim_win_set_buf(0, bufnr)
+      end)
+    end,
+    desc = "Horizontal split buffer from tabline",
+  }
+  maps.n["<leader>b|"] = {
+    function()
+      require("astronvim.utils.status.heirline").buffer_picker(function(bufnr)
+        vim.cmd.vsplit()
+        vim.api.nvim_win_set_buf(0, bufnr)
+      end)
+    end,
+    desc = "Vertical split buffer from tabline",
+  }
+end
 
 -- Navigate tabs
 maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
