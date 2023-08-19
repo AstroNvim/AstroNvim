@@ -157,7 +157,8 @@ function M.close(bufnr, force)
     end
     require("mini.bufremove").delete(bufnr, force)
   else
-    vim.cmd((force and "bdelete!" or "confirm bdelete") .. " " .. bufnr)
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
+    vim.cmd(("silent! %s %d"):format((force or buftype == "terminal") and "bdelete!" or "confirm bdelete", bufnr))
   end
 end
 
