@@ -4,6 +4,10 @@ vim.opt.backspace:append { "nostop" } -- don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then
   vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
 end
+
+vim.cmd [[aunmenu PopUp.How-to\ disable\ mouse]] -- remove "How-to disable mouse" menu item
+vim.cmd [[aunmenu PopUp.-1-]] -- remove "How-to disable mouse" separator
+
 local options = astronvim.user_opts("options", {
   opt = {
     breakindent = true, -- wrap indent to match  line start
