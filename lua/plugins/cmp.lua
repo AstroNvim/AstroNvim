@@ -9,7 +9,6 @@ return {
       history = true,
       delete_check_events = "TextChanged",
       region_check_events = "CursorMoved",
-      store_selection_keys = "<C-x>",
     },
     config = require "plugins.configs.luasnip",
   },
