@@ -347,7 +347,7 @@ function M.unique_path(opts)
     local unique_path = ""
     -- check for same buffer names under different dirs
     local current
-    for _, value in ipairs(vim.t.bufs) do
+    for _, value in ipairs(vim.t.bufs or {}) do
       if name == opts.buf_name(value) and value ~= opts.bufnr then
         if not current then current = path_parts(opts.bufnr) end
         local other = path_parts(value)
@@ -404,11 +404,11 @@ function M.file_icon(opts)
   return function(self)
     local devicons_avail, devicons = pcall(require, "nvim-web-devicons")
     if not devicons_avail then return "" end
-    local ft_icon, _ = devicons.get_icon(
-      vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ":t"),
-      nil,
-      { default = true }
-    )
+    local bufnr = self and self.bufnr or 0
+    local ft_icon, _ = devicons.get_icon(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t"))
+    if not ft_icon then
+      ft_icon, _ = devicons.get_icon_by_filetype(vim.bo[bufnr].filetype, { default = true })
+    end
     return status_utils.stylize(ft_icon, opts)
   end
 end

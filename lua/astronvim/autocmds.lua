@@ -161,7 +161,7 @@ autocmd("BufEnter", {
 
 if is_available "alpha-nvim" then
   autocmd({ "User", "BufEnter" }, {
-    desc = "Disable status and tablines for alpha",
+    desc = "Disable status, tablines, and cmdheight for alpha",
     group = augroup("alpha_settings", { clear = true }),
     callback = function(args)
       if
@@ -170,14 +170,19 @@ if is_available "alpha-nvim" then
           or (args.event == "BufEnter" and vim.api.nvim_get_option_value("filetype", { buf = args.buf }) == "alpha")
         ) and not vim.g.before_alpha
       then
-        vim.g.before_alpha = { showtabline = vim.opt.showtabline:get(), laststatus = vim.opt.laststatus:get() }
-        vim.opt.showtabline, vim.opt.laststatus = 0, 0
+        vim.g.before_alpha = {
+          showtabline = vim.opt.showtabline:get(),
+          laststatus = vim.opt.laststatus:get(),
+          cmdheight = vim.opt.cmdheight:get(),
+        }
+        vim.opt.showtabline, vim.opt.laststatus, vim.opt.cmdheight = 0, 0, 0
       elseif
         vim.g.before_alpha
         and args.event == "BufEnter"
         and vim.api.nvim_get_option_value("buftype", { buf = args.buf }) ~= "nofile"
       then
-        vim.opt.laststatus, vim.opt.showtabline = vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline
+        vim.opt.laststatus, vim.opt.showtabline, vim.opt.cmdheight =
+          vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline, vim.g.before_alpha.cmdheight
         vim.g.before_alpha = nil
       end
     end,
@@ -258,7 +263,7 @@ autocmd("ColorScheme", {
         end
       end
     end
-    astroevent "ColorScheme"
+    astroevent("ColorScheme", false)
   end,
 })
 
@@ -266,11 +271,12 @@ autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
   desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
   group = augroup("file_user_events", { clear = true }),
   callback = function(args)
-    if not (vim.fn.expand "%" == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
+    local current_file = vim.fn.resolve(vim.fn.expand "%")
+    if not (current_file == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
       astroevent "File"
       if
         require("astronvim.utils.git").file_worktree()
-        or utils.cmd({ "git", "-C", vim.fn.expand "%:p:h", "rev-parse" }, false)
+        or utils.cmd({ "git", "-C", vim.fn.fnamemodify(current_file, ":p:h"), "rev-parse" }, false)
       then
         astroevent "GitFile"
         vim.api.nvim_del_augroup_by_name "file_user_events"
