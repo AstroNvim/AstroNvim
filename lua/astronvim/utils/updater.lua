@@ -104,7 +104,7 @@ end
 --- Cancelled update message
 local cancelled_message = { { "Update cancelled", "WarningMsg" } }
 
---- Sync Packer and then update Mason
+--- Sync Lazy and then update Mason
 function M.update_packages()
   require("lazy").sync { wait = true }
   require("astronvim.utils.mason").update_all()
