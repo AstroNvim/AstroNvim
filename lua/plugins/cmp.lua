@@ -5,7 +5,11 @@ return {
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
       or nil,
     dependencies = { "rafamadriz/friendly-snippets" },
-    opts = { store_selection_keys = "<C-x>" },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+      region_check_events = "CursorMoved",
+    },
     config = require "plugins.configs.luasnip",
   },
   {
@@ -29,7 +33,7 @@ return {
       }
 
       local function has_words_before()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        local line, col = (unpack or table.unpack)(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
       end
 
