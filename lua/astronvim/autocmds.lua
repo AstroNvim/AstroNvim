@@ -243,18 +243,11 @@ if is_available "neo-tree.nvim" then
     end,
   })
   autocmd("TermClose", {
-    pattern = "*lazygit",
-    desc = "Refresh Neo-Tree git when closing lazygit",
-    group = augroup("neotree_git_refresh", { clear = true }),
+    pattern = "*lazygit*",
+    desc = "Refresh Neo-Tree when closing lazygit",
+    group = augroup("neotree_refresh", { clear = true }),
     callback = function()
       if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
-    end,
-  })
-  autocmd("TermClose", {
-    pattern = "*lazygit*",
-    desc = "Refresh Neo-Tree filesystem when closing lazygit",
-    group = augroup("neotree_fs_refresh", { clear = true }),
-    callback = function()
       if package.loaded["neo-tree.sources.manager"] then require("neo-tree.sources.manager").refresh("filesystem") end
     end,
   })
