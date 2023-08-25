@@ -28,7 +28,7 @@ return {
   { "max397574/better-escape.nvim", commit = "7031dc734add47bb71c010e0551829fa5799375f", optional = true },
   { "mfussenegger/nvim-dap", version = "^0.6", optional = true },
   { "mrjones2014/smart-splits.nvim", version = "^1", optional = true },
-  { "neovim/nvim-lspconfig", commit = "93c6826b16217eaef568ca5c224ea5d0c12bbb82", optional = true },
+  { "neovim/nvim-lspconfig", commit = "f7922e59aeb9bc3e31a660ea4e7405ffa3fc2c3a", optional = true },
   { "numToStr/Comment.nvim", version = "^0.8", optional = true },
   { "nvim-lua/plenary.nvim", version = "^0.1", optional = true },
   { "nvim-neo-tree/neo-tree.nvim", version = "^3", optional = true },
