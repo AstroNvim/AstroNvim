@@ -80,8 +80,14 @@ return {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = "User AstroFile",
-    opts = {
-      filetype_exclude = {
+    init = function()
+      vim.g.indent_blankline_buftype_exclude = {
+        "nofile",
+        "prompt",
+        "quickfix",
+        "terminal",
+      }
+      vim.g.indent_blankline_filetype_exclude = {
         "NvimTree",
         "Trouble",
         "aerial",
@@ -96,7 +102,10 @@ return {
         "neo-tree",
         "neogitstatus",
         "startify",
-      },
+      }
+      vim.g.indent_blankline_bufname_exclude = {}
+    end,
+    opts = {
       context_patterns = {
         "class",
         "return",
