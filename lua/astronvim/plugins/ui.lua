@@ -1,10 +1,10 @@
-local excluded_buftypes = {
+local indent_excluded_buftypes = {
   "nofile",
   "prompt",
   "terminal",
   "quickfix",
 }
-local excluded_filetypes = {
+local indent_excluded_filetypes = {
   "NvimTree",
   "Trouble",
   "aerial",
@@ -113,8 +113,8 @@ return {
       {
         "lukas-reineke/indent-blankline.nvim",
         opts = {
-          buftype_exclude = excluded_buftypes,
-          filetype_exclude = excluded_filetypes,
+          buftype_exclude = indent_excluded_buftypes,
+          filetype_exclude = indent_excluded_filetypes,
           context_patterns = {
             "class",
             "return",
@@ -149,40 +149,25 @@ return {
         pattern = "*",
         callback = function()
           if
-            vim.tbl_contains(excluded_filetypes, vim.bo["filetype"])
-            or vim.tbl_contains(excluded_buftypes, vim.bo["buftype"])
+            vim.tbl_contains(indent_excluded_filetypes, vim.bo["filetype"])
+            or vim.tbl_contains(indent_excluded_buftypes, vim.bo["buftype"])
           then
             vim.b.miniindentscope_disable = true
           end
         end,
       })
     end,
-    opts = function()
-      local success, wk = pcall(require, "which-key")
-      if success then
-        local textobjects = {
-          ["ii"] = [[inside indent scope]],
-          ["ai"] = [[around indent scope]],
-        }
-        wk.register(textobjects, { mode = { "x", "o" } })
-      end
-
-      local indentscope = require "mini.indentscope"
-      vim.defer_fn(function() indentscope.draw() end, 0)
-      return {
-        draw = {
-          delay = 0,
-          animation = indentscope.gen_animation.none(),
-        },
-        mappings = {
-          object_scope = "ii",
-          object_scope_with_border = "ai",
-          goto_top = "[i",
-          goto_bottom = "]i",
-        },
-        symbol = "▏",
-        options = { try_as_border = true },
-      }
-    end,
+    opts = {
+      draw = {
+        delay = 0,
+        animation = function() return 0 end,
+      },
+      mappings = {
+        object_scope = "ii",
+        object_scope_with_border = "ai",
+      },
+      symbol = "▏",
+      options = { try_as_border = true },
+    },
   },
 }
