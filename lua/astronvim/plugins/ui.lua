@@ -1,26 +1,3 @@
-local indent_excluded_buftypes = {
-  "nofile",
-  "prompt",
-  "terminal",
-  "quickfix",
-}
-local indent_excluded_filetypes = {
-  "NvimTree",
-  "Trouble",
-  "aerial",
-  "alpha",
-  "checkhealth",
-  "dashboard",
-  "help",
-  "help",
-  "lazy",
-  "lspinfo",
-  "man",
-  "neo-tree",
-  "neogitstatus",
-  "startify",
-}
-
 return {
   {
     "nvim-tree/nvim-web-devicons",
@@ -105,47 +82,5 @@ return {
     event = "User AstroFile",
     cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
     opts = { user_default_options = { names = false } },
-  },
-  {
-    "echasnovski/mini.indentscope",
-    event = "User AstroFile",
-    dependencies = {
-      {
-        "lukas-reineke/indent-blankline.nvim",
-        opts = {
-          buftype_exclude = indent_excluded_buftypes,
-          filetype_exclude = indent_excluded_filetypes,
-          show_trailing_blankline_indent = false,
-          use_treesitter = true,
-          char = "▏",
-          context_char = "▏",
-        },
-      },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "*",
-        callback = function()
-          if
-            vim.tbl_contains(indent_excluded_filetypes, vim.bo["filetype"])
-            or vim.tbl_contains(indent_excluded_buftypes, vim.bo["buftype"])
-          then
-            vim.b.miniindentscope_disable = true
-          end
-        end,
-      })
-    end,
-    opts = {
-      draw = {
-        delay = 0,
-        animation = function() return 0 end,
-      },
-      mappings = {
-        object_scope = "ii",
-        object_scope_with_border = "ai",
-      },
-      symbol = "▏",
-      options = { try_as_border = true },
-    },
   },
 }
