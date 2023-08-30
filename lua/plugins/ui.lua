@@ -78,52 +78,106 @@ return {
     opts = { user_default_options = { names = false } },
   },
   {
-    "lukas-reineke/indent-blankline.nvim",
+    "echasnovski/mini.indentscope",
     event = "User AstroFile",
-    opts = {
-      buftype_exclude = {
-        "nofile",
-        "terminal",
+    dependencies = {
+      {
+        "lukas-reineke/indent-blankline.nvim",
+        init = function()
+          vim.g.indent_blankline_buftype_exclude = {
+            "nofile",
+            "prompt",
+            "quickfix",
+            "terminal",
+          }
+          vim.g.indent_blankline_filetype_exclude = {
+            "NvimTree",
+            "Trouble",
+            "aerial",
+            "alpha",
+            "checkhealth",
+            "dashboard",
+            "help",
+            "help",
+            "lazy",
+            "lspinfo",
+            "man",
+            "neo-tree",
+            "neogitstatus",
+            "startify",
+          }
+          vim.g.indent_blankline_bufname_exclude = {}
+        end,
+        opts = {
+          context_patterns = {
+            "class",
+            "return",
+            "function",
+            "method",
+            "^if",
+            "^while",
+            "jsx_element",
+            "^for",
+            "^object",
+            "^table",
+            "block",
+            "arguments",
+            "if_statement",
+            "else_clause",
+            "jsx_element",
+            "jsx_self_closing_element",
+            "try_statement",
+            "catch_clause",
+            "import_statement",
+            "operation_type",
+          },
+          show_trailing_blankline_indent = false,
+          use_treesitter = true,
+          char = "▏",
+          context_char = "▏",
+        },
       },
-      filetype_exclude = {
-        "help",
-        "startify",
-        "aerial",
-        "alpha",
-        "dashboard",
-        "lazy",
-        "neogitstatus",
-        "NvimTree",
-        "neo-tree",
-        "Trouble",
-      },
-      context_patterns = {
-        "class",
-        "return",
-        "function",
-        "method",
-        "^if",
-        "^while",
-        "jsx_element",
-        "^for",
-        "^object",
-        "^table",
-        "block",
-        "arguments",
-        "if_statement",
-        "else_clause",
-        "jsx_element",
-        "jsx_self_closing_element",
-        "try_statement",
-        "catch_clause",
-        "import_statement",
-        "operation_type",
-      },
-      show_trailing_blankline_indent = false,
-      use_treesitter = true,
-      char = "▏",
-      context_char = "▏",
-      show_current_context = true,
     },
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "*",
+        callback = function()
+          if
+            vim.tbl_contains(vim.g.indent_blankline_filetype_exclude, vim.bo["filetype"])
+            or vim.tbl_contains(vim.g.indent_blankline_buftype_exclude, vim.bo["buftype"])
+            or vim.tbl_contains(vim.g.indent_blankline_bufname_exclude, vim.api.nvim_buf_get_name(0))
+          then
+            vim.b.miniindentscope_disable = true
+          end
+        end,
+      })
+    end,
+    opts = function()
+      local success, wk = pcall(require, "which-key")
+      if success then
+        local textobjects = {
+          ["ii"] = [[inside indent scope]],
+          ["ai"] = [[around indent scope]],
+        }
+        wk.register(textobjects, { mode = { "x", "o" } })
+      end
+
+      local indentscope = require "mini.indentscope"
+      vim.defer_fn(function() indentscope.draw() end, 0)
+      return {
+        draw = {
+          delay = 0,
+          animation = indentscope.gen_animation.none(),
+        },
+        mappings = {
+          object_scope = "ii",
+          object_scope_with_border = "ai",
+          goto_top = "[i",
+          goto_bottom = "]i",
+        },
+        symbol = "▏",
+        options = { try_as_border = true },
+      }
+    end,
   },
 }
