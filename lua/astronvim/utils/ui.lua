@@ -172,6 +172,20 @@ function M.toggle_signcolumn(silent)
   ui_notify(silent, string.format("signcolumn=%s", vim.wo.signcolumn))
 end
 
+--- Toggle indent guides
+---@param silent? boolean if true then don't sent a notification
+function M.toggle_buffer_indent_guides(silent)
+  vim.g.indent_blankline_enabled = not vim.g.indent_blankline_enabled
+  pcall(vim.cmd.IndentBlanklineRefresh)
+  vim.g.miniindentscope_disable = not vim.g.miniindentscope_disable
+  if MiniIndentscope and not vim.g.miniindentscope_disable then
+    MiniIndentscope.draw()
+  else
+    MiniIndentscope.undraw()
+  end
+  ui_notify(silent, "Indent guides " .. (bool2str(vim.g.indent_blankline_enabled)))
+end
+
 --- Set the indent and tab related numbers
 ---@param silent? boolean if true then don't sent a notification
 function M.set_indent(silent)

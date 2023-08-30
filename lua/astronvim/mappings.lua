@@ -437,6 +437,9 @@ if is_available "nvim-cmp" then maps.n["<leader>uc"] = { ui.toggle_cmp, desc = "
 if is_available "nvim-colorizer.lua" then
   maps.n["<leader>uC"] = { "<cmd>ColorizerToggle<cr>", desc = "Toggle color highlight" }
 end
+if is_available "mini.indentscope" then
+  maps.n["<leader>uI"] = { ui.toggle_buffer_indent_guides, desc = "Toggle indent guides (buffer)" }
+end
 maps.n["<leader>ud"] = { ui.toggle_diagnostics, desc = "Toggle diagnostics" }
 maps.n["<leader>ug"] = { ui.toggle_signcolumn, desc = "Toggle signcolumn" }
 maps.n["<leader>ui"] = { ui.set_indent, desc = "Change indent setting" }
