@@ -192,6 +192,22 @@ if is_available "resession.nvim" then
   maps.n["<leader>S"] = sections.S
   maps.n["<leader>Sl"] = { function() require("resession").load "Last Session" end, desc = "Load last session" }
   maps.n["<leader>Ss"] = { function() require("resession").save() end, desc = "Save this session" }
+  maps.n["<leader>Sr"] = {
+    function()
+      local current_session_name = require("resession").get_current()
+      if current_session_name then
+        vim.ui.input({ prompt = string.format('Rename session "%s" to', current_session_name) }, function(name)
+          if name then
+            require("resession").save(name)
+            require("resession").delete(current_session_name)
+          end
+        end)
+      else
+        utils.notify("No session available to rename", vim.log.levels.ERROR, { title = "" })
+      end
+    end,
+    desc = "Rename this session",
+  }
   maps.n["<leader>St"] = { function() require("resession").save_tab() end, desc = "Save this tab's session" }
   maps.n["<leader>Sd"] = { function() require("resession").delete() end, desc = "Delete a session" }
   maps.n["<leader>Sf"] = { function() require("resession").load() end, desc = "Load a session" }
