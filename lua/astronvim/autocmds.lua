@@ -210,6 +210,18 @@ if is_available "alpha-nvim" then
   })
 end
 
+-- HACK: indent blankline doesn't properly refresh when scrolling the window
+-- remove when fixed upstream: https://github.com/lukas-reineke/indent-blankline.nvim/issues/489
+if is_available "indent-blankline.nvim" then
+  autocmd("WinScrolled", {
+    desc = "Refresh indent blankline on window scroll",
+    group = augroup("indent_blankline_refresh_scroll", { clear = true }),
+    callback = function()
+      if vim.v.event.all.leftcol ~= 0 then pcall(vim.cmd.IndentBlanklineRefresh) end
+    end,
+  })
+end
+
 if is_available "resession.nvim" then
   autocmd("VimLeavePre", {
     desc = "Save session on close",
