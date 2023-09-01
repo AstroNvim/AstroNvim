@@ -126,7 +126,7 @@ return {
     end
     if is_available "mini.indentscope" or is_available "indent-blankline.nvim" then
       maps.n["<leader>uI"] =
-        { function() require("astrocore.toggles").indent_guides() end, desc = "Toggle indent guides (buffer)" }
+        { function() require("astrocore.toggles").buffer_indent_guides() end, desc = "Toggle indent guides (buffer)" }
     end
     maps.n["<Leader>ug"] = { function() require("astrocore.toggles").signcolumn() end, desc = "Toggle signcolumn" }
     maps.n["<Leader>uh"] = { function() require("astrocore.toggles").foldcolumn() end, desc = "Toggle foldcolumn" }
