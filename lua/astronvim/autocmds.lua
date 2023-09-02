@@ -210,6 +210,18 @@ if is_available "alpha-nvim" then
   })
 end
 
+-- HACK: indent blankline doesn't properly refresh when scrolling the window
+-- remove when fixed upstream: https://github.com/lukas-reineke/indent-blankline.nvim/issues/489
+if is_available "indent-blankline.nvim" then
+  autocmd("WinScrolled", {
+    desc = "Refresh indent blankline on window scroll",
+    group = augroup("indent_blankline_refresh_scroll", { clear = true }),
+    callback = function()
+      if vim.v.event.all.leftcol ~= 0 then pcall(vim.cmd.IndentBlanklineRefresh) end
+    end,
+  })
+end
+
 if is_available "resession.nvim" then
   autocmd("VimLeavePre", {
     desc = "Save session on close",
@@ -243,11 +255,17 @@ if is_available "neo-tree.nvim" then
     end,
   })
   autocmd("TermClose", {
-    pattern = "*lazygit",
-    desc = "Refresh Neo-Tree git when closing lazygit",
-    group = augroup("neotree_git_refresh", { clear = true }),
+    pattern = "*lazygit*",
+    desc = "Refresh Neo-Tree when closing lazygit",
+    group = augroup("neotree_refresh", { clear = true }),
     callback = function()
-      if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
+      local manager_avail, manager = pcall(require, "neo-tree.sources.manager")
+      if manager_avail then
+        for _, source in ipairs { "filesystem", "git_status", "document_symbols" } do
+          local module = "neo-tree.sources." .. source
+          if package.loaded[module] then manager.refresh(require(module).name) end
+        end
+      end
     end,
   })
 end

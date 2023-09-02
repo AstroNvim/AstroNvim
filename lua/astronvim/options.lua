@@ -1,5 +1,5 @@
 vim.opt.viewoptions:remove "curdir" -- disable saving current directory with views
-vim.opt.shortmess:append { s = true, I = true } -- disable startup message
+vim.opt.shortmess:append { s = true, I = true } -- disable search count wrap and startup messages
 vim.opt.backspace:append { "nostop" } -- don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then
   vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
@@ -29,11 +29,9 @@ local options = astronvim.user_opts("options", {
     preserveindent = true, -- preserve indent structure as much as possible
     pumheight = 10, -- height of the pop up menu
     relativenumber = true, -- show relative numberline
-    scrolloff = 8, -- number of lines to keep above and below the cursor
     shiftwidth = 2, -- number of space inserted for indentation
     showmode = false, -- disable showing modes in command line
     showtabline = 2, -- always display tabline
-    sidescrolloff = 8, -- number of columns to keep at the sides of the cursor
     signcolumn = "yes", -- always show the sign column
     smartcase = true, -- case sensitive searching
     splitbelow = true, -- splitting a new window below the current one
