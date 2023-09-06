@@ -280,6 +280,7 @@ if is_available "telescope.nvim" then
   maps.n["<leader>fc"] = { function() require("telescope.builtin").grep_string() end, desc = "Find word under cursor" }
   maps.n["<leader>fC"] = { function() require("telescope.builtin").commands() end, desc = "Find commands" }
   maps.n["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find files" }
+  maps.n["<leader>fp"] = { function() require("telescope.builtin").git_files() end, desc = "Find in Git files"}
   maps.n["<leader>fF"] = {
     function() require("telescope.builtin").find_files { hidden = true, no_ignore = true } end,
     desc = "Find all files",
@@ -291,6 +292,7 @@ if is_available "telescope.nvim" then
     maps.n["<leader>fn"] =
       { function() require("telescope").extensions.notify.notify() end, desc = "Find notifications" }
   end
+  maps.n["<leader>fg"] = { function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "Search in files"}
   maps.n["<leader>fo"] = { function() require("telescope.builtin").oldfiles() end, desc = "Find history" }
   maps.n["<leader>fr"] = { function() require("telescope.builtin").registers() end, desc = "Find registers" }
   maps.n["<leader>ft"] =
