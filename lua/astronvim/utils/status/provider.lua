@@ -330,7 +330,7 @@ end
 -- @see astronvim.utils.status.utils.stylize
 function M.unique_path(opts)
   opts = extend_tbl({
-    buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t") end,
+    buf_name = function(bufnr) return vim.fn.fnamemodify(pcall(vim.api.nvim_buf_get_name, bufnr), ":t") end,
     bufnr = 0,
     max_length = 16,
   }, opts)
