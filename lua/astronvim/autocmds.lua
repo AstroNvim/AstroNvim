@@ -45,7 +45,7 @@ autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
     astroevent "BufsUpdated"
   end,
 })
-autocmd("BufDelete", {
+autocmd({ "BufDelete", "TermClose" }, {
   desc = "Update buffers when deleting buffers",
   group = bufferline_group,
   callback = function(args)
