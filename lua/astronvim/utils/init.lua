@@ -223,6 +223,17 @@ function M.is_available(plugin)
   return lazy_config_avail and lazy_config.spec.plugins[plugin] ~= nil
 end
 
+--- Check if a plugin has been loaded by lazy. Useful for conditionally evaluating heirline providers when a plugin is loaded
+---@param plugin string The plugin to search for
+---@return boolean available # Whether the plugin has been loaded
+function M.is_loaded(plugin)
+  local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
+  if lazy_config_avail and lazy_config.plugins[plugin] then
+    if type(lazy_config.plugins[plugin]._.loaded) == "table" then return true end
+  end
+  return false
+end
+
 --- Resolve the options table for a given plugin with lazy
 ---@param plugin string The plugin to search for
 ---@return table opts # The plugin options
