@@ -13,7 +13,7 @@
   ·
   <a href="https://astronvim.com">Docs</a>
   ·
-  <a href="https://discord.gg/AstroNvim">Discord</a>
+  <a href="https://discord.astronvim.com">Discord</a>
 </h4>
 
 <p align="center">
@@ -37,7 +37,7 @@
     <a href="https://www.reddit.com/r/AstroNvim/">
       <img src="https://img.shields.io/reddit/subreddit-subscribers/AstroNvim?style=for-the-badge&logo=reddit&color=ee99a0&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
-    <a href="https://discord.gg/astronvim">
+    <a href="https://discord.astronvim.com">
       <img src="https://img.shields.io/discord/939594913560031363?style=for-the-badge&logo=discord&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
 </p>
