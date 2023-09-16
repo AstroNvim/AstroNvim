@@ -3,27 +3,30 @@
 ## AstroNvim install for contributors
 
 If you wish to contribute to AstroNvim, you should:
+
 1. [create a fork on GitHub](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 2. clone your fork to your machine
-  - For ssh:
-    ```shell
-    $ git clone git@github.com:<YOUR GITHUB USERNAME>/AstroNvim.git ~/.config/nvim
-    ```
-  - For https:
-    ```shell
-    $ git clone https://github.com/<YOUR GITHUB USERNAME>/AstroNvim.git ~/.config/nvim
-    ```
+
+- For ssh:
+  ```shell
+  $ git clone git@github.com:<YOUR GITHUB USERNAME>/AstroNvim.git ~/.config/nvim
+  ```
+- For https:
+  ```shell
+  $ git clone https://github.com/<YOUR GITHUB USERNAME>/AstroNvim.git ~/.config/nvim
+  ```
+
 3. [add a new remote repo to track](https://www.atlassian.com/git/tutorials/git-forks-and-upstreams)
    - this means you can push/pull as normal to your own repo, but also easily track & update from the AstroNvim repo
-    - for ssh:
-       ```shell
-       $ git remote add upstream git@github.com:AstroNvim/AstroNvim.git
-       ```
-    - for https:
-       ```shell
-       $ git remote add upstream https://github.com/AstroNvim/AstroNvim.git
-       ```  
-4. any time you create a branch to do some work, use 
+   - for ssh:
+     ```shell
+     $ git remote add upstream git@github.com:AstroNvim/AstroNvim.git
+     ```
+   - for https:
+     ```shell
+     $ git remote add upstream https://github.com/AstroNvim/AstroNvim.git
+     ```
+4. any time you create a branch to do some work, use
    ```shell
    $ git fetch upstream && git checkout -b dev-myFEAT upstream/main
    ```
@@ -53,19 +56,22 @@ If you wish to contribute to AstroNvim, you should:
 
 - PRs should follow the pull request formats where applicable
 
-- We are open to all PRs, but if a PR is denied for any reason please don't be discouraged! We'll still be open to discussions. If you have any questions before opening the PR feel free to join the [discord server](https://discord.gg/UcZutyeaFW).
+- We are open to all PRs, but if a PR is denied for any reason please don't be discouraged! We'll still be open to discussions. If you have any questions before opening the PR feel free to join the [discord server](https://discord.astronvim.com).
 
 - AstroNvim aims to provide the best user experience when it comes to being able to support confident updating for users, for this reason please avoid opening PRs with breaking changes. Avoiding breaking changes is not always going to be possible, so if you think it is completely necessary we are open to discussion.
 
 ## How to remove, squash, or edit commits from your PR
+
 > You may have been directed here to remove a commit such as a merge commit: `Merge AstroNvim/main into devBranch` from your PR
 
 > As these commands edit your git history, you may need to **force push** with `git push origin --force-with-lease`
 
 1. Run the following:
-  ```
-  $ git rebase -i HEAD~<NUMBER OF COMMITS TO GO BACK>
-  ```
+
+```
+$ git rebase -i HEAD~<NUMBER OF COMMITS TO GO BACK>
+```
+
   <details><summary>Example</summary>
   <p>
   
@@ -151,20 +157,23 @@ If you wish to contribute to AstroNvim, you should:
   </details>
 
 3. If you picked `drop` you are done. If you picked `squash` then you will be brought to a screen to update the commit message for the new aggregated commit, please make sure the new commit message follows the Conventional Commit specification. If you picked `edit` then edit your files, then run:
-  ```shell
-  $ git add <files>
-  ```
+
+```shell
+$ git add <files>
+```
 
 4. Continue rebasing until all edits are finished. Run the following command to continue through the rebase if there are more changes:
 
-  ```shell
-  $ git rebase --continue
-  ```
+```shell
+$ git rebase --continue
+```
 
 5. Push the changes with `--force-with-lease`:
-  ```shell
-  $ git push origin --force-with-lease
-  ```
+
+```shell
+$ git push origin --force-with-lease
+```
 
 ## Help
-For help with contributing and anything else AstroNvim related join the [discord](https://discord.gg/UcZutyeaFW)
+
+For help with contributing and anything else AstroNvim related join the [discord](https://discord.astronvim.com)
