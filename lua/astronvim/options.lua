@@ -44,5 +44,10 @@ vim.opt.virtualedit = "block" -- allow going past end of line in visual block mo
 vim.opt.wrap = false -- disable wrapping of lines longer than the width of window
 vim.opt.writebackup = false -- disable making a backup before overwriting a file
 
-pcall(vim.g.astronvim_options)
-pcall(require, "config.options")
+if type(vim.g.astronvim_options) == "function" then vim.g.astronvim_options() end
+
+local user_opts = "config.options"
+local user_opts_loaded, user_opts_result = pcall(require, user_opts)
+if not user_opts_loaded and #require("lazy.core.cache").find(user_opts) > 0 then
+  vim.api.nvim_err_writeln("Failed to load " .. user_opts_loaded .. "\n\n" .. user_opts_result)
+end
