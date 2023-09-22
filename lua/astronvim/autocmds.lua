@@ -45,7 +45,7 @@ autocmd({ "BufAdd", "BufEnter", "TabNewEntered" }, {
     astroevent "BufsUpdated"
   end,
 })
-autocmd("BufDelete", {
+autocmd({ "BufDelete", "TermClose" }, {
   desc = "Update buffers when deleting buffers",
   group = bufferline_group,
   callback = function(args)
@@ -160,14 +160,14 @@ autocmd("BufEnter", {
 })
 
 if is_available "alpha-nvim" then
-  autocmd({ "User", "BufEnter" }, {
+  autocmd({ "User", "BufWinEnter" }, {
     desc = "Disable status, tablines, and cmdheight for alpha",
     group = augroup("alpha_settings", { clear = true }),
     callback = function(args)
       if
         (
           (args.event == "User" and args.file == "AlphaReady")
-          or (args.event == "BufEnter" and vim.api.nvim_get_option_value("filetype", { buf = args.buf }) == "alpha")
+          or (args.event == "BufWinEnter" and vim.api.nvim_get_option_value("filetype", { buf = args.buf }) == "alpha")
         ) and not vim.g.before_alpha
       then
         vim.g.before_alpha = {
@@ -178,7 +178,7 @@ if is_available "alpha-nvim" then
         vim.opt.showtabline, vim.opt.laststatus, vim.opt.cmdheight = 0, 0, 0
       elseif
         vim.g.before_alpha
-        and args.event == "BufEnter"
+        and args.event == "BufWinEnter"
         and vim.api.nvim_get_option_value("buftype", { buf = args.buf }) ~= "nofile"
       then
         vim.opt.laststatus, vim.opt.showtabline, vim.opt.cmdheight =
@@ -224,7 +224,9 @@ if is_available "indent-blankline.nvim" then
     group = augroup("indent_blankline_refresh_scroll", { clear = true }),
     callback = function()
       -- TODO: remove neovim version check when dropping support for Neovim 0.8
-      if vim.fn.has "nvim-0.9" ~= 1 or vim.v.event.all.leftcol ~= 0 then pcall(vim.cmd.IndentBlanklineRefresh) end
+      if vim.fn.has "nvim-0.9" ~= 1 or (vim.v.event.all and vim.v.event.all.leftcol ~= 0) then
+        pcall(vim.cmd.IndentBlanklineRefresh)
+      end
     end,
   })
 end

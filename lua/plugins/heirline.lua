@@ -49,10 +49,18 @@ return {
         { -- file tree padding
           condition = function(self)
             self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
-            return status.condition.buffer_matches(
-              { filetype = { "aerial", "dapui_.", "dap-repl", "neo%-tree", "NvimTree", "edgy", "undotree" } },
-              vim.api.nvim_win_get_buf(self.winid)
-            )
+            return status.condition.buffer_matches({
+              filetype = {
+                "NvimTree",
+                "OverseerList",
+                "aerial",
+                "dap-repl",
+                "dapui_.",
+                "edgy",
+                "neo%-tree",
+                "undotree",
+              },
+            }, vim.api.nvim_win_get_buf(self.winid))
           end,
           provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid) + 1) end,
           hl = { bg = "tabline_bg" },
