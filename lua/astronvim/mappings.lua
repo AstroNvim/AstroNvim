@@ -30,6 +30,14 @@ maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
 maps.n["<C-q>"] = { "<cmd>qa!<cr>", desc = "Force quit" }
 maps.n["|"] = { "<cmd>vsplit<cr>", desc = "Vertical Split" }
 maps.n["\\"] = { "<cmd>split<cr>", desc = "Horizontal Split" }
+maps.n["]e"] = {
+  function() vim.cmd ":move +1<CR>" end,
+  desc = "Swap current line with the line above",
+}
+maps.n["[e"] = {
+  function() vim.cmd ":move -2<CR>" end,
+  desc = "Swap current line with the line below",
+}
 -- TODO: Remove when dropping support for <Neovim v0.10
 if not vim.ui.open then maps.n["gx"] = { utils.system_open, desc = "Open the file under cursor with system app" } end
 
