@@ -38,7 +38,9 @@ M.on_load = function(data)
 
   require("astronvim.utils").event "BufsUpdated"
 
-  if vim.fn.bufnr() ~= buf_utils.current_buf then vim.cmd.b(buf_utils.current_buf) end
+  if vim.opt.bufhidden:get() == "wipe" and vim.fn.bufnr() ~= buf_utils.current_buf then
+    vim.cmd.b(buf_utils.current_buf)
+  end
 end
 
 return M
