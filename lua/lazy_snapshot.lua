@@ -24,7 +24,7 @@ return {
   { "kevinhwang91/nvim-ufo", version = "^1", optional = true },
   { "kevinhwang91/promise-async", version = "^1", optional = true },
   { "lewis6991/gitsigns.nvim", version = "^0.6", optional = true },
-  { "lukas-reineke/indent-blankline.nvim", version = "^2", optional = true },
+  { "lukas-reineke/indent-blankline.nvim", version = "^3", optional = true },
   { "max397574/better-escape.nvim", commit = "7031dc734add47bb71c010e0551829fa5799375f", optional = true },
   { "mfussenegger/nvim-dap", version = "^0.6", optional = true },
   { "mrjones2014/smart-splits.nvim", version = "^1", optional = true },
