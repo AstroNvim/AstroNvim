@@ -10,12 +10,6 @@ return {
     maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
     maps.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
-    maps.n["<Leader>lD"] = {
-      function() require("telescope.builtin").diagnostics() end,
-      desc = "Search diagnostics",
-      cond = function() return require("astrocore").is_available "telescope.nvim" end,
-    }
-
     maps.n["<Leader>la"] = {
       function() vim.lsp.buf.code_action() end,
       desc = "LSP code action",
@@ -96,6 +90,5 @@ return {
       cond = function(client) return client.server_capabilities.semanticTokensProvider and vim.lsp.semantic_tokens end,
     }
     opts.mappings = require("astrocore").extend_tbl(opts.mappings, maps)
-    return opts
   end,
 }
