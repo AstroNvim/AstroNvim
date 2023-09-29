@@ -59,12 +59,10 @@ return {
         "AstroNvim/astrocore",
         opts = function(_, opts)
           local maps = opts.mappings
-          if require("astrocore").is_available "nvim-notify" then
-            maps.n["<Leader>uD"] = {
-              function() require("notify").dismiss { pending = true, silent = true } end,
-              desc = "Dismiss notifications",
-            }
-          end
+          maps.n["<Leader>uD"] = {
+            function() require("notify").dismiss { pending = true, silent = true } end,
+            desc = "Dismiss notifications",
+          }
         end,
       },
     },
@@ -93,6 +91,15 @@ return {
   },
   {
     "NvChad/nvim-colorizer.lua",
+    dependencies = {
+      {
+        "AstroNvim/astrocore",
+        opts = function(_, opts)
+          local maps = opts.mappings
+          maps.n["<Leader>uC"] = { "<Cmd>ColorizerToggle<CR>", desc = "Toggle color highlight" }
+        end,
+      },
+    },
     event = "User AstroFile",
     cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
     opts = { user_default_options = { names = false } },
