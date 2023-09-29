@@ -1,6 +1,16 @@
 return {
   "AstroNvim/astrolsp",
   lazy = true,
+  dependencies = {
+    {
+      "AstroNvim/astrocore",
+      opts = function(_, opts)
+        local maps = opts.mappings
+        maps.n["<Leader>ud"] = { function() require("astrolsp.toggles").diagnostics() end, desc = "Toggle diagnostics" }
+        maps.n["<Leader>uL"] = { function() require("astrolsp.toggles").codelens() end, desc = "Toggle CodeLens" }
+      end,
+    },
+  },
   ---@param opts AstroLSPOpts
   opts = function(_, opts)
     local schemastore_avail, schemastore = pcall(require, "schemastore")

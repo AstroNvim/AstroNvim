@@ -40,44 +40,44 @@ return {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
-        if require("astrocore").is_available "mini.indentscope" then
-          local blankline_opts = require("astrocore").plugin_opts "indent-blankline.nvim"
-          opts.autocmds.indentscope_disabled = {
-            {
-              event = "FileType",
-              desc = "Disable indentscope for certain filetypes",
-              callback = function(event)
-                if vim.b[event.buf].minicursorword_disable == nil then
-                  local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
-                  if vim.tbl_contains(blankline_opts.filetype_exclude or ignore_filetypes, filetype) then
-                    vim.b[event.buf].miniindentscope_disable = true
-                  end
-                end
-              end,
-            },
-            {
-              event = "BufWinEnter",
-              desc = "Disable indentscope for certain buftypes",
-              callback = function(event)
-                if vim.b[event.buf].minicursorword_disable == nil then
-                  local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
-                  if vim.tbl_contains(blankline_opts.buftype_exclude or ignore_buftypes, buftype) then
-                    vim.b[event.buf].miniindentscope_disable = true
-                  end
-                end
-              end,
-            },
-            {
-              event = "TermOpen",
-              desc = "Disable indentscope for terminals",
-              callback = function(event)
-                if vim.b[event.buf].minicursorword_disable == nil then
+        local maps = opts.mappings
+        maps.n["<leader>uI"] =
+          { function() require("astrocore.toggles").buffer_indent_guides() end, desc = "Toggle indent guides (buffer)" }
+        opts.autocmds.indentscope_disabled = {
+          {
+            event = "FileType",
+            desc = "Disable indentscope for certain filetypes",
+            callback = function(event)
+              if vim.b[event.buf].minicursorword_disable == nil then
+                local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+                local blankline_opts = require("astrocore").plugin_opts "indent-blankline.nvim"
+                if vim.tbl_contains(blankline_opts.filetype_exclude or ignore_filetypes, filetype) then
                   vim.b[event.buf].miniindentscope_disable = true
                 end
-              end,
-            },
-          }
-        end
+              end
+            end,
+          },
+          {
+            event = "BufWinEnter",
+            desc = "Disable indentscope for certain buftypes",
+            callback = function(event)
+              if vim.b[event.buf].minicursorword_disable == nil then
+                local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+                local blankline_opts = require("astrocore").plugin_opts "indent-blankline.nvim"
+                if vim.tbl_contains(blankline_opts.buftype_exclude or ignore_buftypes, buftype) then
+                  vim.b[event.buf].miniindentscope_disable = true
+                end
+              end
+            end,
+          },
+          {
+            event = "TermOpen",
+            desc = "Disable indentscope for terminals",
+            callback = function(event)
+              if vim.b[event.buf].minicursorword_disable == nil then vim.b[event.buf].miniindentscope_disable = true end
+            end,
+          },
+        }
       end,
     },
   },
