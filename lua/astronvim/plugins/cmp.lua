@@ -16,6 +16,13 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
+      {
+        "AstroNvim/astrocore",
+        opts = function(_, opts)
+          local maps = opts.mappings
+          maps.n["<Leader>uc"] = { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion" }
+        end,
+      },
       "saadparwaiz1/cmp_luasnip",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
