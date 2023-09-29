@@ -4,7 +4,6 @@ return {
   opts = function(_, opts)
     local astro = require "astrocore"
     local get_icon = require("astroui").get_icon
-    local is_available = astro.is_available
     -- initialize internally use mapping section titles
     opts._map_section = {
       f = { desc = get_icon("Search", 1, true) .. "Find" },
@@ -111,24 +110,7 @@ return {
 
     maps.n["<Leader>u"] = sections.u
     -- Custom menu for modification of the user experience
-    if is_available "nvim-autopairs" then
-      maps.n["<Leader>ua"] = { function() require("astrocore.toggles").autopairs() end, desc = "Toggle autopairs" }
-    end
     maps.n["<Leader>ub"] = { function() require("astrocore.toggles").background() end, desc = "Toggle background" }
-    if is_available "nvim-cmp" then
-      maps.n["<Leader>uc"] = { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion" }
-    end
-    if is_available "nvim-colorizer.lua" then
-      maps.n["<Leader>uC"] = { "<Cmd>ColorizerToggle<CR>", desc = "Toggle color highlight" }
-    end
-    if is_available "astrolsp" then
-      maps.n["<Leader>ud"] = { function() require("astrolsp.toggles").diagnostics() end, desc = "Toggle diagnostics" }
-      maps.n["<Leader>uL"] = { function() require("astrolsp.toggles").codelens() end, desc = "Toggle CodeLens" }
-    end
-    if is_available "mini.indentscope" or is_available "indent-blankline.nvim" then
-      maps.n["<leader>uI"] =
-        { function() require("astrocore.toggles").buffer_indent_guides() end, desc = "Toggle indent guides (buffer)" }
-    end
     maps.n["<Leader>ug"] = { function() require("astrocore.toggles").signcolumn() end, desc = "Toggle signcolumn" }
     maps.n["<Leader>uh"] = { function() require("astrocore.toggles").foldcolumn() end, desc = "Toggle foldcolumn" }
     maps.n["<Leader>ui"] = { function() require("astrocore.toggles").indent() end, desc = "Change indent setting" }
