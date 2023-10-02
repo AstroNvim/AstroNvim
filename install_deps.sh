@@ -21,7 +21,8 @@ if [ "$platform" = "linux" ]; then
 			luarocks hledger libtool automake portaudio astyle shfmt cppcheck \
 			lua-language-server bash-language-server haskell-language-server gopls \
 			gradle tmux python-pip npm
-		yay -S nvm checkmake rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls
+		yay -S nvm checkmake rebar3 hadolint rbenv cava tetris-terminal-git elixir-ls \
+			r-rlang
 	elif [ "$distro" = "Ubuntu Linux" ]; then
 		sudo apt-get update
 		sudo apt-get upgrade
