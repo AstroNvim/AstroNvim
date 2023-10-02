@@ -60,7 +60,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 - Terminal with [Toggleterm](https://github.com/akinsho/toggleterm.nvim)
 - Fuzzy finding with [Telescope](https://github.com/nvim-telescope/telescope.nvim)
 - Syntax highlighting with [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- Formatting and Linting with [Null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim)
+- Formatting and Linting with [None-ls](https://github.com/nvimtools/none-ls.nvim)
 - Language Server Protocol with [Native LSP](https://github.com/neovim/nvim-lspconfig)
 - Debug Adapter Protocol with [nvim-dap](https://github.com/mfussenegger/nvim-dap)
 

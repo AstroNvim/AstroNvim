@@ -29,7 +29,8 @@ return {
     config = function(...) require "astronvim.plugins.configs.lspconfig"(...) end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
+    main = "null-ls",
     dependencies = {
       {
         "AstroNvim/astrolsp",
