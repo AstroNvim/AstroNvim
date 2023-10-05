@@ -1,17 +1,17 @@
 <div align="center" id="madewithlua">
-    <img src="https://astronvim.com/img/logo/astronvim.svg" width="110", height="100">
+    <img src="https://astronvim.com/logo/astronvim.svg" width="110", height="100">
 </div>
 
 <h1 align="center">AstroNvim</h1>
 
 <h4 align="center">
-  <a href="https://astronvim.com/#%EF%B8%8F-installation">Install</a>
+  <a href="https://docs.astronvim.com/#%EF%B8%8F-installation">Install</a>
   ·
-  <a href="https://astronvim.com/#%EF%B8%8F-configuration">Configure</a>
+  <a href="https://docs.astronvim.com/#%EF%B8%8F-configuration">Configure</a>
   ·
   <a href="https://github.com/AstroNvim/astrocommunity">Community Plugins</a>
   ·
-  <a href="https://astronvim.com">Docs</a>
+  <a href="https://astronvim.com">Website</a>
   ·
   <a href="https://discord.astronvim.com">Discord</a>
 </h4>
@@ -48,7 +48,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🌟 Preview
 
-![Preview Image](https://astronvim.com/img/themes/overview.png)
+![Preview Image](https://docs.astronvim.com/img/themes/overview.png)
 
 ## ✨ Features
 
@@ -66,7 +66,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## ⚡ Requirements
 
-- [Nerd Fonts](https://www.nerdfonts.com/font-downloads) (_Optional with manual intervention:_ See [Documentation on customizing icons](https://astronvim.com/Recipes/icons)) <sup>[[1]](#1)</sup>
+- [Nerd Fonts](https://www.nerdfonts.com/font-downloads) (_Optional with manual intervention:_ See [Documentation on customizing icons](https://docs.astronvim.com/Recipes/icons)) <sup>[[1]](#1)</sup>
 - [Neovim 0.8+ (_Not_ including nightly)](https://github.com/neovim/neovim/releases/tag/stable)
 - [Tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md) (_Note:_ This is only necessary if you want to use `auto_install` feature with Treesitter)
 - A clipboard tool is necessary for the integration with the system clipboard (see [`:help clipboard-tool`](https://neovim.io/doc/user/provider.html#clipboard-tool) for supported solutions)
@@ -154,13 +154,14 @@ Run `:AstroUpdatePackages` (`<leader>pa`) to update both Neovim plugins and Maso
 
 ## 🗒️ Links
 
-[AstroNvim Documentation](https://astronvim.com)
+[AstroNvim Website](https://astronvim.com)
+[AstroNvim Documentation](https://docs.astronvim.com)
 [Core AstroNvim LUA API Documentation](https://api.astronvim.com)
 
-- [Basic Usage](https://astronvim.com/Basic%20Usage/walkthrough) is given for basic usage
-- [Default Mappings](https://astronvim.com/Basic%20Usage/mappings) more about the default key bindings
-- [Default Plugin Configuration](https://astronvim.com/configuration/plugin_defaults) more about the provided plugin defaults
-- [Advanced Configuration](https://astronvim.com/configuration/config_options) more about advanced configuration
+- [Basic Usage](https://docs.astronvim.com/Basic%20Usage/walkthrough) is given for basic usage
+- [Default Mappings](https://docs.astronvim.com/Basic%20Usage/mappings) more about the default key bindings
+- [Default Plugin Configuration](https://docs.astronvim.com/configuration/plugin_defaults) more about the provided plugin defaults
+- [Advanced Configuration](https://docs.astronvim.com/configuration/config_options) more about advanced configuration
 
 ### 📹 Videos
 
@@ -178,7 +179,7 @@ If you plan to contribute, please check the [contribution guidelines](CONTRIBUTI
 
 Sincere appreciation to the following repositories, plugin authors and the entire neovim community out there that made the development of AstroNvim possible.
 
-- [Plugins](https://astronvim.com/acknowledgements#plugins-used-in-astronvim)
+- [Plugins](https://docs.astronvim.com/acknowledgements#plugins-used-in-astronvim)
 - [NvChad](https://github.com/NvChad/NvChad)
 - [LunarVim](https://github.com/LunarVim)
 - [CosmicVim](https://github.com/CosmicNvim/CosmicNvim)
