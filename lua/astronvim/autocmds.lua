@@ -25,13 +25,16 @@ autocmd("BufReadPre", {
 })
 
 local terminal_settings_group = augroup("terminal_settings", { clear = true })
--- HACK: Disable custom statuscolumn for terminals because truncation/wrapping bug
--- https://github.com/neovim/neovim/issues/25472
-autocmd("TermOpen", {
-  group = terminal_settings_group,
-  desc = "Disable custom statuscolumn for terminals to fix neovim/neovim#25472",
-  callback = function() vim.opt_local.statuscolumn = nil end,
-})
+-- TODO: drop when dropping support for Neovim v0.9
+if vim.fn.has "nvim-0.9.3" == 0 then
+  -- HACK: Disable custom statuscolumn for terminals because truncation/wrapping bug
+  -- https://github.com/neovim/neovim/issues/25472
+  autocmd("TermOpen", {
+    group = terminal_settings_group,
+    desc = "Disable custom statuscolumn for terminals to fix neovim/neovim#25472",
+    callback = function() vim.opt_local.statuscolumn = nil end,
+  })
+end
 autocmd("TermOpen", {
   group = terminal_settings_group,
   desc = "Disable foldcolumn and signcolumn for terinals",
