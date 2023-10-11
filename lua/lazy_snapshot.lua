@@ -1,5 +1,5 @@
 return {
-  { "AstroNvim/astrotheme", version = "^2", optional = true },
+  { "AstroNvim/astrotheme", version = "^3", optional = true },
   { "JoosepAlviste/nvim-ts-context-commentstring", commit = "7241635869b7a8115893ffa67bab3907756caf4f", optional = true },
   { "L3MON4D3/LuaSnip", version = "^2", optional = true },
   { "MunifTanjim/nui.nvim", version = "^0.2", optional = true },
@@ -35,7 +35,7 @@ return {
   { "nvim-telescope/telescope-fzf-native.nvim", commit = "6c921ca12321edaa773e324ef64ea301a1d0da62", optional = true },
   { "nvim-telescope/telescope.nvim", version = "^0.1", optional = true },
   { "nvim-tree/nvim-web-devicons", commit = "a1e6268779411048a87f767a27380089362a0ce2", optional = true },
-  { "nvim-treesitter/nvim-treesitter", commit = "0eb1a0ad1c82e080e77e7b9d7a5e42632cefb543", optional = true },
+  { "nvim-treesitter/nvim-treesitter", commit = "e5198778dbefa14823099dd6d8fba3819a5e7b8a", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "76c7a89b41de77a4f83fb77fa072c5ad7605fe3b", optional = true },
   { "onsails/lspkind.nvim", commit = "57610d5ab560c073c465d6faf0c19f200cb67e6e", optional = true },
   { "rafamadriz/friendly-snippets", commit = "43727c2ff84240e55d4069ec3e6158d74cb534b6", optional = true },
