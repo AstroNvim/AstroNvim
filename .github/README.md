@@ -48,7 +48,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🌟 Preview
 
-![Preview Image](/.github/preview.webp)
+![Preview Image](/.github/preview.png)
 
 ## ✨ Features
 
