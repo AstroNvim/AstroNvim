@@ -48,7 +48,7 @@ AstroNvim is an aesthetic and feature-rich neovim config that is extensible and 
 
 ## 🌟 Preview
 
-![Preview Image](https://docs.astronvim.com/img/themes/overview.png)
+![Preview Image](https://astronvim.com/themes/overview.png)
 
 ## ✨ Features
 
@@ -158,8 +158,8 @@ Run `:AstroUpdatePackages` (`<leader>pa`) to update both Neovim plugins and Maso
 [AstroNvim Documentation](https://docs.astronvim.com)
 [Core AstroNvim LUA API Documentation](https://api.astronvim.com)
 
-- [Basic Usage](https://docs.astronvim.com/Basic%20Usage/walkthrough) is given for basic usage
-- [Default Mappings](https://docs.astronvim.com/Basic%20Usage/mappings) more about the default key bindings
+- [Basic Usage](https://docs.astronvim.com/basic-usage/walkthrough) is given for basic usage
+- [Default Mappings](https://docs.astronvim.com/basic-usage/mappings) more about the default key bindings
 - [Default Plugin Configuration](https://docs.astronvim.com/configuration/plugin_defaults) more about the provided plugin defaults
 - [Advanced Configuration](https://docs.astronvim.com/configuration/config_options) more about advanced configuration
 
