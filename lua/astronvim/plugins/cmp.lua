@@ -20,7 +20,10 @@ return {
         "AstroNvim/astrocore",
         opts = function(_, opts)
           local maps = opts.mappings
-          maps.n["<Leader>uc"] = { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion" }
+          maps.n["<Leader>uc"] =
+            { function() require("astrocore.toggles").buffer_cmp() end, desc = "Toggle autocompletion (buffer)" }
+          maps.n["<Leader>uC"] =
+            { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion (global)" }
         end,
       },
       "saadparwaiz1/cmp_luasnip",

@@ -84,7 +84,7 @@ return {
         "AstroNvim/astrocore",
         opts = function(_, opts)
           local maps = opts.mappings
-          maps.n["<Leader>uC"] = { "<Cmd>ColorizerToggle<CR>", desc = "Toggle color highlight" }
+          maps.n["<Leader>uz"] = { "<Cmd>ColorizerToggle<CR>", desc = "Toggle color highlight" }
         end,
       },
     },
