@@ -8,7 +8,7 @@ return {
     opts._map_section = {
       f = { desc = get_icon("Search", 1, true) .. "Find" },
       p = { desc = get_icon("Package", 1, true) .. "Packages" },
-      l = { desc = get_icon("ActiveLSP", 1, true) .. "LSP" },
+      l = { desc = get_icon("ActiveLSP", 1, true) .. "Language Tools" },
       u = { desc = get_icon("Window", 1, true) .. "UI/UX" },
       b = { desc = get_icon("Tab", 1, true) .. "Buffers" },
       bs = { desc = get_icon("Sort", 1, true) .. "Sort Buffers" },
@@ -83,6 +83,12 @@ return {
     maps.n["<Leader>bsp"] = { function() require("astrocore.buffer").sort "full_path" end, desc = "By full path" }
     maps.n["<Leader>bsi"] = { function() require("astrocore.buffer").sort "bufnr" end, desc = "By buffer number" }
     maps.n["<Leader>bsm"] = { function() require("astrocore.buffer").sort "modified" end, desc = "By modification" }
+
+    maps.n["<Leader>l"] = sections.l
+    maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
+    maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
+    maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+    maps.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
     -- Navigate tabs
     maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
