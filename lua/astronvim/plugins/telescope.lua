@@ -68,7 +68,6 @@ return {
           end,
           desc = "Find words in all files",
         }
-        maps.n["<Leader>l"] = opts._map_section.l
         maps.n["<Leader>ls"] = {
           function()
             if is_available "aerial.nvim" then

@@ -3,12 +3,7 @@ return {
   ---@param opts AstroLSPOpts
   opts = function(_, opts)
     local maps = require("astrocore").empty_map_table()
-    maps.v["<Leader>l"] = { desc = " LSP" }
-
-    maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
-    maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
-    maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
-    maps.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
+    maps.v["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
 
     maps.n["<Leader>la"] = {
       function() vim.lsp.buf.code_action() end,
