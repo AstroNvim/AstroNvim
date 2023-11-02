@@ -33,18 +33,26 @@ return {
       cond = "textDocument/definition",
     }
 
-    maps.n["<Leader>lf"] =
-      { function() vim.lsp.buf.format(maps.format_opts) end, desc = "Format buffer", cond = "textDocument/formatting" }
+    local formatting_enabled = function(client)
+      return client.supports_method "textDocument/formatting"
+        and opts.formatting.disabled ~= true
+        and not vim.tbl_contains(opts.formatting.disabled, client.name)
+    end
+    maps.n["<Leader>lf"] = {
+      function() vim.lsp.buf.format(require("astrolsp").format_opts) end,
+      desc = "Format buffer",
+      cond = formatting_enabled,
+    }
     maps.v["<Leader>lf"] = maps.n["<Leader>lf"]
     maps.n["<Leader>uf"] = {
       function() require("astrolsp.toggles").buffer_autoformat() end,
       desc = "Toggle autoformatting (buffer)",
-      cond = "textDocument/formatting",
+      cond = formatting_enabled,
     }
     maps.n["<Leader>uF"] = {
       function() require("astrolsp.toggles").autoformat() end,
       desc = "Toggle autoformatting (global)",
-      cond = "textDocument/formatting",
+      cond = formatting_enabled,
     }
 
     maps.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details", cond = "textDocument/hover" }
