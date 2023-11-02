@@ -60,7 +60,6 @@ return {
         "AstroNvim/astrocore",
         opts = function(_, opts)
           local maps = opts.mappings
-          maps.n["<Leader>l"] = opts._map_section.l
           maps.n["<Leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
         end,
       },
