@@ -162,6 +162,7 @@ return {
   {
     "numToStr/Comment.nvim",
     dependencies = {
+      { "JoosepAlviste/nvim-ts-context-commentstring", opts = { enable_autocmd = false } },
       {
         "AstroNvim/astrocore",
         opts = function(_, opts)
@@ -181,9 +182,9 @@ return {
       { "gc", mode = { "n", "v" }, desc = "Comment toggle linewise" },
       { "gb", mode = { "n", "v" }, desc = "Comment toggle blockwise" },
     },
-    opts = function()
+    opts = function(_, opts)
       local commentstring_avail, commentstring = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
-      return commentstring_avail and commentstring and { pre_hook = commentstring.create_pre_hook() } or {}
+      if commentstring_avail then opts.pre_hook = commentstring.create_pre_hook() end
     end,
   },
   {
