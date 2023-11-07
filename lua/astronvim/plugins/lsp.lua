@@ -1,5 +1,4 @@
 return {
-  { "b0o/SchemaStore.nvim", lazy = true },
   { "folke/neodev.nvim", lazy = true, opts = {} },
   {
     "neovim/nvim-lspconfig",
