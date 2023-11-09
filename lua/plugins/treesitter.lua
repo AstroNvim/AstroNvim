@@ -37,6 +37,18 @@ return {
     return {
       autotag = { enable = true },
       context_commentstring = { enable = true, enable_autocmd = false },
+      -- HACK: force install of shipped neovim parsers since TSUpdate doesn't correctly update them
+      ensure_installed = {
+        "bash",
+        "c",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "query",
+        "vim",
+        "vimdoc",
+      },
       highlight = {
         enable = true,
         disable = function(_, bufnr) return vim.b[bufnr].large_buf end,
