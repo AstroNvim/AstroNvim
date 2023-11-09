@@ -422,7 +422,7 @@ function M.config(server_name)
         end
       end
     end
-    lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
+    lsp_opts.settings = { Lua = { workspace = { checkThirdParty = "Disable" } } }
   end
   local opts = user_opts(server_config .. server_name, lsp_opts)
   local old_on_attach = server.on_attach
