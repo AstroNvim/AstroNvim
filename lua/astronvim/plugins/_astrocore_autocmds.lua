@@ -19,7 +19,7 @@ return {
             for _, winid in ipairs(wins) do
               if vim.api.nvim_win_is_valid(winid) then
                 local bufnr = vim.api.nvim_win_get_buf(winid)
-                local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+                local filetype = vim.bo[bufnr].filetype
                 -- If any visible windows are not sidebars, early return
                 if not sidebar_fts[filetype] then
                   return
@@ -51,8 +51,8 @@ return {
           desc = "Try to load file view if available and enable view saving for real files",
           callback = function(event)
             if not vim.b[event.buf].view_activated then
-              local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
-              local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+              local filetype = vim.bo[event.buf].filetype
+              local buftype = vim.bo[event.buf].buftype
               local ignore_filetypes = { "gitcommit", "gitrebase", "svg", "hgcommit" }
               if buftype == "" and filetype and filetype ~= "" and not vim.tbl_contains(ignore_filetypes, filetype) then
                 vim.b[event.buf].view_activated = true
@@ -114,7 +114,7 @@ return {
           callback = function(args)
             local astro = require "astrocore"
             local current_file = vim.fn.resolve(vim.fn.expand "%")
-            if not (current_file == "" or vim.api.nvim_get_option_value("buftype", { buf = args.buf }) == "nofile") then
+            if not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
               astro.event "File"
               if
                 astro.file_worktree()
@@ -159,8 +159,7 @@ return {
           event = "BufWinEnter",
           desc = "Make q close help, man, quickfix, dap floats",
           callback = function(event)
-            local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
-            if vim.tbl_contains({ "help", "nofile", "quickfix" }, buftype) then
+            if vim.tbl_contains({ "help", "nofile", "quickfix" }, vim.bo[event.buf].buftype) then
               vim.keymap.set("n", "q", "<Cmd>close<CR>", {
                 desc = "Close window",
                 buffer = event.buf,

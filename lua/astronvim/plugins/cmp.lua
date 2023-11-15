@@ -51,11 +51,8 @@ return {
       return {
         enabled = function()
           local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
-            and vim.tbl_contains(
-              { "dap-repl", "dapui_watches", "dapui_hover" },
-              vim.api.nvim_get_option_value("filetype", { buf = 0 })
-            )
-          if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" and not dap_prompt then return false end
+            and vim.tbl_contains({ "dap-repl", "dapui_watches", "dapui_hover" }, vim.bo[0].filetype)
+          if vim.bo[0].buftype == "prompt" and not dap_prompt then return false end
           if vim.b.cmp_enabled == nil then
             return require("astrocore").config.features.cmp
           else
