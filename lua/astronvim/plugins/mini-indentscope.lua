@@ -49,7 +49,7 @@ return {
             desc = "Disable indentscope for certain filetypes",
             callback = function(event)
               if vim.b[event.buf].minicursorword_disable == nil then
-                local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+                local filetype = vim.bo[event.buf].filetype
                 local blankline_opts = require("astrocore").plugin_opts "indent-blankline.nvim"
                 if vim.tbl_contains(blankline_opts.filetype_exclude or ignore_filetypes, filetype) then
                   vim.b[event.buf].miniindentscope_disable = true
@@ -62,7 +62,7 @@ return {
             desc = "Disable indentscope for certain buftypes",
             callback = function(event)
               if vim.b[event.buf].minicursorword_disable == nil then
-                local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+                local buftype = vim.bo[event.buf].buftype
                 local blankline_opts = require("astrocore").plugin_opts "indent-blankline.nvim"
                 if vim.tbl_contains(blankline_opts.buftype_exclude or ignore_buftypes, buftype) then
                   vim.b[event.buf].miniindentscope_disable = true
