@@ -24,10 +24,7 @@ return {
               if
                 (
                   (event.event == "User" and event.file == "AlphaReady")
-                  or (
-                    event.event == "BufWinEnter"
-                    and vim.api.nvim_get_option_value("filetype", { buf = event.buf }) == "alpha"
-                  )
+                  or (event.event == "BufWinEnter" and vim.bo[event.buf].filetype == "alpha")
                 ) and not vim.g.before_alpha
               then
                 vim.g.before_alpha = {
@@ -36,11 +33,7 @@ return {
                   cmdheight = vim.opt.cmdheight:get(),
                 }
                 vim.opt.showtabline, vim.opt.laststatus, vim.opt.cmdheight = 0, 0, 0
-              elseif
-                vim.g.before_alpha
-                and event.event == "BufWinEnter"
-                and vim.api.nvim_get_option_value("buftype", { buf = event.buf }) ~= "nofile"
-              then
+              elseif vim.g.before_alpha and event.event == "BufWinEnter" and vim.bo[event.buf].buftype ~= "nofile" then
                 vim.opt.laststatus, vim.opt.showtabline, vim.opt.cmdheight =
                   vim.g.before_alpha.laststatus, vim.g.before_alpha.showtabline, vim.g.before_alpha.cmdheight
                 vim.g.before_alpha = nil
