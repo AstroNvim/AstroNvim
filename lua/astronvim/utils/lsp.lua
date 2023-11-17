@@ -281,7 +281,7 @@ M.on_attach = function(client, bufnr)
     if vim.b.inlay_hints_enabled == nil then vim.b.inlay_hints_enabled = vim.g.inlay_hints_enabled end
     -- TODO: remove check after dropping support for Neovim v0.9
     if vim.lsp.inlay_hint then
-      if vim.b.inlay_hints_enabled then vim.lsp.inlay_hint(bufnr, true) end
+      if vim.b.inlay_hints_enabled then vim.lsp.inlay_hint.enable(bufnr, true) end
       lsp_mappings.n["<leader>uH"] = {
         function() require("astronvim.utils.ui").toggle_buffer_inlay_hints(bufnr) end,
         desc = "Toggle LSP inlay hints (buffer)",
@@ -422,7 +422,7 @@ function M.config(server_name)
         end
       end
     end
-    lsp_opts.settings = { Lua = { workspace = { checkThirdParty = "Disable" } } }
+    lsp_opts.settings = { Lua = { workspace = { checkThirdParty = false } } }
   end
   local opts = user_opts(server_config .. server_name, lsp_opts)
   local old_on_attach = server.on_attach
