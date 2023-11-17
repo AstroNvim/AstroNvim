@@ -47,7 +47,7 @@ M.make_buflist = function(component)
           right = "tabline_bg",
         }
       end,
-      { -- bufferlist
+      {              -- bufferlist
         init = function(self) self.tab_type = M.tab_type(self) end,
         on_click = { -- add clickable component to each buffer
           callback = function(_, minwid) vim.api.nvim_win_set_buf(0, minwid) end,
@@ -74,14 +74,14 @@ M.make_buflist = function(component)
           provider = function(self) return provider.str { str = self.label, padding = { left = 1, right = 1 } } end,
           hl = hl.get_attributes "buffer_picker",
         },
-        component, -- create buffer component
+        component,                                                -- create buffer component
       },
       function(self) return buffer_utils.is_valid(self.bufnr) end -- disable surrounding
     ),
     { provider = get_icon "ArrowLeft" .. " ", hl = overflow_hl },
     { provider = get_icon "ArrowRight" .. " ", hl = overflow_hl },
     function() return vim.t.bufs or {} end, -- use astronvim bufs variable
-    false -- disable internal caching
+    false                                   -- disable internal caching
   )
 end
 
@@ -101,14 +101,14 @@ function M.make_tablist_new(component)
           -- "tab" in the UI sense rather: than "tabpage" sense since both buffers or tabs
           -- are represented as tabs in the astronvim ui.
           -- (or maybe "view" is another idea?)
-          main = M.tab_type(self) .. "_bg",
+          main = M.tab_type(self, "tab") .. "_bg",
           left = "tabline_bg",
           right = "tabline_bg",
         }
       end,
       {
         -- tablist
-        init = function(self) self.tab_type = M.tab_type(self) end,
+        init = function(self) self.tab_type = M.tab_type(self, "tab") end,
         on_click = {
           -- add clickable component to each tab
           callback = function(_, minwid)
