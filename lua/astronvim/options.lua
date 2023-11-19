@@ -49,5 +49,5 @@ if type(vim.g.astronvim_options) == "function" then vim.g.astronvim_options() en
 local user_opts = "config.options"
 local user_opts_loaded, user_opts_result = pcall(require, user_opts)
 if not user_opts_loaded and #require("lazy.core.cache").find(user_opts) > 0 then
-  vim.api.nvim_err_writeln("Failed to load " .. user_opts_loaded .. "\n\n" .. user_opts_result)
+  vim.api.nvim_err_writeln("Failed to load " .. user_opts .. "\n\n" .. user_opts_result)
 end
