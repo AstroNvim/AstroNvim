@@ -352,7 +352,7 @@ function M.foldcolumn(opts)
         local fillchars = vim.opt_local.fillchars:get()
         if char == (fillchars.foldopen or get_icon "FoldOpened") then
           vim.cmd "norm! zc"
-        elseif char == (fillchars.foldcolse or get_icon "FoldClosed") then
+        elseif char == (fillchars.foldclose or get_icon "FoldClosed") then
           vim.cmd "norm! zo"
         end
       end,
