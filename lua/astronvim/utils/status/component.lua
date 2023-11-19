@@ -193,7 +193,7 @@ function M.git_branch(opts)
       name = "heirline_branch",
       callback = function()
         if is_available "telescope.nvim" then
-          vim.defer_fn(function() require("telescope.builtin").git_branches() end, 100)
+          vim.defer_fn(function() require("telescope.builtin").git_branches { use_file_path = true } end, 100)
         end
       end,
     },
@@ -217,7 +217,7 @@ function M.git_diff(opts)
       name = "heirline_git",
       callback = function()
         if is_available "telescope.nvim" then
-          vim.defer_fn(function() require("telescope.builtin").git_status() end, 100)
+          vim.defer_fn(function() require("telescope.builtin").git_status { use_file_path = true } end, 100)
         end
       end,
     },
