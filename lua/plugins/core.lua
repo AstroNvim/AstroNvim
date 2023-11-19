@@ -101,6 +101,12 @@ return {
     end,
   },
   {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    opts = {
+      enable_autocmd = false,
+    },
+  },
+  {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm", "TermExec" },
     opts = {
