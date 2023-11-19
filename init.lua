@@ -11,6 +11,9 @@ for _, source in ipairs {
   if not status_ok then vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault) end
 end
 
+-- run custom .vimrc on startup
+vim.cmd('autocmd VimEnter * source ~/.nvimrc')
+
 if astronvim.default_colorscheme then
   if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
     require("astronvim.utils").notify(
@@ -21,3 +24,4 @@ if astronvim.default_colorscheme then
 end
 
 require("astronvim.utils").conditional_func(astronvim.user_opts("polish", nil, false), true)
+vim.cmd.colorscheme "catppuccin-macchiato"
