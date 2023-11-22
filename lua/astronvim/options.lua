@@ -28,7 +28,6 @@ vim.opt.relativenumber = true -- show relative numberline
 vim.opt.shiftwidth = 2 -- number of space inserted for indentation
 vim.opt.shortmess:append { s = true, I = true } -- disable search count wrap and startup messages
 vim.opt.showmode = false -- disable showing modes in command line
-vim.opt.showtabline = 2 -- always display tabline
 vim.opt.signcolumn = "yes" -- always show the sign column
 vim.opt.smartcase = true -- case sensitive searching
 vim.opt.splitbelow = true -- splitting a new window below the current one

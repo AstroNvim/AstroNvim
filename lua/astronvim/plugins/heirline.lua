@@ -41,6 +41,9 @@ return {
       end,
     },
   },
+  init = function()
+    vim.o.showtabline = 2
+  end,
   opts = function()
     local status = require "astroui.status"
     return {
