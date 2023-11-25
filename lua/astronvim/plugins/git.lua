@@ -35,6 +35,7 @@ return {
         untracked = { text = get_icon "GitSign" },
       },
       worktrees = require("astrocore").config.git_worktrees,
+      diff_opts = { algorithm = [[histogram]] },
     }
   end,
 }
