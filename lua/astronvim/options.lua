@@ -44,6 +44,8 @@ vim.opt.virtualedit = "block" -- allow going past end of line in visual block mo
 vim.opt.wrap = false -- disable wrapping of lines longer than the width of window
 vim.opt.writebackup = false -- disable making a backup before overwriting a file
 
+if not vim.t.bufs then vim.t.bufs = vim.api.nvim_list_bufs() end -- initialize buffer list
+
 if type(vim.g.astronvim_options) == "function" then vim.g.astronvim_options() end
 
 local user_opts = "config.options"
