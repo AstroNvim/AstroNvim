@@ -58,7 +58,7 @@ return {
         hl = { fg = "fg", bg = "bg" },
         status.component.mode(),
         status.component.git_branch(),
-        status.component.file_info { filetype = {}, filename = false, file_modified = false },
+        status.component.file_info(),
         status.component.git_diff(),
         status.component.diagnostics(),
         status.component.fill(),
@@ -78,7 +78,8 @@ return {
           status.component.separated_path(),
           status.component.file_info {
             file_icon = { hl = status.hl.file_icon "winbar", padding = { left = 0 } },
-            file_modified = false,
+            filename = {},
+            filetype = false,
             file_read_only = false,
             hl = status.hl.get_attributes("winbarnc", true),
             surround = false,
