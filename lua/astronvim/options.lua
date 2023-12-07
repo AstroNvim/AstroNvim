@@ -39,6 +39,7 @@ local options = astronvim.user_opts("options", {
     tabstop = 2, -- number of space in a tab
     termguicolors = true, -- enable 24-bit RGB color in the TUI
     timeoutlen = 500, -- shorten key timeout length a little bit for which-key
+    title = true, -- set terminal title to the filename and path
     undofile = true, -- enable persistent undo
     updatetime = 300, -- length of time to wait before triggering the plugin
     virtualedit = "block", -- allow going past end of line in visual block mode
