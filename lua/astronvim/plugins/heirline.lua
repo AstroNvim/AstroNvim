@@ -48,10 +48,7 @@ return {
         colors = require("astroui").config.status.setup_colors(),
         disable_winbar_cb = function(args)
           return not require("astrocore.buffer").is_valid(args.buf)
-            or status.condition.buffer_matches({
-              buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-              filetype = { "NvimTree", "neo%-tree", "dashboard", "Outline", "aerial" },
-            }, args.buf)
+            or status.condition.buffer_matches({ buftype = { "terminal", "nofile" } }, args.buf)
         end,
       },
       statusline = { -- statusline
