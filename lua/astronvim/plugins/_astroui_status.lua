@@ -2,13 +2,6 @@ return {
   "AstroNvim/astroui",
   ---@param opts AstroUIOpts
   opts = function(_, opts)
-    local function pattern_match(str, pattern_list)
-      for _, pattern in ipairs(pattern_list) do
-        if str:find(pattern) then return true end
-      end
-      return false
-    end
-
     local sign_handlers = {}
     -- gitsigns handlers
     local gitsigns = function(_)
@@ -119,13 +112,6 @@ return {
           tabline = function(self) return self.is_active or self.is_visible end,
           statusline = true,
         },
-      },
-      buf_matchers = {
-        filetype = function(pattern_list, bufnr) return pattern_match(vim.bo[bufnr or 0].filetype, pattern_list) end,
-        buftype = function(pattern_list, bufnr) return pattern_match(vim.bo[bufnr or 0].buftype, pattern_list) end,
-        bufname = function(pattern_list, bufnr)
-          return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr or 0), ":t"), pattern_list)
-        end,
       },
       sign_handlers = sign_handlers,
       setup_colors = function()
