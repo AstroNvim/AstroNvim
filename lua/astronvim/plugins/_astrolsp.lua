@@ -11,68 +11,80 @@ return {
       end,
     },
   },
-  ---@type AstroLSPOpts
-  opts = {
-    features = {
-      autoformat = true,
-      codelens = true,
-      diagnostics_mode = 3,
-      inlay_hints = false,
-      lsp_handlers = true,
-      semantic_tokens = true,
-    },
-    capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), {
-      textDocument = {
-        completion = {
-          completionItem = {
-            documentationFormat = { "markdown", "plaintext" },
-            snippetSupport = true,
-            preselectSupport = true,
-            insertReplaceSupport = true,
-            labelDetailsSupport = true,
-            deprecatedSupport = true,
-            commitCharactersSupport = true,
-            tagSupport = { valueSet = { 1 } },
-            resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
+  opts = function(_, opts)
+    ---@type AstroLSPOpts
+    local new_opts = {
+      features = {
+        autoformat = true,
+        codelens = true,
+        diagnostics_mode = 3,
+        inlay_hints = false,
+        lsp_handlers = true,
+        semantic_tokens = true,
+      },
+      capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), {
+        textDocument = {
+          completion = {
+            completionItem = {
+              documentationFormat = { "markdown", "plaintext" },
+              snippetSupport = true,
+              preselectSupport = true,
+              insertReplaceSupport = true,
+              labelDetailsSupport = true,
+              deprecatedSupport = true,
+              commitCharactersSupport = true,
+              tagSupport = { valueSet = { 1 } },
+              resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
+            },
+          },
+          foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
+        },
+      }),
+      ---@diagnostic disable-next-line: missing-fields
+      config = { lua_ls = { settings = { Lua = { workspace = { checkThirdParty = false } } } } },
+      diagnostics = {
+        virtual_text = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = require("astroui").get_icon "DiagnosticError",
+            [vim.diagnostic.severity.HINT] = require("astroui").get_icon "DiagnosticHint",
+            [vim.diagnostic.severity.WARN] = require("astroui").get_icon "DiagnosticWarn",
+            [vim.diagnostic.severity.INFO] = require("astroui").get_icon "DiagnosticInfo",
           },
         },
-        foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
-      },
-    }),
-    config = {
-      lua_ls = { settings = { Lua = { workspace = { checkThirdParty = false } } } },
-    },
-    diagnostics = {
-      virtual_text = true,
-      signs = {
-        active = {
-          { name = "DiagnosticSignError", text = "", texthl = "DiagnosticSignError" },
-          { name = "DiagnosticSignHint", text = "󰌵", texthl = "DiagnosticSignHint" },
-          { name = "DiagnosticSignInfo", text = "󰋼", texthl = "DiagnosticSignInfo" },
-          { name = "DiagnosticSignWarn", text = "", texthl = "DiagnosticSignWarn" },
-          { name = "DapBreakpoint", text = "", texthl = "DiagnosticInfo" },
-          { name = "DapBreakpointCondition", text = "", texthl = "DiagnosticInfo" },
-          { name = "DapBreakpointRejected", text = "", texthl = "DiagnosticError" },
-          { name = "DapLogPoint", text = ".>", texthl = "DiagnosticInfo" },
-          { name = "DapStopped", text = "󰁕", texthl = "DiagnosticWarn" },
+        update_in_insert = true,
+        underline = true,
+        severity_sort = true,
+        float = {
+          focused = false,
+          style = "minimal",
+          border = "rounded",
+          source = "always",
+          header = "",
+          prefix = "",
         },
       },
-      update_in_insert = true,
-      underline = true,
-      severity_sort = true,
-      float = {
-        focused = false,
-        style = "minimal",
-        border = "rounded",
-        source = "always",
-        header = "",
-        prefix = "",
+      signs = {
+        { name = "DapBreakpoint", text = require("astroui").get_icon "DapBreakpoint", texthl = "DiagnosticInfo" },
+        {
+          name = "DapBreakpointCondition",
+          text = require("astroui").get_icon "DapBreakpointCondition",
+          texthl = "DiagnosticInfo",
+        },
+        {
+          name = "DapBreakpointRejected",
+          text = require("astroui").get_icon "DapBreakpointRejected",
+          texthl = "DiagnosticError",
+        },
+        { name = "DapLogPoint", text = require("astroui").get_icon "DapLogPoint", texthl = "DiagnosticInfo" },
+        { name = "DapStopped", text = require("astroui").get_icon "DapStopped", texthl = "DiagnosticWarn" },
       },
-    },
-    flags = {},
-    formatting = { format_on_save = { enabled = true }, disabled = {} },
-    handlers = { function(server, server_opts) require("lspconfig")[server].setup(server_opts) end },
-    servers = {},
-    on_attach = nil,
-  },
+      flags = {},
+      formatting = { format_on_save = { enabled = true }, disabled = {} },
+      handlers = { function(server, server_opts) require("lspconfig")[server].setup(server_opts) end },
+      servers = {},
+      on_attach = nil,
+    }
+    return require("astrocore").extend_tbl(opts, new_opts)
+  end,
 }
