@@ -41,5 +41,4 @@ return {
     },
   },
   build = ":MasonUpdate",
-  config = function(...) require "astronvim.plugins.configs.mason"(...) end,
 }

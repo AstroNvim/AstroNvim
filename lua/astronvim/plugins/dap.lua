@@ -6,6 +6,9 @@ return {
     {
       "jay-babu/mason-nvim-dap.nvim",
       dependencies = { "nvim-dap" },
+      init = function()
+        require("astrocore").on_load("mason.nvim", function() require "mason-nvim-dap" end)
+      end,
       cmd = { "DapInstall", "DapUninstall" },
       opts = { handlers = {} },
     },
