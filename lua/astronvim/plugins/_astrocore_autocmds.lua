@@ -174,7 +174,7 @@ return {
       },
       large_buf = {
         {
-          event = "BufReadPre",
+          event = "BufRead",
           desc = "Disable certain functionality on very large files",
           callback = function(args)
             local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
