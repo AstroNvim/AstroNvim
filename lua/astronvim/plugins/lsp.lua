@@ -15,6 +15,9 @@ return {
       {
         "williamboman/mason-lspconfig.nvim",
         cmd = { "LspInstall", "LspUninstall" },
+        init = function()
+          require("astrocore").on_load("mason.nvim", function() require "mason-lspconfig" end)
+        end,
         opts = function(_, opts)
           if not opts.handlers then opts.handlers = {} end
           opts.handlers[1] = function(server) require("astrolsp").lsp_setup(server) end
@@ -46,6 +49,9 @@ return {
       {
         "jay-babu/mason-null-ls.nvim",
         cmd = { "NullLsInstall", "NullLsUninstall" },
+        init = function()
+          require("astrocore").on_load("mason.nvim", function() require "mason-null-ls" end)
+        end,
         opts = { handlers = {} },
       },
     },
