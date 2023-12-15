@@ -1,6 +1,7 @@
 return {
   "mfussenegger/nvim-dap",
   enabled = vim.fn.has "win32" == 0,
+  lazy = true,
   dependencies = {
     {
       "jay-babu/mason-nvim-dap.nvim",
@@ -86,5 +87,4 @@ return {
       end,
     },
   },
-  event = "User AstroFile",
 }
