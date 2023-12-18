@@ -1,7 +1,9 @@
-require("astronvim").init()
+local astronvim = require "astronvim"
+astronvim.init()
 
 return {
   { "AstroNvim/AstroNvim", priority = 10000, lazy = false },
+  { import = "astronvim.lazy_snapshot", cond = astronvim.config.pin_plugins },
   {
     "AstroNvim/astrocore",
     dependencies = { "AstroNvim/astroui" },
