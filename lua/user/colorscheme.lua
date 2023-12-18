@@ -1,1 +1,1 @@
-return "astrodark"
+return "ayu"
