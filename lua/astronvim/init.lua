@@ -5,6 +5,15 @@ M.did_init = false
 M.config = require "astronvim.config"
 
 function M.init()
+  if vim.fn.has "nvim-0.9" == 0 then
+    vim.api.nvim_echo({
+      { "AstroNvimVim requires Neovim >= 0.9.0\n", "ErrorMsg" },
+      { "Press any key to exit", "MoreMsg" },
+    }, true, {})
+    vim.fn.getchar()
+    vim.cmd.quit()
+  end
+
   if not M.did_init then
     M.did_init = true
 
