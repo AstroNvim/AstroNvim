@@ -1,7 +1,8 @@
 return {
-  "b0o/SchemaStore.nvim",
+  { "b0o/SchemaStore.nvim", lazy = true },
   {
     "folke/neodev.nvim",
+    lazy = true,
     opts = {
       override = function(root_dir, library)
         for _, astronvim_config in ipairs(astronvim.supported_configs) do
