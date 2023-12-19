@@ -12,6 +12,7 @@ return {
     },
   },
   opts = function(_, opts)
+    local get_icon = require("astroui").get_icon
     ---@type AstroLSPOpts
     local new_opts = {
       features = {
@@ -46,10 +47,10 @@ return {
         virtual_text = true,
         signs = {
           text = {
-            [vim.diagnostic.severity.ERROR] = require("astroui").get_icon "DiagnosticError",
-            [vim.diagnostic.severity.HINT] = require("astroui").get_icon "DiagnosticHint",
-            [vim.diagnostic.severity.WARN] = require("astroui").get_icon "DiagnosticWarn",
-            [vim.diagnostic.severity.INFO] = require("astroui").get_icon "DiagnosticInfo",
+            [vim.diagnostic.severity.ERROR] = get_icon "DiagnosticError",
+            [vim.diagnostic.severity.HINT] = get_icon "DiagnosticHint",
+            [vim.diagnostic.severity.WARN] = get_icon "DiagnosticWarn",
+            [vim.diagnostic.severity.INFO] = get_icon "DiagnosticInfo",
           },
         },
         update_in_insert = true,
@@ -65,19 +66,11 @@ return {
         },
       },
       signs = {
-        { name = "DapBreakpoint", text = require("astroui").get_icon "DapBreakpoint", texthl = "DiagnosticInfo" },
-        {
-          name = "DapBreakpointCondition",
-          text = require("astroui").get_icon "DapBreakpointCondition",
-          texthl = "DiagnosticInfo",
-        },
-        {
-          name = "DapBreakpointRejected",
-          text = require("astroui").get_icon "DapBreakpointRejected",
-          texthl = "DiagnosticError",
-        },
-        { name = "DapLogPoint", text = require("astroui").get_icon "DapLogPoint", texthl = "DiagnosticInfo" },
-        { name = "DapStopped", text = require("astroui").get_icon "DapStopped", texthl = "DiagnosticWarn" },
+        { name = "DapBreakpoint", text = get_icon "DapBreakpoint", texthl = "DiagnosticInfo" },
+        { name = "DapBreakpointCondition", text = get_icon "DapBreakpointCondition", texthl = "DiagnosticInfo" },
+        { name = "DapBreakpointRejected", text = get_icon "DapBreakpointRejected", texthl = "DiagnosticError" },
+        { name = "DapLogPoint", text = get_icon "DapLogPoint", texthl = "DiagnosticInfo" },
+        { name = "DapStopped", text = get_icon "DapStopped", texthl = "DiagnosticWarn" },
       },
       flags = {},
       formatting = { format_on_save = { enabled = true }, disabled = {} },
