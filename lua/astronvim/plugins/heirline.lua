@@ -86,12 +86,14 @@ return {
         status.component.breadcrumbs { hl = status.hl.get_attributes("winbar", true) },
       },
       tabline = { -- bufferline
-        { -- file tree padding
+        { -- automatic sidebar padding
           condition = function(self)
             self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
-            return not require("astrocore.buffer").is_valid(vim.api.nvim_win_get_buf(self.winid))
+            self.winwidth = vim.api.nvim_win_get_width(self.winid)
+            return self.winwidth ~= vim.o.columns -- only apply to sidebars
+              and not require("astrocore.buffer").is_valid(vim.api.nvim_win_get_buf(self.winid)) -- if buffer is not in tabline
           end,
-          provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid) + 1) end,
+          provider = function(self) return (" "):rep(self.winwidth + 1) end,
           hl = { bg = "tabline_bg" },
         },
         status.heirline.make_buflist(status.component.tabline_file_info()), -- component for each buffer tab
