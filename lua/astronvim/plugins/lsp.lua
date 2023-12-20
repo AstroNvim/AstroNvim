@@ -77,7 +77,7 @@ return {
       },
     },
     opts = function()
-      local max_file = require("astrocore").config.features.max_file
+      local max_file = assert(require("astrocore").config.features.max_file)
       return {
         attach_mode = "global",
         backends = { "lsp", "treesitter", "markdown", "man" },

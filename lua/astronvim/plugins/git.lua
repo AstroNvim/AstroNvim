@@ -6,7 +6,7 @@ return {
       "AstroNvim/astrocore",
       opts = function(_, opts)
         local maps = opts.mappings
-        maps.n["<Leader>g"] = opts._map_section.g
+        maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
         maps.n["]g"] = { function() require("gitsigns").next_hunk() end, desc = "Next Git hunk" }
         maps.n["[g"] = { function() require("gitsigns").prev_hunk() end, desc = "Previous Git hunk" }
         maps.n["<Leader>gl"] = { function() require("gitsigns").blame_line() end, desc = "View Git blame" }
