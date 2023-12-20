@@ -5,7 +5,7 @@ return {
     local astro = require "astrocore"
     local get_icon = require("astroui").get_icon
     -- initialize internally use mapping section titles
-    opts._map_section = {
+    opts._map_sections = {
       f = { desc = get_icon("Search", 1, true) .. "Find" },
       p = { desc = get_icon("Package", 1, true) .. "Packages" },
       l = { desc = get_icon("ActiveLSP", 1, true) .. "Language Tools" },
@@ -20,7 +20,7 @@ return {
 
     -- initialize mappings table
     local maps = astro.empty_map_table()
-    local sections = opts._map_section
+    local sections = assert(opts._map_sections)
 
     -- Normal --
     -- Standard Operations
@@ -40,7 +40,7 @@ return {
     end
 
     -- Plugin Manager
-    maps.n["<Leader>p"] = sections.p
+    maps.n["<Leader>p"] = vim.tbl_get(sections, "p")
     maps.n["<Leader>pi"] = { function() require("lazy").install() end, desc = "Plugins Install" }
     maps.n["<Leader>ps"] = { function() require("lazy").home() end, desc = "Plugins Status" }
     maps.n["<Leader>pS"] = { function() require("lazy").sync() end, desc = "Plugins Sync" }
@@ -68,7 +68,7 @@ return {
       desc = "Move buffer tab left",
     }
 
-    maps.n["<Leader>b"] = sections.b
+    maps.n["<Leader>b"] = vim.tbl_get(sections, "b")
     maps.n["<Leader>bc"] =
       { function() require("astrocore.buffer").close_all(true) end, desc = "Close all buffers except current" }
     maps.n["<Leader>bC"] = { function() require("astrocore.buffer").close_all() end, desc = "Close all buffers" }
@@ -77,14 +77,14 @@ return {
     maps.n["<Leader>bp"] = { function() require("astrocore.buffer").prev() end, desc = "Previous buffer" }
     maps.n["<Leader>br"] =
       { function() require("astrocore.buffer").close_right() end, desc = "Close all buffers to the right" }
-    maps.n["<Leader>bs"] = sections.bs
+    maps.n["<Leader>bs"] = vim.tbl_get(sections, "bs")
     maps.n["<Leader>bse"] = { function() require("astrocore.buffer").sort "extension" end, desc = "By extension" }
     maps.n["<Leader>bsr"] = { function() require("astrocore.buffer").sort "unique_path" end, desc = "By relative path" }
     maps.n["<Leader>bsp"] = { function() require("astrocore.buffer").sort "full_path" end, desc = "By full path" }
     maps.n["<Leader>bsi"] = { function() require("astrocore.buffer").sort "bufnr" end, desc = "By buffer number" }
     maps.n["<Leader>bsm"] = { function() require("astrocore.buffer").sort "modified" end, desc = "By modification" }
 
-    maps.n["<Leader>l"] = sections.l
+    maps.n["<Leader>l"] = vim.tbl_get(sections, "l")
     maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
     maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
     maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
@@ -114,7 +114,7 @@ return {
     maps.t["<C-k>"] = { "<Cmd>wincmd k<CR>", desc = "Terminal up window navigation" }
     maps.t["<C-l>"] = { "<Cmd>wincmd l<CR>", desc = "Terminal right window navigation" }
 
-    maps.n["<Leader>u"] = sections.u
+    maps.n["<Leader>u"] = vim.tbl_get(sections, "u")
     -- Custom menu for modification of the user experience
     maps.n["<Leader>ub"] = { function() require("astrocore.toggles").background() end, desc = "Toggle background" }
     maps.n["<Leader>ug"] = { function() require("astrocore.toggles").signcolumn() end, desc = "Toggle signcolumn" }

@@ -8,8 +8,8 @@ return {
         local maps = opts.mappings
         local astro = require "astrocore"
         local is_available = astro.is_available
-        maps.n["<Leader>f"] = opts._map_section.f
-        maps.n["<Leader>g"] = opts._map_section.g
+        maps.n["<Leader>f"] = vim.tbl_get(opts, "_map_sections", "f")
+        maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
         maps.n["<Leader>gb"] =
           { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
         maps.n["<Leader>gc"] = {
