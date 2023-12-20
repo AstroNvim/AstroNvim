@@ -29,9 +29,10 @@ return {
     }
 
     local formatting_enabled = function(client)
+      local disabled = opts.formatting.disabled
       return client.supports_method "textDocument/formatting"
-        and opts.formatting.disabled ~= true
-        and not vim.tbl_contains(opts.formatting.disabled, client.name)
+        and disabled ~= true
+        and not vim.tbl_contains(disabled, client.name)
     end
     maps.n["<Leader>lf"] = {
       function() vim.lsp.buf.format(require("astrolsp").format_opts) end,
