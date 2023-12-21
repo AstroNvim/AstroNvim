@@ -6,12 +6,7 @@ return {
     {
       "jay-babu/mason-nvim-dap.nvim",
       dependencies = { "nvim-dap" },
-      init = function()
-        require("astrocore").on_load(
-          "mason.nvim",
-          function() require("lazy").load { plugins = { "mason-nvim-dap.nvim" } } end
-        )
-      end,
+      init = function(plugin) require("astrocore").on_load("mason.nvim", plugin.name) end,
       cmd = { "DapInstall", "DapUninstall" },
       opts = { handlers = {} },
     },
