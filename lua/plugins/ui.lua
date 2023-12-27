@@ -2,6 +2,7 @@ return {
   {
     "nvim-tree/nvim-web-devicons",
     enabled = vim.g.icons_enabled,
+    lazy = true,
     opts = {
       override = {
         default_icon = { icon = require("astronvim.utils").get_icon "DefaultFile" },
@@ -22,6 +23,7 @@ return {
   },
   {
     "onsails/lspkind.nvim",
+    lazy = true,
     opts = {
       mode = "symbol",
       symbol_map = {
@@ -49,6 +51,7 @@ return {
   },
   {
     "rcarriga/nvim-notify",
+    lazy = true,
     init = function() require("astronvim.utils").load_plugin_with_func("nvim-notify", vim, "notify") end,
     opts = {
       on_open = function(win)
@@ -65,6 +68,7 @@ return {
   },
   {
     "stevearc/dressing.nvim",
+    lazy = true,
     init = function() require("astronvim.utils").load_plugin_with_func("dressing.nvim", vim.ui, { "input", "select" }) end,
     opts = {
       input = { default_prompt = "➤ " },

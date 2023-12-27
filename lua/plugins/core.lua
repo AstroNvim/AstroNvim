@@ -1,7 +1,7 @@
 return {
-  "nvim-lua/plenary.nvim",
-  "echasnovski/mini.bufremove",
-  { "AstroNvim/astrotheme", opts = { plugins = { ["dashboard-nvim"] = true } } },
+  { "nvim-lua/plenary.nvim", lazy = true },
+  { "echasnovski/mini.bufremove", lazy = true },
+  { "AstroNvim/astrotheme", lazy = true, opts = { plugins = { ["dashboard-nvim"] = true } } },
   { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
   { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "plugins.configs.guess-indent" },
   { -- TODO: REMOVE neovim-session-manager with AstroNvim v4
@@ -13,6 +13,7 @@ return {
   {
     "stevearc/resession.nvim",
     enabled = vim.g.resession_enabled == true,
+    lazy = true,
     opts = {
       buf_filter = function(bufnr) return require("astronvim.utils.buffer").is_restorable(bufnr) end,
       tab_buf_filter = function(tabpage, bufnr) return vim.tbl_contains(vim.t[tabpage].bufs, bufnr) end,
@@ -21,11 +22,13 @@ return {
   },
   {
     "s1n7ax/nvim-window-picker",
+    lazy = true,
     main = "window-picker",
     opts = { picker_config = { statusline_winbar_picker = { use_winbar = "smart" } } },
   },
   {
     "mrjones2014/smart-splits.nvim",
+    lazy = true,
     opts = { ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" }, ignored_buftypes = { "nofile" } },
   },
   {
