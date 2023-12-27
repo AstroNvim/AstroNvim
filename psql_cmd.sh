@@ -5,7 +5,7 @@ gum style \
 	--align center --width 50 --margin "1 2" --padding "2 4" \
 	'PostgreSQL .::. PAJAK'
 
-TYPE=$(gum choose "fix" "stop" "start")
+TYPE=$(gum choose "fix" "stop" "start" "createuser")
 
 if [ $TYPE = "fix" ]; then
 	gum confirm "It will move data to olddata and initialize new data folder for PostgreSQL. Are you sure?"
@@ -24,6 +24,8 @@ elif [ $TYPE = "start" ]; then
 	sudo systemctl start postgresql
 elif [ $TYPE = "stop" ]; then
 	sudo systemctl stop postgresql
+elif [ $TYPE = "createuser" ]; then
+	sudo -u postgres createuser --interactive
 fi
 
 gum style \
