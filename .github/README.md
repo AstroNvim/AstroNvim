@@ -101,10 +101,16 @@ git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
 nvim
 ```
 
-#### Install depedencies (Garuda and MacOSX)
+#### Install depedencies (Arch/Ubuntu and MacOSX)
 
 ```shell
 sh install_deps.sh
+```
+
+#### Fix, start/stop PostgreSQL (Arch/Ubuntu)
+
+```shell
+sh psql_cmd.sh
 ```
 
 ### Windows (Powershell)
