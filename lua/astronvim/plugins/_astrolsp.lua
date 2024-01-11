@@ -16,7 +16,6 @@ return {
     ---@type AstroLSPOpts
     local new_opts = {
       features = {
-        autoformat = true,
         codelens = true,
         diagnostics_mode = 3,
         inlay_hints = false,
