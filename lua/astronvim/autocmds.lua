@@ -24,6 +24,12 @@ autocmd("BufReadPre", {
   end,
 })
 
+autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  desc = "Check if buffers changed on editor focus",
+  group = augroup("checktime", { clear = true }),
+  command = "checktime",
+})
+
 local terminal_settings_group = augroup("terminal_settings", { clear = true })
 -- TODO: drop when dropping support for Neovim v0.9
 if vim.fn.has "nvim-0.9" == 1 and vim.fn.has "nvim-0.9.4" == 0 then
