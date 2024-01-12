@@ -65,6 +65,7 @@ return {
                 end
               end
               if should_skip then return end
+              require("lazy").load { plugins = { "alpha-nvim" } }
               require("alpha").start(true)
               vim.schedule(function() vim.cmd.doautocmd "FileType" end)
             end,
