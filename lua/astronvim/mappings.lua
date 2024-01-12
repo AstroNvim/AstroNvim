@@ -337,9 +337,8 @@ if is_available "toggleterm.nvim" then
   if vim.fn.executable "node" == 1 then
     maps.n["<leader>tn"] = { function() utils.toggle_term_cmd "node" end, desc = "ToggleTerm node" }
   end
-  if vim.fn.executable "gdu" == 1 then
-    maps.n["<leader>tu"] = { function() utils.toggle_term_cmd "gdu" end, desc = "ToggleTerm gdu" }
-  end
+  local gdu = vim.fn.executable "gdu-go" == 1 and "gdu-go" or vim.fn.executable "gdu" == 1 and "gdu"
+  if gdu then maps.n["<leader>tu"] = { function() utils.toggle_term_cmd(gdu) end, desc = "ToggleTerm gdu" } end
   if vim.fn.executable "btm" == 1 then
     maps.n["<leader>tt"] = { function() utils.toggle_term_cmd "btm" end, desc = "ToggleTerm btm" }
   end
