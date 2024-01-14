@@ -29,7 +29,15 @@ M.diagnostics = { [0] = {}, {}, {}, {} }
 M.setup_diagnostics = function(signs)
   local default_diagnostics = astronvim.user_opts("diagnostics", {
     virtual_text = true,
-    signs = { active = signs },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = utils.get_icon "DiagnosticError",
+        [vim.diagnostic.severity.HINT] = utils.get_icon "DiagnosticHint",
+        [vim.diagnostic.severity.WARN] = utils.get_icon "DiagnosticWarn",
+        [vim.diagnostic.severity.INFO] = utils.get_icon "DiagnosticInfo",
+      },
+      active = signs,
+    },
     update_in_insert = true,
     underline = true,
     severity_sort = true,

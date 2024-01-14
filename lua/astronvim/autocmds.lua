@@ -24,6 +24,21 @@ autocmd("BufReadPre", {
   end,
 })
 
+autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  desc = "Check if buffers changed on editor focus",
+  group = augroup("checktime", { clear = true }),
+  command = "checktime",
+})
+
+autocmd("BufWritePre", {
+  desc = "Automatically create parent directories if they don't exist when saving a file",
+  group = augroup("create_dir", { clear = true }),
+  callback = function(args)
+    if args.match:match "^%w%w+://" then return end
+    vim.fn.mkdir(vim.fn.fnamemodify(vim.loop.fs_realpath(args.match) or args.match, ":p:h"), "p")
+  end,
+})
+
 local terminal_settings_group = augroup("terminal_settings", { clear = true })
 -- TODO: drop when dropping support for Neovim v0.9
 if vim.fn.has "nvim-0.9" == 1 and vim.fn.has "nvim-0.9.4" == 0 then
@@ -230,7 +245,7 @@ if is_available "alpha-nvim" then
         end
       end
       if should_skip then return end
-      require("alpha").start(true, require("alpha").default_config)
+      require("alpha").start(true)
       vim.schedule(function() vim.cmd.doautocmd "FileType" end)
     end,
   })
