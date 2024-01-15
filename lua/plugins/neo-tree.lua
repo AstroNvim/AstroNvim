@@ -132,7 +132,7 @@ return {
       filesystem = {
         follow_current_file = { enabled = true },
         hijack_netrw_behavior = "open_current",
-        use_libuv_file_watcher = true,
+        use_libuv_file_watcher = vim.fn.has "win32" ~= 1,
       },
       event_handlers = {
         {
