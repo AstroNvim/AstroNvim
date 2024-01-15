@@ -291,6 +291,8 @@ if is_available "telescope.nvim" then
   if is_available "nvim-notify" then
     maps.n["<leader>fn"] =
       { function() require("telescope").extensions.notify.notify() end, desc = "Find notifications" }
+    maps.n["<leader>uD"] =
+      { function() require("notify").dismiss { pending = true, silent = true } end, desc = "Dismiss notifications" }
   end
   maps.n["<leader>fo"] = { function() require("telescope.builtin").oldfiles() end, desc = "Find history" }
   maps.n["<leader>fr"] = { function() require("telescope.builtin").registers() end, desc = "Find registers" }
