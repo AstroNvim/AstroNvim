@@ -41,7 +41,7 @@ return {
       "AstroNvim/astrocore",
       opts = function(_, opts)
         local maps = opts.mappings
-        maps.n["<leader>uI"] =
+        maps.n["<Leader>uI"] =
           { function() require("astrocore.toggles").buffer_indent_guides() end, desc = "Toggle indent guides (buffer)" }
         opts.autocmds.indentscope_disabled = {
           {
