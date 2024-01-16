@@ -13,19 +13,6 @@ return {
           end,
         },
       },
-      lsp_document_highlight = {
-        cond = "textDocument/documentHighlight",
-        {
-          event = { "CursorHold", "CursorHoldI" },
-          desc = "Document Highlighting",
-          callback = function() vim.lsp.buf.document_highlight() end,
-        },
-        {
-          event = { "CursorMoved", "CursorMovedI", "BufLeave" },
-          desc = "Document Highlighting Clear",
-          callback = function() vim.lsp.buf.clear_references() end,
-        },
-      },
       lsp_auto_format = {
         cond = function(client)
           local config = assert(require("astrolsp").config)
