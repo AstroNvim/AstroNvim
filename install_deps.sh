@@ -60,7 +60,7 @@ curl https://pyenv.run | bash
 
 sudo luarocks install luacheck
 
-cargo install selene stylua macchina efmt
+cargo install selene stylua macchina efmt bliss
 
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 go install github.com/maaslalani/nap@main
