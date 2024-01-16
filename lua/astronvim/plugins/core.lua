@@ -3,6 +3,7 @@ return {
   { "echasnovski/mini.bufremove", lazy = true },
   { "AstroNvim/astrotheme", lazy = true, opts = { plugins = { ["dashboard-nvim"] = true } } },
   { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
+  { "windwp/nvim-ts-autotag", event = "User AstroFile", opts = {} },
   {
     "NMAC427/guess-indent.nvim",
     event = "User AstroFile",
