@@ -1,11 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   main = "nvim-treesitter.configs",
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    -- HACK: remove when https://github.com/windwp/nvim-ts-autotag/issues/125 closed.
-    { "windwp/nvim-ts-autotag", opts = { enable_close_on_slash = false } },
-  },
+  dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
   event = "User AstroFile",
   cmd = {
     "TSBufDisable",
@@ -35,7 +31,6 @@ return {
   end,
   opts = function()
     return {
-      autotag = { enable = true },
       highlight = {
         enable = true,
         disable = function(_, bufnr) return vim.b[bufnr].large_buf end,
