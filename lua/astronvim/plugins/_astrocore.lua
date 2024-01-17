@@ -2,6 +2,7 @@ local astronvim = require "astronvim"
 astronvim.init()
 
 return {
+  { "folke/lazy.nvim", dir = vim.env.LAZY },
   { "AstroNvim/AstroNvim", priority = 10000, lazy = false },
   { import = "astronvim.lazy_snapshot", cond = astronvim.config.pin_plugins },
   {
