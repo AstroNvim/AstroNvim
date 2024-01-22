@@ -14,6 +14,7 @@ return {
       { "folke/neoconf.nvim", opts = {} },
       {
         "williamboman/mason-lspconfig.nvim",
+        dependencies = { "williamboman/mason.nvim" },
         cmd = { "LspInstall", "LspUninstall" },
         init = function(plugin) require("astrocore").on_load("mason.nvim", plugin.name) end,
         opts = function(_, opts)
@@ -46,6 +47,7 @@ return {
       },
       {
         "jay-babu/mason-null-ls.nvim",
+        dependencies = { "williamboman/mason.nvim" },
         cmd = { "NullLsInstall", "NullLsUninstall" },
         init = function(plugin) require("astrocore").on_load("mason.nvim", plugin.name) end,
         opts = { handlers = {} },
