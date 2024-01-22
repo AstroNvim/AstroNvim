@@ -1,7 +1,21 @@
+local formatting_enabled = function(client)
+  local formatting_disabled = vim.tbl_get(require("astrolsp").config, "formatting", "disabled")
+  return client.supports_method "textDocument/formatting"
+    and formatting_disabled ~= true
+    and not vim.tbl_contains(formatting_disabled, client.name)
+end
+
 return {
   "AstroNvim/astrolsp",
   ---@type AstroLSPOpts
   opts = {
+    commands = {
+      Format = {
+        cond = formatting_enabled,
+        function() vim.lsp.buf.format(require("astrolsp").format_opts) end,
+        desc = "Format file with LSP",
+      },
+    },
     autocmds = {
       lsp_codelens_refresh = {
         cond = "textDocument/codeLens",
@@ -14,12 +28,7 @@ return {
         },
       },
       lsp_auto_format = {
-        cond = function(client)
-          local config = assert(require("astrolsp").config)
-          return client.supports_method "textDocument/formatting"
-            and config.formatting.disabled ~= true
-            and not vim.tbl_contains(vim.tbl_get(config, "formatting", "disabled"), client.name)
-        end,
+        cond = formatting_enabled,
         {
           event = "BufWritePre",
           desc = "autoformat on save",
