@@ -18,7 +18,7 @@ return {
   },
   -- Set colorscheme to use
   colorscheme = "tokyonight",
-    -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
+  -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
     virtual_text = true,
     underline = true,
@@ -33,7 +33,7 @@ return {
           -- "go",
         },
         ignore_filetypes = { -- disable format on save for specified filetypes
-          -- "python",
+          "elixir",
         },
       },
       disabled = { -- disable formatting capabilities for the listed language servers

@@ -6,7 +6,10 @@ if status_ok then
         dap = { justMyCode = false },
         runner = "unittest",
       },
-      require "neotest-elixir",
+      require "neotest-elixir" {
+        mix_task = "test.interactive",
+        extra_formatters = { "ExUnit.CLIFormatter", "ExUnitNotifier" },
+      },
       require "neotest-plenary",
       require "neotest-vim-test" {
         ignore_file_types = { "python", "vim", "lua", "elixir" },
