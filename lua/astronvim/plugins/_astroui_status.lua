@@ -8,10 +8,11 @@ return {
       local gitsigns_avail, gitsigns = pcall(require, "gitsigns")
       if gitsigns_avail then vim.schedule(gitsigns.preview_hunk) end
     end
-    for _, sign in ipairs { "Topdelete", "Untracked", "Add", "Changedelete", "Delete" } do
+    for _, sign in ipairs { "Topdelete", "Untracked", "Add", "Change", "Changedelete", "Delete" } do
       local name = "GitSigns" .. sign
       if not sign_handlers[name] then sign_handlers[name] = gitsigns end
     end
+    sign_handlers["gitsigns_extmark_signs_"] = gitsigns
     -- diagnostic handlers
     local diagnostics = function(args)
       if args.mods:find "c" then
