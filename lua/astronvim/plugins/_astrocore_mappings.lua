@@ -116,6 +116,7 @@ return {
 
     maps.n["<Leader>u"] = vim.tbl_get(sections, "u")
     -- Custom menu for modification of the user experience
+    maps.n["<Leader>uA"] = { function() require("astrocore.toggles").autochdir() end, desc = "Toggle rooter autochdir" }
     maps.n["<Leader>ub"] = { function() require("astrocore.toggles").background() end, desc = "Toggle background" }
     maps.n["<Leader>ug"] = { function() require("astrocore.toggles").signcolumn() end, desc = "Toggle signcolumn" }
     maps.n["<Leader>uh"] = { function() require("astrocore.toggles").foldcolumn() end, desc = "Toggle foldcolumn" }
