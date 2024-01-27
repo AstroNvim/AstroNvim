@@ -25,7 +25,7 @@ return {
           servers = {},
           dirs = {},
         },
-        autochdir = true,
+        autochdir = false,
         scope = "global",
         notify = false,
       },
