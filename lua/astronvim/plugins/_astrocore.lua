@@ -20,7 +20,7 @@ return {
         notifications = true, -- disable notifications
       },
       rooter = {
-        detector = { "lsp", { ".git", "_darcs", ".hg", ".bzr", ".svn", "lua", "Makefile", "package.json" } },
+        detector = { "lsp", { ".git", "_darcs", ".hg", ".bzr", ".svn" }, { "lua", "MakeFile", "package.json" } },
         ignore = {
           servers = {},
           dirs = {},
