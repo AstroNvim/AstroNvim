@@ -40,7 +40,6 @@ return function(_, _)
   end
   local setup_servers = function()
     vim.tbl_map(require("astronvim.utils.lsp").setup, astronvim.user_opts "lsp.servers")
-    vim.api.nvim_exec_autocmds("FileType", {})
     require("astronvim.utils").event "LspSetup"
   end
   if require("astronvim.utils").is_available "mason-lspconfig.nvim" then

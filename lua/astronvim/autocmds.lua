@@ -329,6 +329,17 @@ autocmd("ColorScheme", {
   end,
 })
 
+autocmd("FileType", {
+  desc = "configure editorconfig after filetype detection to override `ftplugin`s",
+  group = augroup("editorconfig_filetype", { clear = true }),
+  callback = function(args)
+    if vim.F.if_nil(vim.b.editorconfig, vim.g.editorconfig, true) then
+      local editorconfig_avail, editorconfig = pcall(require, "editorconfig")
+      if editorconfig_avail then editorconfig.config(args.buf) end
+    end
+  end,
+})
+
 autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
   desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
   group = augroup("file_user_events", { clear = true }),
@@ -343,6 +354,12 @@ autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
         astroevent "GitFile"
         vim.api.nvim_del_augroup_by_name "file_user_events"
       end
+      vim.schedule(function()
+        if vim.bo[args.buf].filetype then
+          vim.api.nvim_exec_autocmds("FileType", { buffer = args.buf, modeline = false })
+        end
+        vim.api.nvim_exec_autocmds("CursorMoved", { modeline = false })
+      end)
     end
   end,
 })
