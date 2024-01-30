@@ -181,6 +181,11 @@ return {
             local max_file = assert(require("astrocore").config.features.max_file)
             vim.b[args.buf].large_buf = (ok and stats and stats.size > max_file.size)
               or vim.api.nvim_buf_line_count(args.buf) > max_file.lines
+
+            if vim.b[args.buf].large_buf then -- disable features if large
+              vim.b[args.buf].cmp_enabled = false -- disable completion by default
+              vim.b[args.buf].miniindentscope_disable = true -- disable indent scope by default
+            end
           end,
         },
       },
