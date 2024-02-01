@@ -34,7 +34,7 @@ autocmd("BufWritePre", {
   desc = "Automatically create parent directories if they don't exist when saving a file",
   group = augroup("create_dir", { clear = true }),
   callback = function(args)
-    if args.match:match "^%w%w+://" then return end
+    if args.match:match("^%w%w+:" .. (vim.fn.has "win32" == 0 and "//" or "\\\\")) then return end
     vim.fn.mkdir(vim.fn.fnamemodify(vim.loop.fs_realpath(args.match) or args.match, ":p:h"), "p")
   end,
 })
@@ -329,6 +329,17 @@ autocmd("ColorScheme", {
   end,
 })
 
+autocmd("FileType", {
+  desc = "configure editorconfig after filetype detection to override `ftplugin`s",
+  group = augroup("editorconfig_filetype", { clear = true }),
+  callback = function(args)
+    if vim.F.if_nil(vim.b.editorconfig, vim.g.editorconfig, true) then
+      local editorconfig_avail, editorconfig = pcall(require, "editorconfig")
+      if editorconfig_avail then editorconfig.config(args.buf) end
+    end
+  end,
+})
+
 autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
   desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
   group = augroup("file_user_events", { clear = true }),
@@ -343,6 +354,7 @@ autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
         astroevent "GitFile"
         vim.api.nvim_del_augroup_by_name "file_user_events"
       end
+      vim.schedule(function() vim.api.nvim_exec_autocmds("CursorMoved", { modeline = false }) end)
     end
   end,
 })
