@@ -354,12 +354,7 @@ autocmd({ "BufReadPost", "BufNewFile", "BufWritePost" }, {
         astroevent "GitFile"
         vim.api.nvim_del_augroup_by_name "file_user_events"
       end
-      vim.schedule(function()
-        if vim.bo[args.buf].filetype then
-          vim.api.nvim_exec_autocmds("FileType", { buffer = args.buf, modeline = false })
-        end
-        vim.api.nvim_exec_autocmds("CursorMoved", { modeline = false })
-      end)
+      vim.schedule(function() vim.api.nvim_exec_autocmds("CursorMoved", { modeline = false }) end)
     end
   end,
 })
