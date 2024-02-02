@@ -23,9 +23,11 @@ return {
           maps.n["<Leader>St"] = { function() require("resession").save_tab() end, desc = "Save this tab's session" }
           maps.n["<Leader>Sd"] = { function() require("resession").delete() end, desc = "Delete a session" }
           maps.n["<Leader>Sf"] = { function() require("resession").load() end, desc = "Load a session" }
+          maps.n["<Leader>SF"] =
+            { function() require("resession").load(nil, { dir = "dirsession" }) end, desc = "Load a dirsession" }
           maps.n["<Leader>S."] = {
             function() require("resession").load(vim.fn.getcwd(), { dir = "dirsession" }) end,
-            desc = "Load current directory session",
+            desc = "Load current dirsession",
           }
           opts.autocmds.resession_auto_save = {
             {
