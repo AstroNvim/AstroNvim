@@ -89,6 +89,12 @@ return {
       draw = { delay = 0, animation = function() return 0 end },
       options = { try_as_border = true },
       symbol = require("astrocore").plugin_opts("indent-blankline.nvim").context_char or char,
+      mappings = {
+        object_scope = "",
+        object_scope_with_border = "",
+        goto_top = "",
+        goto_bottom = "",
+      },
     }
   end,
 }
