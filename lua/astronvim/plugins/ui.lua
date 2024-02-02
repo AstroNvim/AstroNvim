@@ -95,9 +95,9 @@ return {
           maps.n["[r"] =
             { function() require("illuminate")["goto_prev_reference"](false) end, desc = "Previous reference" }
           maps.n["<Leader>ur"] =
-            { function() require("illuminate").toggle() end, desc = "Toggle reference highlighting" }
-          maps.n["<Leader>uR"] =
             { function() require("illuminate").toggle_buf() end, desc = "Toggle reference highlighting (buffer)" }
+          maps.n["<Leader>uR"] =
+            { function() require("illuminate").toggle() end, desc = "Toggle reference highlighting (global)" }
         end,
       },
     },
