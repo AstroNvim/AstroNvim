@@ -177,7 +177,7 @@ function M.system_open(path)
   elseif not path:match "%w+:" then
     path = vim.fn.expand(path)
   end
-  vim.fn.jobstart(table.insert(cmd, path), { detach = true })
+  vim.fn.jobstart(vim.list_extend(cmd, { path }), { detach = true })
 end
 
 --- Toggle a user terminal if it exists, if not then create a new one and save it
