@@ -45,7 +45,7 @@ return {
   { "rebelot/heirline.nvim", version = "^1", optional = true },
   { "s1n7ax/nvim-window-picker", version = "^2", optional = true },
   { "saadparwaiz1/cmp_luasnip", commit = "05a9ab28b53f71d1aece421ef32fee2cb857a843", optional = true },
-  { "stevearc/aerial.nvim", commit = "d21482d3be3228dde594aba31106db428292742c", optional = true },
+  { "stevearc/aerial.nvim", version = "^1.5", optional = true },
   { "stevearc/dressing.nvim", version = "^2", optional = true },
   { "williamboman/mason-lspconfig.nvim", version = "^1", optional = true },
   { "williamboman/mason.nvim", version = "^1", optional = true },
