@@ -172,8 +172,11 @@ function M.system_open(path)
     end
   end
   if not cmd then M.notify("Available system opening tool not found!", vim.log.levels.ERROR) end
-  if not path then path = vim.fn.expand "<cfile>" end
-  if not path:match "%w+:" then vim.fn.expand(path) end
+  if not path then
+    path = vim.fn.expand "<cfile>"
+  elseif not path:match "%w+:" then
+    path = vim.fn.expand(path)
+  end
   vim.fn.jobstart(table.insert(cmd, path), { detach = true })
 end
 
