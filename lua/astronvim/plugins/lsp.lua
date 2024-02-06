@@ -69,12 +69,12 @@ return {
       },
     },
     opts = function()
-      local max_file = assert(require("astrocore").config.features.max_file)
+      local large_buf = assert(require("astrocore").config.features.large_buf)
       return {
         attach_mode = "global",
         backends = { "lsp", "treesitter", "markdown", "man" },
-        disable_max_lines = max_file.lines,
-        disable_max_size = max_file.size,
+        disable_max_lines = large_buf.lines,
+        disable_max_size = large_buf.size,
         layout = { min_width = 28 },
         show_guides = true,
         filter_kind = false,

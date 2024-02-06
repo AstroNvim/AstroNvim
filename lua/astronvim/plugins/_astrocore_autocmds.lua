@@ -172,20 +172,38 @@ return {
           callback = function() vim.highlight.on_yank() end,
         },
       },
-      large_buf = {
+      large_buf_detector = {
         {
           event = "BufRead",
-          desc = "Disable certain functionality on very large files",
+          desc = "Detect loading of large files",
           callback = function(args)
             local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
-            local max_file = assert(require("astrocore").config.features.max_file)
-            vim.b[args.buf].large_buf = (ok and stats and stats.size > max_file.size)
-              or vim.api.nvim_buf_line_count(args.buf) > max_file.lines
+            local large_buf = assert(require("astrocore").config.features.large_buf)
+            vim.b[args.buf].large_buf = (ok and stats and stats.size > large_buf.size)
+              or vim.api.nvim_buf_line_count(args.buf) > large_buf.lines
 
-            if vim.b[args.buf].large_buf then -- disable features if large
-              vim.b[args.buf].cmp_enabled = false -- disable completion by default
-              vim.b[args.buf].miniindentscope_disable = true -- disable indent scope by default
-            end
+            if vim.b[args.buf].large_buf then require("astrocore").event("LargeBuf", true) end
+          end,
+        },
+      },
+      large_buf_settings = {
+        {
+          event = "User",
+          desc = "Disable certain functionality on very large files",
+          pattern = "AstroLargeBuf",
+          callback = function(args)
+            vim.opt_local.wrap = true -- enable wrap, long lines in vim are slow
+            vim.opt_local.list = false -- disable list chars
+            vim.b[args.buf].autoformat = false -- disable autoformat on save
+            vim.b[args.buf].cmp_enabled = false -- disable completion
+            vim.b[args.buf].miniindentscope_disable = true -- disable indent scope
+            vim.b[args.buf].matchup_matchparen_enabled = 0 -- disable vim-matchup
+            local ibl_avail, ibl = pcall(require, "ibl") -- disable indent-blankline
+            if ibl_avail then ibl.setup_buffer(args.buf, { enabled = false }) end
+            local illuminate_avail, illuminate = pcall(require, "illuminate.engine") -- disable vim-illuminate
+            if illuminate_avail then illuminate.stop_buf(args.buf) end
+            local rainbow_avail, rainbow = pcall(require, "rainbow-delimiters") -- disable rainbow-delimiters
+            if rainbow_avail then rainbow.disable(args.buf) end
           end,
         },
       },
