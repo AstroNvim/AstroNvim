@@ -31,10 +31,7 @@ return {
   end,
   opts = function()
     return {
-      highlight = {
-        enable = true,
-        disable = function(_, bufnr) return vim.b[bufnr].large_buf end,
-      },
+      highlight = { enable = true },
       incremental_selection = { enable = true },
       indent = { enable = true },
       textobjects = {
@@ -96,4 +93,5 @@ return {
       },
     }
   end,
+  config = function(...) require "astronvim.plugins.configs.nvim-treesitter"(...) end,
 }
