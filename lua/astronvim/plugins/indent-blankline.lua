@@ -38,5 +38,4 @@ return {
       },
     },
   },
-  config = function(...) require "astronvim.plugins.configs.indent-blankline"(...) end,
 }
