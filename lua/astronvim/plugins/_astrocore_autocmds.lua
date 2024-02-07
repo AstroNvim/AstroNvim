@@ -172,20 +172,6 @@ return {
           callback = function() vim.highlight.on_yank() end,
         },
       },
-      large_buf_detector = {
-        {
-          event = "BufRead",
-          desc = "Detect loading of large files",
-          callback = function(args)
-            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(args.buf))
-            local large_buf = assert(require("astrocore").config.features.large_buf)
-            vim.b[args.buf].large_buf = (ok and stats and stats.size > large_buf.size)
-              or vim.api.nvim_buf_line_count(args.buf) > large_buf.lines
-
-            if vim.b[args.buf].large_buf then require("astrocore").event("LargeBuf", true) end
-          end,
-        },
-      },
       large_buf_settings = {
         {
           event = "User",
