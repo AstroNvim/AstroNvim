@@ -69,12 +69,9 @@ return {
       },
     },
     opts = function()
-      local large_buf = assert(require("astrocore").config.features.large_buf)
-      return {
+      local opts = {
         attach_mode = "global",
         backends = { "lsp", "treesitter", "markdown", "man" },
-        disable_max_lines = large_buf.lines,
-        disable_max_size = large_buf.size,
         layout = { min_width = 28 },
         show_guides = true,
         filter_kind = false,
@@ -95,6 +92,13 @@ return {
           ["]]"] = false,
         },
       }
+
+      local large_buf = vim.tbl_get(require("astrocore").config, "features", "large_buf")
+      if large_buf then
+        opts.disable_max_lines, opts.disable_max_size = large_buf.lines, large_buf.size
+      end
+
+      return opts
     end,
   },
 }
