@@ -38,7 +38,7 @@ return {
     },
     {
       "rcarriga/cmp-dap",
-      dependencies = { "nvim-cmp" },
+      dependencies = { "hrsh7th/nvim-cmp" },
       config = function(...) require "astronvim.plugins.configs.cmp-dap"(...) end,
     },
     {

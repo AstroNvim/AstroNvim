@@ -23,40 +23,41 @@ return {
     },
     event = "InsertEnter",
     opts = function()
-      local cmp = require "cmp"
-      local lspkind_status_ok, lspkind = pcall(require, "lspkind")
-      local astro = require "astrocore"
-      local border_opts = {
-        border = "rounded",
-        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-      }
+      local cmp, astro = require "cmp", require "astrocore"
+
+      local sources = {}
+      for source_plugin, source in pairs {
+        ["cmp-nvim-lsp"] = { name = "nvim_lsp", priority = 1000 },
+        ["cmp-buffer"] = { name = "buffer", priority = 500 },
+        ["cmp-path"] = { name = "path", priority = 250 },
+      } do
+        if astro.is_available(source_plugin) then table.insert(sources, source) end
+      end
 
       return {
         enabled = function()
           local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
             and vim.tbl_contains({ "dap-repl", "dapui_watches", "dapui_hover" }, vim.bo[0].filetype)
           if vim.bo[0].buftype == "prompt" and not dap_prompt then return false end
-          return vim.F.if_nil(vim.b.cmp_enabled, require("astrocore").config.features.cmp)
+          return vim.F.if_nil(vim.b.cmp_enabled, astro.config.features.cmp)
         end,
         preselect = cmp.PreselectMode.None,
-        formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = lspkind_status_ok and lspkind.cmp_format(astro.plugin_opts "lspkind.nvim") or nil,
-        },
-        duplicates = {
-          nvim_lsp = 1,
-          luasnip = 1,
-          cmp_tabnine = 1,
-          buffer = 1,
-          path = 1,
-        },
+        formatting = { fields = { "kind", "abbr", "menu" } },
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,
           select = false,
         },
         window = {
-          completion = cmp.config.window.bordered(border_opts),
-          documentation = cmp.config.window.bordered(border_opts),
+          completion = cmp.config.window.bordered {
+            col_offset = -2,
+            side_padding = 0,
+            border = "rounded",
+            winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+          },
+          documentation = cmp.config.window.bordered {
+            border = "rounded",
+            winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+          },
         },
         snippet = { expand = vim.snippet and function(args) vim.snippet.expand(args.body) end },
         mapping = {
@@ -76,7 +77,7 @@ return {
             if cmp.visible() then
               cmp.select_next_item()
             elseif vim.snippet and vim.snippet.jumpable(1) then
-              vim.snippet.jump(1)
+              vim.schedule(function() vim.snippet.jump(1) end)
             elseif has_words_before() then
               cmp.complete()
             else
@@ -87,17 +88,13 @@ return {
             if cmp.visible() then
               cmp.select_prev_item()
             elseif vim.snippet and vim.snippet.jumpable(-1) then
-              vim.snippet.jump(-1)
+              vim.schedule(function() vim.snippet.jump(-1) end)
             else
               fallback()
             end
           end, { "i", "s" }),
         },
-        sources = cmp.config.sources {
-          { name = "nvim_lsp", priority = 1000 },
-          { name = "buffer", priority = 500 },
-          { name = "path", priority = 250 },
-        },
+        sources = sources,
       }
     end,
   },
@@ -114,7 +111,9 @@ return {
         dependencies = { "saadparwaiz1/cmp_luasnip" },
         opts = function(_, opts)
           local luasnip, cmp = require "luasnip", require "cmp"
-          opts.snippet = { expand = function(args) luasnip.lsp_expand(args.body) end }
+
+          if not opts.snippet then opts.snippet = {} end
+          opts.snippet.expand = function(args) luasnip.lsp_expand(args.body) end
 
           if not opts.sources then opts.sources = {} end
           table.insert(opts.sources, { name = "luasnip", priority = 750 })
@@ -149,5 +148,42 @@ return {
       region_check_events = "CursorMoved",
     },
     config = function(...) require "astronvim.plugins.configs.luasnip"(...) end,
+  },
+  {
+    "onsails/lspkind.nvim",
+    lazy = true,
+    enabled = vim.g.icons_enabled ~= false,
+    dependencies = {
+      {
+        "hrsh7th/nvim-cmp",
+        opts = function(_, opts)
+          if not opts.formatting then opts.formatting = {} end
+          opts.formatting.format = require("lspkind").cmp_format(require("astrocore").plugin_opts "lspkind.nvim")
+        end,
+      },
+    },
+    opts = {
+      mode = "symbol",
+      symbol_map = {
+        Array = "󰅪",
+        Boolean = "⊨",
+        Class = "󰌗",
+        Constructor = "",
+        Key = "󰌆",
+        Namespace = "󰅪",
+        Null = "NULL",
+        Number = "#",
+        Object = "󰀚",
+        Package = "󰏗",
+        Property = "",
+        Reference = "",
+        Snippet = "",
+        String = "󰀬",
+        TypeParameter = "󰊄",
+        Unit = "",
+      },
+      menu = {},
+    },
+    config = function(...) require "astronvim.plugins.configs.lspkind"(...) end,
   },
 }
