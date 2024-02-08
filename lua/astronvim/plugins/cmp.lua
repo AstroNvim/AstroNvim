@@ -58,6 +58,7 @@ return {
           completion = cmp.config.window.bordered(border_opts),
           documentation = cmp.config.window.bordered(border_opts),
         },
+        snippet = { expand = vim.snippet and function(args) vim.snippet.expand(args.body) end },
         mapping = {
           ["<Up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
           ["<Down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
@@ -74,6 +75,8 @@ return {
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
+            elseif vim.snippet and vim.snippet.jumpable(1) then
+              vim.snippet.jump(1)
             elseif has_words_before() then
               cmp.complete()
             else
@@ -83,6 +86,8 @@ return {
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
+            elseif vim.snippet and vim.snippet.jumpable(-1) then
+              vim.snippet.jump(-1)
             else
               fallback()
             end
@@ -110,8 +115,11 @@ return {
         opts = function(_, opts)
           local luasnip, cmp = require "luasnip", require "cmp"
           opts.snippet = { expand = function(args) luasnip.lsp_expand(args.body) end }
+
+          if not opts.sources then opts.sources = {} end
           table.insert(opts.sources, { name = "luasnip", priority = 750 })
 
+          if not opts.mappings then opts.mappings = {} end
           opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
