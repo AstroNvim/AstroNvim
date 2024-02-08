@@ -274,17 +274,12 @@ function M.update(opts)
     -- calculate and print the changelog
     local changelog = git.get_commit_range(source, target)
     local breaking = git.breaking_changes(changelog)
-    if
-      #breaking > 0
-      and not opts.skip_prompts
-      and not confirm_prompt(
-        ("Update contains the following breaking changes:\n%s\nWould you like to continue?"):format(
-          table.concat(breaking, "\n")
-        ),
-        "Warning"
-      )
-    then
-      echo(cancelled_message)
+    if #breaking > 0 then
+      echo {
+        { "Cannot update to AstroNvim v4 due to changes in the installation and management\n", "ErrorMsg" },
+        { "Please check the documentation for update instructions: ", "Title" },
+        { "https://docs.astronvim.com", "String" },
+      }
       return
     end
     -- attempt an update
