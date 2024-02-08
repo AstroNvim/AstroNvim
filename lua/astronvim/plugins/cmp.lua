@@ -1,18 +1,9 @@
+local function has_words_before()
+  local line, col = (unpack or table.unpack)(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
+end
+
 return {
-  {
-    "L3MON4D3/LuaSnip",
-    lazy = true,
-    build = vim.fn.has "win32" == 0
-        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
-      or nil,
-    dependencies = { "rafamadriz/friendly-snippets" },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-      region_check_events = "CursorMoved",
-    },
-    config = function(...) require "astronvim.plugins.configs.luasnip"(...) end,
-  },
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -26,7 +17,6 @@ return {
             { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion (global)" }
         end,
       },
-      "saadparwaiz1/cmp_luasnip",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-nvim-lsp",
@@ -34,19 +24,12 @@ return {
     event = "InsertEnter",
     opts = function()
       local cmp = require "cmp"
-      local snip_status_ok, luasnip = pcall(require, "luasnip")
       local lspkind_status_ok, lspkind = pcall(require, "lspkind")
       local astro = require "astrocore"
-      if not snip_status_ok then return end
       local border_opts = {
         border = "rounded",
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
       }
-
-      local function has_words_before()
-        local line, col = (unpack or table.unpack)(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
-      end
 
       return {
         enabled = function()
@@ -59,9 +42,6 @@ return {
         formatting = {
           fields = { "kind", "abbr", "menu" },
           format = lspkind_status_ok and lspkind.cmp_format(astro.plugin_opts "lspkind.nvim") or nil,
-        },
-        snippet = {
-          expand = function(args) luasnip.lsp_expand(args.body) end,
         },
         duplicates = {
           nvim_lsp = 1,
@@ -94,8 +74,6 @@ return {
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-            elseif luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
             elseif has_words_before() then
               cmp.complete()
             else
@@ -105,8 +83,6 @@ return {
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
             else
               fallback()
             end
@@ -114,11 +90,56 @@ return {
         },
         sources = cmp.config.sources {
           { name = "nvim_lsp", priority = 1000 },
-          { name = "luasnip", priority = 750 },
           { name = "buffer", priority = 500 },
           { name = "path", priority = 250 },
         },
       }
     end,
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    lazy = true,
+    build = vim.fn.has "win32" == 0
+        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
+      or nil,
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      {
+        "hrsh7th/nvim-cmp",
+        dependencies = { "saadparwaiz1/cmp_luasnip" },
+        opts = function(_, opts)
+          local luasnip, cmp = require "luasnip", require "cmp"
+          opts.snippet = { expand = function(args) luasnip.lsp_expand(args.body) end }
+          table.insert(opts.sources, { name = "luasnip", priority = 750 })
+
+          opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
+            end
+          end, { "i", "s" })
+          opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" })
+        end,
+      },
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+      region_check_events = "CursorMoved",
+    },
+    config = function(...) require "astronvim.plugins.configs.luasnip"(...) end,
   },
 }
