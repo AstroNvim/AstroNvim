@@ -1,6 +1,23 @@
 return function(plugin, opts)
   local ts = require(plugin.main)
 
+  -- HACK: force install all parsers bundled with neovim
+  -- TODO: remove when nvim-treesitter v1 released
+  if opts.ensure_installed ~= "all" then
+    opts.ensure_installed = require("astrocore").list_insert_unique(
+      opts.ensure_installed,
+      "bash",
+      "c",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "query",
+      "vim",
+      "vimdoc"
+    )
+  end
+
   -- disable all treesitter modules on large buffer
   if vim.tbl_get(require("astrocore").config, "features", "large_buf") then
     for _, module in ipairs(ts.available_modules()) do
