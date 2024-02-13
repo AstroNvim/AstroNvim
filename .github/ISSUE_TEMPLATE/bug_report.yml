@@ -105,11 +105,6 @@ body:
           root = root .. "/plugins",
         })
 
-        vim.g.astronvim_options = function()
-          -- set options here
-          -- vim.g.mapleader = " " -- sets vim.g.mapleader
-        end
-
         -- add anything else here (autocommands, vim.filetype, etc.)
       render: Lua
     validations:
