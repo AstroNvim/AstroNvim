@@ -117,6 +117,22 @@ git clone --depth 1 https://github.com/AstroNvim/AstroNvim $env:LOCALAPPDATA\nvi
 nvim
 ```
 
+#### Minimal `~/.config/nvim/init.lua`
+
+Some user's might not want to use an entire template or do any customization. Here is a minimal `~/.config/nvim/init.lua` file that simply set's up a base AstroNvim installation:
+
+```lua
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.g.astronvim_first_install = true -- lets AstroNvim know that this is an initial installation
+  -- stylua: ignore
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup { "AstroNvim/AstroNvim", branch = "v4", import = "astronvim.plugins" }
+```
+
 ## 📦 Basic Setup
 
 #### Install LSP
