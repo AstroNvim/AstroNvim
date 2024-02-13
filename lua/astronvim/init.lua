@@ -29,9 +29,8 @@ function M.init()
       })
     end
 
-    -- set options
-    if vim.bo.filetype == "lazy" then vim.cmd.bw() end
-    require "astronvim.options"
+    if not vim.g.mapleader then vim.g.mapleader = " " end
+    if not vim.g.maplocalleader then vim.g.maplocalleader = "," end
 
     -- force setup during initialization
     local plugin = require("lazy.core.config").spec.plugins.AstroNvim
