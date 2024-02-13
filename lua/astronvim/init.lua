@@ -41,6 +41,7 @@ function M.init()
     M.config = opts
 
     if not vim.g.mapleader and M.config.mapleader then vim.g.mapleader = M.config.mapleader end
+    if not vim.g.maplocalleader and M.config.maplocalleader then vim.g.maplocalleader = M.config.maplocalleader end
     if M.config.icons_enabled == false then vim.g.icons_enabled = false end
   end
 end
