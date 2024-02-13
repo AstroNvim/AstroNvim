@@ -29,9 +29,6 @@ function M.init()
       })
     end
 
-    if not vim.g.mapleader then vim.g.mapleader = " " end
-    if not vim.g.maplocalleader then vim.g.maplocalleader = "," end
-
     -- force setup during initialization
     local plugin = require("lazy.core.config").spec.plugins.AstroNvim
 
@@ -42,6 +39,9 @@ function M.init()
     opts = vim.tbl_deep_extend("force", M.config, opts)
     ---@cast opts -nil
     M.config = opts
+
+    if not vim.g.mapleader and M.config.mapleader then vim.g.mapleader = M.config.mapleader end
+    if M.config.icons_enabled == false then vim.g.icons_enabled = false end
   end
 end
 
