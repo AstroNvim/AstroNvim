@@ -49,6 +49,7 @@ return {
 
     local g = {}
     g.markdown_recommended_style = 0
+    g.maplocalleader = ","
 
     if not vim.t.bufs then vim.t.bufs = vim.api.nvim_list_bufs() end -- initialize buffer list
     opts.options = { opt = opt, g = g, t = { bufs = vim.t.bufs } }
