@@ -116,11 +116,11 @@ return {
       },
       sign_handlers = sign_handlers,
       setup_colors = function()
-        local astro = require "astrocore"
+        local astroui = require "astroui"
         ---@type AstroUIStatusOpts
-        local status_opts = require("astroui").config.status
+        local status_opts = astroui.config.status
         local color = assert(status_opts.fallback_colors)
-        local get_hlgroup = astro.get_hlgroup
+        local get_hlgroup = astroui.get_hlgroup
         local lualine_mode = require("astroui.status.hl").lualine_mode
         local function resolve_lualine(orig, ...) return (not orig or orig == "NONE") and lualine_mode(...) or orig end
 
@@ -212,7 +212,7 @@ return {
 
         local user_colors = status_opts.colors
         if type(user_colors) == "table" then
-          colors = astro.extend_tbl(colors, user_colors)
+          colors = require("astrocore").extend_tbl(colors, user_colors)
         elseif type(user_colors) == "function" then
           colors = user_colors(colors)
         end
