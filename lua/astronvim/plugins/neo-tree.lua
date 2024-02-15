@@ -72,7 +72,11 @@ return {
         },
       },
       default_component_configs = {
-        indent = { padding = 0 },
+        indent = {
+          padding = 0,
+          expander_collapsed = get_icon "FoldClosed",
+          expander_expanded = get_icon "FoldOpened",
+        },
         icon = {
           folder_closed = get_icon "FolderClosed",
           folder_open = get_icon "FolderOpen",
