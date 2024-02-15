@@ -124,7 +124,6 @@ Some user's might not want to use an entire template or do any customization. He
 ```lua
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.g.astronvim_first_install = true -- lets AstroNvim know that this is an initial installation
   -- stylua: ignore
   vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
 end
