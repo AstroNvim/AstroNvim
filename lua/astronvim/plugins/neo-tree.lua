@@ -24,12 +24,12 @@ return {
             desc = "Open Neo-Tree on startup with directory",
             callback = function()
               if package.loaded["neo-tree"] then
-                vim.api.nvim_del_augroup_by_name "neotree_start"
+                return true
               else
                 local stats = (vim.uv or vim.loop).fs_stat(vim.api.nvim_buf_get_name(0)) -- TODO: REMOVE vim.loop WHEN DROPPING SUPPORT FOR Neovim v0.9
                 if stats and stats.type == "directory" then
-                  vim.api.nvim_del_augroup_by_name "neotree_start"
                   require("lazy").load { plugins = { "neo-tree.nvim" } }
+                  return true
                 end
               end
             end,
