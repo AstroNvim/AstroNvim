@@ -150,7 +150,7 @@ return {
                 or astro.cmd({ "git", "-C", vim.fn.fnamemodify(current_file, ":p:h"), "rev-parse" }, false)
               then
                 astro.event "GitFile"
-                vim.api.nvim_del_augroup_by_name "file_user_events"
+                return true
               end
               vim.schedule(function() vim.api.nvim_exec_autocmds("CursorMoved", { modeline = false }) end)
             end
