@@ -1,5 +1,6 @@
 return {
   "lukas-reineke/indent-blankline.nvim",
+  branch = "current-indent",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     {
@@ -13,7 +14,8 @@ return {
   main = "ibl",
   opts = {
     indent = { char = "▏" },
-    scope = { show_start = false, show_end = false },
+    current_indent = { enabled = true, show_start = false, show_end = false },
+    scope = { enabled = false },
     exclude = {
       buftypes = {
         "nofile",
