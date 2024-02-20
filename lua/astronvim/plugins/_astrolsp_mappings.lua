@@ -59,7 +59,7 @@ return {
       cond = "textDocument/implementation",
     }
 
-    maps.n["<Leader>uH"] = {
+    maps.n["<Leader>uh"] = {
       function() require("astrolsp.toggles").buffer_inlay_hints() end,
       desc = "Toggle LSP inlay hints (buffer)",
       cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
