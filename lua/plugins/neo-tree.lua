@@ -7,7 +7,7 @@ return {
   opts = function()
     local utils = require "astronvim.utils"
     local get_icon = utils.get_icon
-    return {
+    local opts = {
       auto_clean_after_session_restore = true,
       close_if_last_window = true,
       sources = { "filesystem", "buffers", "git_status" },
@@ -103,13 +103,6 @@ return {
             end
           end)
         end,
-        find_in_dir = function(state)
-          local node = state.tree:get_node()
-          local path = node:get_id()
-          require("telescope.builtin").find_files {
-            cwd = node.type == "directory" and path or vim.fn.fnamemodify(path, ":h"),
-          }
-        end,
       },
       window = {
         width = 30,
@@ -117,7 +110,6 @@ return {
           ["<space>"] = false, -- disable space until we figure out which-key disabling
           ["[b"] = "prev_source",
           ["]b"] = "next_source",
-          F = utils.is_available "telescope.nvim" and "find_in_dir" or nil,
           O = "system_open",
           Y = "copy_selector",
           h = "parent_or_close",
@@ -141,5 +133,33 @@ return {
         },
       },
     }
+
+    if utils.is_available "telescope.nvim" then
+      opts.commands.find_in_dir = function(state)
+        local node = state.tree:get_node()
+        local path = node.type == "file" and node:get_parent_id() or node:get_id()
+        require("telescope.builtin").find_files { cwd = path }
+      end
+      opts.window.mappings.F = "find_in_dir"
+    end
+
+    if utils.is_available "toggleterm.nvim" then
+      local toggleterm_in_direction = function(state, direction)
+        local node = state.tree:get_node()
+        local path = node.type == "file" and node:get_parent_id() or node:get_id()
+        require("toggleterm.terminal").Terminal:new({ dir = path, direction = direction }):toggle()
+      end
+      local prefix = "T"
+      ---@diagnostic disable-next-line: assign-type-mismatch
+      opts.window.mappings[prefix] =
+        { "show_help", nowait = false, config = { title = "New Terminal", prefix_key = prefix } }
+      for suffix, direction in pairs { f = "float", h = "horizontal", v = "vertical" } do
+        local command = "toggleterm_" .. direction
+        opts.commands[command] = function(state) toggleterm_in_direction(state, direction) end
+        opts.window.mappings[prefix .. suffix] = command
+      end
+    end
+
+    return opts
   end,
 }
