@@ -152,7 +152,6 @@ return {
                 astro.event "GitFile"
                 return true
               end
-              vim.schedule(function() vim.api.nvim_exec_autocmds("CursorMoved", { modeline = false }) end)
             end
           end,
         },
