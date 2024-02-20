@@ -6,7 +6,7 @@ return {
       "AstroNvim/astrocore",
       opts = function(_, opts)
         local maps = opts.mappings
-        maps.n["<Leader>uI"] = { "<Cmd>IBLToggle<CR>", desc = "Toggle indent guides" }
+        maps.n["<Leader>u|"] = { "<Cmd>IBLToggle<CR>", desc = "Toggle indent guides" }
       end,
     },
   },
