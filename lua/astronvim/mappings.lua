@@ -255,28 +255,8 @@ if is_available "telescope.nvim" then
   maps.n["<leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }
   maps.n["<leader>f/"] =
     { function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Find words in current buffer" }
-  maps.n["<leader>fa"] = {
-    function()
-      local cwd = vim.fn.stdpath "config" .. "/.."
-      local search_dirs = {}
-      for _, dir in ipairs(astronvim.supported_configs) do -- search all supported config locations
-        if dir == astronvim.install.home then dir = dir .. "/lua/user" end -- don't search the astronvim core files
-        if vim.fn.isdirectory(dir) == 1 then table.insert(search_dirs, dir) end -- add directory to search if exists
-      end
-      if vim.tbl_isempty(search_dirs) then -- if no config folders found, show warning
-        utils.notify("No user configuration files found", vim.log.levels.WARN)
-      else
-        if #search_dirs == 1 then cwd = search_dirs[1] end -- if only one directory, focus cwd
-        require("telescope.builtin").find_files {
-          prompt_title = "Config Files",
-          search_dirs = search_dirs,
-          cwd = cwd,
-          follow = true,
-        } -- call telescope
-      end
-    end,
-    desc = "Find AstroNvim config files",
-  }
+  maps.n["<leader>fa"] =
+    { function() require("astronvim.utils.file").find_config_files() end, desc = "Find AstroNvim config files" }
   maps.n["<leader>fb"] = { function() require("telescope.builtin").buffers() end, desc = "Find buffers" }
   maps.n["<leader>fc"] = { function() require("telescope.builtin").grep_string() end, desc = "Find word under cursor" }
   maps.n["<leader>fC"] = { function() require("telescope.builtin").commands() end, desc = "Find commands" }
