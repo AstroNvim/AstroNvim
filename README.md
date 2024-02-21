@@ -5,9 +5,9 @@
 <h1 align="center">AstroNvim</h1>
 
 <h4 align="center">
-  <a href="https://docs.astronvim.com/#%EF%B8%8F-installation">Install</a>
+  <a href="https://docs.astronvim.com/#-installation">Install</a>
   ·
-  <a href="https://docs.astronvim.com/#%EF%B8%8F-configuration">Configure</a>
+  <a href="https://docs.astronvim.com/#-configuration">Configure</a>
   ·
   <a href="https://github.com/AstroNvim/astrocommunity">Community Plugins</a>
   ·
