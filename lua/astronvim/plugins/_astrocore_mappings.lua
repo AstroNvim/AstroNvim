@@ -25,12 +25,16 @@ return {
     -- Normal --
     -- Standard Operations
     maps.n["j"] = { "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Move cursor down" }
+    maps.x["j"] = maps.n["j"]
     maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Move cursor up" }
+    maps.x["k"] = maps.n["k"]
     maps.n["<Leader>w"] = { "<Cmd>w<CR>", desc = "Save" }
     maps.n["<Leader>q"] = { "<Cmd>confirm q<CR>", desc = "Quit" }
     maps.n["<Leader>Q"] = { "<Cmd>confirm qall<CR>", desc = "Quit all" }
     maps.n["<Leader>n"] = { "<Cmd>enew<CR>", desc = "New File" }
-    maps.n["<C-s>"] = { "<Cmd>w!<CR>", desc = "Force write" }
+    maps.n["<C-s>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
+    maps.i["<C-s>"] = { "<Esc>" .. maps.n["<C-s>"][1], desc = maps.n["<C-s>"].desc }
+    maps.x["<C-s>"] = maps.i["<C-s>"]
     maps.n["<C-q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
     maps.n["|"] = { "<Cmd>vsplit<CR>", desc = "Vertical Split" }
     maps.n["\\"] = { "<Cmd>split<CR>", desc = "Horizontal Split" }
