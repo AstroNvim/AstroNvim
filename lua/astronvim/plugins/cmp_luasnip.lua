@@ -43,9 +43,6 @@ return {
         end,
         preselect = cmp.PreselectMode.None,
         formatting = { fields = { "kind", "abbr", "menu" } },
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,
           select = false,
