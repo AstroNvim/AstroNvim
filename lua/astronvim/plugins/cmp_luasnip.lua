@@ -27,8 +27,8 @@ return {
 
       local sources = {}
       for source_plugin, source in pairs {
-        ["cmp-nvim-lsp"] = { name = "nvim_lsp", priority = 1000 },
-        ["cmp-buffer"] = { name = "buffer", priority = 500 },
+        ["cmp-nvim-lsp"] = { name = "nvim_lsp", priority = 1000, group_index = 1 },
+        ["cmp-buffer"] = { name = "buffer", priority = 500, group_index = 2 },
         ["cmp-path"] = { name = "path", priority = 250 },
       } do
         if astro.is_available(source_plugin) then table.insert(sources, source) end
