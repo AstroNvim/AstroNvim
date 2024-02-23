@@ -42,7 +42,7 @@ function M.check()
       end,
     },
     {
-      cmd = { "wslview", "xdg-open", "rundll32", "explorer", "open" },
+      cmd = { "xdg-open", "rundll32", "explorer.exe", "open" },
       type = "warn",
       msg = "Used for `gx` mapping for opening files with system opener (Optional)",
     },
