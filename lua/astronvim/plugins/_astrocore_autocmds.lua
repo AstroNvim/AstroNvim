@@ -146,7 +146,7 @@ return {
             vim.schedule(function()
               local astro = require "astrocore"
               local current_file = vim.api.nvim_buf_get_name(args.buf)
-              if not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
+              if vim.g.vscode or not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
                 astro.event "File"
                 if
                   astro.cmd({ "git", "-C", vim.fn.fnamemodify(current_file, ":p:h"), "rev-parse" }, false)
