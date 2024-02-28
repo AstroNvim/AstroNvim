@@ -31,6 +31,7 @@ return {
   end,
   opts = function()
     return {
+      auto_install = vim.fn.executable "tree-sitter" == 1, -- only enable auto install if `tree-sitter` cli is installed
       highlight = { enable = true },
       incremental_selection = { enable = true },
       indent = { enable = true },
