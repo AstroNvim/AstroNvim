@@ -153,7 +153,7 @@ return {
                   or astro.file_worktree()
                 then
                   astro.event "GitFile"
-                  vim.api.nvim_del_augroup_by_name "file_user_events"
+                  pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
                 end
               end
               vim.b.astrofile_checking = nil
