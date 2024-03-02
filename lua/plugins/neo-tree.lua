@@ -70,6 +70,7 @@ return {
             state.commands.open(state)
           end
         end,
+        open = function(state) state.commands.open(state) end,
         copy_selector = function(state)
           local node = state.tree:get_node()
           local filepath = node:get_id()
