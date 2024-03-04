@@ -22,24 +22,7 @@ return {
         lsp_handlers = true,
         semantic_tokens = true,
       },
-      capabilities = vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), {
-        textDocument = {
-          completion = {
-            completionItem = {
-              documentationFormat = { "markdown", "plaintext" },
-              snippetSupport = true,
-              preselectSupport = true,
-              insertReplaceSupport = true,
-              labelDetailsSupport = true,
-              deprecatedSupport = true,
-              commitCharactersSupport = true,
-              tagSupport = { valueSet = { 1 } },
-              resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
-            },
-          },
-          foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
-        },
-      }),
+      capabilities = vim.lsp.protocol.make_client_capabilities(),
       ---@diagnostic disable-next-line: missing-fields
       config = { lua_ls = { settings = { Lua = { workspace = { checkThirdParty = false } } } } },
       diagnostics = {

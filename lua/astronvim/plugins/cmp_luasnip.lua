@@ -19,7 +19,32 @@ return {
       },
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
-      "hrsh7th/cmp-nvim-lsp",
+      {
+        "hrsh7th/cmp-nvim-lsp",
+        dependencies = {
+          "AstroNvim/astrolsp",
+          optional = true,
+          opts = {
+            capabilities = {
+              textDocument = {
+                completion = {
+                  completionItem = {
+                    documentationFormat = { "markdown", "plaintext" },
+                    snippetSupport = true,
+                    preselectSupport = true,
+                    insertReplaceSupport = true,
+                    labelDetailsSupport = true,
+                    deprecatedSupport = true,
+                    commitCharactersSupport = true,
+                    tagSupport = { valueSet = { 1 } },
+                    resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     event = "InsertEnter",
     opts = function()
