@@ -14,6 +14,13 @@ return {
         maps.n["zp"] = { function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "Peek fold" }
       end,
     },
+    {
+      "AstroNvim/astrolsp",
+      optional = true,
+      opts = {
+        capabilities = { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } },
+      },
+    },
   },
   opts = {
     preview = {
