@@ -1,23 +1,10 @@
 return {
   "AstroNvim/astrolsp",
   lazy = true,
-  dependencies = {
-    {
-      "AstroNvim/astrocore",
-      opts = function(_, opts)
-        local maps = opts.mappings
-        maps.n["<Leader>ud"] = { function() require("astrolsp.toggles").diagnostics() end, desc = "Toggle diagnostics" }
-        maps.n["<Leader>uL"] = { function() require("astrolsp.toggles").codelens() end, desc = "Toggle CodeLens" }
-      end,
-    },
-  },
   opts = function(_, opts)
-    local get_icon = require("astroui").get_icon
-    ---@type AstroLSPOpts
-    local new_opts = {
+    return require("astrocore").extend_tbl(opts, {
       features = {
         codelens = true,
-        diagnostics_mode = 3,
         inlay_hints = false,
         lsp_handlers = true,
         semantic_tokens = true,
@@ -25,35 +12,6 @@ return {
       capabilities = vim.lsp.protocol.make_client_capabilities(),
       ---@diagnostic disable-next-line: missing-fields
       config = { lua_ls = { settings = { Lua = { workspace = { checkThirdParty = false } } } } },
-      diagnostics = {
-        virtual_text = true,
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = get_icon "DiagnosticError",
-            [vim.diagnostic.severity.HINT] = get_icon "DiagnosticHint",
-            [vim.diagnostic.severity.WARN] = get_icon "DiagnosticWarn",
-            [vim.diagnostic.severity.INFO] = get_icon "DiagnosticInfo",
-          },
-        },
-        update_in_insert = true,
-        underline = true,
-        severity_sort = true,
-        float = {
-          focused = false,
-          style = "minimal",
-          border = "rounded",
-          source = "always",
-          header = "",
-          prefix = "",
-        },
-      },
-      signs = {
-        DapBreakpoint = { text = get_icon "DapBreakpoint", texthl = "DiagnosticInfo" },
-        DapBreakpointCondition = { text = get_icon "DapBreakpointCondition", texthl = "DiagnosticInfo" },
-        DapBreakpointRejected = { text = get_icon "DapBreakpointRejected", texthl = "DiagnosticError" },
-        DapLogPoint = { text = get_icon "DapLogPoint", texthl = "DiagnosticInfo" },
-        DapStopped = { text = get_icon "DapStopped", texthl = "DiagnosticWarn" },
-      },
       flags = {},
       formatting = { format_on_save = { enabled = true }, disabled = {} },
       handlers = { function(server, server_opts) require("lspconfig")[server].setup(server_opts) end },
@@ -66,7 +24,6 @@ return {
       },
       servers = {},
       on_attach = nil,
-    }
-    return require("astrocore").extend_tbl(opts, new_opts)
+    } --[[@as AstroLSPOpts]])
   end,
 }
