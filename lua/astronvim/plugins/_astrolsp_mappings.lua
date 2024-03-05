@@ -16,6 +16,11 @@ return {
       { function() vim.lsp.codelens.refresh() end, desc = "LSP CodeLens refresh", cond = "textDocument/codeLens" }
     maps.n["<Leader>lL"] =
       { function() vim.lsp.codelens.run() end, desc = "LSP CodeLens run", cond = "textDocument/codeLens" }
+    maps.n["<Leader>uL"] = {
+      function() require("astrolsp.toggles").codelens() end,
+      desc = "Toggle CodeLens",
+      cond = "textDocument/codeLens",
+    }
 
     maps.n["gD"] = {
       function() vim.lsp.buf.declaration() end,
