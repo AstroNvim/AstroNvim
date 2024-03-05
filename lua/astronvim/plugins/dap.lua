@@ -44,6 +44,7 @@ return {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
+        local get_icon = require("astroui").get_icon
         local maps = opts.mappings
         maps.n["<Leader>d"] = vim.tbl_get(opts, "_map_sections", "d")
         -- modified function keys found with `showkey -a` in the terminal to get key code
@@ -84,6 +85,13 @@ return {
         maps.n["<Leader>dr"] = { function() require("dap").restart_frame() end, desc = "Restart (C-F5)" }
         maps.n["<Leader>dR"] = { function() require("dap").repl.toggle() end, desc = "Toggle REPL" }
         maps.n["<Leader>ds"] = { function() require("dap").run_to_cursor() end, desc = "Run To Cursor" }
+
+        if not opts.signs then opts.signs = {} end
+        opts.signs.DapBreakpoint = { text = get_icon "DapBreakpoint", texthl = "DiagnosticInfo" }
+        opts.signs.DapBreakpointCondition = { text = get_icon "DapBreakpointCondition", texthl = "DiagnosticInfo" }
+        opts.signs.DapBreakpointRejected = { text = get_icon "DapBreakpointRejected", texthl = "DiagnosticError" }
+        opts.signs.DapLogPoint = { text = get_icon "DapLogPoint", texthl = "DiagnosticInfo" }
+        opts.signs.DapStopped = { text = get_icon "DapStopped", texthl = "DiagnosticWarn" }
       end,
     },
   },
