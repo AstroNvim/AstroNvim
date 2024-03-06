@@ -7,7 +7,7 @@ return {
       opts = function(_, opts)
         local maps = opts.mappings
         maps.n["<Leader>/"] = {
-          function() require("Comment.api").toggle.linewise.count(vim.v.count > 0 and vim.v.count or 1) end,
+          function() require("Comment.api").toggle.linewise.count(vim.v.count1) end,
           desc = "Toggle comment line",
         }
         maps.v["<Leader>/"] = {

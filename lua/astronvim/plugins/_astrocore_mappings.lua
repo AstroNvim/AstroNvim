@@ -56,19 +56,19 @@ return {
     maps.n["<Leader>c"] = { function() require("astrocore.buffer").close() end, desc = "Close buffer" }
     maps.n["<Leader>C"] = { function() require("astrocore.buffer").close(0, true) end, desc = "Force close buffer" }
     maps.n["]b"] = {
-      function() require("astrocore.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end,
+      function() require("astrocore.buffer").nav(vim.v.count1) end,
       desc = "Next buffer",
     }
     maps.n["[b"] = {
-      function() require("astrocore.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
+      function() require("astrocore.buffer").nav(-vim.v.count1) end,
       desc = "Previous buffer",
     }
     maps.n[">b"] = {
-      function() require("astrocore.buffer").move(vim.v.count > 0 and vim.v.count or 1) end,
+      function() require("astrocore.buffer").move(vim.v.count1) end,
       desc = "Move buffer tab right",
     }
     maps.n["<b"] = {
-      function() require("astrocore.buffer").move(-(vim.v.count > 0 and vim.v.count or 1)) end,
+      function() require("astrocore.buffer").move(-vim.v.count1) end,
       desc = "Move buffer tab left",
     }
 
