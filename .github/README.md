@@ -29,14 +29,15 @@
     <img src="https://img.shields.io/endpoint?url=https://waka.mehalter.com/api/compat/shields/v1/mehalter/interval:any/label:AstroNvim&style=for-the-badge&label=wakatime&logo=wakatime&color=a6da95&logoColor=D9E0EE&labelColor=302D41"/>
     <br>
     <a href="https://www.twitter.com/AstroNvim">
-      <img src="https://img.shields.io/twitter/follow/AstroNvim?style=for-the-badge&logo=twitter&color=fab387&logoColor=D9E0EE&labelColor=302D41"/>
+      <img src="https://img.shields.io/badge/@AstroNvim-e05d44?style=for-the-badge&logo=twitter&color=fab387&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
     <a href="https://hachyderm.io/@AstroNvim">
-      <img src="https://img.shields.io/mastodon/follow/110685512385862046?domain=https%3A%2F%2Fhachyderm.io&style=for-the-badge&logo=mastodon&color=eebebe&logoColor=D9E0EE&labelColor=302D41"/>
+      <img src="https://img.shields.io/badge/@AstroNvim-e05d44?domain=https%3A%2F%2Fhachyderm.io&style=for-the-badge&logo=mastodon&color=eebebe&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
     <a href="https://www.reddit.com/r/AstroNvim/">
-      <img src="https://img.shields.io/reddit/subreddit-subscribers/AstroNvim?style=for-the-badge&logo=reddit&color=ee99a0&logoColor=D9E0EE&labelColor=302D41"/>
+      <img src="https://img.shields.io/badge/%2Fr%2FAstroNvim-e05d44?style=for-the-badge&logo=reddit&color=ee99a0&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
+    <br>
     <a href="https://discord.astronvim.com">
       <img src="https://img.shields.io/discord/939594913560031363?style=for-the-badge&logo=discord&color=cba6f7&logoColor=D9E0EE&labelColor=302D41"/>
     </a>
