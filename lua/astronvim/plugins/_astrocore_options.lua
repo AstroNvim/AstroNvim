@@ -8,6 +8,7 @@ return {
     opt.clipboard = "unnamedplus" -- connection to the system clipboard
     opt.cmdheight = 0 -- hide command line unless needed
     opt.completeopt = { "menu", "menuone", "noselect" } -- Options for insert mode completion
+    opt.confirm = true -- raise a dialog asking if you wish to save the current file(s)
     opt.copyindent = true -- copy the previous indentation on autoindenting
     opt.cursorline = true -- highlight the text line of the cursor
     opt.diffopt = vim.list_extend(vim.opt.diffopt:get(), { "algorithm:histogram", "linematch:60" }) -- enable linematch diff algorithm
