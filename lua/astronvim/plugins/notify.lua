@@ -21,7 +21,10 @@ return {
     on_open = function(win)
       local astrocore = require "astrocore"
       vim.api.nvim_win_set_config(win, { zindex = 175 })
-      if not astrocore.config.features.notifications then vim.api.nvim_win_close(win, true) end
+      if not astrocore.config.features.notifications then
+        vim.api.nvim_win_close(win, true)
+        return
+      end
       if astrocore.is_available "nvim-treesitter" then require("lazy").load { plugins = { "nvim-treesitter" } } end
       vim.wo[win].conceallevel = 3
       local buf = vim.api.nvim_win_get_buf(win)
