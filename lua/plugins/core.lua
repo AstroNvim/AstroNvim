@@ -119,12 +119,9 @@ return {
       },
       size = 10,
       ---@param t Terminal
-      on_create = function(t)
-        vim.opt.foldcolumn = "0"
-        vim.opt.signcolumn = "no"
-        local toggle = function() t:toggle() end
-        vim.keymap.set({ "n", "t", "i" }, "<C-'>", toggle, { desc = "Toggle terminal", buffer = t.bufnr })
-        vim.keymap.set({ "n", "t", "i" }, "<F7>", toggle, { desc = "Toggle terminal", buffer = t.bufnr })
+      on_create = function()
+        vim.opt_local.foldcolumn = "0"
+        vim.opt_local.signcolumn = "no"
       end,
       shading_factor = 2,
       direction = "float",
