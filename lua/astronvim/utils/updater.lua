@@ -59,7 +59,7 @@ function M.generate_snapshot(write)
         file:write(
           ( -- add hard code for neovim 0.8 support
             plugin[1] == "nvim-treesitter/nvim-treesitter"
-              and 'vim.fn.has "nvim-0.9" ~= 1 and "63260da18bf273c76b8e2ea0db84eb901cab49ce" or %q'
+              and 'commit = vim.fn.has "nvim-0.9" ~= 1 and "63260da18bf273c76b8e2ea0db84eb901cab49ce" or %q'
             or "commit = %q"
           ):format(plugin.commit)
         )
