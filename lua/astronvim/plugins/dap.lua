@@ -32,6 +32,7 @@ return {
             maps.v["<Leader>dE"] = { function() require("dapui").eval() end, desc = "Evaluate Input" }
           end,
         },
+        { "nvim-neotest/nvim-nio" },
       },
       opts = { floating = { border = "rounded" } },
       config = function(...) require "astronvim.plugins.configs.nvim-dap-ui"(...) end,
