@@ -353,7 +353,7 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
   maps.n["<F7>"] = { '<Cmd>execute v:count . "ToggleTerm"<CR>', desc = "Toggle terminal" }
   maps.i["<F7>"] = { "<Esc>" .. maps.n["<F7>"][1], desc = maps.n["<F7>"].desc }
-  maps.t["<F7>"] = maps.n["<F7>"]
+  maps.t["<F7>"] = { "<Cmd>ToggleTerm<CR>", desc = "Toggle terminal" }
   maps.n["<C-'>"] = maps.n["<F7>"] -- requires terminal that supports binding <C-'>
   maps.i["<C-'>"] = maps.i["<F7>"] -- requires terminal that supports binding <C-'>
   maps.t["<C-'>"] = maps.t["<F7>"] -- requires terminal that supports binding <C-'>
