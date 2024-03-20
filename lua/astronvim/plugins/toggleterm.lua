@@ -66,9 +66,8 @@ return {
       vim.opt_local.signcolumn = "no"
       if t.hidden then
         local toggle = function() t:toggle() end
-        for _, key in ipairs { "<C-'>", "<F7>" } do
-          vim.keymap.set({ "n", "t", "i" }, key, toggle, { desc = "Toggle terminal", buffer = t.bufnr })
-        end
+        vim.keymap.set({ "n", "t", "i" }, "<C-'>", toggle, { desc = "Toggle terminal", buffer = t.bufnr })
+        vim.keymap.set({ "n", "t", "i" }, "<F7>", toggle, { desc = "Toggle terminal", buffer = t.bufnr })
       end
     end,
     shading_factor = 2,
