@@ -77,13 +77,36 @@ return {
   opts = function()
     local dashboard = require "alpha.themes.dashboard"
 
-    local orig_button = dashboard.button -- customize button function
-    dashboard.button = function(...)
-      return vim.tbl_deep_extend("force", orig_button(...), {
-        opts = { cursor = -2, width = 36, hl = "DashboardCenter", hl_shortcut = "DashboardShortcut" },
-      })
-    end
     dashboard.leader = "LDR"
+
+    --- @param shortcut string Shortcut string of a button mapping
+    --- @param desc string Real text description of the mapping
+    --- @param rhs string? Righthand side of mapping if defining a new mapping (_optional_)
+    --- @param map_opts table? `keymap.set` options used during keymap creating (_optional_)
+    dashboard.button = function(shortcut, desc, rhs, map_opts)
+      -- HACK: fixes leader customization, remove after fixed upstream
+      -- https://github.com/goolord/alpha-nvim/pull/271
+      local lhs = shortcut:gsub("%s", ""):gsub(dashboard.leader, "<Leader>")
+      local default_map_opts = { noremap = true, silent = true, nowait = true, desc = desc }
+
+      return {
+        type = "button",
+        val = desc,
+        on_press = function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(rhs or lhs .. "<Ignore>", true, false, true), "t", false)
+        end,
+        opts = {
+          position = "center",
+          shortcut = shortcut,
+          cursor = -2,
+          width = 36,
+          align_shortcut = "right",
+          hl = "DashboardCenter",
+          hl_shortcut = "DashboardShortcut",
+          keymap = rhs and { "n", lhs, rhs, require("astrocore").extend_tbl(default_map_opts, map_opts) },
+        },
+      }
+    end
 
     dashboard.section.header.val = {
       " █████  ███████ ████████ ██████   ██████",
