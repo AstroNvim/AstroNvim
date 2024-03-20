@@ -118,7 +118,6 @@ return {
         WinBarNC = { link = "WinBarNC" },
       },
       size = 10,
-      ---@param t Terminal
       on_create = function()
         vim.opt_local.foldcolumn = "0"
         vim.opt_local.signcolumn = "no"
