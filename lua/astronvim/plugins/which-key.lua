@@ -2,7 +2,7 @@ return {
   "folke/which-key.nvim",
   event = "VeryLazy",
   opts = {
-    icons = { group = vim.g.icons_enabled ~= false and "" or "+", separator = "" },
+    icons = vim.g.icons_enabled ~= false and { group = "", separator = "" } or { group = "+", separator = "-" },
     disable = { filetypes = { "TelescopePrompt" } },
   },
 }
