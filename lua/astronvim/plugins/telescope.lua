@@ -87,13 +87,19 @@ return {
         local maps = opts.mappings
         maps.n["<Leader>lD"] =
           { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
-        if maps.n.gd then maps.n.gd[1] = function() require("telescope.builtin").lsp_definitions() end end
-        if maps.n.gI then maps.n.gI[1] = function() require("telescope.builtin").lsp_implementations() end end
+        if maps.n.gd then
+          maps.n.gd[1] = function() require("telescope.builtin").lsp_definitions { reuse_win = true } end
+        end
+        if maps.n.gI then
+          maps.n.gI[1] = function() require("telescope.builtin").lsp_implementations { reuse_win = true } end
+        end
         if maps.n.gr then maps.n.gr[1] = function() require("telescope.builtin").lsp_references() end end
         if maps.n["<Leader>lR"] then
           maps.n["<Leader>lR"][1] = function() require("telescope.builtin").lsp_references() end
         end
-        if maps.n.gT then maps.n.gT[1] = function() require("telescope.builtin").lsp_type_definitions() end end
+        if maps.n.gy then
+          maps.n.gy[1] = function() require("telescope.builtin").lsp_type_definitions { reuse_win = true } end
+        end
         if maps.n["<Leader>lG"] then
           maps.n["<Leader>lG"][1] = function()
             vim.ui.input({ prompt = "Symbol Query: (leave empty for word under cursor)" }, function(query)

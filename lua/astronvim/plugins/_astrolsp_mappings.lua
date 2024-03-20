@@ -83,8 +83,9 @@ return {
 
     maps.n["<Leader>lh"] =
       { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
+    maps.n["gK"] = maps.n["<Leader>lh"]
 
-    maps.n["gT"] = {
+    maps.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,
       desc = "Definition of current type",
       cond = "textDocument/typeDefinition",
