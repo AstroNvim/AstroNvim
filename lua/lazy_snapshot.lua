@@ -36,7 +36,7 @@ return {
   { "nvim-telescope/telescope-fzf-native.nvim", commit = "9ef21b2e6bb6ebeaf349a0781745549bbb870d27", optional = true },
   { "nvim-telescope/telescope.nvim", version = "^0.1", optional = true },
   { "nvim-tree/nvim-web-devicons", commit = "cb0c967c9723a76ccb1be0cc3a9a10e577d2f6ec", optional = true },
-  { "nvim-treesitter/nvim-treesitter", commit = vim.fn.has "nvim-0.9" ~= 1 and "63260da18bf273c76b8e2ea0db84eb901cab49ce" or "93a9632b63c1a6878551b37688e0884c04178525", optional = true },
+  { "nvim-treesitter/nvim-treesitter", commit = vim.fn.has "nvim-0.9" ~= 1 and "63260da18bf273c76b8e2ea0db84eb901cab49ce" or "36860295919fb18e57cd637b2a5f22e16f750c2f", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4", optional = true },
   { "onsails/lspkind.nvim", commit = "1735dd5a5054c1fb7feaf8e8658dbab925f4f0cf", optional = true },
   { "rafamadriz/friendly-snippets", commit = "dcd4a586439a1c81357d5b9d26319ae218cc9479", optional = true },
