@@ -188,7 +188,10 @@ return {
       event_handlers = {
         {
           event = "neo_tree_buffer_enter",
-          handler = function(_) vim.opt_local.signcolumn = "auto" end,
+          handler = function(_)
+            vim.opt_local.signcolumn = "auto"
+            vim.opt_local.foldcolumn = "0"
+          end,
         },
       },
     }
