@@ -1,0 +1,21 @@
+name: AstroNvim
+on:
+  push:
+    branches: [main]
+  pull_request:
+  pull_request_target:
+    types: [opened, edited, synchronize]
+
+jobs:
+  CI:
+    uses: AstroNvim/.github/.github/workflows/plugin_ci.yml@main
+    if: ${{ github.event_name != 'pull_request_target' }}
+    secrets: inherit
+    with:
+      plugin_name: ${{ github.event.repository.name }}
+      is_production: ${{ github.event_name == 'push' }}
+      docs: false
+  PR:
+    uses: AstroNvim/.github/.github/workflows/validate_pr.yml@main
+    if: ${{ github.event_name == 'pull_request_target' }}
+    secrets: inherit
