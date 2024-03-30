@@ -148,10 +148,9 @@ return {
               local current_file = vim.api.nvim_buf_get_name(args.buf)
               if vim.g.vscode or not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
                 astro.event "File"
-                if
-                  astro.cmd({ "git", "-C", vim.fn.fnamemodify(current_file, ":p:h"), "rev-parse" }, false)
-                  or astro.file_worktree()
-                then
+                local folder = vim.fn.fnamemodify(current_file, ":p:h")
+                if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
+                if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
                   astro.event "GitFile"
                   pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
                 end
