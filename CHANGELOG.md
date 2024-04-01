@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.1](https://github.com/AstroNvim/AstroNvim/compare/v4.1.0...v4.1.1) (2024-04-01)
+
+
+### Bug Fixes
+
+* **plugins:** explicitly mark all dependencies as `lazy = true` ([dbd3d13](https://github.com/AstroNvim/AstroNvim/commit/dbd3d1320459913bb6cadb3c932ccc986ccb57df))
+
 ## [4.1.0](https://github.com/AstroNvim/AstroNvim/compare/v4.0.0...v4.1.0) (2024-04-01)
 
 
