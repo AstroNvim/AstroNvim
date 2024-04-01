@@ -86,6 +86,7 @@ AstroNvim is an aesthetically pleasing and feature-rich neovim config that is ex
 
 ## 🛠️ Installation
 
+AstroNvim is provided as a plugin that can be installed with the [`lazy.nvim`](https://github.com/folke/lazy.nvim) plugin manager and then used to import all of the plugin configurations that AstroNvim provides. To quickly get started it is recommended to start with the official [AstroNvim Template](https://github.com/AstroNvim/template) which provides a great starting point for a new AstroNvim based configuration.
 ### Linux/Mac OS (Unix)
 
 #### Make a backup of your current nvim and shared folder
@@ -93,6 +94,8 @@ AstroNvim is an aesthetically pleasing and feature-rich neovim config that is ex
 ```shell
 mv ~/.config/nvim ~/.config/nvim.bak
 mv ~/.local/share/nvim ~/.local/share/nvim.bak
+mv ~/.local/state/nvim ~/.local/state/nvim.bak
+mv ~/.cache/nvim ~/.cache/nvim.bak
 ```
 
 #### Clone the repository
@@ -115,6 +118,7 @@ Rename-Item -Path $env:LOCALAPPDATA\nvim-data -NewName $env:LOCALAPPDATA\nvim-da
 
 ```pwsh
 git clone --depth 1 https://github.com/AstroNvim/AstroNvim $env:LOCALAPPDATA\nvim
+Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
 nvim
 ```
 
