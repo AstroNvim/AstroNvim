@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/AstroNvim/AstroNvim/compare/v4.0.0...v4.1.0) (2024-04-01)
+
+
+### Features
+
+* **dap:** enable dap on windows by default ([8d8f18d](https://github.com/AstroNvim/AstroNvim/commit/8d8f18d127b70e10a4e92fecb96a9d0eff75d49e))
+
+
+### Bug Fixes
+
+* **colorizer:** attach colorizer immediately after lazy loading ([f56a332](https://github.com/AstroNvim/AstroNvim/commit/f56a33276d8446cd562cc140ff0aa6673ae6e3b0))
+
 ## [4.0.0](https://github.com/AstroNvim/AstroNvim/compare/v3.45.3...v4.0.0) (2024-04-01)
 
 
