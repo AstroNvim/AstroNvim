@@ -3,7 +3,7 @@ return {
   cmd = { "TodoTrouble", "TodoTelescope", "TodoLocList", "TodoQuickFix" },
   event = "User AstroFile",
   dependencies = {
-    "nvim-lua/plenary.nvim",
+    { "nvim-lua/plenary.nvim", lazy = true },
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

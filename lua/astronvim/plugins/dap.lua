@@ -11,8 +11,9 @@ return {
     },
     {
       "rcarriga/nvim-dap-ui",
+      lazy = true,
       dependencies = {
-        "nvim-neotest/nvim-nio",
+        { "nvim-neotest/nvim-nio", lazy = true },
         {
           "AstroNvim/astrocore",
           opts = function(_, opts)
@@ -38,6 +39,7 @@ return {
     },
     {
       "rcarriga/cmp-dap",
+      lazy = true,
       dependencies = { "hrsh7th/nvim-cmp" },
       config = function(...) require "astronvim.plugins.configs.cmp-dap"(...) end,
     },

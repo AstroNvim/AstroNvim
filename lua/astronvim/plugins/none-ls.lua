@@ -2,7 +2,7 @@ return {
   "nvimtools/none-ls.nvim",
   main = "null-ls",
   dependencies = {
-    "nvim-lua/plenary.nvim",
+    { "nvim-lua/plenary.nvim", lazy = true },
     {
       "AstroNvim/astrolsp",
       opts = function(_, opts)

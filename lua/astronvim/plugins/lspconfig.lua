@@ -9,7 +9,7 @@ return {
           { "<Cmd>LspInfo<CR>", desc = "LSP information", cond = function() return vim.fn.exists ":LspInfo" > 0 end }
       end,
     },
-    { "folke/neoconf.nvim", opts = {} },
+    { "folke/neoconf.nvim", lazy = true, opts = {} },
     {
       "williamboman/mason-lspconfig.nvim",
       dependencies = { "williamboman/mason.nvim" },

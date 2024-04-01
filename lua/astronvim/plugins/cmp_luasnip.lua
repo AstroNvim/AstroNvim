@@ -17,10 +17,11 @@ return {
             { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion (global)" }
         end,
       },
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
+      { "hrsh7th/cmp-buffer", lazy = true },
+      { "hrsh7th/cmp-path", lazy = true },
       {
         "hrsh7th/cmp-nvim-lsp",
+        lazy = true,
         dependencies = {
           "AstroNvim/astrolsp",
           optional = true,
@@ -129,10 +130,10 @@ return {
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
       or nil,
     dependencies = {
-      "rafamadriz/friendly-snippets",
+      { "rafamadriz/friendly-snippets", lazy = true },
       {
         "hrsh7th/nvim-cmp",
-        dependencies = { "saadparwaiz1/cmp_luasnip" },
+        dependencies = { { "saadparwaiz1/cmp_luasnip", lazy = true } },
         opts = function(_, opts)
           local luasnip, cmp = require "luasnip", require "cmp"
 

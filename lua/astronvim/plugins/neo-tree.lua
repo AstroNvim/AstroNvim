@@ -1,8 +1,8 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   dependencies = {
-    "nvim-lua/plenary.nvim",
-    "MunifTanjim/nui.nvim",
+    { "nvim-lua/plenary.nvim", lazy = true },
+    { "MunifTanjim/nui.nvim", lazy = true },
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

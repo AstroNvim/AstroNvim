@@ -2,7 +2,7 @@ return {
   "kevinhwang91/nvim-ufo",
   event = { "User AstroFile", "InsertEnter" },
   dependencies = {
-    "kevinhwang91/promise-async",
+    { "kevinhwang91/promise-async", lazy = true },
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
