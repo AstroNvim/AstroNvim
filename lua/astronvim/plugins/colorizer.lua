@@ -12,4 +12,5 @@ return {
   event = "User AstroFile",
   cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
   opts = { user_default_options = { names = false } },
+  config = function(...) require "astronvim.plugins.configs.colorizer"(...) end,
 }
