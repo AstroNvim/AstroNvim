@@ -23,22 +23,25 @@ function M.generate_snapshot(write)
     file = assert(io.open(astronvim.dir .. "/lua/astronvim/lazy_snapshot.lua", "w"))
     file:write "return {\n"
   end
-  local snapshot = vim.tbl_map(function(plugin)
-    plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
-    if prev_snapshot[plugin[1]] and prev_snapshot[plugin[1]].version then
-      plugin.version = prev_snapshot[plugin[1]].version
-    end
-    if file then
-      file:write(("  { %q, "):format(plugin[1]))
-      if plugin.version then
-        file:write(("version = %q"):format(plugin.version))
-      else
-        file:write(("commit = %q"):format(plugin.commit))
+  local snapshot = {}
+  for _, plugin in ipairs(plugins) do
+    if plugin[1] ~= "AstroNvim/AstroNvim" then
+      plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
+      if prev_snapshot[plugin[1]] and prev_snapshot[plugin[1]].version then
+        plugin.version = prev_snapshot[plugin[1]].version
       end
-      file:write ", optional = true },\n"
+      if file then
+        file:write(("  { %q, "):format(plugin[1]))
+        if plugin.version then
+          file:write(("version = %q"):format(plugin.version))
+        else
+          file:write(("commit = %q"):format(plugin.commit))
+        end
+        file:write ", optional = true },\n"
+      end
+      table.insert(snapshot, plugin)
     end
-    return plugin
-  end, plugins)
+  end
   if file then
     file:write "}\n"
     file:close()
