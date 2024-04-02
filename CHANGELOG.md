@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/AstroNvim/AstroNvim/compare/v4.1.3...v4.2.0) (2024-04-02)
+
+
+### Features
+
+* **none-ls:** add `none-ls-extras.nvim` out of the box ([a0499ab](https://github.com/AstroNvim/AstroNvim/commit/a0499ab8985716c1247b65f48c4a9b35e23263ca))
+
 ## [4.1.3](https://github.com/AstroNvim/AstroNvim/compare/v4.1.2...v4.1.3) (2024-04-02)
 
 
