@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.3](https://github.com/AstroNvim/AstroNvim/compare/v4.1.2...v4.1.3) (2024-04-02)
+
+
+### Bug Fixes
+
+* **cmp:** guarantee all sources have a group index ([568da53](https://github.com/AstroNvim/AstroNvim/commit/568da5323cb17652d6eb7536a7668e83398260e9))
+* **resession:** enable AstroCore resession extension for single tab restore ([0c9f87b](https://github.com/AstroNvim/AstroNvim/commit/0c9f87bff8232d3efbebdb3d8725ac65887dc28a))
+
 ## [4.1.2](https://github.com/AstroNvim/AstroNvim/compare/v4.1.1...v4.1.2) (2024-04-02)
 
 
