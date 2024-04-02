@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.2](https://github.com/AstroNvim/AstroNvim/compare/v4.1.1...v4.1.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **lspkind:** improve `cmp` and `lspkind` integration and loading order ([e1a5eca](https://github.com/AstroNvim/AstroNvim/commit/e1a5ecac5fc4dd2a157e466b5edbad49fca461aa))
+
 ## [4.1.1](https://github.com/AstroNvim/AstroNvim/compare/v4.1.0...v4.1.1) (2024-04-01)
 
 
