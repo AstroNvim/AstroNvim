@@ -41,6 +41,7 @@ return {
   { "nvim-treesitter/nvim-treesitter", commit = "30492e7e1c9e5af3642e8a74c2f88dc1f50ec305", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "d2a4ffc22d9d38d44edb73da007b3cf43451e9b4", optional = true },
   { "nvimtools/none-ls.nvim", commit = "e632688737b6b878e900ac69179a9aae734bb331", optional = true },
+  { "nvimtools/none-ls-extras.nvim", commit = "b82a1018ca196e9d496e3754856de55508c76aef", optional = true },
   { "onsails/lspkind.nvim", commit = "1735dd5a5054c1fb7feaf8e8658dbab925f4f0cf", optional = true },
   { "rafamadriz/friendly-snippets", commit = "ea068f1becd91bcd4591fceb6420d4335e2e14d3", optional = true },
   { "rcarriga/cmp-dap", commit = "ea92773e84c0ad3288c3bc5e452ac91559669087", optional = true },
