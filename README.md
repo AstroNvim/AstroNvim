@@ -175,14 +175,11 @@ Run `:AstroUpdatePackages` (`<leader>pa`) to update both Neovim plugins and Maso
 
 ## 🗒️ Links
 
-[AstroNvim Website](https://astronvim.com)
-[AstroNvim Documentation](https://docs.astronvim.com)
-[Core AstroNvim LUA API Documentation](https://api.astronvim.com)
-
-- [Basic Usage](https://docs.astronvim.com/basic-usage/walkthrough) is given for basic usage
-- [Default Mappings](https://docs.astronvim.com/basic-usage/mappings) more about the default key bindings
-- [Default Plugin Configuration](https://docs.astronvim.com/configuration/plugin_defaults) more about the provided plugin defaults
-- [Advanced Configuration](https://docs.astronvim.com/configuration/config_options) more about advanced configuration
+- [AstroNvim Website](https://astronvim.com)
+- [AstroNvim Documentation](https://docs.astronvim.com)
+- [Setup](https://docs.astronvim.com/#-setup) is given for basic editor setup after installation
+- [Default Mappings](https://docs.astronvim.com/mappings) more about the default key bindings
+- [Customizing Plugins](https://docs.astronvim.com/configuration/customizing_plugins/) more about configuring and adding plugins
 
 ### 📹 Videos
 
@@ -200,7 +197,7 @@ If you plan to contribute, please check the [contribution guidelines](https://gi
 
 Sincere appreciation to the following repositories, plugin authors and the entire neovim community out there that made the development of AstroNvim possible.
 
-- [Plugins](https://docs.astronvim.com/acknowledgements#plugins-used-in-astronvim)
+- [Plugins](https://docs.astronvim.com/reference/default_plugins/)
 - [NvChad](https://github.com/NvChad/NvChad)
 - [LunarVim](https://github.com/LunarVim)
 - [CosmicVim](https://github.com/CosmicNvim/CosmicNvim)
