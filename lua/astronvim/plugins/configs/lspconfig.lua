@@ -1,7 +1,6 @@
 return function(_, _)
   local setup_servers = function()
     vim.tbl_map(require("astrolsp").lsp_setup, require("astrolsp").config.servers)
-    vim.cmd.doautoall "FileType" -- trigger buffer read on each opened buffer
 
     require("astrocore").event "LspSetup"
   end

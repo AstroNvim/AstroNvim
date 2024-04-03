@@ -141,8 +141,8 @@ return {
           event = { "BufReadPost", "BufNewFile", "BufWritePost" },
           desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
           callback = function(args)
-            if vim.b.astrofile_checking then return end
-            vim.b.astrofile_checking = true
+            if vim.b[args.buf].astrofile_checked then return end
+            vim.b[args.buf].astrofile_checked = true
             vim.schedule(function()
               local astro = require "astrocore"
               local current_file = vim.api.nvim_buf_get_name(args.buf)
@@ -154,8 +154,11 @@ return {
                   astro.event "GitFile"
                   pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
                 end
+                vim.schedule(function()
+                  vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf })
+                  vim.api.nvim_exec_autocmds("FileType", { buffer = args.buf })
+                end)
               end
-              vim.b.astrofile_checking = nil
             end)
           end,
         },
