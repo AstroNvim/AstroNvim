@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.5](https://github.com/AstroNvim/AstroNvim/compare/v4.1.4...v4.1.5) (2024-04-03)
+
+
+### Bug Fixes
+
+* **telescope:** load treesitter with telescope ([7462fb1](https://github.com/AstroNvim/AstroNvim/commit/7462fb100799ac8c9ec1968df2d97baf766d6853))
+
 ## [4.1.4](https://github.com/AstroNvim/AstroNvim/compare/v4.1.3...v4.1.4) (2024-04-03)
 
 
