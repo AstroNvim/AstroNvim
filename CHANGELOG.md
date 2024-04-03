@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.4](https://github.com/AstroNvim/AstroNvim/compare/v4.1.3...v4.1.4) (2024-04-03)
+
+
+### Bug Fixes
+
+* **autocmds:** fully retrigger original autocmd event after `AstroFile` ([112e209](https://github.com/AstroNvim/AstroNvim/commit/112e209d75bb728ecff416811c52a495531675d0))
+
 ## [4.1.3](https://github.com/AstroNvim/AstroNvim/compare/v4.1.2...v4.1.3) (2024-04-02)
 
 
