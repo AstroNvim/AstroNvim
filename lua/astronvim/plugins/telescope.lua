@@ -8,6 +8,7 @@ return {
       enabled = vim.fn.executable "make" == 1,
       build = "make",
     },
+    { "nvim-treesitter/nvim-treesitter" },
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
