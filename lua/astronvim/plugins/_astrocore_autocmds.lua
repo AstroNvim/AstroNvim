@@ -155,8 +155,10 @@ return {
                   pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
                 end
                 vim.schedule(function()
-                  vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf })
-                  vim.api.nvim_exec_autocmds("FileType", { buffer = args.buf })
+                  if require("astrocore.buffer").is_valid(args.buf) then
+                    vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf, data = args.data })
+                    if vim.bo[args.buf].filetype then vim.api.nvim_exec_autocmds("FileType", { buffer = args.buf }) end
+                  end
                 end)
               end
             end)
