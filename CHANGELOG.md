@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.6](https://github.com/AstroNvim/AstroNvim/compare/v4.1.5...v4.1.6) (2024-04-04)
+
+
+### Bug Fixes
+
+* **autocmds:** when triggering `AstroFile` events, only forward events for valid buffers ([3bf88e0](https://github.com/AstroNvim/AstroNvim/commit/3bf88e035e302a15504e1074018cb11e51fc1076))
+
 ## [4.1.5](https://github.com/AstroNvim/AstroNvim/compare/v4.1.4...v4.1.5) (2024-04-03)
 
 
