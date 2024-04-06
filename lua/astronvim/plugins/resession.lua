@@ -32,6 +32,8 @@ return {
               local buf_utils = require "astrocore.buffer"
               local autosave = buf_utils.sessions.autosave
               if autosave and buf_utils.is_valid_session() then
+                -- Safely attempt to close Neo-tree if it's open
+                pcall(function() require("neo-tree").close_all() end)
                 local save = require("resession").save
                 if autosave.last then save("Last Session", { notify = false }) end
                 if autosave.cwd then save(vim.fn.getcwd(), { dir = "dirsession", notify = false }) end
