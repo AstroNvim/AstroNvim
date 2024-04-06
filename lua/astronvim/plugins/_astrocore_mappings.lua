@@ -29,8 +29,8 @@ return {
     maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Move cursor up" }
     maps.x["k"] = maps.n["k"]
     maps.n["<Leader>w"] = { "<Cmd>w<CR>", desc = "Save" }
-    maps.n["<Leader>q"] = { "<Cmd>confirm q<CR>", desc = "Quit" }
-    maps.n["<Leader>Q"] = { "<Cmd>confirm qall<CR>", desc = "Quit all" }
+    maps.n["<Leader>q"] = { "<Cmd>confirm q<CR>", desc = "Quit Window" }
+    maps.n["<Leader>Q"] = { "<Cmd>confirm qall<CR>", desc = "Exit AstroNvim" }
     maps.n["<Leader>n"] = { "<Cmd>enew<CR>", desc = "New File" }
     maps.n["<C-s>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
     maps.i["<C-s>"] = { "<Esc>" .. maps.n["<C-s>"][1], desc = maps.n["<C-s>"].desc }
