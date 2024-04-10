@@ -144,6 +144,7 @@ return {
             if vim.b[args.buf].astrofile_checked then return end
             vim.b[args.buf].astrofile_checked = true
             vim.schedule(function()
+              if not vim.api.nvim_buf_is_valid(args.buf) then return end
               local astro = require "astrocore"
               local current_file = vim.api.nvim_buf_get_name(args.buf)
               if vim.g.vscode or not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
