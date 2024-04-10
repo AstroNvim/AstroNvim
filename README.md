@@ -80,13 +80,16 @@ AstroNvim is an aesthetically pleasing and feature-rich neovim config that is ex
   - [Python](https://www.python.org/) - python repl toggle terminal (`<leader>tp`)
   - [Node](https://nodejs.org/en/) - node repl toggle terminal (`<leader>tn`)
 
+> [!NOTE]
 > <sup id="1">[1]</sup> All downloadable Nerd Fonts contain icons which are used by AstroNvim. Install the Nerd Font of your choice to your system and in your terminal emulator settings, set its font face to that Nerd Font. If you are using AstroNvim on a remote system via SSH, you do not need to install the font on the remote system.
 
+> [!NOTE]
 > <sup id="2">[2]</sup> Note when using default theme: For MacOS, the default terminal does not have true color support. You will need to use [iTerm2](https://iterm2.com/), [Kitty](https://sw.kovidgoyal.net/kitty/), [WezTerm](https://wezfurlong.org/wezterm/), or another [terminal emulator](https://gist.github.com/XVilka/8346728#terminal-emulators) that has true color support.
 
 ## 🛠️ Installation
 
 AstroNvim is provided as a plugin that can be installed with the [`lazy.nvim`](https://github.com/folke/lazy.nvim) plugin manager and then used to import all of the plugin configurations that AstroNvim provides. To quickly get started it is recommended to start with the official [AstroNvim Template](https://github.com/AstroNvim/template) which provides a great starting point for a new AstroNvim based configuration.
+
 ### Linux/Mac OS (Unix)
 
 #### Make a backup of your current nvim and shared folder
