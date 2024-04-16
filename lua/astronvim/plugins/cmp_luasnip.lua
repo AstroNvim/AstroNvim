@@ -19,33 +19,7 @@ return {
       },
       { "hrsh7th/cmp-buffer", lazy = true },
       { "hrsh7th/cmp-path", lazy = true },
-      {
-        "hrsh7th/cmp-nvim-lsp",
-        lazy = true,
-        dependencies = {
-          "AstroNvim/astrolsp",
-          optional = true,
-          opts = {
-            capabilities = {
-              textDocument = {
-                completion = {
-                  completionItem = {
-                    documentationFormat = { "markdown", "plaintext" },
-                    snippetSupport = true,
-                    preselectSupport = true,
-                    insertReplaceSupport = true,
-                    labelDetailsSupport = true,
-                    deprecatedSupport = true,
-                    commitCharactersSupport = true,
-                    tagSupport = { valueSet = { 1 } },
-                    resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
+      { "hrsh7th/cmp-nvim-lsp", lazy = true },
     },
     event = "InsertEnter",
     opts = function()
@@ -123,6 +97,32 @@ return {
       }
     end,
     config = function(...) require "astronvim.plugins.configs.cmp"(...) end,
+  },
+  {
+    "AstroNvim/astrolsp",
+    optional = true,
+    opts = function(_, opts)
+      local astrocore = require "astrocore"
+      if astrocore.is_available "cmp-nvim-lsp" then
+        opts.capabilities = astrocore.extend_tbl(opts.capabilities, {
+          textDocument = {
+            completion = {
+              completionItem = {
+                documentationFormat = { "markdown", "plaintext" },
+                snippetSupport = true,
+                preselectSupport = true,
+                insertReplaceSupport = true,
+                labelDetailsSupport = true,
+                deprecatedSupport = true,
+                commitCharactersSupport = true,
+                tagSupport = { valueSet = { 1 } },
+                resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
+              },
+            },
+          },
+        })
+      end
+    end,
   },
   {
     "L3MON4D3/LuaSnip",
