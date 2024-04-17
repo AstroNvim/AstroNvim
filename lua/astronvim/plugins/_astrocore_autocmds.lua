@@ -169,7 +169,17 @@ return {
         {
           event = { "VimEnter", "FileType", "BufEnter", "WinEnter" },
           desc = "URL Highlighting",
-          callback = function() require("astrocore").set_url_match() end,
+          callback = function(args)
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              if
+                vim.api.nvim_win_get_buf(win) == args.buf
+                and vim.tbl_get(require "astrocore", "config", "features", "highlighturl")
+                and not vim.w[win].highlighturl_enabled
+              then
+                require("astrocore").set_url_match(win)
+              end
+            end
+          end,
         },
       },
       highlightyank = {
@@ -192,6 +202,13 @@ return {
             vim.b[args.buf].cmp_enabled = false -- disable completion
             vim.b[args.buf].miniindentscope_disable = true -- disable indent scope
             vim.b[args.buf].matchup_matchparen_enabled = 0 -- disable vim-matchup
+            local astrocore = require "astrocore"
+            if vim.tbl_get(astrocore.config, "features", "highlighturl") then
+              astrocore.config.features.highlighturl = false
+              vim.tbl_map(function(win)
+                if vim.w[win].highlighturl_enabled then astrocore.delete_url_match(win) end
+              end, vim.api.nvim_list_wins())
+            end
             local ibl_avail, ibl = pcall(require, "ibl") -- disable indent-blankline
             if ibl_avail then ibl.setup_buffer(args.buf, { enabled = false }) end
             local illuminate_avail, illuminate = pcall(require, "illuminate.engine") -- disable vim-illuminate
