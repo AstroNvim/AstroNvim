@@ -181,6 +181,15 @@ return {
             end
           end,
         },
+        {
+          event = { "VimEnter", "User" },
+          desc = "Set up the default HighlightURL highlight group",
+          callback = function(args)
+            if args.event == "VimEnter" or args.match == "AstroColorScheme" then
+              vim.api.nvim_set_hl(0, "HighlightURL", { default = true, underline = true })
+            end
+          end,
+        },
       },
       highlightyank = {
         {
