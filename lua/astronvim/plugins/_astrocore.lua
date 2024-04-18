@@ -3,7 +3,23 @@ astronvim.init()
 
 return {
   { "folke/lazy.nvim", dir = vim.env.LAZY },
-  { "AstroNvim/AstroNvim", priority = 10000, lazy = false },
+  {
+    "AstroNvim/AstroNvim",
+    build = function()
+      if astronvim.config.pin_plugins and astronvim.config.update_notification ~= false then
+        vim.schedule(
+          function()
+            require("astrocore").notify(
+              "Stable plugin versions may have been updated\nRun `:Lazy update` again to get these updates.",
+              vim.log.levels.WARN
+            )
+          end
+        )
+      end
+    end,
+    priority = 10000,
+    lazy = false,
+  },
   { import = "astronvim.lazy_snapshot", cond = astronvim.config.pin_plugins },
   {
     "AstroNvim/astrocore",
