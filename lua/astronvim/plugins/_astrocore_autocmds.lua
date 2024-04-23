@@ -246,7 +246,7 @@ return {
       terminal_settings = {
         {
           event = "TermOpen",
-          desc = "Disable line number/fold column/sign column for terinals",
+          desc = "Disable line number/fold column/sign column for terminals",
           callback = function()
             vim.opt_local.number = false
             vim.opt_local.relativenumber = false
