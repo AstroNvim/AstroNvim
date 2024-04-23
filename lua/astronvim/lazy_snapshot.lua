@@ -44,7 +44,7 @@ return {
   { "onsails/lspkind.nvim", commit = "1735dd5a5054c1fb7feaf8e8658dbab925f4f0cf", optional = true },
   { "rafamadriz/friendly-snippets", commit = "ea068f1becd91bcd4591fceb6420d4335e2e14d3", optional = true },
   { "rcarriga/cmp-dap", commit = "ea92773e84c0ad3288c3bc5e452ac91559669087", optional = true },
-  { "rcarriga/nvim-dap-ui", version = "^4", optional = true },
+  { "rcarriga/nvim-dap-ui", commit = "edfa93f60b189e5952c016eee262d0685d838450", optional = true },
   { "rcarriga/nvim-notify", version = "^3", optional = true },
   { "rebelot/heirline.nvim", version = "^1", optional = true },
   { "s1n7ax/nvim-window-picker", version = "^2", optional = true },
