@@ -32,10 +32,11 @@ return {
     maps.n["<Leader>q"] = { "<Cmd>confirm q<CR>", desc = "Quit Window" }
     maps.n["<Leader>Q"] = { "<Cmd>confirm qall<CR>", desc = "Exit AstroNvim" }
     maps.n["<Leader>n"] = { "<Cmd>enew<CR>", desc = "New File" }
-    maps.n["<C-s>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
-    maps.i["<C-s>"] = { "<Esc>" .. maps.n["<C-s>"][1], desc = maps.n["<C-s>"].desc }
-    maps.x["<C-s>"] = maps.i["<C-s>"]
-    maps.n["<C-q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
+    maps.n["<C-S>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
+    -- TODO: AstroNvim v5, remove <C-S> outside of normal mode to not conflict with default signature help
+    maps.i["<C-S>"] = { "<Esc>" .. maps.n["<C-S>"][1], desc = maps.n["<C-S>"].desc }
+    maps.x["<C-S>"] = maps.i["<C-s>"]
+    maps.n["<C-Q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
     maps.n["|"] = { "<Cmd>vsplit<CR>", desc = "Vertical Split" }
     maps.n["\\"] = { "<Cmd>split<CR>", desc = "Horizontal Split" }
     -- TODO: remove deprecated method check after dropping support for neovim v0.9
@@ -103,10 +104,10 @@ return {
     maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
 
     -- Split navigation
-    maps.n["<C-h>"] = { "<C-w>h", desc = "Move to left split" }
-    maps.n["<C-j>"] = { "<C-w>j", desc = "Move to below split" }
-    maps.n["<C-k>"] = { "<C-w>k", desc = "Move to above split" }
-    maps.n["<C-l>"] = { "<C-w>l", desc = "Move to right split" }
+    maps.n["<C-H>"] = { "<C-w>h", desc = "Move to left split" }
+    maps.n["<C-J>"] = { "<C-w>j", desc = "Move to below split" }
+    maps.n["<C-K>"] = { "<C-w>k", desc = "Move to above split" }
+    maps.n["<C-L>"] = { "<C-w>l", desc = "Move to right split" }
     maps.n["<C-Up>"] = { "<Cmd>resize -2<CR>", desc = "Resize split up" }
     maps.n["<C-Down>"] = { "<Cmd>resize +2<CR>", desc = "Resize split down" }
     maps.n["<C-Left>"] = { "<Cmd>vertical resize -2<CR>", desc = "Resize split left" }
@@ -117,10 +118,10 @@ return {
     maps.v["<Tab>"] = { ">gv", desc = "Indent line" }
 
     -- Improved Terminal Navigation
-    maps.t["<C-h>"] = { "<Cmd>wincmd h<CR>", desc = "Terminal left window navigation" }
-    maps.t["<C-j>"] = { "<Cmd>wincmd j<CR>", desc = "Terminal down window navigation" }
-    maps.t["<C-k>"] = { "<Cmd>wincmd k<CR>", desc = "Terminal up window navigation" }
-    maps.t["<C-l>"] = { "<Cmd>wincmd l<CR>", desc = "Terminal right window navigation" }
+    maps.t["<C-H>"] = { "<Cmd>wincmd h<CR>", desc = "Terminal left window navigation" }
+    maps.t["<C-J>"] = { "<Cmd>wincmd j<CR>", desc = "Terminal down window navigation" }
+    maps.t["<C-K>"] = { "<Cmd>wincmd k<CR>", desc = "Terminal up window navigation" }
+    maps.t["<C-L>"] = { "<Cmd>wincmd l<CR>", desc = "Terminal right window navigation" }
 
     maps.n["<Leader>u"] = vim.tbl_get(sections, "u")
     -- Custom menu for modification of the user experience

@@ -19,10 +19,10 @@ return {
     opts = {
       preview = {
         mappings = {
-          scrollB = "<C-b>",
-          scrollF = "<C-f>",
-          scrollU = "<C-u>",
-          scrollD = "<C-d>",
+          scrollB = "<C-B>",
+          scrollF = "<C-F>",
+          scrollU = "<C-U>",
+          scrollD = "<C-D>",
         },
       },
       provider_selector = function(_, filetype, buftype)

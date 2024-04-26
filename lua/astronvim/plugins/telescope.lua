@@ -112,10 +112,10 @@ return {
           },
           mappings = {
             i = {
-              ["<C-n>"] = actions.cycle_history_next,
-              ["<C-p>"] = actions.cycle_history_prev,
-              ["<C-j>"] = actions.move_selection_next,
-              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-N>"] = actions.cycle_history_next,
+              ["<C-P>"] = actions.cycle_history_prev,
+              ["<C-J>"] = actions.move_selection_next,
+              ["<C-K>"] = actions.move_selection_previous,
             },
             n = { q = actions.close },
           },
