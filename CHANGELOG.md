@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.3.0](https://github.com/AstroNvim/AstroNvim/compare/v4.2.1...v4.3.0) (2024-04-26)
+
+
+### Features
+
+* **alpha:** show the actual leader key on the dashboard ([3dabdd0](https://github.com/AstroNvim/AstroNvim/commit/3dabdd06a92f3f7af61e34bd2477005ceafc7598))
+
+
+### Bug Fixes
+
+* **autocmds:** typo in terminal_settings description ([#2552](https://github.com/AstroNvim/AstroNvim/issues/2552)) ([4b4abca](https://github.com/AstroNvim/AstroNvim/commit/4b4abca875443a3d305d1fcfa854bc3f45bc59c1))
+
 ## [4.2.1](https://github.com/AstroNvim/AstroNvim/compare/v4.2.0...v4.2.1) (2024-04-23)
 
 
