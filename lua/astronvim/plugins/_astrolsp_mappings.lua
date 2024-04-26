@@ -5,6 +5,16 @@ return {
     local maps = require("astrocore").empty_map_table()
     maps.v["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
 
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.n["crr"] = {
+        function() vim.lsp.buf.code_action() end,
+        desc = "LSP code action",
+        cond = "testDocument/codeAction", -- LSP client capability string
+      }
+      maps.v["<C-R>r"] = maps.n["crr"]
+      maps.v["<C-R><C-R>"] = maps.n["<C-R>r"]
+    end
     maps.n["<Leader>la"] = {
       function() vim.lsp.buf.code_action() end,
       desc = "LSP code action",
@@ -56,7 +66,10 @@ return {
       cond = formatting_enabled,
     }
 
-    maps.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details", cond = "textDocument/hover" }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details", cond = "textDocument/hover" }
+    end
 
     maps.n["gI"] = {
       function() vim.lsp.buf.implementation() end,
@@ -70,20 +83,33 @@ return {
       cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
     }
 
-    maps.n["gr"] = {
-      function() vim.lsp.buf.references() end,
-      desc = "References of current symbol",
-      cond = "textDocument/references",
-    }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.n["gr"] = {
+        function() vim.lsp.buf.references() end,
+        desc = "References of current symbol",
+        cond = "textDocument/references",
+      }
+    end
     maps.n["<Leader>lR"] =
       { function() vim.lsp.buf.references() end, desc = "Search references", cond = "textDocument/references" }
 
     maps.n["<Leader>lr"] =
       { function() vim.lsp.buf.rename() end, desc = "Rename current symbol", cond = "textDocument/rename" }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.n["crn"] =
+        { function() vim.lsp.buf.rename() end, desc = "Rename current symbol", cond = "textDocument/rename" }
+    end
 
     maps.n["<Leader>lh"] =
       { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
     maps.n["gK"] = maps.n["<Leader>lh"]
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.i["<C-S>"] =
+        { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
+    end
 
     maps.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,

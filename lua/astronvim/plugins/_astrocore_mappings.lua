@@ -90,8 +90,12 @@ return {
 
     maps.n["<Leader>l"] = vim.tbl_get(sections, "l")
     maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
-    maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
-    maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
+      maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+      maps.n["<C-W>d"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
+    end
     maps.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
     -- Navigate tabs
