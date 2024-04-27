@@ -24,9 +24,9 @@ return {
 
     -- Normal --
     -- Standard Operations
-    maps.n["j"] = { "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Move cursor down" }
+    maps.n["j"] = { "v:count == 0 ? 'gj' : 'j'", expr = true, silent = true, desc = "Move cursor down" }
     maps.x["j"] = maps.n["j"]
-    maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Move cursor up" }
+    maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, silent = true, desc = "Move cursor up" }
     maps.x["k"] = maps.n["k"]
     maps.n["<Leader>w"] = { "<Cmd>w<CR>", desc = "Save" }
     maps.n["<Leader>q"] = { "<Cmd>confirm q<CR>", desc = "Quit Window" }
