@@ -15,11 +15,15 @@ body:
           required: true
         - label: I have searched the existing issues of plugins related to this issue
           required: true
+        - label: I have run `:Lazy update` and are on the latest version of AstroNvim
+          required: true
+        - label: I can replicate the bug with the minimal `repro.lua` provided below
+          required: true
   - type: input
     id: neovim-version
     attributes:
       label: "Neovim version (nvim -v)"
-      placeholder: "0.9.1 release"
+      placeholder: "0.9.5 release"
     validations:
       required: true
   - type: input
@@ -96,7 +100,7 @@ body:
 
         -- install plugins
         local plugins = {
-          { "AstroNvim/AstroNvim", branch = "v4", import = "astronvim.plugins" },
+          { "AstroNvim/AstroNvim", import = "astronvim.plugins" },
 
           -- add any other plugins/customizations here
         }
