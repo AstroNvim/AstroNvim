@@ -10,7 +10,7 @@ return {
         vim.schedule(
           function()
             require("astrocore").notify(
-              "Stable plugin versions may have been updated\nRun `:Lazy update` again to get these updates.",
+              "Pinned versions of core plugins may have been updated\nRun `:Lazy update` again to get these updates.",
               vim.log.levels.WARN
             )
           end
