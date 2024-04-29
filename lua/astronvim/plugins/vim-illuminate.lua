@@ -20,6 +20,7 @@ return {
     return {
       delay = 200,
       min_count_to_highlight = 2,
+      large_file_cutoff = vim.tbl_get(require "astrocore", "config", "features", "large_buf", "lines"),
       large_file_overrides = { providers = { "lsp" } },
       should_enable = function(bufnr) return require("astrocore.buffer").is_valid(bufnr) end,
     }
