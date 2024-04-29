@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.4.0](https://github.com/AstroNvim/AstroNvim/compare/v4.3.0...v4.4.0) (2024-04-29)
+
+
+### Features
+
+* **mappings:** backport new default neovim diagnostic and LSP mappings ([91191e6](https://github.com/AstroNvim/AstroNvim/commit/91191e60e26d0a5f9b1fbe46cd18ce6c4873c476))
+
+
+### Bug Fixes
+
+* clear up language in update notification for AstroNvim ([8ca570a](https://github.com/AstroNvim/AstroNvim/commit/8ca570aa99e47f50274c1d804900efb54f19be1c))
+* **mappings:** fix incorrectly normalized mappings ([cc66460](https://github.com/AstroNvim/AstroNvim/commit/cc66460b62dfd2929622f3b39a03d1d489f6585f))
+
 ## [4.3.0](https://github.com/AstroNvim/AstroNvim/compare/v4.2.1...v4.3.0) (2024-04-26)
 
 
