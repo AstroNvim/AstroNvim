@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.4.1](https://github.com/AstroNvim/AstroNvim/compare/v4.4.0...v4.4.1) (2024-04-30)
+
+
+### Bug Fixes
+
+* **cmp:** update `vim.snippet` to use updated `active` API ([#2560](https://github.com/AstroNvim/AstroNvim/issues/2560)) ([b505f4f](https://github.com/AstroNvim/AstroNvim/commit/b505f4ff41f851fa4a008586995f79408daf72bc))
+* **smart-splits:** disable aggressive lazy loading for multiplexer setup ([242f728](https://github.com/AstroNvim/AstroNvim/commit/242f728ab5431d9b7142e4efe0894b5960fb6569))
+* **vim-illuminate:** add missing `large_file_cutoff` default ([782fcb0](https://github.com/AstroNvim/AstroNvim/commit/782fcb069ba7879e1ad2b43db2351dad3f9a7ea0))
+
 ## [4.4.0](https://github.com/AstroNvim/AstroNvim/compare/v4.3.0...v4.4.0) (2024-04-29)
 
 
