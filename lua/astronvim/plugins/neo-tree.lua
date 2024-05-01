@@ -56,21 +56,25 @@ return {
   },
   cmd = "Neotree",
   opts = function()
-    local astro = require "astrocore"
-    local get_icon = require("astroui").get_icon
+    local astro, get_icon = require "astrocore", require("astroui").get_icon
+    local git_available = vim.fn.executable "git" == 1
+    local sources = {
+      { source = "filesystem", display_name = get_icon("FolderClosed", 1, true) .. "File" },
+      { source = "buffers", display_name = get_icon("DefaultFile", 1, true) .. "Bufs" },
+      { source = "diagnostics", display_name = get_icon("Diagnostic", 1, true) .. "Diagnostic" },
+    }
+    if git_available then
+      table.insert(sources, 3, { source = "git_status", display_name = get_icon("Git", 1, true) .. "Git" })
+    end
     local opts = {
+      enable_git_status = git_available,
       auto_clean_after_session_restore = true,
       close_if_last_window = true,
-      sources = { "filesystem", "buffers", "git_status" },
+      sources = { "filesystem", "buffers", git_available and "git_status" or nil },
       source_selector = {
         winbar = true,
         content_layout = "center",
-        sources = {
-          { source = "filesystem", display_name = get_icon("FolderClosed", 1, true) .. "File" },
-          { source = "buffers", display_name = get_icon("DefaultFile", 1, true) .. "Bufs" },
-          { source = "git_status", display_name = get_icon("Git", 1, true) .. "Git" },
-          { source = "diagnostics", display_name = get_icon("Diagnostic", 1, true) .. "Diagnostic" },
-        },
+        sources = sources,
       },
       default_component_configs = {
         indent = {
@@ -182,6 +186,7 @@ return {
       },
       filesystem = {
         follow_current_file = { enabled = true },
+        filtered_items = { hide_gitignored = git_available },
         hijack_netrw_behavior = "open_current",
         use_libuv_file_watcher = vim.fn.has "win32" ~= 1,
       },

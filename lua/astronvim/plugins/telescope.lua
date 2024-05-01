@@ -17,19 +17,23 @@ return {
           local astro = require "astrocore"
           local is_available = astro.is_available
           maps.n["<Leader>f"] = vim.tbl_get(opts, "_map_sections", "f")
-          maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
-          maps.n["<Leader>gb"] =
-            { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
-          maps.n["<Leader>gc"] = {
-            function() require("telescope.builtin").git_commits { use_file_path = true } end,
-            desc = "Git commits (repository)",
-          }
-          maps.n["<Leader>gC"] = {
-            function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
-            desc = "Git commits (current file)",
-          }
-          maps.n["<Leader>gt"] =
-            { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
+          if vim.fn.executable "git" == 1 then
+            maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
+            maps.n["<Leader>gb"] = {
+              function() require("telescope.builtin").git_branches { use_file_path = true } end,
+              desc = "Git branches",
+            }
+            maps.n["<Leader>gc"] = {
+              function() require("telescope.builtin").git_commits { use_file_path = true } end,
+              desc = "Git commits (repository)",
+            }
+            maps.n["<Leader>gC"] = {
+              function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
+              desc = "Git commits (current file)",
+            }
+            maps.n["<Leader>gt"] =
+              { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
+          end
           maps.n["<Leader>f<CR>"] =
             { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
           maps.n["<Leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }

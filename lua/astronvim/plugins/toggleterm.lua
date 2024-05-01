@@ -8,7 +8,7 @@ return {
         local maps = opts.mappings
         local astro = require "astrocore"
         maps.n["<Leader>t"] = vim.tbl_get(opts, "_map_sections", "t")
-        if vim.fn.executable "lazygit" == 1 then
+        if vim.fn.executable "git" == 1 and vim.fn.executable "lazygit" == 1 then
           maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
           maps.n["<Leader>gg"] = {
             function()

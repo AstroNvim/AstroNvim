@@ -9,6 +9,7 @@ return function(plugin, opts)
       { "bash", "c", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" }
     )
   end
+  if vim.fn.executable "git" == 0 then opts.ensure_installed = nil end
 
   -- disable all treesitter modules on large buffer
   if vim.tbl_get(require("astrocore").config, "features", "large_buf") then
