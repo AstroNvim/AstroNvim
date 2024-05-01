@@ -1,12 +1,6 @@
 # Project gitignore
 .luarc.json
-after
 coc-settings.json
-colors
-docs
-ftplugin
-ginit.vim
-<<<<<<< HEAD
 plugin
 ftplugin
 spell
