@@ -1,0 +1,9 @@
+name: "Close stale issues and PRs"
+on:
+  schedule:
+    - cron: "30 1 * * *" # run at 0130 UTC
+
+jobs:
+  stale:
+    uses: AstroNvim/.github/.github/workflows/stale.yml@main
+    secrets: inherit

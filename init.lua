@@ -1,21 +1,8 @@
-for _, source in ipairs {
-  "astronvim.bootstrap",
-  "astronvim.options",
-  "astronvim.lazy",
-  "astronvim.autocmds",
-  "astronvim.mappings",
-} do
-  local status_ok, fault = pcall(require, source)
-  if not status_ok then vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault) end
-end
+vim.api.nvim_echo({
+  { "This repository is not meant to be used as a direct Neovim configuration\n", "ErrorMsg" },
+  { "Please check the AstroNvim documentation for installation details\n", "WarningMsg" },
+  { "Press any key to exit...", "MoreMsg" },
+}, true, {})
 
-if astronvim.default_colorscheme then
-  if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
-    require("astronvim.utils").notify(
-      "Error setting up colorscheme: " .. astronvim.default_colorscheme,
-      vim.log.levels.ERROR
-    )
-  end
-end
-
-require("astronvim.utils").conditional_func(astronvim.user_opts("polish", nil, false), true)
+vim.fn.getchar()
+vim.cmd.quit()
