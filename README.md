@@ -154,13 +154,9 @@ Run `:Lazy clean` to remove any disabled or unused plugins
 
 Run `:Lazy sync` to update and clean plugins
 
-#### Update AstroNvim
-
-Run `:AstroUpdate` to get the latest updates from the repository<br>
-
 #### Update AstroNvim Packages
 
-Run `:AstroUpdatePackages` (`<leader>pa`) to update both Neovim plugins and Mason packages
+Run `:AstroUpdate` (`<leader>pa`) to update both Neovim plugins and Mason packages
 
 ## 🗒️ Links
 
