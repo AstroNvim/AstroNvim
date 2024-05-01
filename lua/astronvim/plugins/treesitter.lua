@@ -33,6 +33,7 @@ return {
     if require("astrocore").is_available "mason.nvim" then require("lazy").load { plugins = { "mason.nvim" } } end
     return {
       auto_install = vim.fn.executable "tree-sitter" == 1, -- only enable auto install if `tree-sitter` cli is installed
+      ensure_installed = {},
       highlight = { enable = true },
       incremental_selection = { enable = true },
       indent = { enable = true },

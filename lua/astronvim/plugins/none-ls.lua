@@ -19,7 +19,7 @@ return {
       dependencies = { "williamboman/mason.nvim" },
       cmd = { "NullLsInstall", "NullLsUninstall" },
       init = function(plugin) require("astrocore").on_load("mason.nvim", plugin.name) end,
-      opts = { handlers = {} },
+      opts = { ensure_installed = {}, handlers = {} },
     },
   },
   event = "User AstroFile",
