@@ -67,15 +67,17 @@ return {
           maps.n["<Leader>fr"] = { function() require("telescope.builtin").registers() end, desc = "Find registers" }
           maps.n["<Leader>ft"] =
             { function() require("telescope.builtin").colorscheme { enable_preview = true } end, desc = "Find themes" }
-          maps.n["<Leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
-          maps.n["<Leader>fW"] = {
-            function()
-              require("telescope.builtin").live_grep {
-                additional_args = function(args) return vim.list_extend(args, { "--hidden", "--no-ignore" }) end,
-              }
-            end,
-            desc = "Find words in all files",
-          }
+          if vim.fn.executable "rg" == 1 then
+            maps.n["<Leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
+            maps.n["<Leader>fW"] = {
+              function()
+                require("telescope.builtin").live_grep {
+                  additional_args = function(args) return vim.list_extend(args, { "--hidden", "--no-ignore" }) end,
+                }
+              end,
+              desc = "Find words in all files",
+            }
+          end
           maps.n["<Leader>ls"] = {
             function()
               if is_available "aerial.nvim" then
