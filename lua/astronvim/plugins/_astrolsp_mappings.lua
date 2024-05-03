@@ -110,11 +110,6 @@ return {
     maps.n["<Leader>lh"] =
       { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
     maps.n["gK"] = maps.n["<Leader>lh"]
-    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
-    if vim.fn.has "nvim-0.10" == 0 then
-      maps.i["<C-S>"] =
-        { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
-    end
 
     maps.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,
