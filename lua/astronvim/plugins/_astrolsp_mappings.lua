@@ -82,6 +82,11 @@ return {
       desc = "Toggle LSP inlay hints (buffer)",
       cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
     }
+    maps.n["<Leader>uH"] = {
+      function() require("astrolsp.toggles").inlay_hints() end,
+      desc = "Toggle LSP inlay hints (global)",
+      cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
+    }
 
     -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
     if vim.fn.has "nvim-0.10" == 0 then
