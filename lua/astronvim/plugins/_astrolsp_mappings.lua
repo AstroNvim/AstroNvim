@@ -109,7 +109,8 @@ return {
 
     maps.n["<Leader>lh"] =
       { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
-    maps.n["gK"] = maps.n["<Leader>lh"]
+    maps.n["gK"] =
+      { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
 
     maps.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,
