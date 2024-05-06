@@ -33,7 +33,6 @@ return {
     maps.n["<Leader>Q"] = { "<Cmd>confirm qall<CR>", desc = "Exit AstroNvim" }
     maps.n["<Leader>n"] = { "<Cmd>enew<CR>", desc = "New File" }
     maps.n["<C-S>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
-    -- TODO: AstroNvim v5, remove <C-S> outside of normal mode to not conflict with default signature help
     maps.i["<C-S>"] = { "<Esc>" .. maps.n["<C-S>"][1], desc = maps.n["<C-S>"].desc }
     maps.x["<C-S>"] = maps.i["<C-s>"]
     maps.n["<C-Q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
