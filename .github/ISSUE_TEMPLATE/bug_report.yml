@@ -20,35 +20,42 @@ body:
         - label: I can replicate the bug with the minimal `repro.lua` provided below
           required: true
   - type: input
-    id: neovim-version
-    attributes:
-      label: "Neovim version (nvim -v)"
-      placeholder: "0.9.5 release"
+    id: system-version
     validations:
       required: true
-  - type: input
-    id: system-version
     attributes:
       label: "Operating system/version"
       placeholder: "macOS 11.5"
-    validations:
-      required: true
   - type: input
     id: terminal
+    validations:
+      required: true
     attributes:
       label: "Terminal/GUI"
       placeholder: "kitty"
+  - type: textarea
+    id: health
     validations:
       required: true
+    attributes:
+      label: AstroNvim Health
+      description: Output of `:checkhealth astronvim`
+      placeholder: |
+        ## AstroNvim
+        - AstroNvim Version: v4.6.0
+        - Neovim Version: v0.9.5
+        - OK: Using stable Neovim >= 0.9.5
   - type: textarea
     id: description
+    validations:
+      required: true
     attributes:
       label: Describe the bug
       placeholder: A clear and concise description of what the bug is.
-    validations:
-      required: true
   - type: textarea
     id: reproduce
+    validations:
+      required: true
     attributes:
       label: Steps to Reproduce
       placeholder: |
@@ -56,15 +63,13 @@ body:
         2. Click on '....'
         3. Scroll down to '....'
         4. See error
-    validations:
-      required: true
   - type: textarea
     id: expected
+    validations:
+      required: true
     attributes:
       label: Expected behavior
       placeholder: A clear and concise description of what you expected to happen
-    validations:
-      required: true
   - type: textarea
     id: screenshots
     attributes:
@@ -76,6 +81,8 @@ body:
       label: Additional Context
       placeholder: Add any additional context about the problem here.
   - type: textarea
+    validations:
+      required: false
     attributes:
       label: Repro
       description: Minimal `init.lua` to reproduce this issue. Save as `repro.lua` and run with `nvim -u repro.lua`
@@ -110,5 +117,3 @@ body:
 
         -- add anything else here (autocommands, vim.filetype, etc.)
       render: Lua
-    validations:
-      required: false

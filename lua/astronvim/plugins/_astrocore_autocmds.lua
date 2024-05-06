@@ -3,6 +3,13 @@ return {
   ---@type AstroCoreOpts
   opts = {
     commands = {
+      AstroVersion = {
+        function()
+          local version = require("astronvim").version()
+          if version then require("astrocore").notify(("Version: *%s*"):format(version)) end
+        end,
+        desc = "Check AstroNvim Version",
+      },
       AstroReload = { function() require("astrocore").reload() end, desc = "Reload AstroNvim (Experimental)" },
       AstroUpdate = { function() require("astrocore").update_packages() end, desc = "Update Lazy and Mason" },
     },

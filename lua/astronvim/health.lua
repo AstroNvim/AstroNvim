@@ -12,15 +12,15 @@ local health = vim.health
 function M.check()
   health.start "AstroNvim"
 
-  -- health.info("AstroNvim Version: " .. require("astrocore.updater").version(true))
+  health.info("AstroNvim Version: " .. require("astronvim").version())
   health.info("Neovim Version: v" .. vim.fn.matchstr(vim.fn.execute "version", "NVIM v\\zs[^\n]*"))
 
   if vim.version().prerelease then
     health.warn "Neovim nightly is not officially supported and may have breaking changes"
-  elseif vim.fn.has "nvim-0.9" == 1 then
-    health.ok "Using stable Neovim >= 0.9.0"
+  elseif vim.fn.has "nvim-0.9.5" == 1 then
+    health.ok "Using stable Neovim >= 0.9.5"
   else
-    health.error "Neovim >= 0.9.0 is required"
+    health.error "Neovim >= 0.9.5 is required"
   end
 
   local programs = {
