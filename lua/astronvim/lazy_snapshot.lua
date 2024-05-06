@@ -6,7 +6,7 @@ return {
   { "JoosepAlviste/nvim-ts-context-commentstring", commit = "a6382f744f584bbf71d0a563af789af7190aabda", optional = true },
   { "L3MON4D3/LuaSnip", version = "^2", optional = true },
   { "MunifTanjim/nui.nvim", version = "^0.3", optional = true },
-  { "NMAC427/guess-indent.nvim", commit = "c4deeb7af5f12f54636b7be1dba69cf88ce2a907", optional = true },
+  { "NMAC427/guess-indent.nvim", commit = "0d6c1b16df20298118de87868213ebcbeb8219fc", optional = true },
   { "NvChad/nvim-colorizer.lua", commit = "85855b38011114929f4058efc97af1059ab3e41d", optional = true },
   { "RRethy/vim-illuminate", commit = "e522e0dd742a83506db0a72e1ced68c9c130f185", optional = true },
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
