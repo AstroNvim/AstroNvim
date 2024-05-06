@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.6.1](https://github.com/AstroNvim/AstroNvim/compare/v4.6.0...v4.6.1) (2024-05-06)
+
+
+### Bug Fixes
+
+* **autocmds:** respect modeline when forwarding events ([5bd0684](https://github.com/AstroNvim/AstroNvim/commit/5bd0684ced37db0dba3f66f10d3e6c84fd526a21))
+
+
+### Performance Improvements
+
+* **guess-indent:** improve lazy loading ([#2561](https://github.com/AstroNvim/AstroNvim/issues/2561)) ([c1e8e74](https://github.com/AstroNvim/AstroNvim/commit/c1e8e74312284223a6faa816e6b75dbfcd4d1c2e))
+
 ## [4.6.0](https://github.com/AstroNvim/AstroNvim/compare/v4.5.1...v4.6.0) (2024-05-06)
 
 
