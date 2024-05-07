@@ -4,34 +4,6 @@ M.did_init = false
 
 M.config = require "astronvim.config"
 
-local function lazy_notify()
-  -- Based on notification lazy loading in LazyVim
-  -- https://github.com/LazyVim/LazyVim/blob/a50f92f7550fb6e9f21c0852e6cb190e6fcd50f5/lua/lazyvim/util/init.lua#L90-L125
-  local notifications = {}
-  local function notify_queue(...) table.insert(notifications, vim.F.pack_len(...)) end
-  local original_notify = vim.notify
-  vim.notify = notify_queue
-
-  local uv = vim.uv or vim.loop
-  local timer, checker = uv.new_timer(), uv.new_check()
-
-  local replay = function()
-    timer:stop()
-    checker:stop()
-    if vim.notify == notify_queue then vim.notify = original_notify end
-    vim.schedule(function()
-      vim.tbl_map(function(notif) vim.notify(vim.F.unpack_len(notif)) end, notifications)
-    end)
-  end
-
-  -- wait till vim.notify has been replaced
-  checker:start(function()
-    if vim.notify ~= notify_queue then replay() end
-  end)
-  -- or if it took more than 500ms, then something went wrong
-  timer:start(500, 0, replay)
-end
-
 function M.version()
   local astrocore = require "astrocore"
   local plugin = assert(astrocore.get_plugin "AstroNvim")
@@ -70,7 +42,7 @@ function M.init()
   if M.did_init then return end
   M.did_init = true
 
-  lazy_notify()
+  require("astronvim.lazy_notify").setup()
 
   -- force setup during initialization
   local plugin = require("lazy.core.config").spec.plugins.AstroNvim

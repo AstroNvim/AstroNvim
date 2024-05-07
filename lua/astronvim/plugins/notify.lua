@@ -14,7 +14,11 @@ return {
       end,
     },
   },
-  init = function() require("astrocore").load_plugin_with_func("nvim-notify", vim, "notify") end,
+  init = function()
+    local lazy_notify = require "astronvim.lazy_notify"
+    if vim.notify == lazy_notify.queue then vim.notify = lazy_notify.original end
+    require("astrocore").load_plugin_with_func("nvim-notify", vim, "notify")
+  end,
   opts = function(_, opts)
     local get_icon = require("astroui").get_icon
     opts.icons = {
