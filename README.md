@@ -189,7 +189,8 @@ Sincere appreciation to the following repositories, plugin authors and the entir
 - [LunarVim](https://github.com/LunarVim)
 - [CosmicVim](https://github.com/CosmicNvim/CosmicNvim)
 
-<div align="center" id="madewithlua"></div>
+<div align="center" id="madewithlua">
+
 [![Lua](https://img.shields.io/badge/Made%20with%20Lua-blue.svg?style=for-the-badge&logo=lua)](https://lua.org)
 
 </div>
