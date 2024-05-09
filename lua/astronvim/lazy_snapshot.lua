@@ -38,7 +38,7 @@ return {
   { "nvim-telescope/telescope-fzf-native.nvim", commit = "9ef21b2e6bb6ebeaf349a0781745549bbb870d27", optional = true },
   { "nvim-telescope/telescope.nvim", version = "^0.1", optional = true },
   { "nvim-tree/nvim-web-devicons", commit = "5b9067899ee6a2538891573500e8fd6ff008440f", optional = true },
-  { "nvim-treesitter/nvim-treesitter", commit = "1be5aa99e3e0e4a36c31fa7066dcf46a4e0142dd", optional = true },
+  { "nvim-treesitter/nvim-treesitter", commit = "707b0dcf7641fa3a2aaad5053b215503f54f89aa", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "23b820146956b3b681c19e10d3a8bc0cbd9a1d4c", optional = true },
   { "nvimtools/none-ls.nvim", commit = "f5632db2491fbe02b54f1a321a98548a8ba2bd15", optional = true },
   { "onsails/lspkind.nvim", commit = "1735dd5a5054c1fb7feaf8e8658dbab925f4f0cf", optional = true },
