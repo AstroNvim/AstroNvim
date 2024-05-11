@@ -9,7 +9,7 @@ function M.version()
   local plugin = assert(astrocore.get_plugin "AstroNvim")
   local version_ok, version_str = pcall(astrocore.read_file, plugin.dir .. "/version.txt")
   if not version_ok then
-    require("atrocore").notify("Unable to calculate version", vim.log.levels.ERROR)
+    require("astrocore").notify("Unable to calculate version", vim.log.levels.ERROR)
     return
   end
 
