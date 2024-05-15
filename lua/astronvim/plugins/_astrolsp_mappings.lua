@@ -56,7 +56,10 @@ return {
       cond = formatting_enabled,
     }
 
-    maps.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details", cond = "textDocument/hover" }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details", cond = "textDocument/hover" }
+    end
 
     maps.n["gI"] = {
       function() vim.lsp.buf.implementation() end,
@@ -67,6 +70,11 @@ return {
     maps.n["<Leader>uh"] = {
       function() require("astrolsp.toggles").buffer_inlay_hints() end,
       desc = "Toggle LSP inlay hints (buffer)",
+      cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
+    }
+    maps.n["<Leader>uH"] = {
+      function() require("astrolsp.toggles").inlay_hints() end,
+      desc = "Toggle LSP inlay hints (global)",
       cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
     }
 
@@ -83,7 +91,8 @@ return {
 
     maps.n["<Leader>lh"] =
       { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
-    maps.n["gK"] = maps.n["<Leader>lh"]
+    maps.n["gK"] =
+      { function() vim.lsp.buf.signature_help() end, desc = "Signature help", cond = "textDocument/signatureHelp" }
 
     maps.n["gy"] = {
       function() vim.lsp.buf.type_definition() end,

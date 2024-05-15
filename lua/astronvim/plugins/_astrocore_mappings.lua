@@ -24,18 +24,18 @@ return {
 
     -- Normal --
     -- Standard Operations
-    maps.n["j"] = { "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Move cursor down" }
+    maps.n["j"] = { "v:count == 0 ? 'gj' : 'j'", expr = true, silent = true, desc = "Move cursor down" }
     maps.x["j"] = maps.n["j"]
-    maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Move cursor up" }
+    maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, silent = true, desc = "Move cursor up" }
     maps.x["k"] = maps.n["k"]
     maps.n["<Leader>w"] = { "<Cmd>w<CR>", desc = "Save" }
     maps.n["<Leader>q"] = { "<Cmd>confirm q<CR>", desc = "Quit Window" }
     maps.n["<Leader>Q"] = { "<Cmd>confirm qall<CR>", desc = "Exit AstroNvim" }
     maps.n["<Leader>n"] = { "<Cmd>enew<CR>", desc = "New File" }
-    maps.n["<C-s>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
-    maps.i["<C-s>"] = { "<Esc>" .. maps.n["<C-s>"][1], desc = maps.n["<C-s>"].desc }
-    maps.x["<C-s>"] = maps.i["<C-s>"]
-    maps.n["<C-q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
+    maps.n["<C-S>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
+    maps.i["<C-S>"] = { "<Esc>" .. maps.n["<C-S>"][1], desc = maps.n["<C-S>"].desc }
+    maps.x["<C-S>"] = maps.i["<C-s>"]
+    maps.n["<C-Q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
     maps.n["|"] = { "<Cmd>vsplit<CR>", desc = "Vertical Split" }
     maps.n["\\"] = { "<Cmd>split<CR>", desc = "Horizontal Split" }
     -- TODO: remove deprecated method check after dropping support for neovim v0.9
@@ -90,8 +90,12 @@ return {
 
     maps.n["<Leader>l"] = vim.tbl_get(sections, "l")
     maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
-    maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
-    maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
+    if vim.fn.has "nvim-0.10" == 0 then
+      maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
+      maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+      maps.n["<C-W>d"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
+    end
     maps.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
     -- Navigate tabs
@@ -99,10 +103,10 @@ return {
     maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
 
     -- Split navigation
-    maps.n["<C-h>"] = { "<C-w>h", desc = "Move to left split" }
-    maps.n["<C-j>"] = { "<C-w>j", desc = "Move to below split" }
-    maps.n["<C-k>"] = { "<C-w>k", desc = "Move to above split" }
-    maps.n["<C-l>"] = { "<C-w>l", desc = "Move to right split" }
+    maps.n["<C-H>"] = { "<C-w>h", desc = "Move to left split" }
+    maps.n["<C-J>"] = { "<C-w>j", desc = "Move to below split" }
+    maps.n["<C-K>"] = { "<C-w>k", desc = "Move to above split" }
+    maps.n["<C-L>"] = { "<C-w>l", desc = "Move to right split" }
     maps.n["<C-Up>"] = { "<Cmd>resize -2<CR>", desc = "Resize split up" }
     maps.n["<C-Down>"] = { "<Cmd>resize +2<CR>", desc = "Resize split down" }
     maps.n["<C-Left>"] = { "<Cmd>vertical resize -2<CR>", desc = "Resize split left" }
@@ -113,10 +117,10 @@ return {
     maps.v["<Tab>"] = { ">gv", desc = "Indent line" }
 
     -- Improved Terminal Navigation
-    maps.t["<C-h>"] = { "<Cmd>wincmd h<CR>", desc = "Terminal left window navigation" }
-    maps.t["<C-j>"] = { "<Cmd>wincmd j<CR>", desc = "Terminal down window navigation" }
-    maps.t["<C-k>"] = { "<Cmd>wincmd k<CR>", desc = "Terminal up window navigation" }
-    maps.t["<C-l>"] = { "<Cmd>wincmd l<CR>", desc = "Terminal right window navigation" }
+    maps.t["<C-H>"] = { "<Cmd>wincmd h<CR>", desc = "Terminal left window navigation" }
+    maps.t["<C-J>"] = { "<Cmd>wincmd j<CR>", desc = "Terminal down window navigation" }
+    maps.t["<C-K>"] = { "<Cmd>wincmd k<CR>", desc = "Terminal up window navigation" }
+    maps.t["<C-L>"] = { "<Cmd>wincmd l<CR>", desc = "Terminal right window navigation" }
 
     maps.n["<Leader>u"] = vim.tbl_get(sections, "u")
     -- Custom menu for modification of the user experience

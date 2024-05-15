@@ -17,19 +17,23 @@ return {
           local astro = require "astrocore"
           local is_available = astro.is_available
           maps.n["<Leader>f"] = vim.tbl_get(opts, "_map_sections", "f")
-          maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
-          maps.n["<Leader>gb"] =
-            { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
-          maps.n["<Leader>gc"] = {
-            function() require("telescope.builtin").git_commits { use_file_path = true } end,
-            desc = "Git commits (repository)",
-          }
-          maps.n["<Leader>gC"] = {
-            function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
-            desc = "Git commits (current file)",
-          }
-          maps.n["<Leader>gt"] =
-            { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
+          if vim.fn.executable "git" == 1 then
+            maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
+            maps.n["<Leader>gb"] = {
+              function() require("telescope.builtin").git_branches { use_file_path = true } end,
+              desc = "Git branches",
+            }
+            maps.n["<Leader>gc"] = {
+              function() require("telescope.builtin").git_commits { use_file_path = true } end,
+              desc = "Git commits (repository)",
+            }
+            maps.n["<Leader>gC"] = {
+              function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
+              desc = "Git commits (current file)",
+            }
+            maps.n["<Leader>gt"] =
+              { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
+          end
           maps.n["<Leader>f<CR>"] =
             { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
           maps.n["<Leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }
@@ -67,15 +71,17 @@ return {
           maps.n["<Leader>fr"] = { function() require("telescope.builtin").registers() end, desc = "Find registers" }
           maps.n["<Leader>ft"] =
             { function() require("telescope.builtin").colorscheme { enable_preview = true } end, desc = "Find themes" }
-          maps.n["<Leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
-          maps.n["<Leader>fW"] = {
-            function()
-              require("telescope.builtin").live_grep {
-                additional_args = function(args) return vim.list_extend(args, { "--hidden", "--no-ignore" }) end,
-              }
-            end,
-            desc = "Find words in all files",
-          }
+          if vim.fn.executable "rg" == 1 then
+            maps.n["<Leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
+            maps.n["<Leader>fW"] = {
+              function()
+                require("telescope.builtin").live_grep {
+                  additional_args = function(args) return vim.list_extend(args, { "--hidden", "--no-ignore" }) end,
+                }
+              end,
+              desc = "Find words in all files",
+            }
+          end
           maps.n["<Leader>ls"] = {
             function()
               if is_available "aerial.nvim" then
@@ -86,6 +92,9 @@ return {
             end,
             desc = "Search symbols",
           }
+          if vim.fn.has "nvim-0.10" == 1 then
+            maps.n.gr = { function() require("telescope.builtin").lsp_references() end, desc = "Search references" }
+          end
         end,
       },
     },
@@ -109,10 +118,10 @@ return {
           },
           mappings = {
             i = {
-              ["<C-n>"] = actions.cycle_history_next,
-              ["<C-p>"] = actions.cycle_history_prev,
-              ["<C-j>"] = actions.move_selection_next,
-              ["<C-k>"] = actions.move_selection_previous,
+              ["<C-N>"] = actions.cycle_history_next,
+              ["<C-P>"] = actions.cycle_history_prev,
+              ["<C-J>"] = actions.move_selection_next,
+              ["<C-K>"] = actions.move_selection_previous,
             },
             n = { q = actions.close },
           },
@@ -135,6 +144,7 @@ return {
         if maps.n.gI then
           maps.n.gI[1] = function() require("telescope.builtin").lsp_implementations { reuse_win = true } end
         end
+        -- TODO: remove when dropping support for Neovim v0.9
         if maps.n.gr then maps.n.gr[1] = function() require("telescope.builtin").lsp_references() end end
         if maps.n["<Leader>lR"] then
           maps.n["<Leader>lR"][1] = function() require("telescope.builtin").lsp_references() end

@@ -3,6 +3,13 @@ return {
   ---@type AstroCoreOpts
   opts = {
     commands = {
+      AstroVersion = {
+        function()
+          local version = require("astronvim").version()
+          if version then require("astrocore").notify(("Version: *%s*"):format(version)) end
+        end,
+        desc = "Check AstroNvim Version",
+      },
       AstroReload = { function() require("astrocore").reload() end, desc = "Reload AstroNvim (Experimental)" },
       AstroUpdate = { function() require("astrocore").update_packages() end, desc = "Update Lazy and Mason" },
     },
@@ -151,13 +158,17 @@ return {
                 astro.event "File"
                 local folder = vim.fn.fnamemodify(current_file, ":p:h")
                 if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
-                if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
-                  astro.event "GitFile"
+                if vim.fn.executable "git" == 1 then
+                  if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
+                    astro.event "GitFile"
+                    pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
+                  end
+                else
                   pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
                 end
                 vim.schedule(function()
                   if require("astrocore.buffer").is_valid(args.buf) then
-                    vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf, data = args.data, modeline = false })
+                    vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf, data = args.data })
                   end
                 end)
               end

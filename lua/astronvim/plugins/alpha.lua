@@ -89,6 +89,9 @@ return {
       local lhs = shortcut:gsub("%s", ""):gsub(dashboard.leader, "<Leader>")
       local default_map_opts = { noremap = true, silent = true, nowait = true, desc = desc }
 
+      local leader = vim.g.mapleader
+      if leader == " " then leader = "SPC" end
+
       return {
         type = "button",
         val = desc,
@@ -97,7 +100,7 @@ return {
         end,
         opts = {
           position = "center",
-          shortcut = shortcut,
+          shortcut = shortcut:gsub(dashboard.leader, leader),
           cursor = -2,
           width = 36,
           align_shortcut = "right",
