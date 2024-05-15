@@ -269,7 +269,7 @@ return {
       unlist_quickfix = {
         {
           event = "FileType",
-          desc = "Unlist quickfist buffers",
+          desc = "Unlist quickfix buffers",
           pattern = "qf",
           callback = function() vim.opt_local.buflisted = false end,
         },
