@@ -1,17 +1,15 @@
 return {
-  -- TODO: replace with nvim-highlight-colors: https://github.com/brenoprata10/nvim-highlight-colors
-  "NvChad/nvim-colorizer.lua",
+  "brenoprata10/nvim-highlight-colors",
+  event = "User AstroFile",
+  cmd = "HighlightColors",
   dependencies = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
         local maps = opts.mappings
-        maps.n["<Leader>uz"] = { "<Cmd>ColorizerToggle<CR>", desc = "Toggle color highlight" }
+        maps.n["<Leader>uz"] = { "<Cmd>HighlightColors Toggle<CR>", desc = "Toggle color highlight" }
       end,
     },
   },
-  event = "User AstroFile",
-  cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerDetachFromBuffer", "ColorizerReloadAllBuffers" },
-  opts = { user_default_options = { names = false } },
-  config = function(...) require "astronvim.plugins.configs.colorizer"(...) end,
+  opts = { enable_named_colors = false },
 }
