@@ -14,7 +14,7 @@ return {
       DapBreakpoint = "",
       DapBreakpointCondition = "",
       DapBreakpointRejected = "",
-      DapLogPoint = ".>",
+      DapLogPoint = "󰛿",
       DapStopped = "󰁕",
       Debugger = "",
       DefaultFile = "󰈙",
