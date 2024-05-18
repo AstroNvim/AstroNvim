@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.7.3](https://github.com/AstroNvim/AstroNvim/compare/v4.7.2...v4.7.3) (2024-05-18)
+
+
+### Bug Fixes
+
+* **mappings:** add back next/previous diagnostic mappings to neovim 0.10 ([f0c9a3f](https://github.com/AstroNvim/AstroNvim/commit/f0c9a3fff7f6cab815dd6b38d120cdb291cd393b))
+* **mappings:** add missing default diagnostic mapping backport ([b853b01](https://github.com/AstroNvim/AstroNvim/commit/b853b0154d8b8daae78668e55469973f2d5a927f))
+
 ## [4.7.2](https://github.com/AstroNvim/AstroNvim/compare/v4.7.1...v4.7.2) (2024-05-17)
 
 
