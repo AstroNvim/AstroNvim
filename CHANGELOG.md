@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.7.4](https://github.com/AstroNvim/AstroNvim/compare/v4.7.3...v4.7.4) (2024-05-21)
+
+
+### Bug Fixes
+
+* **ts-context-commentstring:** add support for native commenting in neovim 0.10+ ([9a16612](https://github.com/AstroNvim/AstroNvim/commit/9a166127de101a5318106b149808deaee48ca61d))
+
 ## [4.7.3](https://github.com/AstroNvim/AstroNvim/compare/v4.7.2...v4.7.3) (2024-05-18)
 
 
