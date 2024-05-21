@@ -1,7 +1,6 @@
 return {
   "numToStr/Comment.nvim",
   dependencies = {
-    { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true, opts = { enable_autocmd = false } },
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
