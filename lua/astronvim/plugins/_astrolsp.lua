@@ -6,7 +6,6 @@ return {
       features = {
         codelens = true,
         inlay_hints = false,
-        lsp_handlers = true,
         semantic_tokens = true,
       },
       capabilities = vim.lsp.protocol.make_client_capabilities(),
