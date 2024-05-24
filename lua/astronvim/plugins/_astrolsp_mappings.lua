@@ -5,12 +5,10 @@ return {
     local maps = require("astrocore").empty_map_table()
     maps.v["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
 
-    maps.n["<Leader>la"] = {
-      function() vim.lsp.buf.code_action() end,
-      desc = "LSP code action",
-      cond = "testDocument/codeAction", -- LSP client capability string
-    }
-    maps.v["<Leader>la"] = maps.n["<Leader>la"]
+    maps.n["<Leader>la"] =
+      { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "testDocument/codeAction" }
+    maps.x["<Leader>la"] =
+      { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "testDocument/codeAction" }
 
     maps.n["<Leader>ll"] =
       { function() vim.lsp.codelens.refresh() end, desc = "LSP CodeLens refresh", cond = "textDocument/codeLens" }
