@@ -38,7 +38,9 @@ return {
         and not vim.tbl_contains(disabled, client.name)
     end
     maps.n["<Leader>lf"] = {
-      function() vim.lsp.buf.format(require("astrolsp").format_opts) end,
+      function()
+        vim.lsp.buf.format(require("astrolsp").format_opts --[[@as vim.lsp.buf.format.Opts?]])
+      end,
       desc = "Format buffer",
       cond = formatting_enabled,
     }
