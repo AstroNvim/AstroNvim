@@ -60,6 +60,7 @@ return {
           },
         },
         rooter = {
+          enabled = true,
           detector = { "lsp", { ".git", "_darcs", ".hg", ".bzr", ".svn" }, { "lua", "MakeFile", "package.json" } },
           ignore = {
             servers = {},
