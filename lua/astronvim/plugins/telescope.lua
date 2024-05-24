@@ -92,9 +92,6 @@ return {
             end,
             desc = "Search symbols",
           }
-          if vim.fn.has "nvim-0.10" == 1 then
-            maps.n.gr = { function() require("telescope.builtin").lsp_references() end, desc = "Search references" }
-          end
         end,
       },
     },
@@ -144,7 +141,7 @@ return {
         if maps.n.gI then
           maps.n.gI[1] = function() require("telescope.builtin").lsp_implementations { reuse_win = true } end
         end
-        -- TODO: remove when dropping support for Neovim v0.9
+        --- TODO: AstroNvim v5 remove gr mapping as it's default and global
         if maps.n.gr then maps.n.gr[1] = function() require("telescope.builtin").lsp_references() end end
         if maps.n["<Leader>lR"] then
           maps.n["<Leader>lR"][1] = function() require("telescope.builtin").lsp_references() end
