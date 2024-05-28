@@ -32,13 +32,20 @@ function M.resume()
   end)
 end
 
---- A pausible `vim.notify` function
----@vararg ... the arguments that would be passed to the original `vim.notify` function
-function M.notify(...)
+--- A pausable `vim.notify` function
+---@param message string|string[] Notification message
+---@param level string|number Log level. See vim.log.levels
+---@param opts notify.Options Notification options
+function M.notify(message, level, opts)
   if M.is_paused() then
-    table.insert(notifications, vim.F.pack_len(...))
+    local pos = opts and opts.replace
+    if type(pos) == "table" and pos.id then pos = pos.id end
+    if type(pos) ~= "number" or not notifications[pos] then pos = #notifications + 1 end
+    if opts then opts.replace = nil end
+    notifications[pos] = vim.F.pack_len(message, level, opts)
+    return { id = pos }
   else
-    M._original(...)
+    return M._original(message, level, opts)
   end
 end
 
