@@ -43,6 +43,8 @@ return {
     if not vim.ui.open then
       maps.n["gx"] = { astro.system_open, desc = "Open the file under cursor with system app" }
     end
+    maps.n["<Leader>/"] = { "gcc", remap = true, desc = "Toggle comment line" }
+    maps.x["<Leader>/"] = { "gc", remap = true, desc = "Toggle comment" }
 
     --- TODO: AstroNvim v5 add backwards compatibility to follow neovim 0.11 mappings
     -- -- Neovim Default LSP Mappings

@@ -18,7 +18,7 @@ return {
         }
         maps.x["<Leader>/"] = {
           "<Esc><Cmd>lua require('Comment.api').locked('toggle.linewise')(vim.fn.visualmode())<CR>",
-          desc = "Toggle comment for selection",
+          desc = "Toggle comment",
         }
       end,
     },
