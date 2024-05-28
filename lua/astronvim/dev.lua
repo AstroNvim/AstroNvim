@@ -34,9 +34,6 @@ function M.generate_snapshot(write)
         file:write(("  { %q, "):format(plugin[1]))
         if plugin.version then
           local version_format = "version = %q"
-          if plugin[1] == "lukas-reineke/indent-blankline.nvim" then
-            version_format = 'version = vim.fn.has "nvim-0.10" ~= 1 and "~3.5" or %q'
-          end
           file:write(version_format:format(plugin.version))
         else
           local commit_format = "commit = %q"
