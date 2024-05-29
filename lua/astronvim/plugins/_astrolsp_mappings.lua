@@ -78,12 +78,6 @@ return {
       cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
     }
 
-    --- TODO: AstroNvim v5 remove gr mapping as it's default and global
-    maps.n["gr"] = {
-      function() vim.lsp.buf.references() end,
-      desc = "References of current symbol",
-      cond = "textDocument/references",
-    }
     maps.n["<Leader>lR"] =
       { function() vim.lsp.buf.references() end, desc = "Search references", cond = "textDocument/references" }
 

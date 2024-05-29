@@ -46,15 +46,15 @@ return {
     maps.n["<Leader>/"] = { "gcc", remap = true, desc = "Toggle comment line" }
     maps.x["<Leader>/"] = { "gc", remap = true, desc = "Toggle comment" }
 
-    --- TODO: AstroNvim v5 add backwards compatibility to follow neovim 0.11 mappings
-    -- -- Neovim Default LSP Mappings
-    -- if vim.fn.has "nvim-0.11" ~= 1 then
-    --   maps.n["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
-    --   maps.x["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
-    --   maps.n["grn"] = { function() vim.lsp.buf.rename() end, desc = "vim.lsp.buf.rename()" }
-    --   maps.n["grr"] = { function() vim.lsp.buf.references() end, desc = "vim.lsp.buf.references()" }
-    --   maps.i["<C-S>"] = { function() vim.lsp.buf.signature_help() end, desc = "vim.lsp.buf.signature_help()" }
-    -- end
+    -- Neovim Default LSP Mappings
+    if vim.fn.has "nvim-0.11" ~= 1 then
+      maps.n["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
+      maps.x["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
+      maps.n["grn"] = { function() vim.lsp.buf.rename() end, desc = "vim.lsp.buf.rename()" }
+      maps.n["grr"] = { function() vim.lsp.buf.references() end, desc = "vim.lsp.buf.references()" }
+      -- --- TODO: AstroNvim v5 add backwards compatibility to follow neovim 0.11 mappings
+      -- maps.i["<C-S>"] = { function() vim.lsp.buf.signature_help() end, desc = "vim.lsp.buf.signature_help()" }
+    end
 
     -- Plugin Manager
     maps.n["<Leader>p"] = vim.tbl_get(sections, "p")
