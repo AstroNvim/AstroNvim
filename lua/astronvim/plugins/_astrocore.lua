@@ -58,6 +58,8 @@ return {
             header = "",
             prefix = "",
           },
+          -- TODO: remove check when dropping support for neovim v0.10
+          jump = vim.fn.has "nvim-0.11" == 1 and { float = true } or nil,
         },
         rooter = {
           enabled = true,
