@@ -2,7 +2,7 @@ local astronvim = require "astronvim"
 astronvim.init()
 
 return {
-  { "folke/lazy.nvim", dir = vim.env.LAZY },
+  "folke/lazy.nvim",
   {
     "AstroNvim/AstroNvim",
     build = function()
