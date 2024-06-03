@@ -41,7 +41,15 @@ return {
     maps.n["\\"] = { "<Cmd>split<CR>", desc = "Horizontal Split" }
     -- TODO: remove deprecated method check after dropping support for neovim v0.9
     if not vim.ui.open then
-      maps.n["gx"] = { astro.system_open, desc = "Open the file under cursor with system app" }
+      local gx_desc = "Opens filepath or URI under cursor with the system handler (file explorer, web browser, …)"
+      maps.n["gx"] = { function() astro.system_open(vim.fn.expand "<cfile>") end, desc = gx_desc }
+      maps.x["gx"] = {
+        function()
+          local lines = vim.fn.getregion(vim.fn.getpos ".", vim.fn.getpos "v", { type = vim.fn.mode() })
+          astro.system_open(table.concat(vim.tbl_map(vim.trim, lines)))
+        end,
+        desc = gx_desc,
+      }
     end
     maps.n["<Leader>/"] = { "gcc", remap = true, desc = "Toggle comment line" }
     maps.x["<Leader>/"] = { "gc", remap = true, desc = "Toggle comment" }
