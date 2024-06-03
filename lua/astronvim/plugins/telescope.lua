@@ -104,6 +104,7 @@ return {
           git_worktrees = require("astrocore").config.git_worktrees,
           prompt_prefix = get_icon("Selected", 1),
           selection_caret = get_icon("Selected", 1),
+          multi_icon = get_icon("Selected", 1),
           path_display = { "truncate" },
           sorting_strategy = "ascending",
           layout_config = {
