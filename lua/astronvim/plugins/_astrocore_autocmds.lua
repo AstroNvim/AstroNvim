@@ -176,32 +176,6 @@ return {
           end,
         },
       },
-      highlighturl = {
-        {
-          event = { "VimEnter", "FileType", "BufEnter", "WinEnter" },
-          desc = "URL Highlighting",
-          callback = function(args)
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-              if
-                vim.api.nvim_win_get_buf(win) == args.buf
-                and vim.tbl_get(require "astrocore", "config", "features", "highlighturl")
-                and not vim.w[win].highlighturl_enabled
-              then
-                require("astrocore").set_url_match(win)
-              end
-            end
-          end,
-        },
-        {
-          event = { "VimEnter", "User" },
-          desc = "Set up the default HighlightURL highlight group",
-          callback = function(args)
-            if args.event == "VimEnter" or args.match == "AstroColorScheme" then
-              vim.api.nvim_set_hl(0, "HighlightURL", { default = true, underline = true })
-            end
-          end,
-        },
-      },
       highlightyank = {
         {
           event = "TextYankPost",
