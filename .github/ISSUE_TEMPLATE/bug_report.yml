@@ -82,7 +82,7 @@ body:
       placeholder: Add any additional context about the problem here.
   - type: textarea
     validations:
-      required: false
+      required: true
     attributes:
       label: Repro
       description: Minimal `init.lua` to reproduce this issue. Save as `repro.lua` and run with `nvim -u repro.lua`
