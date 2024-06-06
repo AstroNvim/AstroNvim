@@ -56,10 +56,9 @@ return {
 
     -- Neovim Default LSP Mappings
     if vim.fn.has "nvim-0.11" ~= 1 then
-      maps.n["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
-      maps.x["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
-      maps.n["grn"] = { function() vim.lsp.buf.rename() end, desc = "vim.lsp.buf.rename()" }
-      maps.n["grr"] = { function() vim.lsp.buf.references() end, desc = "vim.lsp.buf.references()" }
+      maps.n["gra"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" }
+      maps.n["grn"] = { function() vim.lsp.buf.rename() end, desc = "Rename current symbol" }
+      maps.n["grr"] = { function() vim.lsp.buf.references() end, desc = "Search references" }
       -- --- TODO: AstroNvim v5 add backwards compatibility to follow neovim 0.11 mappings
       -- maps.i["<C-S>"] = { function() vim.lsp.buf.signature_help() end, desc = "vim.lsp.buf.signature_help()" }
     end
