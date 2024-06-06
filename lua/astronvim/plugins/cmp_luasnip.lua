@@ -22,7 +22,7 @@ return {
       { "hrsh7th/cmp-path", lazy = true },
       { "hrsh7th/cmp-nvim-lsp", lazy = true },
     },
-    event = "InsertEnter",
+    event = "InsertCharPre",
     opts = function()
       local cmp, astro = require "cmp", require "astrocore"
 
