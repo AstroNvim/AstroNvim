@@ -99,17 +99,8 @@ return {
     },
   },
   opts = function()
-    local dap_vscode = require "dap.ext.vscode"
-    -- define a few filetype definitions for `launch.json` compatibility
-    local filetypes_loaded, filetypes = pcall(require, "mason-nvim-dap.mappings.filetypes")
-    if not filetypes_loaded then filetypes = {} end
-    filetypes["node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" }
-    filetypes["pwa-node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" }
-    dap_vscode.type_to_filetypes = require("astrocore").extend_tbl(dap_vscode.type_to_filetypes, filetypes)
-
-    -- A performance JSON decoder with caching
     local parser, cleaner
-    dap_vscode.json_decode = function(str)
+    require("dap.ext.vscode").json_decode = function(str)
       if cleaner == nil then
         local plenary_avail, plenary = pcall(require, "plenary.json")
         if plenary_avail then str = plenary.json_strip_comments(str, {}) end
