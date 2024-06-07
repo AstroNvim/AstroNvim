@@ -2,6 +2,7 @@ return {
   "mfussenegger/nvim-dap",
   lazy = true,
   dependencies = {
+    "nvim-lua/plenary.nvim",
     {
       "jay-babu/mason-nvim-dap.nvim",
       dependencies = { "nvim-dap", "williamboman/mason.nvim" },
@@ -98,4 +99,13 @@ return {
       end,
     },
   },
+  opts = function()
+    local dap_vscode = require "dap.ext.vscode"
+    local filetypes_loaded, filetypes = pcall(require, "mason-nvim-dap.mappings.filetypes")
+    if not filetypes_loaded then filetypes = {} end
+    filetypes["node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" }
+    filetypes["pwa-node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" }
+    dap_vscode.type_to_filetypes = require("astrocore").extend_tbl(dap_vscode.type_to_filetypes, filetypes)
+  end,
+  config = function() end, -- hack, disable config function
 }
