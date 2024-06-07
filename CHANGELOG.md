@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.9.0](https://github.com/AstroNvim/AstroNvim/compare/v4.8.5...v4.9.0) (2024-06-07)
+
+
+### Features
+
+* use the new `opts_extend` in lazy.nvim to make `ensure_installed` lists extend ([e095b80](https://github.com/AstroNvim/AstroNvim/commit/e095b80e89c819dad7b5d07d5a89e2516d6104b6))
+
+
+### Performance Improvements
+
+* **cmp:** improve lazy loading ([a2aeaa1](https://github.com/AstroNvim/AstroNvim/commit/a2aeaa1edccbf43b446b4885bf342526e5c8626f))
+
 ## [4.8.5](https://github.com/AstroNvim/AstroNvim/compare/v4.8.4...v4.8.5) (2024-06-06)
 
 
