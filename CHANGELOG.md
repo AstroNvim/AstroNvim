@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.10.0](https://github.com/AstroNvim/AstroNvim/compare/v4.9.0...v4.10.0) (2024-06-07)
+
+
+### Features
+
+* **dap:** add a basic configuration of the VS Code `launch.json` support for `nvim-dap` ([f1f7230](https://github.com/AstroNvim/AstroNvim/commit/f1f7230461fb22d945927e3f4bc3f1ef353c9449))
+* **dap:** add more sophisticated JSON parsing to `launch.json` support ([c86f07d](https://github.com/AstroNvim/AstroNvim/commit/c86f07d02c779c240e236cea3f7b4c7fb8b612af))
+
 ## [4.9.0](https://github.com/AstroNvim/AstroNvim/compare/v4.8.5...v4.9.0) (2024-06-07)
 
 
