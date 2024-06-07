@@ -2,7 +2,6 @@ return {
   "mfussenegger/nvim-dap",
   lazy = true,
   dependencies = {
-    "nvim-lua/plenary.nvim",
     {
       "jay-babu/mason-nvim-dap.nvim",
       dependencies = { "nvim-dap", "williamboman/mason.nvim" },
@@ -101,11 +100,28 @@ return {
   },
   opts = function()
     local dap_vscode = require "dap.ext.vscode"
+    -- define a few filetype definitions for `launch.json` compatibility
     local filetypes_loaded, filetypes = pcall(require, "mason-nvim-dap.mappings.filetypes")
     if not filetypes_loaded then filetypes = {} end
     filetypes["node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" }
     filetypes["pwa-node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" }
     dap_vscode.type_to_filetypes = require("astrocore").extend_tbl(dap_vscode.type_to_filetypes, filetypes)
+
+    -- A performance JSON decoder with caching
+    local parser, cleaner
+    dap_vscode.json_decode = function(str)
+      if cleaner == nil then
+        local plenary_avail, plenary = pcall(require, "plenary.json")
+        if plenary_avail then str = plenary.json_strip_comments(str, {}) end
+        cleaner = plenary_avail and function(s) return plenary.json_strip_comments(s, {}) end or false
+      end
+      if type(parser) ~= "function" then
+        local json5_avail, json5 = pcall(require, "json5")
+        parser = json5_avail and json5.parse or vim.json.decode
+      end
+      if type(cleaner) == "function" then str = cleaner(str) end
+      return parser(str)
+    end
   end,
-  config = function() end, -- hack, disable config function
+  config = function() end, -- HACK: disable config function
 }
