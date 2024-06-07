@@ -29,11 +29,12 @@ return {
     require("lazy.core.loader").add_to_rtp(plugin)
     pcall(require, "nvim-treesitter.query_predicates")
   end,
+  opts_extend = { "ensure_installed" },
   opts = function()
     if require("astrocore").is_available "mason.nvim" then require("lazy").load { plugins = { "mason.nvim" } } end
     return {
       auto_install = vim.fn.executable "git" == 1 and vim.fn.executable "tree-sitter" == 1, -- only enable auto install if `tree-sitter` cli is installed
-      ensure_installed = {},
+      ensure_installed = { "bash", "c", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" },
       highlight = { enable = true },
       incremental_selection = { enable = true },
       indent = { enable = true },
