@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.10.1](https://github.com/AstroNvim/AstroNvim/compare/v4.10.0...v4.10.1) (2024-06-08)
+
+
+### Bug Fixes
+
+* **dap:** dap vscode filetype definition moved upstream to `mason-nvim-dap` ([69fa069](https://github.com/AstroNvim/AstroNvim/commit/69fa069ed02f69d690cfda1e516c7e4c469e9f29))
+
 ## [4.10.0](https://github.com/AstroNvim/AstroNvim/compare/v4.9.0...v4.10.0) (2024-06-07)
 
 
