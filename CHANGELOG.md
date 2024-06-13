@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.10.3](https://github.com/AstroNvim/AstroNvim/compare/v4.10.2...v4.10.3) (2024-06-13)
+
+
+### Bug Fixes
+
+* **dressing:** use AstroUI for default prompt ([2195fc5](https://github.com/AstroNvim/AstroNvim/commit/2195fc54c3ed767ffb835f67c030bd4de853c654))
+
 ## [4.10.2](https://github.com/AstroNvim/AstroNvim/compare/v4.10.1...v4.10.2) (2024-06-11)
 
 
