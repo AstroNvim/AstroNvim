@@ -68,8 +68,10 @@ return {
         end
         maps.n["<Leader>fo"] = { function() require("telescope.builtin").oldfiles() end, desc = "Find history" }
         maps.n["<Leader>fr"] = { function() require("telescope.builtin").registers() end, desc = "Find registers" }
-        maps.n["<Leader>ft"] =
-          { function() require("telescope.builtin").colorscheme { enable_preview = true } end, desc = "Find themes" }
+        maps.n["<Leader>ft"] = {
+          function() require("telescope.builtin").colorscheme { enable_preview = true, ignore_builtins = true } end,
+          desc = "Find themes",
+        }
         if vim.fn.executable "rg" == 1 then
           maps.n["<Leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
           maps.n["<Leader>fW"] = {
