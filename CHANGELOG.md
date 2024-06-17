@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.10.4](https://github.com/AstroNvim/AstroNvim/compare/v4.10.3...v4.10.4) (2024-06-17)
+
+
+### Bug Fixes
+
+* **telescope:** ignore built-in colorschemes if possible by default since they are not compatible anyway ([0888e1d](https://github.com/AstroNvim/AstroNvim/commit/0888e1d54ede843cf70ba33c21ec40f82bdaef46))
+
 ## [4.10.3](https://github.com/AstroNvim/AstroNvim/compare/v4.10.2...v4.10.3) (2024-06-13)
 
 
