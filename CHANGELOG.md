@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.10.5](https://github.com/AstroNvim/AstroNvim/compare/v4.10.4...v4.10.5) (2024-06-19)
+
+
+### Bug Fixes
+
+* **guess-indent:** update to new `guess-ident.nvim` refactor ([96e2dc7](https://github.com/AstroNvim/AstroNvim/commit/96e2dc7864f90a659e5a09c110f086d9911a1e28))
+
 ## [4.10.4](https://github.com/AstroNvim/AstroNvim/compare/v4.10.3...v4.10.4) (2024-06-17)
 
 
