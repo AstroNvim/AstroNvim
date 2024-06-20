@@ -43,12 +43,16 @@ return {
   },
   opts = function()
     local status = require "astroui.status"
+    local ui_config = require("astroui").config
     return {
       opts = {
         colors = require("astroui").config.status.setup_colors(),
         disable_winbar_cb = function(args)
+          local enabled = vim.tbl_get(ui_config, "status", "winbar", "enabled")
+          if enabled and status.condition.buffer_matches(enabled, args.buf) then return false end
+          local disabled = vim.tbl_get(ui_config, "status", "winbar", "enabled")
           return not require("astrocore.buffer").is_valid(args.buf)
-            or status.condition.buffer_matches({ buftype = { "terminal", "nofile" } }, args.buf)
+            or (disabled and status.condition.buffer_matches(disabled, args.buf))
         end,
       },
       statusline = { -- statusline

@@ -21,6 +21,7 @@ return {
         maps.n["<Leader>gd"] = { function() require("gitsigns").diffthis() end, desc = "View Git diff" }
       end,
     },
+    { "AstroNvim/astroui", opts = { status = { winbar = { enabled = { filetype = { "gitsigns.blame" } } } } } },
   },
   event = "User AstroGitFile",
   opts = function()
