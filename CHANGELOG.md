@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.11.1](https://github.com/AstroNvim/AstroNvim/compare/v4.11.0...v4.11.1) (2024-06-21)
+
+
+### Bug Fixes
+
+* **cmp_luasnip:** add missing `command` mode mappings ([5a9551c](https://github.com/AstroNvim/AstroNvim/commit/5a9551cf78ada904371fc9ce1b9987ea1ce6e3b1))
+
 ## [4.11.0](https://github.com/AstroNvim/AstroNvim/compare/v4.10.5...v4.11.0) (2024-06-20)
 
 
