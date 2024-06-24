@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.12.1](https://github.com/AstroNvim/AstroNvim/compare/v4.12.0...v4.12.1) (2024-06-24)
+
+
+### Bug Fixes
+
+* **astrocore:** safely load astrocore for initial installation protection ([6f91c78](https://github.com/AstroNvim/AstroNvim/commit/6f91c788fe7c845094ee7093d4ae55fa63cef963))
+* **gitsigns:** `winbar` configured upstream for blame window ([dee34f1](https://github.com/AstroNvim/AstroNvim/commit/dee34f111daca65d6e5428cb0c94e9399b725d2c))
+* **lazy:** disable `luarocks` integration if it is not installed ([9a81c8c](https://github.com/AstroNvim/AstroNvim/commit/9a81c8c5415f0519c5ad816db33974e4479c0089))
+* **plugins:** manually disable `luarocks` in `plenary` and `telescope` for now ([6a967f3](https://github.com/AstroNvim/AstroNvim/commit/6a967f3803238a5eda2b16af35c24cd5444b37f1))
+
 ## [4.12.0](https://github.com/AstroNvim/AstroNvim/compare/v4.11.1...v4.12.0) (2024-06-24)
 
 
