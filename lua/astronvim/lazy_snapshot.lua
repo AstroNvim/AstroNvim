@@ -11,7 +11,7 @@ return {
   { "RRethy/vim-illuminate", commit = "5eeb7951fc630682c322e88a9bbdae5c224ff0aa", optional = true },
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
   { "echasnovski/mini.bufremove", version = "^0.12", optional = true },
-  { "folke/lazy.nvim", version = "^10", optional = true },
+  { "folke/lazy.nvim", version = "^11", optional = true },
   { "folke/neoconf.nvim", version = "^1", optional = true },
   { "folke/neodev.nvim", version = "^3", optional = true },
   { "folke/todo-comments.nvim", version = "^1", optional = true },
