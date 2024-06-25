@@ -3,7 +3,7 @@ return {
   lazy = true,
   ---@type AstroUIOpts
   opts = {
-    colorscheme = "astrodark",
+    colorscheme = "astrotheme",
     icons = {
       ActiveLSP = "",
       ActiveTS = "",
