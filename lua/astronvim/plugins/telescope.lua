@@ -104,13 +104,13 @@ return {
     local open_selected = function(prompt_bufnr)
       local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
       local selected = picker:get_multi_selection()
-      if not vim.tbl_isempty(selected) then
+      if vim.tbl_isempty(selected) then
+        actions.select_default(prompt_bufnr)
+      else
         actions.close(prompt_bufnr)
         for _, file in pairs(selected) do
-          if file.path ~= nil then vim.cmd(string.format("%s +%s %s", "edit", file.lnum or 1, file.path)) end
+          if file.path then vim.cmd("edit" .. (file.lnum and " +" .. file.lnum or "") .. " " .. file.path) end
         end
-      else
-        actions.select_default(prompt_bufnr)
       end
     end
     local open_all = function(prompt_bufnr)
