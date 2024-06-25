@@ -2,8 +2,7 @@ local astronvim = require "astronvim"
 astronvim.init()
 
 return {
-  { "folke/lazy.nvim", dir = vim.env.LAZY, opts = { rocks = { enabled = vim.fn.executable "luarocks" == 1 } } },
-  { "nvim-lua/plenary.nvim", lazy = true, build = false },
+  { "folke/lazy.nvim", dir = vim.env.LAZY },
   {
     "AstroNvim/AstroNvim",
     build = function()
