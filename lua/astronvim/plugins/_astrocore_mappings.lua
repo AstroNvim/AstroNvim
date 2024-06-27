@@ -137,6 +137,9 @@ return {
     maps.n["<C-Left>"] = { "<Cmd>vertical resize -2<CR>", desc = "Resize split left" }
     maps.n["<C-Right>"] = { "<Cmd>vertical resize +2<CR>", desc = "Resize split right" }
 
+    maps.n["]q"] = { vim.cmd.cnext, desc = "Next quickfix" }
+    maps.n["[q"] = { vim.cmd.cprev, desc = "Previous quickfix" }
+
     -- Stay in indent mode
     maps.v["<S-Tab>"] = { "<gv", desc = "Unindent line" }
     maps.v["<Tab>"] = { ">gv", desc = "Indent line" }
