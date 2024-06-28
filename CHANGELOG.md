@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.15.0](https://github.com/AstroNvim/AstroNvim/compare/v4.14.0...v4.15.0) (2024-06-28)
+
+
+### Features
+
+* **gitsigns:** add `ig` text objects for git hunks ([74686a2](https://github.com/AstroNvim/AstroNvim/commit/74686a2ae9f00daab08d770a66f671627f7ac107))
+* **gitsigns:** set mappings with `on_attach` in `gitsigns` `opts` to make mappings context aware ([e0d2285](https://github.com/AstroNvim/AstroNvim/commit/e0d228527bca539b079dc5a1397ebd5aec2d90ad))
+
+
+### Bug Fixes
+
+* **gitsigns:** fix mappings incorrectly following lowercase/uppercase conventions ([35012ff](https://github.com/AstroNvim/AstroNvim/commit/35012ffdfaac0b9f472ac88111a227c49e693464))
+
 ## [4.14.0](https://github.com/AstroNvim/AstroNvim/compare/v4.13.0...v4.14.0) (2024-06-27)
 
 
