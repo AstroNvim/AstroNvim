@@ -7,8 +7,13 @@ return {
       opts = function(_, opts)
         local maps = opts.mappings
         maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
+        maps.v["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
         maps.n["]g"] = { function() require("gitsigns").next_hunk() end, desc = "Next Git hunk" }
         maps.n["[g"] = { function() require("gitsigns").prev_hunk() end, desc = "Previous Git hunk" }
+        for _, mode in ipairs { "o", "x" } do
+          maps[mode]["ig"] = { ":<C-U>Gitsigns select_hunk<CR>", desc = "inside Git hunk" }
+        end
+
         maps.n["<Leader>gl"] = { function() require("gitsigns").blame_line() end, desc = "View Git blame" }
         maps.n["<Leader>gL"] =
           { function() require("gitsigns").blame_line { full = true } end, desc = "View full Git blame" }
