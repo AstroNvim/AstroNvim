@@ -13,9 +13,17 @@ return {
         maps.n["<Leader>gL"] =
           { function() require("gitsigns").blame_line { full = true } end, desc = "View full Git blame" }
         maps.n["<Leader>gp"] = { function() require("gitsigns").preview_hunk_inline() end, desc = "Preview Git hunk" }
-        maps.n["<Leader>gh"] = { function() require("gitsigns").reset_hunk() end, desc = "Reset Git hunk" }
-        maps.n["<Leader>gr"] = { function() require("gitsigns").reset_buffer() end, desc = "Reset Git buffer" }
+        maps.n["<Leader>gr"] = { function() require("gitsigns").reset_hunk() end, desc = "Reset Git hunk" }
+        maps.v["<Leader>gr"] = {
+          function() require("gitsigns").reset_hunk { vim.fn.line ".", vim.fn.line "v" } end,
+          desc = "Reset Git hunk",
+        }
+        maps.n["<Leader>gR"] = { function() require("gitsigns").reset_buffer() end, desc = "Reset Git buffer" }
         maps.n["<Leader>gs"] = { function() require("gitsigns").stage_hunk() end, desc = "Stage Git hunk" }
+        maps.v["<Leader>gs"] = {
+          function() require("gitsigns").stage_hunk { vim.fn.line ".", vim.fn.line "v" } end,
+          desc = "Stage Git hunk",
+        }
         maps.n["<Leader>gS"] = { function() require("gitsigns").stage_buffer() end, desc = "Stage Git buffer" }
         maps.n["<Leader>gu"] = { function() require("gitsigns").undo_stage_hunk() end, desc = "Unstage Git hunk" }
         maps.n["<Leader>gd"] = { function() require("gitsigns").diffthis() end, desc = "View Git diff" }
