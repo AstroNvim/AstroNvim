@@ -35,6 +35,22 @@ return {
         if astro.is_available(source_plugin) then table.insert(sources, source) end
       end
 
+      local format -- format function compatible with lspkind and nvim-highlight-colors
+      if astro.is_available "lspkind.nvim" then
+        local lspkind_format = require("lspkind").cmp_format(require("astrocore").plugin_opts "lspkind.nvim")
+        format = function(entry, item)
+          local color_item = astro.is_available "nvim-highlight-colors"
+            and require("nvim-highlight-colors").format(entry, { kind = item.kind })
+          item = lspkind_format(entry, item)
+          if color_item and color_item.abbr_hl_group then
+            item.kind, item.kind_hl_group = color_item.abbr, color_item.abbr_hl_group
+          end
+          return item
+        end
+      elseif astro.is_available "nvim-highlight-colors" then
+        format = require("nvim-highlight-colors").format
+      end
+
       return {
         enabled = function()
           local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
@@ -43,7 +59,7 @@ return {
           return vim.F.if_nil(vim.b.cmp_enabled, astro.config.features.cmp)
         end,
         preselect = cmp.PreselectMode.None,
-        formatting = { fields = { "kind", "abbr", "menu" } },
+        formatting = { fields = { "kind", "abbr", "menu" }, format = format },
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,
           select = false,
