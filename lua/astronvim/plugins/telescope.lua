@@ -134,8 +134,6 @@ return {
         },
         mappings = {
           i = {
-            ["<C-N>"] = actions.cycle_history_next,
-            ["<C-P>"] = actions.cycle_history_prev,
             ["<C-J>"] = actions.move_selection_next,
             ["<C-K>"] = actions.move_selection_previous,
             ["<CR>"] = open_selected,
