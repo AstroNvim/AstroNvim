@@ -247,7 +247,7 @@ return {
       end,
       winbar = {
         enabled = { bufname = {}, buftype = {}, filetype = {} },
-        disabled = { bufname = {}, buftype = { "terminal", "nofile" }, filetype = {} },
+        disabled = { bufname = {}, buftype = { "^terminal$", "^nofile$" }, filetype = {} },
       },
     }
   end,
