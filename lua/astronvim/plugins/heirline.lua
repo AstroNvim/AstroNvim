@@ -50,7 +50,7 @@ return {
         disable_winbar_cb = function(args)
           local enabled = vim.tbl_get(ui_config, "status", "winbar", "enabled")
           if enabled and status.condition.buffer_matches(enabled, args.buf) then return false end
-          local disabled = vim.tbl_get(ui_config, "status", "winbar", "enabled")
+          local disabled = vim.tbl_get(ui_config, "status", "winbar", "disabled")
           return not require("astrocore.buffer").is_valid(args.buf)
             or (disabled and status.condition.buffer_matches(disabled, args.buf))
         end,
