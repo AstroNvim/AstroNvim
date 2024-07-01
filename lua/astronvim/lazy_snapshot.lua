@@ -28,7 +28,7 @@ return {
   { "lewis6991/gitsigns.nvim", version = "^0.9", optional = true },
   { "lukas-reineke/indent-blankline.nvim", version = "^3", optional = true },
   { "max397574/better-escape.nvim", commit = "7e86edafb8c7e73699e0320f225464a298b96d12", optional = true },
-  { "mfussenegger/nvim-dap", version = "^0.8", optional = true },
+  { "mfussenegger/nvim-dap", commit = "6f79b822997f2e8a789c6034e147d42bc6706770", optional = true },
   { "mrjones2014/smart-splits.nvim", version = "^1", optional = true },
   { "neovim/nvim-lspconfig", commit = "53a3c6444ec5006b567071614c83edc8ad651f6d", optional = true },
   { "numToStr/Comment.nvim", commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb", optional = true },
