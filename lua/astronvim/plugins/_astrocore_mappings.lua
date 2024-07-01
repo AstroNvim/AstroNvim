@@ -111,11 +111,20 @@ return {
 
     maps.n["<Leader>l"] = vim.tbl_get(sections, "l")
     maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
+    local function diagnostic_goto(dir, severity)
+      local go = vim.diagnostic["goto_" .. (dir and "next" or "prev")]
+      if type(severity) == "string" then severity = vim.diagnostic.severity[severity] end
+      return function() go { severity = severity } end
+    end
     -- TODO: Remove mapping after dropping support for Neovim v0.10, it's automatic
     if vim.fn.has "nvim-0.11" == 0 then
-      maps.n["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Previous diagnostic" }
-      maps.n["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Next diagnostic" }
+      maps.n["[d"] = { diagnostic_goto(false), desc = "Previous diagnostic" }
+      maps.n["]d"] = { diagnostic_goto(true), desc = "Next diagnostic" }
     end
+    maps.n["[e"] = { diagnostic_goto(false, "ERROR"), desc = "Previous error" }
+    maps.n["]e"] = { diagnostic_goto(true, "ERROR"), desc = "Next error" }
+    maps.n["[w"] = { diagnostic_goto(false, "WARN"), desc = "Previous warning" }
+    maps.n["]w"] = { diagnostic_goto(true, "WARN"), desc = "Next warning" }
     -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
     if vim.fn.has "nvim-0.10" == 0 then
       maps.n["<C-W>d"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
