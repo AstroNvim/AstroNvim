@@ -63,9 +63,26 @@ return {
         if astro.is_available(source_plugin) then table.insert(sources, source) end
       end
 
-      local format
-      local lspkind_avail, lspkind = pcall(require, "lspkind")
-      if lspkind_avail then format = lspkind.cmp_format(require("astrocore").plugin_opts "lspkind.nvim") end
+      local get_icon_provider = function()
+        local _, mini_icons = pcall(require, "mini.icons")
+        if _G.MiniIcons then return function(kind) return mini_icons.get("lsp", kind) end end
+        local lspkind_avail, lspkind = pcall(require, "lspkind")
+        if lspkind_avail then return function(kind) return lspkind.symbolic(kind, { mode = "symbol" }) end end
+      end
+      local icon_provider = get_icon_provider()
+
+      local format = function(entry, item)
+        local highlight_colors_avail, highlight_colors = pcall(require, "nvim-highlight-colors")
+        local color_item = highlight_colors_avail and highlight_colors.format(entry, { kind = item.kind })
+        if icon_provider then
+          local icon = icon_provider(item.kind)
+          if icon then item.kind = icon end
+        end
+        if color_item and color_item.abbr_hl_group then
+          item.kind, item.kind_hl_group = color_item.abbr, color_item.abbr_hl_group
+        end
+        return item
+      end
 
       return {
         enabled = function()
