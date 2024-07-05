@@ -63,6 +63,10 @@ return {
         if astro.is_available(source_plugin) then table.insert(sources, source) end
       end
 
+      local format
+      local lspkind_avail, lspkind = pcall(require, "lspkind")
+      if lspkind_avail then format = lspkind.cmp_format(require("astrocore").plugin_opts "lspkind.nvim") end
+
       return {
         enabled = function()
           local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
@@ -71,7 +75,7 @@ return {
           return vim.F.if_nil(vim.b.cmp_enabled, astro.config.features.cmp)
         end,
         preselect = cmp.PreselectMode.None,
-        formatting = { fields = { "kind", "abbr", "menu" } },
+        formatting = { fields = { "kind", "abbr", "menu" }, format = format },
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,
           select = false,

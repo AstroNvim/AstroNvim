@@ -2,15 +2,6 @@ return {
   "onsails/lspkind.nvim",
   lazy = true,
   enabled = vim.g.icons_enabled ~= false,
-  specs = {
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      if require("astrocore").is_available "lspkind.nvim" then
-        if not opts.formatting then opts.formatting = {} end
-        opts.formatting.format = require("lspkind").cmp_format(require("astrocore").plugin_opts "lspkind.nvim")
-      end
-    end,
-  },
   opts = {
     mode = "symbol",
     symbol_map = {
