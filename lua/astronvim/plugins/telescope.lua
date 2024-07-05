@@ -1,14 +1,7 @@
 return {
   "nvim-telescope/telescope.nvim",
-  dependencies = {
+  specs = {
     { "nvim-lua/plenary.nvim", lazy = true },
-    {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      lazy = true,
-      enabled = vim.fn.executable "make" == 1,
-      build = "make",
-    },
-    "nvim-treesitter/nvim-treesitter",
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
@@ -97,6 +90,15 @@ return {
         }
       end,
     },
+  },
+  dependencies = {
+    {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      lazy = true,
+      enabled = vim.fn.executable "make" == 1,
+      build = "make",
+    },
+    "nvim-treesitter/nvim-treesitter",
   },
   cmd = "Telescope",
   opts = function()

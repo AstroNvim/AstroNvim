@@ -1,7 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   main = "nvim-treesitter.configs",
-  dependencies = { { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true } },
+  dependencies = { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true },
   event = "User AstroFile",
   cmd = {
     "TSBufDisable",

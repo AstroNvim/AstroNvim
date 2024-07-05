@@ -2,14 +2,12 @@ return {
   "lukas-reineke/indent-blankline.nvim",
   event = "User AstroFile",
   cmd = { "IBLEnable", "IBLDisable", "IBLToggle", "IBLEnableScope", "IBLDisableScope", "IBLToggleScope" },
-  dependencies = {
-    {
-      "AstroNvim/astrocore",
-      opts = function(_, opts)
-        local maps = opts.mappings
-        maps.n["<Leader>u|"] = { "<Cmd>IBLToggle<CR>", desc = "Toggle indent guides" }
-      end,
-    },
+  specs = {
+    "AstroNvim/astrocore",
+    opts = function(_, opts)
+      local maps = opts.mappings
+      maps.n["<Leader>u|"] = { "<Cmd>IBLToggle<CR>", desc = "Toggle indent guides" }
+    end,
   },
   main = "ibl",
   opts = {

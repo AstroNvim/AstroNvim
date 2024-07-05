@@ -1,7 +1,7 @@
 return {
   "NMAC427/guess-indent.nvim",
   cmd = "GuessIndent",
-  dependencies = {
+  specs = {
     "AstroNvim/astrocore",
     opts = {
       autocmds = {

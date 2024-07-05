@@ -1,14 +1,12 @@
 return {
   "windwp/nvim-autopairs",
   event = "User AstroFile",
-  dependencies = {
-    {
-      "AstroNvim/astrocore",
-      opts = function(_, opts)
-        local maps = opts.mappings
-        maps.n["<Leader>ua"] = { function() require("astrocore.toggles").autopairs() end, desc = "Toggle autopairs" }
-      end,
-    },
+  specs = {
+    "AstroNvim/astrocore",
+    opts = function(_, opts)
+      local maps = opts.mappings
+      maps.n["<Leader>ua"] = { function() require("astrocore.toggles").autopairs() end, desc = "Toggle autopairs" }
+    end,
   },
   opts = {
     check_ts = true,

@@ -1,45 +1,41 @@
 return {
   "rebelot/heirline.nvim",
   event = "BufEnter",
-  dependencies = {
-    {
-      "AstroNvim/astrocore",
-      opts = function(_, opts)
-        local maps = opts.mappings
-        maps.n["<Leader>bb"] = {
-          function()
-            require("astroui.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
-          end,
-          desc = "Select buffer from tabline",
-        }
-        maps.n["<Leader>bd"] = {
-          function()
-            require("astroui.status.heirline").buffer_picker(
-              function(bufnr) require("astrocore.buffer").close(bufnr) end
-            )
-          end,
-          desc = "Close buffer from tabline",
-        }
-        maps.n["<Leader>b\\"] = {
-          function()
-            require("astroui.status.heirline").buffer_picker(function(bufnr)
-              vim.cmd.split()
-              vim.api.nvim_win_set_buf(0, bufnr)
-            end)
-          end,
-          desc = "Horizontal split buffer from tabline",
-        }
-        maps.n["<Leader>b|"] = {
-          function()
-            require("astroui.status.heirline").buffer_picker(function(bufnr)
-              vim.cmd.vsplit()
-              vim.api.nvim_win_set_buf(0, bufnr)
-            end)
-          end,
-          desc = "Vertical split buffer from tabline",
-        }
-      end,
-    },
+  specs = {
+    "AstroNvim/astrocore",
+    opts = function(_, opts)
+      local maps = opts.mappings
+      maps.n["<Leader>bb"] = {
+        function()
+          require("astroui.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
+        end,
+        desc = "Select buffer from tabline",
+      }
+      maps.n["<Leader>bd"] = {
+        function()
+          require("astroui.status.heirline").buffer_picker(function(bufnr) require("astrocore.buffer").close(bufnr) end)
+        end,
+        desc = "Close buffer from tabline",
+      }
+      maps.n["<Leader>b\\"] = {
+        function()
+          require("astroui.status.heirline").buffer_picker(function(bufnr)
+            vim.cmd.split()
+            vim.api.nvim_win_set_buf(0, bufnr)
+          end)
+        end,
+        desc = "Horizontal split buffer from tabline",
+      }
+      maps.n["<Leader>b|"] = {
+        function()
+          require("astroui.status.heirline").buffer_picker(function(bufnr)
+            vim.cmd.vsplit()
+            vim.api.nvim_win_set_buf(0, bufnr)
+          end)
+        end,
+        desc = "Vertical split buffer from tabline",
+      }
+    end,
   },
   opts = function()
     local status = require "astroui.status"

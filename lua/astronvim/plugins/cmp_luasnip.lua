@@ -7,7 +7,33 @@ local function is_visible(cmp) return cmp.core.view:visible() or vim.fn.pumvisib
 return {
   {
     "hrsh7th/nvim-cmp",
-    dependencies = {
+    specs = {
+      {
+        "AstroNvim/astrolsp",
+        optional = true,
+        opts = function(_, opts)
+          local astrocore = require "astrocore"
+          if astrocore.is_available "cmp-nvim-lsp" then
+            opts.capabilities = astrocore.extend_tbl(opts.capabilities, {
+              textDocument = {
+                completion = {
+                  completionItem = {
+                    documentationFormat = { "markdown", "plaintext" },
+                    snippetSupport = true,
+                    preselectSupport = true,
+                    insertReplaceSupport = true,
+                    labelDetailsSupport = true,
+                    deprecatedSupport = true,
+                    commitCharactersSupport = true,
+                    tagSupport = { valueSet = { 1 } },
+                    resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
+                  },
+                },
+              },
+            })
+          end
+        end,
+      },
       {
         "AstroNvim/astrocore",
         opts = function(_, opts)
@@ -18,6 +44,8 @@ return {
             { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion (global)" }
         end,
       },
+    },
+    dependencies = {
       { "hrsh7th/cmp-buffer", lazy = true },
       { "hrsh7th/cmp-path", lazy = true },
       { "hrsh7th/cmp-nvim-lsp", lazy = true },
@@ -112,75 +140,48 @@ return {
     config = function(...) require "astronvim.plugins.configs.cmp"(...) end,
   },
   {
-    "AstroNvim/astrolsp",
-    optional = true,
-    opts = function(_, opts)
-      local astrocore = require "astrocore"
-      if astrocore.is_available "cmp-nvim-lsp" then
-        opts.capabilities = astrocore.extend_tbl(opts.capabilities, {
-          textDocument = {
-            completion = {
-              completionItem = {
-                documentationFormat = { "markdown", "plaintext" },
-                snippetSupport = true,
-                preselectSupport = true,
-                insertReplaceSupport = true,
-                labelDetailsSupport = true,
-                deprecatedSupport = true,
-                commitCharactersSupport = true,
-                tagSupport = { valueSet = { 1 } },
-                resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
-              },
-            },
-          },
-        })
-      end
-    end,
-  },
-  {
     "L3MON4D3/LuaSnip",
     lazy = true,
     build = vim.fn.has "win32" == 0
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
       or nil,
-    dependencies = {
-      { "rafamadriz/friendly-snippets", lazy = true },
-      {
-        "hrsh7th/nvim-cmp",
-        dependencies = { { "saadparwaiz1/cmp_luasnip", lazy = true } },
-        opts = function(_, opts)
-          local luasnip, cmp = require "luasnip", require "cmp"
+    specs = {
+      "hrsh7th/nvim-cmp",
+      optional = true,
+      dependencies = { { "saadparwaiz1/cmp_luasnip", lazy = true } },
+      opts = function(_, opts)
+        local luasnip, cmp = require "luasnip", require "cmp"
 
-          if not opts.snippet then opts.snippet = {} end
-          opts.snippet.expand = function(args) luasnip.lsp_expand(args.body) end
+        if not opts.snippet then opts.snippet = {} end
+        opts.snippet.expand = function(args) luasnip.lsp_expand(args.body) end
 
-          if not opts.sources then opts.sources = {} end
-          table.insert(opts.sources, { name = "luasnip", priority = 750 })
+        if not opts.sources then opts.sources = {} end
+        table.insert(opts.sources, { name = "luasnip", priority = 750 })
 
-          if not opts.mappings then opts.mappings = {} end
-          opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
-            if is_visible(cmp) then
-              cmp.select_next_item()
-            elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, { "i", "s" })
-          opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
-            if is_visible(cmp) then
-              cmp.select_prev_item()
-            elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" })
-        end,
-      },
+        if not opts.mappings then opts.mappings = {} end
+        opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
+          if is_visible(cmp) then
+            cmp.select_next_item()
+          elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" })
+        opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
+          if is_visible(cmp) then
+            cmp.select_prev_item()
+          elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" })
+      end,
     },
+    dependencies = { "rafamadriz/friendly-snippets", lazy = true },
     opts = {
       history = true,
       delete_check_events = "TextChanged",
