@@ -1,6 +1,12 @@
 return function(_, _)
   local setup_servers = function()
-    vim.tbl_map(require("astrolsp").lsp_setup, require("astrolsp").config.servers)
+    local was_setup, astrolsp = {}, require "astrolsp"
+    for _, server in ipairs(astrolsp.config.servers) do
+      if not was_setup[server] then
+        astrolsp.lsp_setup(server)
+        was_setup[server] = true
+      end
+    end
     require("astrocore").exec_buffer_autocmds("FileType", { group = "lspconfig" })
 
     require("astrocore").event "LspSetup"
