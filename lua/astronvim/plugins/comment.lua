@@ -1,25 +1,27 @@
 return {
   "numToStr/Comment.nvim",
   specs = {
-    "AstroNvim/astrocore",
-    opts = function(_, opts)
-      local maps = opts.mappings
-      maps.n["<Leader>/"] = {
-        function()
-          return require("Comment.api").call(
-            "toggle.linewise." .. (vim.v.count == 0 and "current" or "count_repeat"),
-            "g@$"
-          )()
-        end,
-        expr = true,
-        silent = true,
-        desc = "Toggle comment line",
-      }
-      maps.x["<Leader>/"] = {
-        "<Esc><Cmd>lua require('Comment.api').locked('toggle.linewise')(vim.fn.visualmode())<CR>",
-        desc = "Toggle comment",
-      }
-    end,
+    {
+      "AstroNvim/astrocore",
+      opts = function(_, opts)
+        local maps = opts.mappings
+        maps.n["<Leader>/"] = {
+          function()
+            return require("Comment.api").call(
+              "toggle.linewise." .. (vim.v.count == 0 and "current" or "count_repeat"),
+              "g@$"
+            )()
+          end,
+          expr = true,
+          silent = true,
+          desc = "Toggle comment line",
+        }
+        maps.x["<Leader>/"] = {
+          "<Esc><Cmd>lua require('Comment.api').locked('toggle.linewise')(vim.fn.visualmode())<CR>",
+          desc = "Toggle comment",
+        }
+      end,
+    },
   },
   keys = function(_, keys)
     local plugin = require("lazy.core.config").spec.plugins["Comment.nvim"]

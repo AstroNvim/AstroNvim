@@ -3,11 +3,13 @@ return {
   event = "User AstroFile",
   cmd = { "IBLEnable", "IBLDisable", "IBLToggle", "IBLEnableScope", "IBLDisableScope", "IBLToggleScope" },
   specs = {
-    "AstroNvim/astrocore",
-    opts = function(_, opts)
-      local maps = opts.mappings
-      maps.n["<Leader>u|"] = { "<Cmd>IBLToggle<CR>", desc = "Toggle indent guides" }
-    end,
+    {
+      "AstroNvim/astrocore",
+      opts = function(_, opts)
+        local maps = opts.mappings
+        maps.n["<Leader>u|"] = { "<Cmd>IBLToggle<CR>", desc = "Toggle indent guides" }
+      end,
+    },
   },
   main = "ibl",
   opts = {

@@ -2,11 +2,13 @@ return {
   "stevearc/aerial.nvim",
   event = "User AstroFile",
   specs = {
-    "AstroNvim/astrocore",
-    opts = function(_, opts)
-      local maps = opts.mappings
-      maps.n["<Leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
-    end,
+    {
+      "AstroNvim/astrocore",
+      opts = function(_, opts)
+        local maps = opts.mappings
+        maps.n["<Leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
+      end,
+    },
   },
   opts = function()
     local opts = {

@@ -26,7 +26,7 @@ return {
       end,
     },
   },
-  dependencies = { "kevinhwang91/promise-async", lazy = true },
+  dependencies = { { "kevinhwang91/promise-async", lazy = true } },
   opts = {
     preview = {
       mappings = {

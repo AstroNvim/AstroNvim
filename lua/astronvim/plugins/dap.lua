@@ -24,7 +24,7 @@ return {
           maps.v["<Leader>dE"] = { function() require("dapui").eval() end, desc = "Evaluate Input" }
         end,
       },
-      dependencies = { "nvim-neotest/nvim-nio", lazy = true },
+      dependencies = { { "nvim-neotest/nvim-nio", lazy = true } },
       opts = { floating = { border = "rounded" } },
       config = function(...) require "astronvim.plugins.configs.nvim-dap-ui"(...) end,
     },

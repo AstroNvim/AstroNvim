@@ -181,42 +181,44 @@ return {
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
       or nil,
     specs = {
-      "hrsh7th/nvim-cmp",
-      optional = true,
-      dependencies = { { "saadparwaiz1/cmp_luasnip", lazy = true } },
-      opts = function(_, opts)
-        local luasnip, cmp = require "luasnip", require "cmp"
+      {
+        "hrsh7th/nvim-cmp",
+        optional = true,
+        dependencies = { { "saadparwaiz1/cmp_luasnip", lazy = true } },
+        opts = function(_, opts)
+          local luasnip, cmp = require "luasnip", require "cmp"
 
-        if not opts.snippet then opts.snippet = {} end
-        opts.snippet.expand = function(args) luasnip.lsp_expand(args.body) end
+          if not opts.snippet then opts.snippet = {} end
+          opts.snippet.expand = function(args) luasnip.lsp_expand(args.body) end
 
-        if not opts.sources then opts.sources = {} end
-        table.insert(opts.sources, { name = "luasnip", priority = 750 })
+          if not opts.sources then opts.sources = {} end
+          table.insert(opts.sources, { name = "luasnip", priority = 750 })
 
-        if not opts.mappings then opts.mappings = {} end
-        opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
-          if is_visible(cmp) then
-            cmp.select_next_item()
-          elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.expand_or_locally_jumpable() then
-            luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
-          else
-            fallback()
-          end
-        end, { "i", "s" })
-        opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
-          if is_visible(cmp) then
-            cmp.select_prev_item()
-          elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" })
-      end,
+          if not opts.mappings then opts.mappings = {} end
+          opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
+            if is_visible(cmp) then
+              cmp.select_next_item()
+            elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
+            end
+          end, { "i", "s" })
+          opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
+            if is_visible(cmp) then
+              cmp.select_prev_item()
+            elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" })
+        end,
+      },
     },
-    dependencies = { "rafamadriz/friendly-snippets", lazy = true },
+    dependencies = { { "rafamadriz/friendly-snippets", lazy = true } },
     opts = {
       history = true,
       delete_check_events = "TextChanged",
