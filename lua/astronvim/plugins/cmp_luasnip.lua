@@ -78,10 +78,24 @@ return {
           local icon = icon_provider(item.kind)
           if icon then item.kind = icon end
         end
-        if color_item and color_item.abbr_hl_group then
+        if color_item and color_item.abbr and color_item.abbr_hl_group then
           item.kind, item.kind_hl_group = color_item.abbr, color_item.abbr_hl_group
         end
         return item
+      end
+
+      ---TODO: Remove this block in AstroNvim v5, this is here for backwards compatibility
+      local lspkind_opts = astro.plugin_opts "lspkind.nvim"
+      local lspkind_mode = vim.tbl_get(lspkind_opts, "mode")
+      if -- check for user intervention on lspkind settings for `cmp_format`
+        (lspkind_mode and lspkind_mode ~= "symbol")
+        or vim.tbl_get(lspkind_opts, "maxwidth")
+        or vim.tbl_get(lspkind_opts, "before")
+        or vim.tbl_get(lspkind_opts, "show_labelDetails")
+      then
+        local lspkind_avail, lspkind = pcall(require, "lspkind")
+        -- if there is user configuration for `lspkind`s cmp formatting just use that format function
+        if lspkind_avail then format = lspkind.cmp_format(require("astrocore").plugin_opts "lspkind.nvim") end
       end
 
       return {
