@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.17.2](https://github.com/AstroNvim/AstroNvim/compare/v4.17.1...v4.17.2) (2024-07-08)
+
+
+### Bug Fixes
+
+* **astrolsp:** `servers` list should be extended by default ([167fd37](https://github.com/AstroNvim/AstroNvim/commit/167fd3780a66f9574d554f5e729073c782104829))
+
 ## [4.17.1](https://github.com/AstroNvim/AstroNvim/compare/v4.17.0...v4.17.1) (2024-07-08)
 
 
