@@ -168,7 +168,14 @@ return {
                 end
                 vim.schedule(function()
                   if require("astrocore.buffer").is_valid(args.buf) then
-                    vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf, data = args.data })
+                    for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
+                      if autocmd.group_name == "filetypedetect" then
+                        return vim.api.nvim_exec_autocmds(
+                          args.event,
+                          { group = autocmd.group_name, buffer = args.buf, data = args.data }
+                        )
+                      end
+                    end
                   end
                 end)
               end
