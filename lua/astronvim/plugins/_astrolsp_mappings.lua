@@ -6,13 +6,13 @@ return {
     maps.v["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
 
     maps.n["<Leader>la"] =
-      { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "testDocument/codeAction" }
+      { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "textDocument/codeAction" }
     maps.x["<Leader>la"] =
-      { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "testDocument/codeAction" }
+      { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "textDocument/codeAction" }
     maps.n["<Leader>lA"] = {
       function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end,
       desc = "LSP source action",
-      cond = "testDocument/codeAction",
+      cond = "textDocument/codeAction",
     }
 
     maps.n["<Leader>ll"] =
