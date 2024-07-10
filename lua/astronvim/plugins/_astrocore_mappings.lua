@@ -16,6 +16,7 @@ return {
       g = { desc = get_icon("Git", 1, true) .. "Git" },
       S = { desc = get_icon("Session", 1, true) .. "Session" },
       t = { desc = get_icon("Terminal", 1, true) .. "Terminal" },
+      x = { desc = get_icon("List", 1, true) .. "Quickfix/Lists" },
     }
 
     -- initialize mappings table
@@ -146,6 +147,10 @@ return {
     maps.n["<C-Left>"] = { "<Cmd>vertical resize -2<CR>", desc = "Resize split left" }
     maps.n["<C-Right>"] = { "<Cmd>vertical resize +2<CR>", desc = "Resize split right" }
 
+    -- List management
+    maps.n["<Leader>x"] = vim.tbl_get(sections, "x")
+    maps.n["<Leader>xq"] = { "<Cmd>copen<CR>", desc = "Quickfix List" }
+    maps.n["<Leader>xl"] = { "<Cmd>lopen<CR>", desc = "Location List" }
     maps.n["]q"] = { vim.cmd.cnext, desc = "Next quickfix" }
     maps.n["[q"] = { vim.cmd.cprev, desc = "Previous quickfix" }
     maps.n["]Q"] = { vim.cmd.clast, desc = "End quickfix" }

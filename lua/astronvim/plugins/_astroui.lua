@@ -46,6 +46,7 @@ return {
       GitStaged = "✓",
       GitUnstaged = "✗",
       GitUntracked = "★",
+      List = "",
       LSPLoading1 = "",
       LSPLoading2 = "󰀚",
       LSPLoading3 = "",
