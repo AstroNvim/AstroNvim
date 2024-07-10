@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.19.0](https://github.com/AstroNvim/AstroNvim/compare/v4.18.0...v4.19.0) (2024-07-10)
+
+
+### Features
+
+* **mappings:** add bindings for beginning and end of quickfix and location lists ([b0de586](https://github.com/AstroNvim/AstroNvim/commit/b0de586d0652505daee70849bf0bd5ac50ef0df0))
+
+
+### Bug Fixes
+
+* **astrolsp:** fix typo in mappings ([75bb91a](https://github.com/AstroNvim/AstroNvim/commit/75bb91a49400e4e0bd6f0d48b6036602a364e774))
+
+
+### Performance Improvements
+
+* **lspconfig:** optimize re-application of `editorconfig` ([8358cb2](https://github.com/AstroNvim/AstroNvim/commit/8358cb2e2dfcd598bf0185a1d437728d1c964333))
+
 ## [4.18.0](https://github.com/AstroNvim/AstroNvim/compare/v4.17.4...v4.18.0) (2024-07-10)
 
 
