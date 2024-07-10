@@ -12,7 +12,7 @@ return {
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
   { "echasnovski/mini.bufremove", version = "^0.13", optional = true },
   { "folke/lazy.nvim", version = "^11", optional = true },
-  { "folke/neoconf.nvim", version = "^1", optional = true },
+  { "folke/neoconf.nvim", commit = "e34cf5e359500e3c5fc35d5b137335fba94ed501", optional = true },
   { "folke/neodev.nvim", version = "^3", optional = true },
   { "folke/todo-comments.nvim", version = "^1", optional = true },
   { "folke/which-key.nvim", version = "^2", optional = true },
