@@ -31,20 +31,24 @@ return {
       cond = "textDocument/definition",
     }
 
-    local formatting_enabled = function(client)
-      local disabled = opts.formatting.disabled
-      return client.supports_method "textDocument/formatting"
-        and disabled ~= true
-        and not vim.tbl_contains(disabled, client.name)
+    local formatting_checker = function(method)
+      method = "textDocument/" .. (method or "formatting")
+      return function(client)
+        local disabled = opts.formatting.disabled
+        return client.supports_method(method) and disabled ~= true and not vim.tbl_contains(disabled, client.name)
+      end
     end
+    local formatting_enabled = formatting_checker()
     maps.n["<Leader>lf"] = {
-      function()
-        vim.lsp.buf.format(require("astrolsp").format_opts --[[@as vim.lsp.buf.format.Opts?]])
-      end,
+      function() vim.lsp.buf.format(require("astrolsp").format_opts) end,
       desc = "Format buffer",
       cond = formatting_enabled,
     }
-    maps.v["<Leader>lf"] = maps.n["<Leader>lf"]
+    maps.v["<Leader>lf"] = {
+      function() vim.lsp.buf.format(require("astrolsp").format_opts) end,
+      desc = "Format buffer",
+      cond = formatting_checker "rangeFormatting",
+    }
     maps.n["<Leader>uf"] = {
       function() require("astrolsp.toggles").buffer_autoformat() end,
       desc = "Toggle autoformatting (buffer)",
