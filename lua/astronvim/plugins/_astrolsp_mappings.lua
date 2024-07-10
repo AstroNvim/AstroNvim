@@ -9,6 +9,11 @@ return {
       { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "testDocument/codeAction" }
     maps.x["<Leader>la"] =
       { function() vim.lsp.buf.code_action() end, desc = "LSP code action", cond = "testDocument/codeAction" }
+    maps.n["<Leader>lA"] = {
+      function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end,
+      desc = "LSP source action",
+      cond = "testDocument/codeAction",
+    }
 
     maps.n["<Leader>ll"] =
       { function() vim.lsp.codelens.refresh() end, desc = "LSP CodeLens refresh", cond = "textDocument/codeLens" }
