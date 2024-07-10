@@ -131,18 +131,6 @@ return {
           end,
         },
       },
-      editorconfig_filetype = {
-        {
-          event = "FileType",
-          desc = "configure editorconfig after filetype detection to override `ftplugin`s",
-          callback = function(args)
-            if vim.F.if_nil(vim.b.editorconfig, vim.g.editorconfig, true) then
-              local editorconfig_avail, editorconfig = pcall(require, "editorconfig")
-              if editorconfig_avail then editorconfig.config(args.buf) end
-            end
-          end,
-        },
-      },
       file_user_events = {
         {
           event = { "BufReadPost", "BufNewFile", "BufWritePost" },
