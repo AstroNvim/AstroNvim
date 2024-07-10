@@ -131,6 +131,18 @@ return {
           end,
         },
       },
+      editorconfig_filetype = {
+        {
+          event = "FileType",
+          desc = "Ensure editorconfig settings take highest precedence",
+          callback = function(args)
+            if vim.F.if_nil(vim.b.editorconfig, vim.g.editorconfig) then
+              local editorconfig_avail, editorconfig = pcall(require, "editorconfig")
+              if editorconfig_avail then editorconfig.config(args.buf) end
+            end
+          end,
+        },
+      },
       file_user_events = {
         {
           event = { "BufReadPost", "BufNewFile", "BufWritePost" },
