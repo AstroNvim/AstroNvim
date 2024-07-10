@@ -148,9 +148,13 @@ return {
 
     maps.n["]q"] = { vim.cmd.cnext, desc = "Next quickfix" }
     maps.n["[q"] = { vim.cmd.cprev, desc = "Previous quickfix" }
+    maps.n["]Q"] = { vim.cmd.clast, desc = "End quickfix" }
+    maps.n["[Q"] = { vim.cmd.cfirst, desc = "Beginning quickfix" }
 
     maps.n["]l"] = { vim.cmd.lnext, desc = "Next loclist" }
     maps.n["[l"] = { vim.cmd.lprev, desc = "Previous loclist" }
+    maps.n["]L"] = { vim.cmd.llast, desc = "End loclist" }
+    maps.n["[L"] = { vim.cmd.lfirst, desc = "Beginning loclist" }
 
     -- Stay in indent mode
     maps.v["<S-Tab>"] = { "<gv", desc = "Unindent line" }
