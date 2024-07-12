@@ -3,6 +3,7 @@ return {
   ---@param opts AstroLSPOpts
   opts = function(_, opts)
     local maps = require("astrocore").empty_map_table()
+    maps.n["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
     maps.v["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
 
     maps.n["<Leader>la"] =
