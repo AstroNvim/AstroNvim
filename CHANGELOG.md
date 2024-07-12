@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.20.0](https://github.com/AstroNvim/AstroNvim/compare/v4.19.0...v4.20.0) (2024-07-12)
+
+
+### Features
+
+* **mappings:** add `&lt;Leader&gt;x` menu for quickfix/list access ([99c2b13](https://github.com/AstroNvim/AstroNvim/commit/99c2b13df7b4943b3f82ca772db3dfb8f13f42e7))
+
+
+### Bug Fixes
+
+* Move `editorconfig` ensurance back to `autocmd` for better user control ([309fb21](https://github.com/AstroNvim/AstroNvim/commit/309fb21c3679c13abb4d4b64a5f86fee7f21414d))
+* **which-key:** update to the new v3 setup ([1839d93](https://github.com/AstroNvim/AstroNvim/commit/1839d93b078f38c5924cedcd8efefce9840e6869))
+
+
+### Performance Improvements
+
+* **vim-illuminate:** make large file detection more aggressive ([14a389f](https://github.com/AstroNvim/AstroNvim/commit/14a389fb114c9918b1bd79ebb2f2e5dba4f32e3d))
+
 ## [4.19.0](https://github.com/AstroNvim/AstroNvim/compare/v4.18.0...v4.19.0) (2024-07-10)
 
 
