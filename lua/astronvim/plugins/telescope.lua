@@ -2,7 +2,6 @@ return {
   "nvim-telescope/telescope.nvim",
   specs = {
     { "nvim-lua/plenary.nvim", lazy = true },
-    { "folke/which-key.nvim", optional = true, opts = { disable = { ft = { "TelescopePrompt" } } } },
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
