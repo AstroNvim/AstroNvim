@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.20.1](https://github.com/AstroNvim/AstroNvim/compare/v4.20.0...v4.20.1) (2024-07-16)
+
+
+### Bug Fixes
+
+* **astrolsp:** register LSP mapping group locally as well as globally ([ca129a7](https://github.com/AstroNvim/AstroNvim/commit/ca129a7b830877382877d9fc4a9c1ff18847e11a))
+* **options:** don't set clipboard in SSH session with 0.10+ for OSC52 support ([b11f0d2](https://github.com/AstroNvim/AstroNvim/commit/b11f0d2b620fbced8e744e6675bb2982f0071886))
+* **which-key:** automatically extend `spec` table in `which-key` ([5362d84](https://github.com/AstroNvim/AstroNvim/commit/5362d844d076b9bb6aa13ecb036750f58bbb5d23))
+
+
+### Performance Improvements
+
+* **ts-autotag:** remove unnecessary custom `config` ([7c6ff2e](https://github.com/AstroNvim/AstroNvim/commit/7c6ff2e4816b18c8796655c0af1d335503f7517a))
+
 ## [4.20.0](https://github.com/AstroNvim/AstroNvim/compare/v4.19.0...v4.20.0) (2024-07-12)
 
 
