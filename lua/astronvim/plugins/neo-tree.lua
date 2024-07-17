@@ -55,6 +55,7 @@ return {
     },
   },
   cmd = "Neotree",
+  opts_extend = { "sources" },
   opts = function()
     local astro, get_icon = require "astrocore", require("astroui").get_icon
     local git_available = vim.fn.executable "git" == 1
