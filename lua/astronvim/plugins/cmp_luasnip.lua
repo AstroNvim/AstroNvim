@@ -63,7 +63,7 @@ return {
         if astro.is_available(source_plugin) then table.insert(sources, source) end
       end
 
-      local get_icon_provider = function()
+      local function get_icon_provider()
         local _, mini_icons = pcall(require, "mini.icons")
         if _G.MiniIcons then return function(kind) return mini_icons.get("lsp", kind) end end
         local lspkind_avail, lspkind = pcall(require, "lspkind")
@@ -71,7 +71,7 @@ return {
       end
       local icon_provider = get_icon_provider()
 
-      local format = function(entry, item)
+      local function format(entry, item)
         local highlight_colors_avail, highlight_colors = pcall(require, "nvim-highlight-colors")
         local color_item = highlight_colors_avail and highlight_colors.format(entry, { kind = item.kind })
         if icon_provider then

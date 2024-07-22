@@ -212,7 +212,7 @@ return {
     end
 
     if astro.is_available "toggleterm.nvim" then
-      local toggleterm_in_direction = function(state, direction)
+      local function toggleterm_in_direction(state, direction)
         local node = state.tree:get_node()
         local path = node.type == "file" and node:get_parent_id() or node:get_id()
         require("toggleterm.terminal").Terminal:new({ dir = path, direction = direction }):toggle()

@@ -1,6 +1,6 @@
 return function(_, _)
   local astrocore = require "astrocore"
-  local setup_servers = function()
+  local function setup_servers()
     local was_setup, astrolsp = {}, require "astrolsp"
     for _, server in ipairs(astrolsp.config.servers) do
       if not was_setup[server] then

@@ -121,7 +121,7 @@ return {
   cmd = "Telescope",
   opts = function()
     local actions, get_icon = require "telescope.actions", require("astroui").get_icon
-    local open_selected = function(prompt_bufnr)
+    local function open_selected(prompt_bufnr)
       local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
       local selected = picker:get_multi_selection()
       if vim.tbl_isempty(selected) then
@@ -133,7 +133,7 @@ return {
         end
       end
     end
-    local open_all = function(prompt_bufnr)
+    local function open_all(prompt_bufnr)
       actions.select_all(prompt_bufnr)
       open_selected(prompt_bufnr)
     end

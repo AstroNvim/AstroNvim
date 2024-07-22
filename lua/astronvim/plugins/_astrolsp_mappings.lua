@@ -37,7 +37,7 @@ return {
       cond = "textDocument/definition",
     }
 
-    local formatting_checker = function(method)
+    local function formatting_checker(method)
       method = "textDocument/" .. (method or "formatting")
       return function(client)
         local disabled = opts.formatting.disabled

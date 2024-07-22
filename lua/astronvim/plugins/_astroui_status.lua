@@ -12,7 +12,7 @@ return {
   opts = function(_, opts)
     local sign_handlers = {}
     -- gitsigns handlers
-    local gitsigns_handler = function(_)
+    local function gitsigns_handler(_)
       local gitsigns_avail, gitsigns = pcall(require, "gitsigns")
       if gitsigns_avail then vim.schedule(gitsigns.preview_hunk) end
     end
@@ -22,7 +22,7 @@ return {
     end
     sign_handlers["gitsigns_extmark_signs_"] = gitsigns_handler
     -- diagnostic handlers
-    local diagnostics_handler = function(args)
+    local function diagnostics_handler(args)
       if args.mods:find "c" then
         vim.schedule(vim.lsp.buf.code_action)
       else
@@ -34,7 +34,7 @@ return {
       if not sign_handlers[name] then sign_handlers[name] = diagnostics_handler end
     end
     -- DAP handlers
-    local dap_breakpoint_handler = function(_)
+    local function dap_breakpoint_handler(_)
       local dap_avail, dap = pcall(require, "dap")
       if dap_avail then vim.schedule(dap.toggle_breakpoint) end
     end

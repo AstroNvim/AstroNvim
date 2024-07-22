@@ -1,4 +1,4 @@
-local formatting_enabled = function(client)
+local function formatting_enabled(client)
   local formatting_disabled = vim.tbl_get(require("astrolsp").config, "formatting", "disabled")
   return client.supports_method "textDocument/formatting"
     and formatting_disabled ~= true
