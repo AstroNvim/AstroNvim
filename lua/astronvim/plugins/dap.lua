@@ -100,7 +100,8 @@ return {
   },
   opts = function()
     local parser, cleaner
-    require("dap.ext.vscode").json_decode = function(str)
+    local vscode = require "dap.ext.vscode"
+    vscode.json_decode = function(str)
       if cleaner == nil then
         local plenary_avail, plenary = pcall(require, "plenary.json")
         if plenary_avail then str = plenary.json_strip_comments(str, {}) end
@@ -113,6 +114,7 @@ return {
       if type(cleaner) == "function" then str = cleaner(str) end
       return parser(str)
     end
+    if (vim.uv or vim.loop).fs_stat(vim.fn.getcwd() .. "/.vscode/launch.json") then vscode.load_launchjs() end
   end,
   config = function() end, -- HACK: disable config function
 }
