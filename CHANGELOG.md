@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.21.0](https://github.com/AstroNvim/AstroNvim/compare/v4.20.1...v4.21.0) (2024-07-22)
+
+
+### Features
+
+* **dap:** automatically load vscode `launch.json` when loading DAP ([e43facb](https://github.com/AstroNvim/AstroNvim/commit/e43facbba4b904c27b96a73b46164ea0c73eeab5))
+
+
+### Bug Fixes
+
+* **better-escape:** load on "VeryLazy" now that `better-escape` works in all modes ([e0cb231](https://github.com/AstroNvim/AstroNvim/commit/e0cb23159376f47668d9395aa2b7f20405d22bfa))
+* **better-escape:** only use `jj` and `jk` for escape in insert mode ([08399f6](https://github.com/AstroNvim/AstroNvim/commit/08399f6ead600d1ec45038e6b96a8240f06e8f91))
+* **neo-tree:** extend sources list by default ([f97178d](https://github.com/AstroNvim/AstroNvim/commit/f97178d56b52cdfeafa0c57e4aced679bb8b05d3))
+* **telescope:** automatically rebuild `telescope-fzf` if necessary ([7c6cb6f](https://github.com/AstroNvim/AstroNvim/commit/7c6cb6fe4d4888937881413a5377bd3a11ab02ec))
+* **which-key:** extend `disable` lists by default as well ([b0df6ae](https://github.com/AstroNvim/AstroNvim/commit/b0df6aebc12bd54d4dea6e8dd34287a22fd3303d))
+
 ## [4.20.1](https://github.com/AstroNvim/AstroNvim/compare/v4.20.0...v4.20.1) (2024-07-16)
 
 
