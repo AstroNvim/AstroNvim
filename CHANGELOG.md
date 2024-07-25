@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.22.0](https://github.com/AstroNvim/AstroNvim/compare/v4.21.0...v4.22.0) (2024-07-25)
+
+
+### Features
+
+* **plugins:** migrate from `neodev` to `lazydev`, closes [#2618](https://github.com/AstroNvim/AstroNvim/issues/2618) ([0126d44](https://github.com/AstroNvim/AstroNvim/commit/0126d447633a5eddfb7cf0f93cdcae27c2df54fa))
+
 ## [4.21.0](https://github.com/AstroNvim/AstroNvim/compare/v4.20.1...v4.21.0) (2024-07-22)
 
 
