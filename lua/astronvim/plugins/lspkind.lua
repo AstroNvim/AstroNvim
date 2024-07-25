@@ -24,5 +24,4 @@ return {
     },
     menu = {},
   },
-  config = function(...) require "astronvim.plugins.configs.lspkind"(...) end,
 }
