@@ -27,6 +27,29 @@ return {
           end,
         },
       },
+      lsp_auto_signature_help = {
+        cond = "textDocument/signatureHelp",
+        {
+          event = "TextChangedI",
+          desc = "Automatically show signature help if enabled",
+          callback = function(args)
+            local signature_help, trigger = vim.b[args.buf].signature_help, vim.b[args.buf].signature_help_trigger
+            if signature_help == nil then signature_help = require("astrolsp").config.features.signature_help end
+            if signature_help and trigger then
+              local cur_line = vim.api.nvim_get_current_line():gsub("%s+$", "") -- rm trailing spaces
+              local pos = vim.api.nvim_win_get_cursor(0)[2]
+              local cur_char = cur_line:sub(pos, pos)
+
+              for _, char in ipairs(trigger) do
+                if cur_char == char then
+                  vim.lsp.buf.signature_help()
+                  return
+                end
+              end
+            end
+          end,
+        },
+      },
       lsp_auto_format = {
         cond = formatting_enabled,
         {

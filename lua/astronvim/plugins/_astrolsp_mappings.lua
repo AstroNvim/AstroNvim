@@ -66,6 +66,12 @@ return {
       cond = formatting_enabled,
     }
 
+    maps.n["<Leader>u?"] = {
+      function() require("astrolsp.toggles").signature_help() end,
+      desc = "Toggle automatic signature help",
+      cond = "textDocument/signatureHelp",
+    }
+
     -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
     if vim.fn.has "nvim-0.10" == 0 then
       maps.n["K"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details", cond = "textDocument/hover" }
