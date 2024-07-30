@@ -92,31 +92,15 @@ return {
     },
   },
   dependencies = {
+    "nvim-treesitter/nvim-treesitter",
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       lazy = true,
       enabled = vim.fn.executable "make" == 1 or vim.fn.executable "cmake" == 1,
       build = vim.fn.executable "make" == 1 and "make"
         or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-      config = function(plugin)
-        local astrocore = require "astrocore"
-        astrocore.on_load("telescope.nvim", function()
-          local ok, err = pcall(require("telescope").load_extension, "fzf")
-          if not ok then
-            local lib = plugin.dir .. "/build/libfzf." .. (vim.fn.has "win32" == 1 and "dll" or "so")
-            if not (vim.uv or vim.loop).fs_stat(lib) then
-              astrocore.notify("`telescope-fzf-native.nvim` not built. Rebuilding...", vim.log.levels.WARN)
-              require("lazy").build({ plugins = { plugin }, show = false }):wait(
-                function() astrocore.notify "Rebuilding `telescope-fzf-native.nvim` done.\nPlease restart Neovim." end
-              )
-            else
-              astrocore.notify("Failed to load `telescope-fzf-native.nvim`:\n" .. err, vim.log.levels.ERROR)
-            end
-          end
-        end)
-      end,
+      config = function(...) require "astronvim.plugins.configs.telescope-fzf-native"(...) end,
     },
-    "nvim-treesitter/nvim-treesitter",
   },
   cmd = "Telescope",
   opts = function()
