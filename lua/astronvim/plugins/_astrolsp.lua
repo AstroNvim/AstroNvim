@@ -19,7 +19,7 @@ return {
         ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", silent = true }),
         ["textDocument/signatureHelp"] = vim.lsp.with(
           vim.lsp.handlers.signature_help,
-          { border = "rounded", silent = true }
+          { border = "rounded", silent = true, focusable = false }
         ),
       },
       servers = {},
