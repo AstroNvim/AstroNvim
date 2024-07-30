@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.22.2](https://github.com/AstroNvim/AstroNvim/compare/v4.22.1...v4.22.2) (2024-07-30)
+
+
+### Bug Fixes
+
+* **astrolsp:** LSP signature help shouldn't be focusable ([101543f](https://github.com/AstroNvim/AstroNvim/commit/101543f2fe26ed53b742e4085ccbea8ed2940bf9))
+
 ## [4.22.1](https://github.com/AstroNvim/AstroNvim/compare/v4.22.0...v4.22.1) (2024-07-30)
 
 
