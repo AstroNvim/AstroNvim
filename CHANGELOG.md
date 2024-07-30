@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.22.1](https://github.com/AstroNvim/AstroNvim/compare/v4.22.0...v4.22.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* **cmp:** protect against `nil` LSP kind in completion ([daf0b60](https://github.com/AstroNvim/AstroNvim/commit/daf0b604e8e1dabbe4d90e378c781a877b7ca966))
+* **nvim-dap-ui:** fix incorrect loading order ([4f95228](https://github.com/AstroNvim/AstroNvim/commit/4f95228e559f938b80cb45223bef4bb54fd8ff95))
+
 ## [4.22.0](https://github.com/AstroNvim/AstroNvim/compare/v4.21.0...v4.22.0) (2024-07-25)
 
 
