@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.23.0](https://github.com/AstroNvim/AstroNvim/compare/v4.22.2...v4.23.0) (2024-07-31)
+
+
+### Features
+
+* **astrolsp:** add the ability to automatically show signature help while editing ([4cb0e37](https://github.com/AstroNvim/AstroNvim/commit/4cb0e37aa0ce13a25850a2c77a953bdad166d416))
+* **toggleterm:** use default `horizontal` direction for terminals ([fc1dfea](https://github.com/AstroNvim/AstroNvim/commit/fc1dfea6be2464a289be022ae6908cda58987298))
+
 ## [4.22.2](https://github.com/AstroNvim/AstroNvim/compare/v4.22.1...v4.22.2) (2024-07-30)
 
 
