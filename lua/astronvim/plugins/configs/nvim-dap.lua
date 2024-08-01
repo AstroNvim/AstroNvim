@@ -12,7 +12,24 @@ return function()
       parser = json5_avail and json5.parse or vim.json.decode
     end
     if type(cleaner) == "function" then str = cleaner(str) end
-    return parser(str)
+    local parsed_ok, parsed = pcall(parser, str)
+    if parsed_ok then
+      return parsed
+    else
+      local msg = "Error parsing `.vscode/launch.json`."
+      if parser == vim.json.decode then
+        msg = msg
+          .. ([[
+
+This may be due to lack of JSON5 support.
+Consider adding `lua-json5` to your plugins:
+```lua
+{ "Joakker/lua-json5", lazy = true, build = "%s" }
+```]]):format(vim.fn.has "win32" == 1 and "powershell ./install.ps1" or "./install.sh")
+      end
+      require("astrocore").notify(msg, vim.log.levels.ERROR)
+      return {}
+    end
   end
   if (vim.uv or vim.loop).fs_stat(vim.fn.getcwd() .. "/.vscode/launch.json") then vscode.load_launchjs() end
 end
