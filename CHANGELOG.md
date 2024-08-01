@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.23.1](https://github.com/AstroNvim/AstroNvim/compare/v4.23.0...v4.23.1) (2024-08-01)
+
+
+### Bug Fixes
+
+* **snapshot:** update `nvim-treesitter-text-objects` for bug fix ([85885ba](https://github.com/AstroNvim/AstroNvim/commit/85885bac4052fa3c3e1c2acc031a0ff1cae334cf))
+
 ## [4.23.0](https://github.com/AstroNvim/AstroNvim/compare/v4.22.2...v4.23.0) (2024-07-31)
 
 
