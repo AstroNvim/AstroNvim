@@ -7,6 +7,11 @@ return {
       opts = function(_, opts)
         local maps = opts.mappings
         maps.n["<Leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
+        -- remove when adding back `on_attach`
+        maps.n["]y"] = { function() require("aerial").next(vim.v.count1) end, desc = "Next symbol" }
+        maps.n["[y"] = { function() require("aerial").prev(vim.v.count1) end, desc = "Previous symbol" }
+        maps.n["]Y"] = { function() require("aerial").next_up(vim.v.count1) end, desc = "Next symbol upwards" }
+        maps.n["[Y"] = { function() require("aerial").prev_up(vim.v.count1) end, desc = "Previous symbol upwards" }
       end,
     },
   },
@@ -33,17 +38,18 @@ return {
         ["[["] = false,
         ["]]"] = false,
       },
-      on_attach = function(bufnr)
-        local astrocore = require "astrocore"
-        astrocore.set_mappings({
-          n = {
-            ["]y"] = { function() require("aerial").next(vim.v.count1) end, desc = "Next symbol" },
-            ["[y"] = { function() require("aerial").prev(vim.v.count1) end, desc = "Previous symbol" },
-            ["]Y"] = { function() require("aerial").next_up(vim.v.count1) end, desc = "Next symbol upwards" },
-            ["[Y"] = { function() require("aerial").prev_up(vim.v.count1) end, desc = "Previous symbol upwards" },
-          },
-        }, { buffer = bufnr })
-      end,
+      -- TODO: Uncomment when bug fixed: https://github.com/stevearc/aerial.nvim/issues/393
+      -- on_attach = function(bufnr)
+      --   local astrocore = require "astrocore"
+      --   astrocore.set_mappings({
+      --     n = {
+      --       ["]y"] = { function() require("aerial").next(vim.v.count1) end, desc = "Next symbol" },
+      --       ["[y"] = { function() require("aerial").prev(vim.v.count1) end, desc = "Previous symbol" },
+      --       ["]Y"] = { function() require("aerial").next_up(vim.v.count1) end, desc = "Next symbol upwards" },
+      --       ["[Y"] = { function() require("aerial").prev_up(vim.v.count1) end, desc = "Previous symbol upwards" },
+      --     },
+      --   }, { buffer = bufnr })
+      -- end,
     }
 
     local large_buf = vim.tbl_get(require("astrocore").config, "features", "large_buf")
