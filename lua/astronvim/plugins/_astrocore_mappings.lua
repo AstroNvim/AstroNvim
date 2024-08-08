@@ -166,10 +166,19 @@ return {
     maps.v["<Tab>"] = { ">gv", desc = "Indent line" }
 
     -- Improved Terminal Navigation
-    maps.t["<C-H>"] = { "<Cmd>wincmd h<CR>", desc = "Terminal left window navigation" }
-    maps.t["<C-J>"] = { "<Cmd>wincmd j<CR>", desc = "Terminal down window navigation" }
-    maps.t["<C-K>"] = { "<Cmd>wincmd k<CR>", desc = "Terminal up window navigation" }
-    maps.t["<C-L>"] = { "<Cmd>wincmd l<CR>", desc = "Terminal right window navigation" }
+    local function term_nav(dir)
+      return function()
+        if vim.api.nvim_win_get_config(0).zindex then
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-" .. dir .. ">", true, false, true), "n", false)
+        else
+          vim.cmd.wincmd(dir)
+        end
+      end
+    end
+    maps.t["<C-H>"] = { term_nav "h", desc = "Terminal left window navigation" }
+    maps.t["<C-J>"] = { term_nav "j", desc = "Terminal down window navigation" }
+    maps.t["<C-K>"] = { term_nav "k", desc = "Terminal up window navigation" }
+    maps.t["<C-L>"] = { term_nav "l", desc = "Terminal right window navigation" }
 
     maps.n["<Leader>u"] = vim.tbl_get(sections, "u")
     -- Custom menu for modification of the user experience
