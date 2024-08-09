@@ -4,6 +4,7 @@ return {
   specs = {
     {
       "AstroNvim/astrocore",
+      ---@param opts AstroCoreOpts
       opts = function(_, opts)
         local maps = opts.mappings
         maps.n["<Leader>bb"] = {
@@ -37,6 +38,16 @@ return {
             end)
           end,
           desc = "Vertical split buffer from tabline",
+        }
+        opts.autocmds.heirline_colors = {
+          {
+            event = "User",
+            pattern = "AstroColorScheme",
+            desc = "Refresh heirline colors",
+            callback = function()
+              if package.loaded["heirline"] then require("astroui.status.heirline").refresh_colors() end
+            end,
+          },
         }
       end,
     },
@@ -126,5 +137,4 @@ return {
       },
     }
   end,
-  config = function(...) require "astronvim.plugins.configs.heirline"(...) end,
 }
