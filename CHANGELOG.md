@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.23.4](https://github.com/AstroNvim/AstroNvim/compare/v4.23.3...v4.23.4) (2024-08-09)
+
+
+### Reverts
+
+* not using `on_attach` doesn't resolve aerial bug ([b0758c3](https://github.com/AstroNvim/AstroNvim/commit/b0758c334eb6f5074222d4811fee9075604d1066))
+
 ## [4.23.3](https://github.com/AstroNvim/AstroNvim/compare/v4.23.2...v4.23.3) (2024-08-08)
 
 
