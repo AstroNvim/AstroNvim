@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.23.5](https://github.com/AstroNvim/AstroNvim/compare/v4.23.4...v4.23.5) (2024-08-15)
+
+
+### Bug Fixes
+
+* **options:** make `&gt;`/`&lt;` follow `shiftwidth` ([0d35704](https://github.com/AstroNvim/AstroNvim/commit/0d357041a54fb18404250c05726dff2c4ad99068))
+* **options:** make maintain view when jumping back to buffer ([f5dbbd2](https://github.com/AstroNvim/AstroNvim/commit/f5dbbd23f7cba8de14e697670acb3d2d7d82fad2))
+
 ## [4.23.4](https://github.com/AstroNvim/AstroNvim/compare/v4.23.3...v4.23.4) (2024-08-09)
 
 
