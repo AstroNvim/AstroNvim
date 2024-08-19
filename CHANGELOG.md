@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.23.6](https://github.com/AstroNvim/AstroNvim/compare/v4.23.5...v4.23.6) (2024-08-19)
+
+
+### Bug Fixes
+
+* **autocmds:** don't create directories for URI like buffers ([9168082](https://github.com/AstroNvim/AstroNvim/commit/9168082a268fa665be3b8a3194631dc30ba4e727)), closes [#2682](https://github.com/AstroNvim/AstroNvim/issues/2682)
+
 ## [4.23.5](https://github.com/AstroNvim/AstroNvim/compare/v4.23.4...v4.23.5) (2024-08-15)
 
 
