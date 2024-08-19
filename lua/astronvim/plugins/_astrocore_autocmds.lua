@@ -126,8 +126,9 @@ return {
           event = "BufWritePre",
           desc = "Automatically create parent directories if they don't exist when saving a file",
           callback = function(args)
-            if not require("astrocore.buffer").is_valid(args.buf) then return end
-            vim.fn.mkdir(vim.fn.fnamemodify(vim.loop.fs_realpath(args.match) or args.match, ":p:h"), "p")
+            local file = args.match
+            if not require("astrocore.buffer").is_valid(args.buf) or file:match "^%w+:[\\/][\\/]" then return end
+            vim.fn.mkdir(vim.fn.fnamemodify((vim.uv or vim.loop).fs_realpath(file) or file, ":p:h"), "p")
           end,
         },
       },
