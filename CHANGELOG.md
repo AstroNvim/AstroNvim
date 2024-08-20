@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.23.8](https://github.com/AstroNvim/AstroNvim/compare/v4.23.7...v4.23.8) (2024-08-20)
+
+
+### Bug Fixes
+
+* **snapshot:** pin treesitter to older version until all plugins update ([96a5317](https://github.com/AstroNvim/AstroNvim/commit/96a5317b2de8028785dd92192afeac7008f0b5ca))
+
 ## [4.23.7](https://github.com/AstroNvim/AstroNvim/compare/v4.23.6...v4.23.7) (2024-08-19)
 
 
