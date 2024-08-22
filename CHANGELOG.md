@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.23.9](https://github.com/AstroNvim/AstroNvim/compare/v4.23.8...v4.23.9) (2024-08-22)
+
+
+### Bug Fixes
+
+* **snapshot:** move `aerial` and `indent-blankline` to pinning commits until their next releases ([3258357](https://github.com/AstroNvim/AstroNvim/commit/3258357293fb50cff543f39bf812df12b223d132))
+
 ## [4.23.8](https://github.com/AstroNvim/AstroNvim/compare/v4.23.7...v4.23.8) (2024-08-20)
 
 
