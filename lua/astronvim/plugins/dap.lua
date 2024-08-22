@@ -1,48 +1,7 @@
 return {
   "mfussenegger/nvim-dap",
   lazy = true,
-  dependencies = {
-    {
-      "jay-babu/mason-nvim-dap.nvim",
-      dependencies = { "nvim-dap", "williamboman/mason.nvim" },
-      init = function(plugin) require("astrocore").on_load("mason.nvim", plugin.name) end,
-      cmd = { "DapInstall", "DapUninstall" },
-      opts = { handlers = {} },
-    },
-    {
-      "rcarriga/nvim-dap-ui",
-      lazy = true,
-      dependencies = {
-        { "nvim-neotest/nvim-nio", lazy = true },
-        {
-          "AstroNvim/astrocore",
-          opts = function(_, opts)
-            local maps = opts.mappings
-            maps.n["<Leader>d"] = vim.tbl_get(opts, "_map_sections", "d")
-            maps.v["<Leader>d"] = vim.tbl_get(opts, "_map_sections", "d")
-            maps.n["<Leader>dE"] = {
-              function()
-                vim.ui.input({ prompt = "Expression: " }, function(expr)
-                  if expr then require("dapui").eval(expr, { enter = true }) end
-                end)
-              end,
-              desc = "Evaluate Input",
-            }
-            maps.n["<Leader>du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
-            maps.n["<Leader>dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
-            maps.v["<Leader>dE"] = { function() require("dapui").eval() end, desc = "Evaluate Input" }
-          end,
-        },
-      },
-      opts = { floating = { border = "rounded" } },
-      config = function(...) require "astronvim.plugins.configs.nvim-dap-ui"(...) end,
-    },
-    {
-      "rcarriga/cmp-dap",
-      lazy = true,
-      dependencies = { "hrsh7th/nvim-cmp" },
-      config = function(...) require "astronvim.plugins.configs.cmp-dap"(...) end,
-    },
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
@@ -97,4 +56,49 @@ return {
       end,
     },
   },
+  dependencies = {
+    {
+      "jay-babu/mason-nvim-dap.nvim",
+      dependencies = { "nvim-dap", "williamboman/mason.nvim" },
+      init = function(plugin) require("astrocore").on_load("mason.nvim", plugin.name) end,
+      cmd = { "DapInstall", "DapUninstall" },
+      opts_extend = { "ensure_installed" },
+      opts = { ensure_installed = {}, handlers = {} },
+    },
+    {
+      "rcarriga/nvim-dap-ui",
+      lazy = true,
+      specs = {
+        {
+          "AstroNvim/astrocore",
+          opts = function(_, opts)
+            local maps = opts.mappings
+            maps.n["<Leader>d"] = vim.tbl_get(opts, "_map_sections", "d")
+            maps.v["<Leader>d"] = vim.tbl_get(opts, "_map_sections", "d")
+            maps.n["<Leader>dE"] = {
+              function()
+                vim.ui.input({ prompt = "Expression: " }, function(expr)
+                  if expr then require("dapui").eval(expr, { enter = true }) end
+                end)
+              end,
+              desc = "Evaluate Input",
+            }
+            maps.n["<Leader>du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
+            maps.n["<Leader>dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
+            maps.v["<Leader>dE"] = { function() require("dapui").eval() end, desc = "Evaluate Input" }
+          end,
+        },
+      },
+      dependencies = { { "nvim-neotest/nvim-nio", lazy = true } },
+      opts = { floating = { border = "rounded" } },
+      config = function(...) require "astronvim.plugins.configs.nvim-dap-ui"(...) end,
+    },
+    {
+      "rcarriga/cmp-dap",
+      lazy = true,
+      dependencies = { "hrsh7th/nvim-cmp" },
+      config = function(...) require "astronvim.plugins.configs.cmp-dap"(...) end,
+    },
+  },
+  config = function(...) require "astronvim.plugins.configs.nvim-dap"(...) end,
 }

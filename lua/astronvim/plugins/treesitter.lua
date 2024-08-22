@@ -27,12 +27,14 @@ return {
     -- during startup.
     -- CODE FROM LazyVim (thanks folke!) https://github.com/LazyVim/LazyVim/commit/1e1b68d633d4bd4faa912ba5f49ab6b8601dc0c9
     require("lazy.core.loader").add_to_rtp(plugin)
-    require "nvim-treesitter.query_predicates"
+    pcall(require, "nvim-treesitter.query_predicates")
   end,
+  opts_extend = { "ensure_installed" },
   opts = function()
     if require("astrocore").is_available "mason.nvim" then require("lazy").load { plugins = { "mason.nvim" } } end
     return {
-      auto_install = vim.fn.executable "tree-sitter" == 1, -- only enable auto install if `tree-sitter` cli is installed
+      auto_install = vim.fn.executable "git" == 1 and vim.fn.executable "tree-sitter" == 1, -- only enable auto install if `tree-sitter` cli is installed
+      ensure_installed = { "bash", "c", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" },
       highlight = { enable = true },
       incremental_selection = { enable = true },
       indent = { enable = true },

@@ -2,11 +2,38 @@ local function has_words_before()
   local line, col = (unpack or table.unpack)(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
 end
+local function is_visible(cmp) return cmp.core.view:visible() or vim.fn.pumvisible() == 1 end
 
 return {
   {
     "hrsh7th/nvim-cmp",
-    dependencies = {
+    specs = {
+      {
+        "AstroNvim/astrolsp",
+        optional = true,
+        opts = function(_, opts)
+          local astrocore = require "astrocore"
+          if astrocore.is_available "cmp-nvim-lsp" then
+            opts.capabilities = astrocore.extend_tbl(opts.capabilities, {
+              textDocument = {
+                completion = {
+                  completionItem = {
+                    documentationFormat = { "markdown", "plaintext" },
+                    snippetSupport = true,
+                    preselectSupport = true,
+                    insertReplaceSupport = true,
+                    labelDetailsSupport = true,
+                    deprecatedSupport = true,
+                    commitCharactersSupport = true,
+                    tagSupport = { valueSet = { 1 } },
+                    resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
+                  },
+                },
+              },
+            })
+          end
+        end,
+      },
       {
         "AstroNvim/astrocore",
         opts = function(_, opts)
@@ -17,6 +44,8 @@ return {
             { function() require("astrocore.toggles").cmp() end, desc = "Toggle autocompletion (global)" }
         end,
       },
+    },
+    dependencies = {
       { "hrsh7th/cmp-buffer", lazy = true },
       { "hrsh7th/cmp-path", lazy = true },
       { "hrsh7th/cmp-nvim-lsp", lazy = true },
@@ -34,6 +63,41 @@ return {
         if astro.is_available(source_plugin) then table.insert(sources, source) end
       end
 
+      local function get_icon_provider()
+        local _, mini_icons = pcall(require, "mini.icons")
+        if _G.MiniIcons then return function(kind) return mini_icons.get("lsp", kind or "") end end
+        local lspkind_avail, lspkind = pcall(require, "lspkind")
+        if lspkind_avail then return function(kind) return lspkind.symbolic(kind, { mode = "symbol" }) end end
+      end
+      local icon_provider = get_icon_provider()
+
+      local function format(entry, item)
+        local highlight_colors_avail, highlight_colors = pcall(require, "nvim-highlight-colors")
+        local color_item = highlight_colors_avail and highlight_colors.format(entry, { kind = item.kind })
+        if icon_provider then
+          local icon = icon_provider(item.kind)
+          if icon then item.kind = icon end
+        end
+        if color_item and color_item.abbr and color_item.abbr_hl_group then
+          item.kind, item.kind_hl_group = color_item.abbr, color_item.abbr_hl_group
+        end
+        return item
+      end
+
+      ---TODO: Remove this block in AstroNvim v5, this is here for backwards compatibility
+      local lspkind_opts = astro.plugin_opts "lspkind.nvim"
+      local lspkind_mode = vim.tbl_get(lspkind_opts, "mode")
+      if -- check for user intervention on lspkind settings for `cmp_format`
+        (lspkind_mode and lspkind_mode ~= "symbol")
+        or vim.tbl_get(lspkind_opts, "maxwidth")
+        or vim.tbl_get(lspkind_opts, "before")
+        or vim.tbl_get(lspkind_opts, "show_labelDetails")
+      then
+        local lspkind_avail, lspkind = pcall(require, "lspkind")
+        -- if there is user configuration for `lspkind`s cmp formatting just use that format function
+        if lspkind_avail then format = lspkind.cmp_format(require("astrocore").plugin_opts "lspkind.nvim") end
+      end
+
       return {
         enabled = function()
           local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
@@ -42,7 +106,7 @@ return {
           return vim.F.if_nil(vim.b.cmp_enabled, astro.config.features.cmp)
         end,
         preselect = cmp.PreselectMode.None,
-        formatting = { fields = { "kind", "abbr", "menu" } },
+        formatting = { fields = { "kind", "abbr", "menu" }, format = format },
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,
           select = false,
@@ -62,20 +126,32 @@ return {
         mapping = {
           ["<Up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
           ["<Down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
-          ["<C-P>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-          ["<C-N>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-          ["<C-K>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-          ["<C-J>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+          ["<C-P>"] = cmp.mapping(function()
+            if is_visible(cmp) then
+              cmp.select_prev_item()
+            else
+              cmp.complete()
+            end
+          end),
+          ["<C-N>"] = cmp.mapping(function()
+            if is_visible(cmp) then
+              cmp.select_next_item()
+            else
+              cmp.complete()
+            end
+          end),
+          ["<C-K>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
+          ["<C-J>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
           ["<C-U>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
           ["<C-D>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
           ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
           ["<C-Y>"] = cmp.config.disable,
-          ["<C-E>"] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() },
-          ["<CR>"] = cmp.mapping.confirm { select = false },
+          ["<C-E>"] = cmp.mapping(cmp.mapping.abort(), { "i", "c" }),
+          ["<CR>"] = cmp.mapping(cmp.mapping.confirm { select = false }, { "i", "c" }),
           ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if is_visible(cmp) then
               cmp.select_next_item()
-            elseif vim.snippet and vim.snippet.active { direction = 1 } then
+            elseif vim.api.nvim_get_mode().mode ~= "c" and vim.snippet and vim.snippet.active { direction = 1 } then
               vim.schedule(function() vim.snippet.jump(1) end)
             elseif has_words_before() then
               cmp.complete()
@@ -84,9 +160,9 @@ return {
             end
           end, { "i", "s" }),
           ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if is_visible(cmp) then
               cmp.select_prev_item()
-            elseif vim.snippet and vim.snippet.active { direction = -1 } then
+            elseif vim.api.nvim_get_mode().mode ~= "c" and vim.snippet and vim.snippet.active { direction = -1 } then
               vim.schedule(function() vim.snippet.jump(-1) end)
             else
               fallback()
@@ -99,41 +175,15 @@ return {
     config = function(...) require "astronvim.plugins.configs.cmp"(...) end,
   },
   {
-    "AstroNvim/astrolsp",
-    optional = true,
-    opts = function(_, opts)
-      local astrocore = require "astrocore"
-      if astrocore.is_available "cmp-nvim-lsp" then
-        opts.capabilities = astrocore.extend_tbl(opts.capabilities, {
-          textDocument = {
-            completion = {
-              completionItem = {
-                documentationFormat = { "markdown", "plaintext" },
-                snippetSupport = true,
-                preselectSupport = true,
-                insertReplaceSupport = true,
-                labelDetailsSupport = true,
-                deprecatedSupport = true,
-                commitCharactersSupport = true,
-                tagSupport = { valueSet = { 1 } },
-                resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } },
-              },
-            },
-          },
-        })
-      end
-    end,
-  },
-  {
     "L3MON4D3/LuaSnip",
     lazy = true,
     build = vim.fn.has "win32" == 0
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
       or nil,
-    dependencies = {
-      { "rafamadriz/friendly-snippets", lazy = true },
+    specs = {
       {
         "hrsh7th/nvim-cmp",
+        optional = true,
         dependencies = { { "saadparwaiz1/cmp_luasnip", lazy = true } },
         opts = function(_, opts)
           local luasnip, cmp = require "luasnip", require "cmp"
@@ -146,9 +196,9 @@ return {
 
           if not opts.mappings then opts.mappings = {} end
           opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if is_visible(cmp) then
               cmp.select_next_item()
-            elseif luasnip.expand_or_locally_jumpable() then
+            elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.expand_or_locally_jumpable() then
               luasnip.expand_or_jump()
             elseif has_words_before() then
               cmp.complete()
@@ -157,9 +207,9 @@ return {
             end
           end, { "i", "s" })
           opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if is_visible(cmp) then
               cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
+            elseif vim.api.nvim_get_mode().mode ~= "c" and luasnip.jumpable(-1) then
               luasnip.jump(-1)
             else
               fallback()
@@ -168,6 +218,7 @@ return {
         end,
       },
     },
+    dependencies = { { "rafamadriz/friendly-snippets", lazy = true } },
     opts = {
       history = true,
       delete_check_events = "TextChanged",

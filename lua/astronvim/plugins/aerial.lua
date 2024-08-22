@@ -1,7 +1,7 @@
 return {
   "stevearc/aerial.nvim",
   event = "User AstroFile",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
@@ -33,6 +33,17 @@ return {
         ["[["] = false,
         ["]]"] = false,
       },
+      on_attach = function(bufnr)
+        local astrocore = require "astrocore"
+        astrocore.set_mappings({
+          n = {
+            ["]y"] = { function() require("aerial").next(vim.v.count1) end, desc = "Next symbol" },
+            ["[y"] = { function() require("aerial").prev(vim.v.count1) end, desc = "Previous symbol" },
+            ["]Y"] = { function() require("aerial").next_up(vim.v.count1) end, desc = "Next symbol upwards" },
+            ["[Y"] = { function() require("aerial").prev_up(vim.v.count1) end, desc = "Previous symbol upwards" },
+          },
+        }, { buffer = bufnr })
+      end,
     }
 
     local large_buf = vim.tbl_get(require("astrocore").config, "features", "large_buf")

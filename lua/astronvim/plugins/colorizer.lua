@@ -1,7 +1,7 @@
 return {
   -- TODO: replace with nvim-highlight-colors: https://github.com/brenoprata10/nvim-highlight-colors
   "NvChad/nvim-colorizer.lua",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

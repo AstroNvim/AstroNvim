@@ -1,9 +1,10 @@
 return {
   "rebelot/heirline.nvim",
   event = "BufEnter",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
+      ---@param opts AstroCoreOpts
       opts = function(_, opts)
         local maps = opts.mappings
         maps.n["<Leader>bb"] = {
@@ -38,17 +39,31 @@ return {
           end,
           desc = "Vertical split buffer from tabline",
         }
+        opts.autocmds.heirline_colors = {
+          {
+            event = "User",
+            pattern = "AstroColorScheme",
+            desc = "Refresh heirline colors",
+            callback = function()
+              if package.loaded["heirline"] then require("astroui.status.heirline").refresh_colors() end
+            end,
+          },
+        }
       end,
     },
   },
   opts = function()
     local status = require "astroui.status"
+    local ui_config = require("astroui").config
     return {
       opts = {
         colors = require("astroui").config.status.setup_colors(),
         disable_winbar_cb = function(args)
+          local enabled = vim.tbl_get(ui_config, "status", "winbar", "enabled")
+          if enabled and status.condition.buffer_matches(enabled, args.buf) then return false end
+          local disabled = vim.tbl_get(ui_config, "status", "winbar", "disabled")
           return not require("astrocore.buffer").is_valid(args.buf)
-            or status.condition.buffer_matches({ buftype = { "terminal", "nofile" } }, args.buf)
+            or (disabled and status.condition.buffer_matches(disabled, args.buf))
         end,
       },
       statusline = { -- statusline
@@ -122,5 +137,4 @@ return {
       },
     }
   end,
-  config = function(...) require "astronvim.plugins.configs.heirline"(...) end,
 }

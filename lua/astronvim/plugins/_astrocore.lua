@@ -7,14 +7,17 @@ return {
     "AstroNvim/AstroNvim",
     build = function()
       if astronvim.config.pin_plugins and astronvim.config.update_notification ~= false then
-        vim.schedule(
-          function()
-            require("astrocore").notify(
-              "Pinned versions of core plugins may have been updated\nRun `:Lazy update` again to get these updates.",
-              vim.log.levels.WARN
-            )
-          end
-        )
+        local astrocore_avail, astrocore = pcall(require, "astrocore")
+        if astrocore_avail then
+          vim.schedule(
+            function()
+              astrocore.notify(
+                "Pinned versions of core plugins may have been updated\nRun `:Lazy update` again to get these updates.",
+                vim.log.levels.WARN
+              )
+            end
+          )
+        end
       end
     end,
     priority = 10000,
@@ -30,7 +33,7 @@ return {
       local get_icon = require("astroui").get_icon
       return require("astrocore").extend_tbl(opts, {
         features = {
-          large_buf = { size = 1024 * 500, lines = 10000 }, -- set global limits for large files
+          large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files
           autopairs = true, -- enable autopairs at start
           cmp = true, -- enable completion at start
           diagnostics_mode = 3, -- enable diagnostics by default
@@ -58,8 +61,11 @@ return {
             header = "",
             prefix = "",
           },
+          -- TODO: remove check when dropping support for neovim v0.10
+          jump = vim.fn.has "nvim-0.11" == 1 and { float = true } or nil,
         },
         rooter = {
+          enabled = true,
           detector = { "lsp", { ".git", "_darcs", ".hg", ".bzr", ".svn" }, { "lua", "MakeFile", "package.json" } },
           ignore = {
             servers = {},

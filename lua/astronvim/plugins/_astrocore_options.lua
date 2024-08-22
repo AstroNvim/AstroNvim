@@ -5,7 +5,9 @@ return {
     local opt = {}
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
     opt.breakindent = true -- wrap indent to match  line start
-    opt.clipboard = "unnamedplus" -- connection to the system clipboard
+    if not vim.env.SSH_TTY or vim.fn.has "nvim-0.10" ~= 1 then -- only set `clipboard` if in SSH session and in neovim 0.10+
+      opt.clipboard = "unnamedplus" -- connection to the system clipboard
+    end
     opt.cmdheight = 0 -- hide command line unless needed
     opt.completeopt = { "menu", "menuone", "noselect" } -- Options for insert mode completion
     opt.confirm = true -- raise a dialog asking if you wish to save the current file(s)
@@ -13,15 +15,14 @@ return {
     opt.cursorline = true -- highlight the text line of the cursor
     opt.diffopt = vim.list_extend(vim.opt.diffopt:get(), { "algorithm:histogram", "linematch:60" }) -- enable linematch diff algorithm
     opt.expandtab = true -- enable the use of space in tab
-    opt.fileencoding = "utf-8" -- file content encoding for the buffer
     opt.fillchars = { eob = " " } -- disable `~` on nonexistent lines
     opt.foldcolumn = "1" -- show foldcolumn
     opt.foldenable = true -- enable fold for nvim-ufo
     opt.foldlevel = 99 -- set high foldlevel for nvim-ufo
     opt.foldlevelstart = 99 -- start with all code unfolded
-    opt.history = 100 -- number of commands to remember in a history table
     opt.ignorecase = true -- case insensitive searching
     opt.infercase = true -- infer cases in keyword completion
+    opt.jumpoptions = { "view" } -- make the jumplist behavior more intuitive
     opt.laststatus = 3 -- global statusline
     opt.linebreak = true -- wrap lines at 'breakat'
     opt.mouse = "a" -- enable mouse support
@@ -29,7 +30,8 @@ return {
     opt.preserveindent = true -- preserve indent structure as much as possible
     opt.pumheight = 10 -- height of the pop up menu
     opt.relativenumber = true -- show relative numberline
-    opt.shiftwidth = 2 -- number of space inserted for indentation
+    opt.shiftround = true -- round indentation with `>`/`<` to shiftwidth
+    opt.shiftwidth = 0 -- number of space inserted for indentation; when zero the 'tabstop' value will be used
     opt.shortmess = vim.tbl_deep_extend("force", vim.opt.shortmess:get(), { s = true, I = true }) -- disable search count wrap and startup messages
     opt.showmode = false -- disable showing modes in command line
     opt.showtabline = 2 -- always display tabline

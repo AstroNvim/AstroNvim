@@ -1,3 +1,8 @@
+-- TODO: AstroNvim v5:
+-- - Add `mason-tool-installer.nvim` to manage mason installation
+-- - default disable all integrations to improve lazy loading
+-- - remove `astrocore.mason` and mappings, replace with `:MasonToolsUpdate`
+-- - remove `init` functions from other Mason plugins
 return {
   "williamboman/mason.nvim",
   cmd = {
@@ -7,7 +12,7 @@ return {
     "MasonUninstallAll",
     "MasonLog",
   },
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

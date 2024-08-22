@@ -3,6 +3,13 @@ return {
   ---@type AstroCoreOpts
   opts = {
     commands = {
+      AstroVersion = {
+        function()
+          local version = require("astronvim").version()
+          if version then require("astrocore").notify(("Version: *%s*"):format(version)) end
+        end,
+        desc = "Check AstroNvim Version",
+      },
       AstroReload = { function() require("astrocore").reload() end, desc = "Reload AstroNvim (Experimental)" },
       AstroUpdate = { function() require("astrocore").update_packages() end, desc = "Update Lazy and Mason" },
     },
@@ -119,17 +126,18 @@ return {
           event = "BufWritePre",
           desc = "Automatically create parent directories if they don't exist when saving a file",
           callback = function(args)
-            if not require("astrocore.buffer").is_valid(args.buf) then return end
-            vim.fn.mkdir(vim.fn.fnamemodify(vim.loop.fs_realpath(args.match) or args.match, ":p:h"), "p")
+            local file = args.match
+            if not require("astrocore.buffer").is_valid(args.buf) or file:match "^%w+:[\\/][\\/]" then return end
+            vim.fn.mkdir(vim.fn.fnamemodify((vim.uv or vim.loop).fs_realpath(file) or file, ":p:h"), "p")
           end,
         },
       },
       editorconfig_filetype = {
         {
           event = "FileType",
-          desc = "configure editorconfig after filetype detection to override `ftplugin`s",
+          desc = "Ensure editorconfig settings take highest precedence",
           callback = function(args)
-            if vim.F.if_nil(vim.b.editorconfig, vim.g.editorconfig, true) then
+            if vim.F.if_nil(vim.b.editorconfig, vim.g.editorconfig) then
               local editorconfig_avail, editorconfig = pcall(require, "editorconfig")
               if editorconfig_avail then editorconfig.config(args.buf) end
             end
@@ -148,46 +156,37 @@ return {
               local astro = require "astrocore"
               local current_file = vim.api.nvim_buf_get_name(args.buf)
               if vim.g.vscode or not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
+                local skip_augroups = {}
+                for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
+                  if autocmd.group_name then skip_augroups[autocmd.group_name] = true end
+                end
+                skip_augroups["filetypedetect"] = false -- don't skip filetypedetect events
                 astro.event "File"
                 local folder = vim.fn.fnamemodify(current_file, ":p:h")
                 if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
-                if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
-                  astro.event "GitFile"
+                if vim.fn.executable "git" == 1 then
+                  if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
+                    astro.event "GitFile"
+                    pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
+                  end
+                else
                   pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
                 end
                 vim.schedule(function()
                   if require("astrocore.buffer").is_valid(args.buf) then
-                    vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf, data = args.data, modeline = false })
+                    for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
+                      if autocmd.group_name and not skip_augroups[autocmd.group_name] then
+                        vim.api.nvim_exec_autocmds(
+                          args.event,
+                          { group = autocmd.group_name, buffer = args.buf, data = args.data }
+                        )
+                        skip_augroups[autocmd.group_name] = true
+                      end
+                    end
                   end
                 end)
               end
             end)
-          end,
-        },
-      },
-      highlighturl = {
-        {
-          event = { "VimEnter", "FileType", "BufEnter", "WinEnter" },
-          desc = "URL Highlighting",
-          callback = function(args)
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-              if
-                vim.api.nvim_win_get_buf(win) == args.buf
-                and vim.tbl_get(require "astrocore", "config", "features", "highlighturl")
-                and not vim.w[win].highlighturl_enabled
-              then
-                require("astrocore").set_url_match(win)
-              end
-            end
-          end,
-        },
-        {
-          event = { "VimEnter", "User" },
-          desc = "Set up the default HighlightURL highlight group",
-          callback = function(args)
-            if args.event == "VimEnter" or args.match == "AstroColorScheme" then
-              vim.api.nvim_set_hl(0, "HighlightURL", { default = true, underline = true })
-            end
           end,
         },
       },
@@ -258,7 +257,7 @@ return {
       unlist_quickfix = {
         {
           event = "FileType",
-          desc = "Unlist quickfist buffers",
+          desc = "Unlist quickfix buffers",
           pattern = "qf",
           callback = function() vim.opt_local.buflisted = false end,
         },

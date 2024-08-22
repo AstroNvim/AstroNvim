@@ -4,32 +4,29 @@ M.did_init = false
 
 M.config = require "astronvim.config"
 
-local function lazy_notify()
-  -- Based on notification lazy loading in LazyVim
-  -- https://github.com/LazyVim/LazyVim/blob/a50f92f7550fb6e9f21c0852e6cb190e6fcd50f5/lua/lazyvim/util/init.lua#L90-L125
-  local notifications = {}
-  local function notify_queue(...) table.insert(notifications, vim.F.pack_len(...)) end
-  local original_notify = vim.notify
-  vim.notify = notify_queue
-
-  local uv = vim.uv or vim.loop
-  local timer, checker = uv.new_timer(), uv.new_check()
-
-  local replay = function()
-    timer:stop()
-    checker:stop()
-    if vim.notify == notify_queue then vim.notify = original_notify end
-    vim.schedule(function()
-      vim.tbl_map(function(notif) vim.notify(vim.F.unpack_len(notif)) end, notifications)
-    end)
+function M.version()
+  local astrocore = require "astrocore"
+  local plugin = assert(astrocore.get_plugin "AstroNvim")
+  local version_ok, version_str = pcall(astrocore.read_file, plugin.dir .. "/version.txt")
+  if not version_ok then
+    require("astrocore").notify("Unable to calculate version", vim.log.levels.ERROR)
+    return
   end
 
-  -- wait till vim.notify has been replaced
-  checker:start(function()
-    if vim.notify ~= notify_queue then replay() end
-  end)
-  -- or if it took more than 500ms, then something went wrong
-  timer:start(500, 0, replay)
+  version_str = "v" .. vim.trim(version_str)
+
+  if not plugin.version then
+    version_str = version_str .. "-dev"
+    if vim.fn.executable "git" == 1 then
+      local git_description = astrocore.cmd({ "git", "-C", plugin.dir, "describe", "--tags" }, false)
+      if git_description then
+        local nightly_version = git_description and git_description:match ".*(-%d+-g%x+)\n*$"
+        if nightly_version then version_str = version_str .. nightly_version end
+      end
+    end
+  end
+
+  return version_str
 end
 
 function M.init()
@@ -45,7 +42,9 @@ function M.init()
   if M.did_init then return end
   M.did_init = true
 
-  lazy_notify()
+  local notify = require "astronvim.notify"
+  notify.setup()
+  notify.defer_startup()
 
   -- force setup during initialization
   local plugin = require("lazy.core.config").spec.plugins.AstroNvim

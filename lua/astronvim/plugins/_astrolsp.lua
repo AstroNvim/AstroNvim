@@ -1,12 +1,12 @@
 return {
   "AstroNvim/astrolsp",
   lazy = true,
+  opts_extend = { "servers" },
   opts = function(_, opts)
     return require("astrocore").extend_tbl(opts, {
       features = {
         codelens = true,
         inlay_hints = false,
-        lsp_handlers = true,
         semantic_tokens = true,
       },
       capabilities = vim.lsp.protocol.make_client_capabilities(),
@@ -19,7 +19,7 @@ return {
         ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", silent = true }),
         ["textDocument/signatureHelp"] = vim.lsp.with(
           vim.lsp.handlers.signature_help,
-          { border = "rounded", silent = true }
+          { border = "rounded", silent = true, focusable = false }
         ),
       },
       servers = {},

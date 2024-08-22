@@ -1,7 +1,7 @@
 return {
   "rcarriga/nvim-notify",
   lazy = true,
-  dependencies = {
+  specs = {
     { "nvim-lua/plenary.nvim", lazy = true },
     {
       "AstroNvim/astrocore",

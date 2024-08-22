@@ -1,7 +1,7 @@
 return {
   "goolord/alpha-nvim",
   cmd = "Alpha",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

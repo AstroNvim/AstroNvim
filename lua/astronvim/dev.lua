@@ -24,8 +24,12 @@ function M.generate_snapshot(write)
     file:write "return {\n"
   end
   local snapshot = {}
+  local untracked_plugins = {
+    "AstroNvim/AstroNvim", -- Managed by user
+    "Bilal2453/luvit-meta", -- Not a real plugin, used for type stubs only
+  }
   for _, plugin in ipairs(plugins) do
-    if plugin[1] ~= "AstroNvim/AstroNvim" then
+    if not vim.tbl_contains(untracked_plugins, plugin[1]) then
       plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
       if prev_snapshot[plugin[1]] and prev_snapshot[plugin[1]].version then
         plugin.version = prev_snapshot[plugin[1]].version
@@ -33,9 +37,11 @@ function M.generate_snapshot(write)
       if file then
         file:write(("  { %q, "):format(plugin[1]))
         if plugin.version then
-          file:write(("version = %q"):format(plugin.version))
+          local version_format = "version = %q"
+          file:write(version_format:format(plugin.version))
         else
-          file:write(("commit = %q"):format(plugin.commit))
+          local commit_format = "commit = %q"
+          file:write(commit_format:format(plugin.commit))
         end
         file:write ", optional = true },\n"
       end

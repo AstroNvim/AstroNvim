@@ -12,15 +12,15 @@ local health = vim.health
 function M.check()
   health.start "AstroNvim"
 
-  -- health.info("AstroNvim Version: " .. require("astrocore.updater").version(true))
+  health.info("AstroNvim Version: " .. require("astronvim").version())
   health.info("Neovim Version: v" .. vim.fn.matchstr(vim.fn.execute "version", "NVIM v\\zs[^\n]*"))
 
   if vim.version().prerelease then
     health.warn "Neovim nightly is not officially supported and may have breaking changes"
-  elseif vim.fn.has "nvim-0.9" == 1 then
-    health.ok "Using stable Neovim >= 0.9.0"
+  elseif vim.fn.has "nvim-0.9.5" == 1 then
+    health.ok "Using stable Neovim >= 0.9.5"
   else
-    health.error "Neovim >= 0.9.0 is required"
+    health.error "Neovim >= 0.9.5 is required"
   end
 
   local programs = {
@@ -34,10 +34,15 @@ function M.check()
       type = "warn",
       msg = "Used for `gx` mapping for opening files with system opener (Optional)",
     },
+    {
+      cmd = { "rg" },
+      type = "warn",
+      msg = "Used for Telescope `live_grep` picker, `<Leader>fw` and `<Leader>fW` by default (Optional)",
+    },
     { cmd = { "lazygit" }, type = "warn", msg = "Used for mappings to pull up git TUI (Optional)" },
     { cmd = { "node" }, type = "warn", msg = "Used for mappings to pull up node REPL (Optional)" },
     {
-      cmd = { vim.fn.has "mac" == 1 and "gdu-go" or "gdu" },
+      cmd = { vim.fn.has "mac" == 1 and "gdu-go" or "gdu", "gdu_windows_amd64.exe" },
       type = "warn",
       msg = "Used for mappings to pull up disk usage analyzer (Optional)",
     },

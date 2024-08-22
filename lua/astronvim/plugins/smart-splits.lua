@@ -1,7 +1,7 @@
 return {
   "mrjones2014/smart-splits.nvim",
   event = "VeryLazy", -- load on very lazy for mux detection
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)

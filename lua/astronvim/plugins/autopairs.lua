@@ -1,7 +1,7 @@
 return {
   "windwp/nvim-autopairs",
   event = "User AstroFile",
-  dependencies = {
+  specs = {
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
