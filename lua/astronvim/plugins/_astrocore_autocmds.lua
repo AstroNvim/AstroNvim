@@ -237,6 +237,11 @@ return {
             if vim.g.q_close_windows[event.buf] then return end
             -- Mark the buffer as checked
             vim.g.q_close_windows[event.buf] = true
+            -- Check to see if `q` is already mapped to the buffer (avoids overwriting)
+            for _, map in ipairs(vim.api.nvim_buf_get_keymap(event.buf, "n")) do
+              if map.lhs == "q" then return end
+            end
+            -- If there is no q mapping already and the buftype is a non-real file, create one
             if vim.tbl_contains({ "help", "nofile", "quickfix" }, vim.bo[event.buf].buftype) then
               vim.keymap.set("n", "q", "<Cmd>close<CR>", {
                 desc = "Close window",
