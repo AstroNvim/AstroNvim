@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.23.11](https://github.com/AstroNvim/AstroNvim/compare/v4.23.10...v4.23.11) (2024-08-23)
+
+
+### Bug Fixes
+
+* **autocmds:** make sure to clean up `q_close_windows` cache ([622b7e8](https://github.com/AstroNvim/AstroNvim/commit/622b7e8d5f11f2451e1fb6363200de86931505b8))
+
 ## [4.23.10](https://github.com/AstroNvim/AstroNvim/compare/v4.23.9...v4.23.10) (2024-08-23)
 
 
