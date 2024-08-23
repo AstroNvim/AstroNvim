@@ -231,6 +231,12 @@ return {
           event = "BufWinEnter",
           desc = "Make q close help, man, quickfix, dap floats",
           callback = function(event)
+            -- Add cache for buffers that have already had mappings created
+            if not vim.g.q_close_windows then vim.g.q_close_windows = {} end
+            -- If the buffer has been checked already, skip
+            if vim.g.q_close_windows[event.buf] then return end
+            -- Mark the buffer as checked
+            vim.g.q_close_windows[event.buf] = true
             if vim.tbl_contains({ "help", "nofile", "quickfix" }, vim.bo[event.buf].buftype) then
               vim.keymap.set("n", "q", "<Cmd>close<CR>", {
                 desc = "Close window",
