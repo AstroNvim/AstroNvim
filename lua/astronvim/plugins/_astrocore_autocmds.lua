@@ -230,26 +230,33 @@ return {
         {
           event = "BufWinEnter",
           desc = "Make q close help, man, quickfix, dap floats",
-          callback = function(event)
+          callback = function(args)
             -- Add cache for buffers that have already had mappings created
             if not vim.g.q_close_windows then vim.g.q_close_windows = {} end
             -- If the buffer has been checked already, skip
-            if vim.g.q_close_windows[event.buf] then return end
+            if vim.g.q_close_windows[args.buf] then return end
             -- Mark the buffer as checked
-            vim.g.q_close_windows[event.buf] = true
+            vim.g.q_close_windows[args.buf] = true
             -- Check to see if `q` is already mapped to the buffer (avoids overwriting)
-            for _, map in ipairs(vim.api.nvim_buf_get_keymap(event.buf, "n")) do
+            for _, map in ipairs(vim.api.nvim_buf_get_keymap(args.buf, "n")) do
               if map.lhs == "q" then return end
             end
             -- If there is no q mapping already and the buftype is a non-real file, create one
-            if vim.tbl_contains({ "help", "nofile", "quickfix" }, vim.bo[event.buf].buftype) then
+            if vim.tbl_contains({ "help", "nofile", "quickfix" }, vim.bo[args.buf].buftype) then
               vim.keymap.set("n", "q", "<Cmd>close<CR>", {
                 desc = "Close window",
-                buffer = event.buf,
+                buffer = args.buf,
                 silent = true,
                 nowait = true,
               })
             end
+          end,
+        },
+        {
+          event = "BufDelete",
+          desc = "Clean up q_close_windows cache",
+          callback = function(args)
+            if vim.g.q_close_windows then vim.g.q_close_windows[args.buf] = nil end
           end,
         },
       },
