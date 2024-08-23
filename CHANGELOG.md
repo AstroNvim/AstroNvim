@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.23.10](https://github.com/AstroNvim/AstroNvim/compare/v4.23.9...v4.23.10) (2024-08-23)
+
+
+### Bug Fixes
+
+* **autocmds:** don't overwrite buffer-local `q` mapping if set ([a368bd2](https://github.com/AstroNvim/AstroNvim/commit/a368bd203220392589ac60deb6d47d02db9c7f5c))
+
+
+### Performance Improvements
+
+* **autocmds:** Only set `q` to close mapping at most once for a buffer ([6cb78a6](https://github.com/AstroNvim/AstroNvim/commit/6cb78a6cdb80e92abd53633d6b835771dd9ed747))
+
 ## [4.23.9](https://github.com/AstroNvim/AstroNvim/compare/v4.23.8...v4.23.9) (2024-08-22)
 
 
