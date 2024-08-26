@@ -1,6 +1,6 @@
 return {
   { "AstroNvim/astrocore", version = "^1.3", optional = true },
-  { "AstroNvim/astrolsp", version = "^1", optional = true },
+  { "AstroNvim/astrolsp", version = "^2", optional = true },
   { "AstroNvim/astrotheme", version = "^4", optional = true },
   { "AstroNvim/astroui", version = "^2", optional = true },
   { "JoosepAlviste/nvim-ts-context-commentstring", commit = "375c2d86cee6674afd75b4f727ce3a80065552f7", optional = true },

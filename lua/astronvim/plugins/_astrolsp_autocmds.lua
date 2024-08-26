@@ -36,28 +36,17 @@ return {
             local signature_help = vim.b[args.buf].signature_help
             if signature_help == nil then signature_help = require("astrolsp").config.features.signature_help end
             if signature_help then
-              local trigger = vim.b[args.buf].signature_help_trigger
-              local retrigger = vim.b[args.buf].signature_help_retrigger
+              local trigger = vim.b[args.buf].signature_help_triggerCharacters or {}
+              local retrigger = vim.b[args.buf].signature_help_retriggerCharacters or {}
               local pos = vim.api.nvim_win_get_cursor(0)[2]
               local cur_char = vim.api.nvim_get_current_line():sub(pos, pos)
-
-              if trigger then
-                for _, char in ipairs(trigger) do
-                  if cur_char == char then
-                    vim.g.signature_help_triggered = true
-                    vim.lsp.buf.signature_help()
-                    return
-                  end
-                end
-              end
-
-              if vim.g.signature_help_triggered and retrigger then
-                for _, char in ipairs(retrigger) do
-                  if cur_char == char then
-                    vim.lsp.buf.signature_help()
-                    return
-                  end
-                end
+              if
+                vim.g.signature_help_triggered and (cur_char:match "%s" or retrigger[cur_char])
+                or trigger[cur_char]
+              then
+                vim.g.signature_help_triggered = true
+                vim.lsp.buf.signature_help()
+                return
               end
             end
             vim.g.signature_help_triggered = false
