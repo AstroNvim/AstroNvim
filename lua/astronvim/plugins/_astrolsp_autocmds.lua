@@ -52,6 +52,11 @@ return {
             vim.g.signature_help_triggered = false
           end,
         },
+        {
+          event = "InsertLeave",
+          desc = "Clear automatic signature help internals when leaving insert",
+          callback = function() vim.g.signature_help_triggered = false end,
+        },
       },
       lsp_auto_format = {
         cond = formatting_enabled,
