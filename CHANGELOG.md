@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.24.0](https://github.com/AstroNvim/AstroNvim/compare/v4.23.11...v4.24.0) (2024-08-26)
+
+
+### Features
+
+* **astrolsp:** factor in `retriggerCharacters` in `signatureHelpProvider` ([fe6e596](https://github.com/AstroNvim/AstroNvim/commit/fe6e5961206b46d2c1b883ae538b971d5a7d6ac0))
+
+
+### Bug Fixes
+
+* **alpha:** improve window detection for dashboard ([6d43957](https://github.com/AstroNvim/AstroNvim/commit/6d439577678581b25eb86cc36e34c6e33369324d)), closes [#2691](https://github.com/AstroNvim/AstroNvim/issues/2691)
+* **astrolsp:** make sure to clear automatic signature help internals when leaving insert ([1b68ef4](https://github.com/AstroNvim/AstroNvim/commit/1b68ef4d174f12cebf53e9d17c5cddc9a70a1ad6))
+
+
+### Performance Improvements
+
+* **astrolsp:** use set lookup for signature help triggering ([20815a7](https://github.com/AstroNvim/AstroNvim/commit/20815a7792caeef7b1d209084ed0766c7d2fa737))
+
 ## [4.23.11](https://github.com/AstroNvim/AstroNvim/compare/v4.23.10...v4.23.11) (2024-08-23)
 
 
