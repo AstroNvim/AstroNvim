@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.1](https://github.com/AstroNvim/AstroNvim/compare/v4.24.0...v4.24.1) (2024-08-28)
+
+
+### Performance Improvements
+
+* **ts-autotag:** lazy load on `InsertEnter` ([b26e3f3](https://github.com/AstroNvim/AstroNvim/commit/b26e3f339c7a8a77a7b596a5e3293bb4a08dcfc1))
+
 ## [4.24.0](https://github.com/AstroNvim/AstroNvim/compare/v4.23.11...v4.24.0) (2024-08-26)
 
 
