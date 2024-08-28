@@ -1,5 +1,5 @@
 return {
   "windwp/nvim-ts-autotag",
-  event = "User AstroFile",
+  event = "InsertEnter",
   opts = {},
 }
