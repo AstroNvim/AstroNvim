@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.1](https://github.com/AstroNvim/AstroNvim/compare/v4.24.0...v4.24.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* **cmp:** list extend `sources` table automatically ([53984b0](https://github.com/AstroNvim/AstroNvim/commit/53984b02dfa023439c4e7e086fb23e01e07a4c90))
+
 ## [4.24.0](https://github.com/AstroNvim/AstroNvim/compare/v4.23.11...v4.24.0) (2024-08-26)
 
 
