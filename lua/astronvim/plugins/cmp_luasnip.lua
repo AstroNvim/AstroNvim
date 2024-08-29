@@ -51,6 +51,7 @@ return {
       { "hrsh7th/cmp-nvim-lsp", lazy = true },
     },
     event = "InsertEnter",
+    opts_extend = { "sources" },
     opts = function()
       local cmp, astro = require "cmp", require "astrocore"
 
