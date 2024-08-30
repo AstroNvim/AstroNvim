@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.25.0](https://github.com/AstroNvim/AstroNvim/compare/v4.24.1...v4.25.0) (2024-08-30)
+
+
+### Features
+
+* **telescope:** add `&lt;Leader&gt;fg` to search git tracked files ([16db0c6](https://github.com/AstroNvim/AstroNvim/commit/16db0c64042419ded746ed858641abbd2bdaafac))
+
 ## [4.24.1](https://github.com/AstroNvim/AstroNvim/compare/v4.24.0...v4.24.1) (2024-08-29)
 
 
