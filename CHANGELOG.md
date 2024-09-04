@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.25.1](https://github.com/AstroNvim/AstroNvim/compare/v4.25.0...v4.25.1) (2024-09-04)
+
+
+### Bug Fixes
+
+* **which-key:** terminal mode trigger disabled upstream ([5a77860](https://github.com/AstroNvim/AstroNvim/commit/5a7786079a3ffd747c13a3b4160f22caaa57737b))
+
 ## [4.25.0](https://github.com/AstroNvim/AstroNvim/compare/v4.24.1...v4.25.0) (2024-08-30)
 
 
