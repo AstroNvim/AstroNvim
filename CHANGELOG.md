@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.25.2](https://github.com/AstroNvim/AstroNvim/compare/v4.25.1...v4.25.2) (2024-09-07)
+
+
+### Bug Fixes
+
+* **nvim-dap:** don't manually call `load_launchjs` ([a4e5fd8](https://github.com/AstroNvim/AstroNvim/commit/a4e5fd800a51f9d69d88e0717982682a32c08b26))
+
 ## [4.25.1](https://github.com/AstroNvim/AstroNvim/compare/v4.25.0...v4.25.1) (2024-09-04)
 
 
