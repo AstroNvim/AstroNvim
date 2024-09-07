@@ -14,5 +14,4 @@ return function()
     end
     return parsed
   end
-  if (vim.uv or vim.loop).fs_stat(vim.fn.getcwd() .. "/.vscode/launch.json") then vscode.load_launchjs() end
 end
