@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.26.1](https://github.com/AstroNvim/AstroNvim/compare/v4.26.0...v4.26.1) (2024-09-09)
+
+
+### Bug Fixes
+
+* **telescope:** always ignore `.git` folders in results ([016c2cf](https://github.com/AstroNvim/AstroNvim/commit/016c2cfc5288118f315a7fb26082d90d86a529b6))
+
 ## [4.26.0](https://github.com/AstroNvim/AstroNvim/compare/v4.25.2...v4.26.0) (2024-09-09)
 
 
