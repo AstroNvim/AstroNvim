@@ -124,6 +124,7 @@ return {
     end
     return {
       defaults = {
+        file_ignore_patterns = { "^%.git/", "/%.git/" },
         git_worktrees = require("astrocore").config.git_worktrees,
         prompt_prefix = get_icon("Selected", 1),
         selection_caret = get_icon("Selected", 1),
