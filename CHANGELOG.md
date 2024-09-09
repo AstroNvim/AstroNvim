@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.26.0](https://github.com/AstroNvim/AstroNvim/compare/v4.25.2...v4.26.0) (2024-09-09)
+
+
+### Features
+
+* **smart-splits:** add intelligent lazy loading of `smart-splits` ([9ac414d](https://github.com/AstroNvim/AstroNvim/commit/9ac414dfc4bfd580062f9a381e94dafacc3454e4))
+
 ## [4.25.2](https://github.com/AstroNvim/AstroNvim/compare/v4.25.1...v4.25.2) (2024-09-07)
 
 
