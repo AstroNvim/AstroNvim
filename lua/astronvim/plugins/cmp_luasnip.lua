@@ -89,20 +89,6 @@ return {
         return item
       end
 
-      ---TODO: Remove this block in AstroNvim v5, this is here for backwards compatibility
-      local lspkind_opts = astro.plugin_opts "lspkind.nvim"
-      local lspkind_mode = vim.tbl_get(lspkind_opts, "mode")
-      if -- check for user intervention on lspkind settings for `cmp_format`
-        (lspkind_mode and lspkind_mode ~= "symbol")
-        or vim.tbl_get(lspkind_opts, "maxwidth")
-        or vim.tbl_get(lspkind_opts, "before")
-        or vim.tbl_get(lspkind_opts, "show_labelDetails")
-      then
-        local lspkind_avail, lspkind = pcall(require, "lspkind")
-        -- if there is user configuration for `lspkind`s cmp formatting just use that format function
-        if lspkind_avail then format = lspkind.cmp_format(require("astrocore").plugin_opts "lspkind.nvim") end
-      end
-
       return {
         enabled = function()
           local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
