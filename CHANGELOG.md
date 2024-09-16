@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.26.2](https://github.com/AstroNvim/AstroNvim/compare/v4.26.1...v4.26.2) (2024-09-16)
+
+
+### Bug Fixes
+
+* **alpha:** make plugin icon respect disable icons ([98cf96a](https://github.com/AstroNvim/AstroNvim/commit/98cf96a2a519ddfa480029124bc5288fdc82fa8d))
+
 ## [4.26.1](https://github.com/AstroNvim/AstroNvim/compare/v4.26.0...v4.26.1) (2024-09-09)
 
 
