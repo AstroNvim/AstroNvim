@@ -56,7 +56,7 @@ return {
   },
   cmd = "Neotree",
   opts_extend = { "sources" },
-  opts = function()
+  opts = function(_, opts)
     local astro, get_icon = require "astrocore", require("astroui").get_icon
     local git_available = vim.fn.executable "git" == 1
     local sources = {
@@ -67,7 +67,7 @@ return {
     if git_available then
       table.insert(sources, 3, { source = "git_status", display_name = get_icon("Git", 1, true) .. "Git" })
     end
-    local opts = {
+    return astro.extend_tbl(opts, {
       enable_git_status = git_available,
       auto_clean_after_session_restore = true,
       close_if_last_window = true,
@@ -200,34 +200,6 @@ return {
           end,
         },
       },
-    }
-
-    if astro.is_available "telescope.nvim" then
-      opts.commands.find_in_dir = function(state)
-        local node = state.tree:get_node()
-        local path = node.type == "file" and node:get_parent_id() or node:get_id()
-        require("telescope.builtin").find_files { cwd = path }
-      end
-      opts.window.mappings.F = "find_in_dir"
-    end
-
-    if astro.is_available "toggleterm.nvim" then
-      local function toggleterm_in_direction(state, direction)
-        local node = state.tree:get_node()
-        local path = node.type == "file" and node:get_parent_id() or node:get_id()
-        require("toggleterm.terminal").Terminal:new({ dir = path, direction = direction }):toggle()
-      end
-      local prefix = "T"
-      ---@diagnostic disable-next-line: assign-type-mismatch
-      opts.window.mappings[prefix] =
-        { "show_help", nowait = false, config = { title = "New Terminal", prefix_key = prefix } }
-      for suffix, direction in pairs { f = "float", h = "horizontal", v = "vertical" } do
-        local command = "toggleterm_" .. direction
-        opts.commands[command] = function(state) toggleterm_in_direction(state, direction) end
-        opts.window.mappings[prefix .. suffix] = command
-      end
-    end
-
-    return opts
+    })
   end,
 }
