@@ -38,18 +38,6 @@ return {
     maps.n["<C-Q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
     maps.n["|"] = { "<Cmd>vsplit<CR>", desc = "Vertical Split" }
     maps.n["\\"] = { "<Cmd>split<CR>", desc = "Horizontal Split" }
-    -- TODO: remove deprecated method check after dropping support for neovim v0.9
-    if not vim.ui.open then
-      local gx_desc = "Opens filepath or URI under cursor with the system handler (file explorer, web browser, …)"
-      maps.n["gx"] = { function() astro.system_open(vim.fn.expand "<cfile>") end, desc = gx_desc }
-      maps.x["gx"] = {
-        function()
-          local lines = vim.fn.getregion(vim.fn.getpos ".", vim.fn.getpos "v", { type = vim.fn.mode() })
-          astro.system_open(table.concat(vim.tbl_map(vim.trim, lines)))
-        end,
-        desc = gx_desc,
-      }
-    end
     maps.n["<Leader>/"] = { "gcc", remap = true, desc = "Toggle comment line" }
     maps.x["<Leader>/"] = { "gc", remap = true, desc = "Toggle comment" }
 
@@ -124,11 +112,6 @@ return {
     maps.n["]e"] = { diagnostic_goto(true, "ERROR"), desc = "Next error" }
     maps.n["[w"] = { diagnostic_goto(false, "WARN"), desc = "Previous warning" }
     maps.n["]w"] = { diagnostic_goto(true, "WARN"), desc = "Next warning" }
-    -- TODO: Remove mapping after dropping support for Neovim v0.9, it's automatic
-    if vim.fn.has "nvim-0.10" == 0 then
-      maps.n["<C-W>d"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
-      maps.n["<C-W><C-D>"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
-    end
     maps.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
     -- Navigate tabs

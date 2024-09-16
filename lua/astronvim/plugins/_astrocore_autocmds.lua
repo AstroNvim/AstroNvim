@@ -128,7 +128,7 @@ return {
           callback = function(args)
             local file = args.match
             if not require("astrocore.buffer").is_valid(args.buf) or file:match "^%w+:[\\/][\\/]" then return end
-            vim.fn.mkdir(vim.fn.fnamemodify((vim.uv or vim.loop).fs_realpath(file) or file, ":p:h"), "p")
+            vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(file) or file, ":p:h"), "p")
           end,
         },
       },
