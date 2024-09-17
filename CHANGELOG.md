@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.26.3](https://github.com/AstroNvim/AstroNvim/compare/v4.26.2...v4.26.3) (2024-09-17)
+
+
+### Bug Fixes
+
+* **dap:** revert back to using Plenary's JSON cleaning function ([cf31b6e](https://github.com/AstroNvim/AstroNvim/commit/cf31b6e33075ad0f0206c5aacd22fc375ab32ab6))
+
 ## [4.26.2](https://github.com/AstroNvim/AstroNvim/compare/v4.26.1...v4.26.2) (2024-09-16)
 
 
