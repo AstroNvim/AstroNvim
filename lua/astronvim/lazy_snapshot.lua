@@ -32,7 +32,7 @@ return {
   { "mrjones2014/smart-splits.nvim", version = "^1", optional = true },
   { "neovim/nvim-lspconfig", commit = "46ce5fd8c081f179a509da423077f8372e63ffc4", optional = true },
   { "numToStr/Comment.nvim", commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb", optional = true },
-  { "nvim-lua/plenary.nvim", commit = "ec289423a1693aeae6cd0d503bac2856af74edaa", optional = true },
+  { "nvim-lua/plenary.nvim", commit = "2d9b06177a975543726ce5c73fca176cedbffe9d", optional = true },
   { "nvim-neo-tree/neo-tree.nvim", version = "^3", optional = true },
   { "nvim-neotest/nvim-nio", version = "^1", optional = true },
   { "nvim-telescope/telescope-fzf-native.nvim", commit = "cf48d4dfce44e0b9a2e19a008d6ec6ea6f01a83b", optional = true },
