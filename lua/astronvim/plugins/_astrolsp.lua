@@ -1,7 +1,6 @@
 return {
   "AstroNvim/astrolsp",
   lazy = true,
-  opts_extend = { "servers" },
   opts = function(_, opts)
     return require("astrocore").extend_tbl(opts, {
       features = {
