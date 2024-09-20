@@ -10,7 +10,7 @@ return {
       },
       capabilities = vim.lsp.protocol.make_client_capabilities(),
       ---@diagnostic disable-next-line: missing-fields
-      config = { lua_ls = { settings = { Lua = { workspace = { checkThirdParty = false } } } } },
+      config = {},
       file_operations = {
         timeout = 10000,
         operations = {
