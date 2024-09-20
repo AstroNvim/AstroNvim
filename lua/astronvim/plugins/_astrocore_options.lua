@@ -22,7 +22,7 @@ return {
     opt.foldlevelstart = 99 -- start with all code unfolded
     opt.ignorecase = true -- case insensitive searching
     opt.infercase = true -- infer cases in keyword completion
-    opt.jumpoptions = { "view" } -- make the jumplist behavior more intuitive
+    opt.jumpoptions = {} -- apply no jumpoptions on startup
     opt.laststatus = 3 -- global statusline
     opt.linebreak = true -- wrap lines at 'breakat'
     opt.mouse = "a" -- enable mouse support
