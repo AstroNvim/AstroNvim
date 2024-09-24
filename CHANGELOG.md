@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.26.5](https://github.com/AstroNvim/AstroNvim/compare/v4.26.4...v4.26.5) (2024-09-24)
+
+
+### Bug Fixes
+
+* **telescope:** unpin telescope as it doesn't truly follow semantic release and is not releasing new features ([f949939](https://github.com/AstroNvim/AstroNvim/commit/f949939cd09f1f3af9d419e04a5ecb21b697a8b3))
+
 ## [4.26.4](https://github.com/AstroNvim/AstroNvim/compare/v4.26.3...v4.26.4) (2024-09-24)
 
 
