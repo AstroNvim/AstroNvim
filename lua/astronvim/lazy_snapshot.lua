@@ -36,7 +36,7 @@ return {
   { "nvim-neo-tree/neo-tree.nvim", version = "^3", optional = true },
   { "nvim-neotest/nvim-nio", version = "^1", optional = true },
   { "nvim-telescope/telescope-fzf-native.nvim", commit = "cf48d4dfce44e0b9a2e19a008d6ec6ea6f01a83b", optional = true },
-  { "nvim-telescope/telescope.nvim", version = "^0.1", optional = true },
+  { "nvim-telescope/telescope.nvim", commit = "b324469959908c1c7434eb65d80e87895e6828f7", optional = true },
   { "nvim-tree/nvim-web-devicons", commit = "26220156aafb198b2de6a4cf80c1b120a3768da0", optional = true },
   { "nvim-treesitter/nvim-treesitter", commit = "6511cd984ab4b21e28f83af488f38dc89c3b0586", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "bf8d2ad35d1d1a687eae6c065c3d524f7ab61b23", optional = true },
