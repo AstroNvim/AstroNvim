@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.26.4](https://github.com/AstroNvim/AstroNvim/compare/v4.26.3...v4.26.4) (2024-09-24)
+
+
+### Bug Fixes
+
+* **telescope:** ensure `.git` folders are always ignored on Windows ([4cce0ca](https://github.com/AstroNvim/AstroNvim/commit/4cce0cad81c2089c3350f43b1accc16442d54823))
+
+
+### Reverts
+
+* remove all `jumpoptions` by default to avoid confusion ([e868e93](https://github.com/AstroNvim/AstroNvim/commit/e868e939cdfdd22a60ad182c398e5f6d519fbb06))
+
 ## [4.26.3](https://github.com/AstroNvim/AstroNvim/compare/v4.26.2...v4.26.3) (2024-09-17)
 
 
