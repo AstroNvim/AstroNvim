@@ -10,7 +10,7 @@ return {
   { "NvChad/nvim-colorizer.lua", commit = "0671e0eabc6842676d3310370e8fae4e1c51d7f9", optional = true },
   { "RRethy/vim-illuminate", commit = "5eeb7951fc630682c322e88a9bbdae5c224ff0aa", optional = true },
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
-  { "echasnovski/mini.bufremove", version = "^0.13", optional = true },
+  { "echasnovski/mini.bufremove", version = "^0.14", optional = true },
   { "folke/lazy.nvim", version = "^11", optional = true },
   { "folke/lazydev.nvim", version = "^1", optional = true },
   { "folke/neoconf.nvim", commit = "c5516054f2342e6fe4d3befd56249d02d5eeb380", optional = true },
