@@ -8,7 +8,6 @@ local astrocore = require "astrocore"
 function M.generate_snapshot(write)
   local astronvim = assert(astrocore.get_plugin "AstroNvim")
   if write ~= false then write = astronvim.dev end
-  local file
   local prev_snapshot = require "astronvim.lazy_snapshot"
   for _, plugin in ipairs(prev_snapshot) do
     prev_snapshot[plugin[1]] = plugin
@@ -19,11 +18,7 @@ function M.generate_snapshot(write)
     local commit = assert(astrocore.cmd({ "git", "-C", dir, "rev-parse", "HEAD" }, false))
     if commit then return vim.trim(commit) end
   end
-  if write then
-    file = assert(io.open(astronvim.dir .. "/lua/astronvim/lazy_snapshot.lua", "w"))
-    file:write "return {\n"
-  end
-  local snapshot = {}
+  local snapshot, module = {}, "return {\n"
   local untracked_plugins = {
     "AstroNvim/AstroNvim", -- Managed by user
     "Bilal2453/luvit-meta", -- Not a real plugin, used for type stubs only
@@ -34,23 +29,20 @@ function M.generate_snapshot(write)
       if prev_snapshot[plugin[1]] and prev_snapshot[plugin[1]].version then
         plugin.version = prev_snapshot[plugin[1]].version
       end
-      if file then
-        file:write(("  { %q, "):format(plugin[1]))
-        if plugin.version then
-          local version_format = "version = %q"
-          file:write(version_format:format(plugin.version))
-        else
-          local commit_format = "commit = %q"
-          file:write(commit_format:format(plugin.commit))
-        end
-        file:write ", optional = true },\n"
+      module = module .. ("  { %q, "):format(plugin[1])
+      if plugin.version then
+        module = module .. ("version = %q"):format(plugin.version)
+      else
+        module = module .. ("commit = %q"):format(plugin.commit)
       end
+      module = module .. ", optional = true },\n"
       table.insert(snapshot, plugin)
     end
   end
-  if file then
-    file:write "}\n"
-    file:close()
+  module = module .. "}\n"
+  if write then
+    local snapshot_file = astronvim.dir .. "/lua/astronvim/lazy_snapshot.lua"
+    astrocore.with_file(snapshot_file, "w+", function(file) file:write(module) end)
   end
   return snapshot
 end
