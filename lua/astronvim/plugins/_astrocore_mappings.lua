@@ -42,7 +42,7 @@ return {
     maps.n["\\"] = { "<Cmd>split<CR>", desc = "Horizontal Split" }
     -- TODO: remove deprecated method check after dropping support for neovim v0.9
     if not vim.ui.open then
-      local gx_desc = "Opens filepath or URI under cursor with the system handler (file explorer, web browser, …)"
+      local gx_desc = "System-open path under cursor"
       maps.n["gx"] = { function() astro.system_open(vim.fn.expand "<cfile>") end, desc = gx_desc }
       maps.x["gx"] = {
         function()
