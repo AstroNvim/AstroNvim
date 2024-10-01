@@ -1,6 +1,6 @@
 return {
   { "AstroNvim/astrocore", version = "^1.3", optional = true },
-  { "AstroNvim/astrolsp", version = "^2", optional = true },
+  { "AstroNvim/astrolsp", version = "^2.0.2", optional = true },
   { "AstroNvim/astrotheme", version = "^4", optional = true },
   { "AstroNvim/astroui", version = "^2", optional = true },
   { "JoosepAlviste/nvim-ts-context-commentstring", commit = "44fd461b879d80a21d5041f312f070f22551c0bc", optional = true },
@@ -30,7 +30,7 @@ return {
   { "max397574/better-escape.nvim", version = "^2", optional = true },
   { "mfussenegger/nvim-dap", commit = "7ff6936010b7222fea2caea0f67ed77f1b7c60dd", optional = true },
   { "mrjones2014/smart-splits.nvim", version = "^1", optional = true },
-  { "neovim/nvim-lspconfig", commit = "dd329912c8d446240584a2dbcd3802af3a19105a", optional = true },
+  { "neovim/nvim-lspconfig", commit = "646fdd922a9a0c50b1f6f17e2263a27fc3608105", optional = true },
   { "numToStr/Comment.nvim", commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb", optional = true },
   { "nvim-lua/plenary.nvim", commit = "2d9b06177a975543726ce5c73fca176cedbffe9d", optional = true },
   { "nvim-neo-tree/neo-tree.nvim", version = "^3", optional = true },
