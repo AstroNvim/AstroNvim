@@ -132,15 +132,17 @@ return {
     maps.n["<Leader>x"] = vim.tbl_get(sections, "x")
     maps.n["<Leader>xq"] = { "<Cmd>copen<CR>", desc = "Quickfix List" }
     maps.n["<Leader>xl"] = { "<Cmd>lopen<CR>", desc = "Location List" }
-    maps.n["]q"] = { vim.cmd.cnext, desc = "Next quickfix" }
-    maps.n["[q"] = { vim.cmd.cprev, desc = "Previous quickfix" }
-    maps.n["]Q"] = { vim.cmd.clast, desc = "End quickfix" }
-    maps.n["[Q"] = { vim.cmd.cfirst, desc = "Beginning quickfix" }
+    if vim.fn.has "nvim-0.11" == 0 then
+      maps.n["]q"] = { vim.cmd.cnext, desc = "Next quickfix" }
+      maps.n["[q"] = { vim.cmd.cprev, desc = "Previous quickfix" }
+      maps.n["]Q"] = { vim.cmd.clast, desc = "End quickfix" }
+      maps.n["[Q"] = { vim.cmd.cfirst, desc = "Beginning quickfix" }
 
-    maps.n["]l"] = { vim.cmd.lnext, desc = "Next loclist" }
-    maps.n["[l"] = { vim.cmd.lprev, desc = "Previous loclist" }
-    maps.n["]L"] = { vim.cmd.llast, desc = "End loclist" }
-    maps.n["[L"] = { vim.cmd.lfirst, desc = "Beginning loclist" }
+      maps.n["]l"] = { vim.cmd.lnext, desc = "Next loclist" }
+      maps.n["[l"] = { vim.cmd.lprev, desc = "Previous loclist" }
+      maps.n["]L"] = { vim.cmd.llast, desc = "End loclist" }
+      maps.n["[L"] = { vim.cmd.lfirst, desc = "Beginning loclist" }
+    end
 
     -- Stay in indent mode
     maps.v["<S-Tab>"] = { "<gv", desc = "Unindent line" }
