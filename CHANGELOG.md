@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.26.6](https://github.com/AstroNvim/AstroNvim/compare/v4.26.5...v4.26.6) (2024-10-02)
+
+
+### Bug Fixes
+
+* **snapshot:** fix `nvim-lspconfig` internal module renames ([4fd4781](https://github.com/AstroNvim/AstroNvim/commit/4fd4781ab0c2d9c876acef1fc5b3f01773c78be6))
+* **snapshot:** pin `nvim-lspconfig` to older commit for neovim v0.9 ([05d5a4a](https://github.com/AstroNvim/AstroNvim/commit/05d5a4ad070cdcad9b88352bc17e72d91d395b4e))
+
 ## [4.26.5](https://github.com/AstroNvim/AstroNvim/compare/v4.26.4...v4.26.5) (2024-09-24)
 
 
