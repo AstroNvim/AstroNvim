@@ -1,7 +1,6 @@
 return {
   "AstroNvim/astrolsp",
   lazy = true,
-  opts_extend = { "servers" },
   opts = function(_, opts)
     return require("astrocore").extend_tbl(opts, {
       features = {
@@ -11,7 +10,7 @@ return {
       },
       capabilities = vim.lsp.protocol.make_client_capabilities(),
       ---@diagnostic disable-next-line: missing-fields
-      config = { lua_ls = { settings = { Lua = { workspace = { checkThirdParty = false } } } } },
+      config = {},
       flags = {},
       formatting = { format_on_save = { enabled = true }, disabled = {} },
       handlers = { function(server, server_opts) require("lspconfig")[server].setup(server_opts) end },
