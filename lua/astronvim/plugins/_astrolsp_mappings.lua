@@ -72,12 +72,6 @@ return {
       cond = "textDocument/signatureHelp",
     }
 
-    maps.n["gI"] = {
-      function() vim.lsp.buf.implementation() end,
-      desc = "Implementation of current symbol",
-      cond = "textDocument/implementation",
-    }
-
     maps.n["<Leader>uh"] = {
       function() require("astrolsp.toggles").buffer_inlay_hints() end,
       desc = "Toggle LSP inlay hints (buffer)",
