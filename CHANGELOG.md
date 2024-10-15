@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.26.7](https://github.com/AstroNvim/AstroNvim/compare/v4.26.6...v4.26.7) (2024-10-15)
+
+
+### Bug Fixes
+
+* **lspconfig:** use correct branch of `mason-lspconfig` fork ([5611677](https://github.com/AstroNvim/AstroNvim/commit/56116776c428328eeac2c5a3f50070daf2e49b2c))
+
 ## [4.26.6](https://github.com/AstroNvim/AstroNvim/compare/v4.26.5...v4.26.6) (2024-10-15)
 
 
