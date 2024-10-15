@@ -19,6 +19,7 @@ return {
         { -- HACK: use separate fork until PR is merged
           -- https://github.com/williamboman/mason-lspconfig.nvim/pull/468
           "mehalter/mason-lspconfig.nvim",
+          branch = "server_configurations_rename",
           name = "mehalter-mason-lspconfig",
           lazy = true,
           config = function() vim.opt.rtp:remove(require("astrocore").get_plugin("mason-lspconfig.nvim").dir) end,
