@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.26.6](https://github.com/AstroNvim/AstroNvim/compare/v4.26.5...v4.26.6) (2024-10-15)
+
+
+### Bug Fixes
+
+* **plugins:** use `mason-lspconfig` fork until PR fix is merged ([bee36ce](https://github.com/AstroNvim/AstroNvim/commit/bee36ce8b87ddf6c2e94288c61db1d748b216a1f))
+* **snapshot:** fix `nvim-lspconfig` internal module renames ([4fd4781](https://github.com/AstroNvim/AstroNvim/commit/4fd4781ab0c2d9c876acef1fc5b3f01773c78be6))
+
 ## [4.26.5](https://github.com/AstroNvim/AstroNvim/compare/v4.26.4...v4.26.5) (2024-09-24)
 
 
