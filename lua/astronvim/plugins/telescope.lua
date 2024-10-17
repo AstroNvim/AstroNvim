@@ -38,7 +38,6 @@ return {
             require("telescope.builtin").find_files {
               prompt_title = "Config Files",
               cwd = vim.fn.stdpath "config",
-              follow = true,
             }
           end,
           desc = "Find AstroNvim config files",
@@ -164,6 +163,11 @@ return {
             ["<CR>"] = open_selected,
             ["<M-CR>"] = open_all,
           },
+        },
+      },
+      pickers = {
+        find_files = {
+          follow = true,
         },
       },
     }
