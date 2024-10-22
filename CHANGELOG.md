@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.26.8](https://github.com/AstroNvim/AstroNvim/compare/v4.26.7...v4.26.8) (2024-10-22)
+
+
+### Reverts
+
+* `mason-lspconfig.nvim` fixed, use original upstream ([a348a4e](https://github.com/AstroNvim/AstroNvim/commit/a348a4e9a21084bac047204a680dc5a415939a08))
+
 ## [4.26.7](https://github.com/AstroNvim/AstroNvim/compare/v4.26.6...v4.26.7) (2024-10-15)
 
 
