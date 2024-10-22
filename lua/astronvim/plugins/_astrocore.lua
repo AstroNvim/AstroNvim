@@ -85,5 +85,6 @@ return {
         },
       } --[[@as AstroCoreOpts]])
     end,
+    config = function(...) require "astronvim.plugins.configs.astrocore"(...) end,
   },
 }
