@@ -14,17 +14,7 @@ return {
     { "folke/neoconf.nvim", lazy = true, opts = {} },
     {
       "williamboman/mason-lspconfig.nvim",
-      dependencies = {
-        "williamboman/mason.nvim",
-        { -- HACK: use separate fork until PR is merged
-          -- https://github.com/williamboman/mason-lspconfig.nvim/pull/468
-          "mehalter/mason-lspconfig.nvim",
-          branch = "server_configurations_rename",
-          name = "mehalter-mason-lspconfig",
-          lazy = true,
-          config = function() vim.opt.rtp:remove(require("astrocore").get_plugin("mason-lspconfig.nvim").dir) end,
-        },
-      },
+      dependencies = { "williamboman/mason.nvim" },
       cmd = { "LspInstall", "LspUninstall" },
       init = function(plugin) require("astrocore").on_load("mason.nvim", plugin.name) end,
       opts_extend = { "ensure_installed" },
