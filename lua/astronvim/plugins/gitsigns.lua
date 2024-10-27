@@ -50,7 +50,7 @@ return {
             for _, id in ipairs((vim.api.nvim_list_wins())) do
               if vim.api.nvim_win_get_config(id).relative ~= "" then vim.api.nvim_win_close(id, false) end
             end
-          end
+          end,
         }
 
         astrocore.set_mappings(maps, { buffer = bufnr })
