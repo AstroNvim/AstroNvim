@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.27.0](https://github.com/AstroNvim/AstroNvim/compare/v4.26.8...v4.27.0) (2024-10-28)
+
+
+### Features
+
+* **health:** add duplicate mapping report in `:checkhealth astronvim` ([33a90b5](https://github.com/AstroNvim/AstroNvim/commit/33a90b53b6089ab33a42203d570e75810f8f21bd))
+
 ## [4.26.8](https://github.com/AstroNvim/AstroNvim/compare/v4.26.7...v4.26.8) (2024-10-22)
 
 
