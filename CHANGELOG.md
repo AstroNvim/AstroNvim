@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.27.1](https://github.com/AstroNvim/AstroNvim/compare/v4.27.0...v4.27.1) (2024-10-28)
+
+
+### Reverts
+
+* conflicting mapping health checks moved to individual plugins ([c4fa819](https://github.com/AstroNvim/AstroNvim/commit/c4fa819eabedd8b4d5ee6c69b72d0bfd2d855f06))
+
 ## [4.27.0](https://github.com/AstroNvim/AstroNvim/compare/v4.26.8...v4.27.0) (2024-10-28)
 
 
