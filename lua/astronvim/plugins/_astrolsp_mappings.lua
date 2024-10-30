@@ -2,6 +2,7 @@ return {
   "AstroNvim/astrolsp",
   ---@param opts AstroLSPOpts
   opts = function(_, opts)
+    ---@type AstroLSPMappings
     local maps = require("astrocore").empty_map_table()
     maps.n["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
     maps.v["<Leader>l"] = { desc = require("astroui").get_icon("ActiveLSP", 1, true) .. "Language Tools" }
@@ -65,6 +66,14 @@ return {
       desc = "Toggle autoformatting (global)",
       cond = formatting_enabled,
     }
+
+    if vim.fn.has "nvim-0.11" == 1 then
+      maps.n.K = {
+        function() vim.lsp.buf.hover { border = "rounded", silent = true } end,
+        desc = "vim.lsp.buf.hover()",
+        cond = "textDocument/hover",
+      }
+    end
 
     maps.n["<Leader>u?"] = {
       function() require("astrolsp.toggles").signature_help() end,
