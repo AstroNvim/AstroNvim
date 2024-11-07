@@ -195,7 +195,7 @@ return {
           event = "TextYankPost",
           desc = "Highlight yanked text",
           pattern = "*",
-          callback = function() vim.highlight.on_yank() end,
+          callback = function() (vim.hl or vim.highlight).on_yank() end,
         },
       },
       large_buf_settings = {
