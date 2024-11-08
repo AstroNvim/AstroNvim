@@ -67,14 +67,6 @@ return {
       cond = formatting_enabled,
     }
 
-    if vim.fn.has "nvim-0.11" == 1 then
-      maps.n.K = {
-        function() vim.lsp.buf.hover { border = "rounded", silent = true } end,
-        desc = "vim.lsp.buf.hover()",
-        cond = "textDocument/hover",
-      }
-    end
-
     maps.n["<Leader>u?"] = {
       function() require("astrolsp.toggles").signature_help() end,
       desc = "Toggle automatic signature help",
