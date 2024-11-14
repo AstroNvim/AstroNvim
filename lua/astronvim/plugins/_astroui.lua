@@ -107,5 +107,20 @@ return {
       Spellcheck = "[SPELL]",
       TabClose = "X",
     },
+    lazygit = {
+      theme_path = vim.fs.normalize(vim.fn.stdpath "cache" .. "/lazygit-theme.yml"),
+      theme = {
+        [241] = { fg = "Special" },
+        activeBorderColor = { fg = "MatchParen", bold = true },
+        cherryPickedCommitBgColor = { fg = "Identifier" },
+        cherryPickedCommitFgColor = { fg = "Function" },
+        defaultFgColor = { fg = "Normal" },
+        inactiveBorderColor = { fg = "FloatBorder" },
+        optionsTextColor = { fg = "Function" },
+        searchingActiveBorderColor = { fg = "MatchParen", bold = true },
+        selectedLineBgColor = { bg = "Visual" }, -- set to `default` to have no background colour
+        unstagedChangesColor = { fg = "DiagnosticError" },
+      },
+    },
   },
 }
