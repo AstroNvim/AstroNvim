@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.28.0](https://github.com/AstroNvim/AstroNvim/compare/v4.27.2...v4.28.0) (2024-11-15)
+
+
+### Features
+
+* **astroui:** use new Lazygit theming in AstroUI ([e797484](https://github.com/AstroNvim/AstroNvim/commit/e7974843b7652f8bed38ff8ec6d4e5bab5d905ae))
+
+
+### Bug Fixes
+
+* **astroui:** improve LazyGit theming ([9f627ea](https://github.com/AstroNvim/AstroNvim/commit/9f627ea363b8de4ddcc5e8045c121e6be0f8c394))
+* **autocmds:** `vim.highlight` getting deprecated ([31ea1b9](https://github.com/AstroNvim/AstroNvim/commit/31ea1b9d006b9c0732f8188c21fc01c7acc7cf40))
+
 ## [4.27.2](https://github.com/AstroNvim/AstroNvim/compare/v4.27.1...v4.27.2) (2024-11-07)
 
 
