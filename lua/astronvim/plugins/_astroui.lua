@@ -108,14 +108,16 @@ return {
       TabClose = "X",
     },
     lazygit = {
-      theme_path = vim.fs.normalize(vim.fn.stdpath "cache" .. "/lazygit-theme.yml"),
+      theme_path = vim.fs.normalize(vim.fn.stdpath "cache" .. "/astroui-lazygit-config.yml"),
       theme = {
         [241] = { fg = "Special" },
         activeBorderColor = { fg = "MatchParen", bold = true },
-        cherryPickedCommitBgColor = { fg = "Identifier" },
-        cherryPickedCommitFgColor = { fg = "Function" },
+        cherryPickedCommitBgColor = { bg = "Substitute" },
+        cherryPickedCommitFgColor = { fg = "Substitute" },
         defaultFgColor = { fg = "Normal" },
         inactiveBorderColor = { fg = "FloatBorder" },
+        markedBaseCommitBgColor = { bg = "CurSearch" },
+        markedBaseCommitFgColor = { fg = "CurSearch" },
         optionsTextColor = { fg = "Function" },
         searchingActiveBorderColor = { fg = "MatchParen", bold = true },
         selectedLineBgColor = { bg = "Visual" }, -- set to `default` to have no background colour
