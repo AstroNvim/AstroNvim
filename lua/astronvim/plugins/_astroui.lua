@@ -1,6 +1,21 @@
 return {
   "AstroNvim/astroui",
   lazy = true,
+  specs = {
+    "AstroNvim/astrocore",
+    opts = {
+      options = {
+        opt = {
+          foldcolumn = "1", -- display fold column
+          foldenable = true, -- enable folds
+          foldexpr = "v:lua.require'astroui.folding'.foldexpr()", -- set function for calculating folds
+          foldlevel = 99, -- set high foldlevel
+          foldmethod = "expr", -- use `foldexpr` for calculating folds
+          foldtext = "", -- use transparent foldtext
+        },
+      },
+    },
+  },
   ---@type AstroUIOpts
   opts = {
     colorscheme = "astrotheme",

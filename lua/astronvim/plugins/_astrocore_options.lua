@@ -16,10 +16,6 @@ return {
     opt.diffopt = vim.list_extend(vim.opt.diffopt:get(), { "algorithm:histogram", "linematch:60" }) -- enable linematch diff algorithm
     opt.expandtab = true -- enable the use of space in tab
     opt.fillchars = { eob = " " } -- disable `~` on nonexistent lines
-    opt.foldcolumn = "1" -- show foldcolumn
-    opt.foldenable = true -- enable fold for nvim-ufo
-    opt.foldlevel = 99 -- set high foldlevel for nvim-ufo
-    opt.foldlevelstart = 99 -- start with all code unfolded
     opt.ignorecase = true -- case insensitive searching
     opt.infercase = true -- infer cases in keyword completion
     opt.jumpoptions = {} -- apply no jumpoptions on startup
