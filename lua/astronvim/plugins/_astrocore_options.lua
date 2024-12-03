@@ -45,7 +45,6 @@ return {
     opt.title = true -- set terminal title to the filename and path
     opt.undofile = true -- enable persistent undo
     opt.updatetime = 300 -- length of time to wait before triggering the plugin
-    opt.viewoptions = vim.tbl_filter(function(val) return val ~= "curdir" end, vim.opt.viewoptions:get())
     opt.virtualedit = "block" -- allow going past end of line in visual block mode
     opt.wrap = false -- disable wrapping of lines longer than the width of window
     opt.writebackup = false -- disable making a backup before overwriting a file
