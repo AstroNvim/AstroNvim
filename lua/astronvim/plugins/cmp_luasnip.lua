@@ -66,9 +66,13 @@ return {
 
       local function get_icon_provider()
         local _, mini_icons = pcall(require, "mini.icons")
-        if _G.MiniIcons then return function(kind) return mini_icons.get("lsp", kind or "") end end
+        if _G.MiniIcons then
+          return function(kind) return mini_icons.get("lsp", kind or "") end
+        end
         local lspkind_avail, lspkind = pcall(require, "lspkind")
-        if lspkind_avail then return function(kind) return lspkind.symbolic(kind, { mode = "symbol" }) end end
+        if lspkind_avail then
+          return function(kind) return lspkind.symbolic(kind, { mode = "symbol" }) end
+        end
       end
       local icon_provider = get_icon_provider()
 
