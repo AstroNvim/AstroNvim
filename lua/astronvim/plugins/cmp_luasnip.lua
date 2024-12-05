@@ -91,9 +91,13 @@ return {
 
       return {
         enabled = function()
+          -- Disable completion when recording macros
+          if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then return false end
+          -- Disable completion for prompt windows that are not `nvim-dap` prompts
           local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
             and vim.tbl_contains({ "dap-repl", "dapui_watches", "dapui_hover" }, vim.bo[0].filetype)
           if vim.bo[0].buftype == "prompt" and not dap_prompt then return false end
+          -- Disable completion when disabled in AstroNvim
           return vim.F.if_nil(vim.b.cmp_enabled, astro.config.features.cmp)
         end,
         preselect = cmp.PreselectMode.None,
