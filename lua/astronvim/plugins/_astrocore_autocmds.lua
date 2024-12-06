@@ -236,7 +236,8 @@ return {
           end,
         },
       },
-      terminal_settings = {
+      -- TODO: remove autocommand when dropping support for Neovim v0.10
+      terminal_settings = vim.fn.has "nvim-0.11" ~= 1 and {
         {
           event = "TermOpen",
           desc = "Disable line number/fold column/sign column for terminals",
@@ -247,7 +248,7 @@ return {
             vim.opt_local.signcolumn = "no"
           end,
         },
-      },
+      } or false,
       unlist_quickfix = {
         {
           event = "FileType",
