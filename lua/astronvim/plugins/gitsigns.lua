@@ -39,8 +39,10 @@ return {
         maps.n[prefix .. "u"] = { function() require("gitsigns").undo_stage_hunk() end, desc = "Unstage Git hunk" }
         maps.n[prefix .. "d"] = { function() require("gitsigns").diffthis() end, desc = "View Git diff" }
 
-        maps.n["]g"] = { function() require("gitsigns").next_hunk() end, desc = "Next Git hunk" }
-        maps.n["[g"] = { function() require("gitsigns").prev_hunk() end, desc = "Previous Git hunk" }
+        maps.n["[G"] = { function() require("gitsigns").nav_hunk "first" end, desc = "First Git hunk" }
+        maps.n["]G"] = { function() require("gitsigns").nav_hunk "last" end, desc = "Last Git hunk" }
+        maps.n["]g"] = { function() require("gitsigns").nav_hunk "next" end, desc = "Next Git hunk" }
+        maps.n["[g"] = { function() require("gitsigns").nav_hunk "prev" end, desc = "Previous Git hunk" }
         for _, mode in ipairs { "o", "x" } do
           maps[mode]["ig"] = { ":<C-U>Gitsigns select_hunk<CR>", desc = "inside Git hunk" }
         end
