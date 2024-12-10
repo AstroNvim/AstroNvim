@@ -236,6 +236,21 @@ return {
           end,
         },
       },
+      restore_cursor = {
+        {
+          event = "BufReadPost",
+          desc = "Restore last cursor position when opening a file",
+          callback = function(args)
+            local buf = args.buf
+            if vim.b[buf].last_loc_restored or vim.tbl_contains({ "gitcommit" }, vim.bo[buf].filetype) then return end
+            vim.b[buf].last_loc_restored = true
+            local mark = vim.api.nvim_buf_get_mark(buf, '"')
+            if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(buf) then
+              pcall(vim.api.nvim_win_set_cursor, 0, mark)
+            end
+          end,
+        },
+      },
       -- TODO: remove autocommand when dropping support for Neovim v0.10
       terminal_settings = vim.fn.has "nvim-0.11" ~= 1 and {
         {
