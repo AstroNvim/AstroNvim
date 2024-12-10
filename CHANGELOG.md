@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.29.0](https://github.com/AstroNvim/AstroNvim/compare/v4.28.1...v4.29.0) (2024-12-10)
+
+
+### Features
+
+* **gitsigns:** add `[G`/`]G` mappings for first and last git hunk ([7077a2e](https://github.com/AstroNvim/AstroNvim/commit/7077a2eb548e8f8c19552f7da44c3d8c04eefabf))
+
 ## [4.28.1](https://github.com/AstroNvim/AstroNvim/compare/v4.28.0...v4.28.1) (2024-11-24)
 
 
