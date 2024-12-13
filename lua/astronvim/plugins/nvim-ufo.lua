@@ -16,6 +16,7 @@ return {
 
         local opt = opts.options.opt
         opt.foldcolumn = "1"
+        opt.foldexpr = "0"
         opt.foldenable = true
         opt.foldlevel = 99
         opt.foldlevelstart = 99
