@@ -45,30 +45,6 @@ return {
           end,
         },
       },
-      autoview = {
-        {
-          event = { "BufWinLeave", "BufWritePost", "WinLeave" },
-          desc = "Save view with mkview for real files",
-          callback = function(event)
-            if vim.b[event.buf].view_activated then vim.cmd.mkview { mods = { emsg_silent = true } } end
-          end,
-        },
-        {
-          event = "BufWinEnter",
-          desc = "Try to load file view if available and enable view saving for real files",
-          callback = function(event)
-            if not vim.b[event.buf].view_activated then
-              local filetype = vim.bo[event.buf].filetype
-              local buftype = vim.bo[event.buf].buftype
-              local ignore_filetypes = { "gitcommit", "gitrebase", "svg", "hgcommit" }
-              if buftype == "" and filetype and filetype ~= "" and not vim.tbl_contains(ignore_filetypes, filetype) then
-                vim.b[event.buf].view_activated = true
-                vim.cmd.loadview { mods = { emsg_silent = true } }
-              end
-            end
-          end,
-        },
-      },
       bufferline = {
         {
           event = { "BufAdd", "BufEnter", "TabNewEntered" },
@@ -128,7 +104,7 @@ return {
           callback = function(args)
             local file = args.match
             if not require("astrocore.buffer").is_valid(args.buf) or file:match "^%w+:[\\/][\\/]" then return end
-            vim.fn.mkdir(vim.fn.fnamemodify((vim.uv or vim.loop).fs_realpath(file) or file, ":p:h"), "p")
+            vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(file) or file, ":p:h"), "p")
           end,
         },
       },
@@ -260,7 +236,23 @@ return {
           end,
         },
       },
-      terminal_settings = {
+      restore_cursor = {
+        {
+          event = "BufReadPost",
+          desc = "Restore last cursor position when opening a file",
+          callback = function(args)
+            local buf = args.buf
+            if vim.b[buf].last_loc_restored or vim.tbl_contains({ "gitcommit" }, vim.bo[buf].filetype) then return end
+            vim.b[buf].last_loc_restored = true
+            local mark = vim.api.nvim_buf_get_mark(buf, '"')
+            if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(buf) then
+              pcall(vim.api.nvim_win_set_cursor, 0, mark)
+            end
+          end,
+        },
+      },
+      -- TODO: remove autocommand when dropping support for Neovim v0.10
+      terminal_settings = vim.fn.has "nvim-0.11" ~= 1 and {
         {
           event = "TermOpen",
           desc = "Disable line number/fold column/sign column for terminals",
@@ -271,7 +263,7 @@ return {
             vim.opt_local.signcolumn = "no"
           end,
         },
-      },
+      } or false,
       unlist_quickfix = {
         {
           event = "FileType",
