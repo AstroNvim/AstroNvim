@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.29.1](https://github.com/AstroNvim/AstroNvim/compare/v4.29.0...v4.29.1) (2024-12-23)
+
+
+### Bug Fixes
+
+* **snapshot:** update dependencies ([e341895](https://github.com/AstroNvim/AstroNvim/commit/e341895375a7994c90085e837b0384f3071f6463))
+
 ## [4.29.0](https://github.com/AstroNvim/AstroNvim/compare/v4.28.1...v4.29.0) (2024-12-10)
 
 
