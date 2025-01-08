@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.29.1](https://github.com/AstroNvim/AstroNvim/compare/v4.29.0...v4.29.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* add hotpatch for Neovim v0.10.3 regression that breaks `:Inspect` ([c05308c](https://github.com/AstroNvim/AstroNvim/commit/c05308cdcbb21b3dc3fdc375be54238c167ba6cb))
+* **snapshot:** update dependencies ([e341895](https://github.com/AstroNvim/AstroNvim/commit/e341895375a7994c90085e837b0384f3071f6463))
+
 ## [4.29.0](https://github.com/AstroNvim/AstroNvim/compare/v4.28.1...v4.29.0) (2024-12-10)
 
 
