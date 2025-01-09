@@ -28,7 +28,7 @@ return {
     opt.relativenumber = true -- show relative numberline
     opt.shiftround = true -- round indentation with `>`/`<` to shiftwidth
     opt.shiftwidth = 0 -- number of space inserted for indentation; when zero the 'tabstop' value will be used
-    opt.shortmess = vim.tbl_deep_extend("force", vim.opt.shortmess:get(), { s = true, I = true }) -- disable search count wrap and startup messages
+    opt.shortmess = vim.tbl_deep_extend("force", vim.opt.shortmess:get(), { s = true, I = true, c = true, C = true }) -- disable search count wrap, startup messages, and completion messages
     opt.showmode = false -- disable showing modes in command line
     opt.showtabline = 2 -- always display tabline
     opt.signcolumn = "yes" -- always show the sign column
