@@ -24,13 +24,14 @@ function M.generate_snapshot(write)
     end,
     ["AstroNvim/AstroNvim"] = false, -- Managed by user
     ["Bilal2453/luvit-meta"] = false, -- Not a real plugin, used for type stubs only
+    ["rcarriga/nvim-notify"] = 'version = vim.fn.has "nvim-0.10" ~= 1 and "~3.14" or "^3"',
     -- example for pinning a plugin to a specific commit for older version of neovim
     -- ["neovim/nvim-lspconfig"] = function(plugin)
     --   return ('commit = vim.fn.has "nvim-0.10" ~= 1 and "76e7c8b029e6517f3689390d6599e9b446551704" or %q'):format(
     --     plugin.commit
     --   )
     -- end,
-  } --[=[@as { [string]: false|fun(plugin: LazyPlugin): string?} ]=]
+  } --[=[@as { [string]: false|string|fun(plugin: LazyPlugin): string?} ]=]
   local snapshot, module = {}, "return {\n"
   for _, plugin in ipairs(plugins) do
     local pinner = vim.F.if_nil(pinners[plugin[1]], pinners["*"])
@@ -38,7 +39,7 @@ function M.generate_snapshot(write)
       plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
       local prev_version = vim.tbl_get(prev_snapshot, plugin[1], "version")
       if prev_version then plugin.version = prev_version end
-      local pin = pinner and pinner(plugin)
+      local pin = type(pinner) == "function" and pinner(plugin) or pinner
       if pin then
         module = module .. ("  { %q, "):format(plugin[1]) .. pin .. ", optional = true },\n"
         table.insert(snapshot, plugin)

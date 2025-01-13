@@ -45,7 +45,7 @@ return {
   { "rafamadriz/friendly-snippets", commit = "efff286dd74c22f731cdec26a70b46e5b203c619", optional = true },
   { "rcarriga/cmp-dap", commit = "ea92773e84c0ad3288c3bc5e452ac91559669087", optional = true },
   { "rcarriga/nvim-dap-ui", commit = "e94d98649dccb6a3884b66aabc2e07beb279e535", optional = true },
-  { "rcarriga/nvim-notify", version = "^3", optional = true },
+  { "rcarriga/nvim-notify", version = vim.fn.has "nvim-0.10" ~= 1 and "~3.14" or "^3", optional = true },
   { "rebelot/heirline.nvim", version = "^1", optional = true },
   { "s1n7ax/nvim-window-picker", version = "^2", optional = true },
   { "saadparwaiz1/cmp_luasnip", commit = "98d9cb5c2c38532bd9bdb481067b20fea8f32e90", optional = true },
