@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.29.2](https://github.com/AstroNvim/AstroNvim/compare/v4.29.1...v4.29.2) (2025-01-13)
+
+
+### Bug Fixes
+
+* **notify:** pin `nvim-notify` to an older version for neovim v0.9 ([299a929](https://github.com/AstroNvim/AstroNvim/commit/299a92999d93ca922041e9af33ef94420cc3e487))
+
 ## [4.29.1](https://github.com/AstroNvim/AstroNvim/compare/v4.29.0...v4.29.1) (2025-01-08)
 
 
