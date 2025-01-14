@@ -5,7 +5,7 @@ return {
   opts_extend = { "library" },
   opts = function(_, opts)
     opts.library = {
-      { path = "luvit-meta/library", words = { "vim%.uv" } },
+      { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       { path = "lazy.nvim", words = { "Lazy" } },
       { path = "astrocore", words = { "AstroCore" } },
       { path = "astrolsp", words = { "AstroLSP" } },
@@ -20,7 +20,6 @@ return {
   specs = {
     -- TODO: remove neodev when dropping 0.9 support
     { "folke/neodev.nvim", enabled = vim.fn.has "nvim-0.10" ~= 1, lazy = true, config = function() end },
-    { "Bilal2453/luvit-meta", lazy = true },
     {
       "hrsh7th/nvim-cmp",
       optional = true,
