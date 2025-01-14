@@ -38,7 +38,6 @@ return {
             require("telescope.builtin").find_files {
               prompt_title = "Config Files",
               cwd = vim.fn.stdpath "config",
-              follow = true,
             }
           end,
           desc = "Find AstroNvim config files",
@@ -90,6 +89,20 @@ return {
           desc = "Search symbols",
         }
       end,
+    },
+    {
+      "nvim-neo-tree/neo-tree.nvim",
+      optional = true,
+      opts = {
+        commands = {
+          find_in_dir = function(state)
+            local node = state.tree:get_node()
+            local path = node.type == "file" and node:get_parent_id() or node:get_id()
+            require("telescope.builtin").find_files { cwd = path }
+          end,
+        },
+        window = { mappings = { F = "find_in_dir" } },
+      },
     },
   },
   dependencies = {
@@ -150,6 +163,11 @@ return {
             ["<CR>"] = open_selected,
             ["<M-CR>"] = open_all,
           },
+        },
+      },
+      pickers = {
+        find_files = {
+          follow = true,
         },
       },
     }
