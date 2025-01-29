@@ -36,7 +36,9 @@ return {
       end,
     },
   },
+  opts_extend = { "registries" },
   opts = {
+    registries = { "github:mason-org/mason-registry" },
     ui = {
       icons = {
         package_installed = "✓",
