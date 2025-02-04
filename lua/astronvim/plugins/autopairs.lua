@@ -10,8 +10,10 @@ return {
       end,
     },
   },
+  opts_extend = { "disable_filetype" },
   opts = {
     check_ts = true,
+    disable_filetype = { "TelescopePrompt", "snacks_picker_input", "spectre_panel", "grug-far" },
     ts_config = { java = false },
     fast_wrap = {
       map = "<M-e>",
