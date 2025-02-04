@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.29.3](https://github.com/AstroNvim/AstroNvim/compare/v4.29.2...v4.29.3) (2025-02-04)
+
+
+### Bug Fixes
+
+* **autopairs:** disable autopairs for more filetypes and make easily extendable ([f344658](https://github.com/AstroNvim/AstroNvim/commit/f34465805a3336127eae15b9f74ca9eb15cfc5a4))
+* **lazydev:** use `luv` library bundled with `lua_ls` ([70a8a10](https://github.com/AstroNvim/AstroNvim/commit/70a8a10bbf356d290f83219e4f2e739a2134e7b5))
+* use `opts_extend` for Mason registries ([4f6e3fa](https://github.com/AstroNvim/AstroNvim/commit/4f6e3faaf8853f6247b7a0bc2e2a7c0a43cdfdaf))
+
 ## [4.29.2](https://github.com/AstroNvim/AstroNvim/compare/v4.29.1...v4.29.2) (2025-01-13)
 
 
