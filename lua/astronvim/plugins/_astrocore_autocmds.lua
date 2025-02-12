@@ -204,25 +204,13 @@ return {
           desc = "Disable certain functionality on very large files",
           pattern = "AstroLargeBuf",
           callback = function(args)
-            vim.opt_local.wrap = true -- enable wrap, long lines in vim are slow
             vim.opt_local.list = false -- disable list chars
             vim.b[args.buf].autoformat = false -- disable autoformat on save
             vim.b[args.buf].cmp_enabled = false -- disable completion
             vim.b[args.buf].miniindentscope_disable = true -- disable indent scope
             vim.b[args.buf].matchup_matchparen_enabled = 0 -- disable vim-matchup
-            local astrocore = require "astrocore"
-            if vim.tbl_get(astrocore.config, "features", "highlighturl") then
-              astrocore.config.features.highlighturl = false
-              vim.tbl_map(function(win)
-                if vim.w[win].highlighturl_enabled then astrocore.delete_url_match(win) end
-              end, vim.api.nvim_list_wins())
-            end
             local ibl_avail, ibl = pcall(require, "ibl") -- disable indent-blankline
             if ibl_avail then ibl.setup_buffer(args.buf, { enabled = false }) end
-            local illuminate_avail, illuminate = pcall(require, "illuminate.engine") -- disable vim-illuminate
-            if illuminate_avail then illuminate.stop_buf(args.buf) end
-            local rainbow_avail, rainbow = pcall(require, "rainbow-delimiters") -- disable rainbow-delimiters
-            if rainbow_avail then rainbow.disable(args.buf) end
           end,
         },
       },
