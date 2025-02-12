@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.30.1](https://github.com/AstroNvim/AstroNvim/compare/v4.30.0...v4.30.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* check if large buffer detection checks are enabled ([ec86d42](https://github.com/AstroNvim/AstroNvim/commit/ec86d42672c0fe82b153054e4a469fbf95a3715b))
+
 ## [4.30.0](https://github.com/AstroNvim/AstroNvim/compare/v4.29.3...v4.30.0) (2025-02-12)
 
 
