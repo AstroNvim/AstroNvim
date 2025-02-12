@@ -48,7 +48,7 @@ return {
 
     local large_buf = vim.tbl_get(require("astrocore").config, "features", "large_buf")
     if large_buf then
-      opts.disable_max_lines, opts.disable_max_size = large_buf.lines, large_buf.size
+      opts.disable_max_lines, opts.disable_max_size = large_buf.lines or nil, large_buf.size or nil
     end
 
     return opts
