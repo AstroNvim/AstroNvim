@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.30.0](https://github.com/AstroNvim/AstroNvim/compare/v4.29.3...v4.30.0) (2025-02-12)
+
+
+### Features
+
+* **astrocore:** add average line length to large buffer detection ([87dc70f](https://github.com/AstroNvim/AstroNvim/commit/87dc70f7761c3e9965315182f0c40bfbd2cbcd0e))
+
+
+### Performance Improvements
+
+* optimize large buffer detection ([1748b1d](https://github.com/AstroNvim/AstroNvim/commit/1748b1d2f8a0ecf46f26fca1d63b33723b300519))
+* **treesitter:** evaluate large buffer detection immediately ([06c071d](https://github.com/AstroNvim/AstroNvim/commit/06c071d28fd7954996a8c1748bb4f1ed1dbc59b9))
+
 ## [4.29.3](https://github.com/AstroNvim/AstroNvim/compare/v4.29.2...v4.29.3) (2025-02-04)
 
 
