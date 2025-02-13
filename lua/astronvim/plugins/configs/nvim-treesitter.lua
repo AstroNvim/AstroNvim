@@ -9,7 +9,7 @@ return function(plugin, opts)
     local module_opts = opts[module]
     local disable = module_opts.disable
     module_opts.disable = function(lang, bufnr)
-      return require("astrocore").is_large_buf(bufnr)
+      return require("astrocore.buffer").is_large(bufnr)
         or (type(disable) == "table" and vim.tbl_contains(disable, lang))
         or (type(disable) == "function" and disable(lang, bufnr))
     end

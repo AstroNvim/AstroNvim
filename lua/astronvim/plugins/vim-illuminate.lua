@@ -20,7 +20,8 @@ return {
     delay = 200,
     min_count_to_highlight = 2,
     should_enable = function(bufnr)
-      return require("astrocore.buffer").is_valid(bufnr) and not require("astrocore").is_large_buf(bufnr)
+      local buf_utils = require "astrocore.buffer"
+      return buf_utils.is_valid(bufnr) and not buf_utils.is_large(bufnr)
     end,
   },
   config = function(...) require "astronvim.plugins.configs.vim-illuminate"(...) end,
