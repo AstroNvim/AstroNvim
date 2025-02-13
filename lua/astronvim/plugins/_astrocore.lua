@@ -33,7 +33,7 @@ return {
       local get_icon = require("astroui").get_icon
       return require("astrocore").extend_tbl(opts, {
         features = {
-          large_buf = { size = 1024 * 256, lines = 10000, line_length = 1000 }, -- set global limits for large files
+          large_buf = { size = 1.5 * 1024 * 1024, lines = 100000, line_length = 1000 }, -- set global limits for large files
           autopairs = true, -- enable autopairs at start
           cmp = true, -- enable completion at start
           diagnostics_mode = 3, -- enable diagnostics by default
