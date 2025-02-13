@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.31.0](https://github.com/AstroNvim/AstroNvim/compare/v4.30.3...v4.31.0) (2025-02-13)
+
+
+### Features
+
+* **astrocore:** enable large buffer notification by default ([ce26623](https://github.com/AstroNvim/AstroNvim/commit/ce26623bcbe1a863e6df0d2c238bdea7b282fc04))
+* **astrocore:** increase the large file detection defaults ([b6a794f](https://github.com/AstroNvim/AstroNvim/commit/b6a794f95c075cdbbbb732451add60b53f1a5e01))
+
+
+### Bug Fixes
+
+* **astrocore:** fix incorrect diagnostic default setting ([0b6e721](https://github.com/AstroNvim/AstroNvim/commit/0b6e7211a0d304826a6bad936dc2c39930e9ac43))
+
 ## [4.30.3](https://github.com/AstroNvim/AstroNvim/compare/v4.30.2...v4.30.3) (2025-02-13)
 
 
