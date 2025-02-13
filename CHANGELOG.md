@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.30.2](https://github.com/AstroNvim/AstroNvim/compare/v4.30.1...v4.30.2) (2025-02-13)
+
+
+### Bug Fixes
+
+* **vim-illuminate:** disable fully on large buffers ([a64b2df](https://github.com/AstroNvim/AstroNvim/commit/a64b2df6152b4eb11023888ced7dc095af73ed46))
+
 ## [4.30.1](https://github.com/AstroNvim/AstroNvim/compare/v4.30.0...v4.30.1) (2025-02-12)
 
 
