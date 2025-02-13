@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.30.3](https://github.com/AstroNvim/AstroNvim/compare/v4.30.2...v4.30.3) (2025-02-13)
+
+
+### Bug Fixes
+
+* fix incorrect large buffer function location ([5c2fb2c](https://github.com/AstroNvim/AstroNvim/commit/5c2fb2c660095e3bd2822c11d99254fa1aefc457))
+
 ## [4.30.2](https://github.com/AstroNvim/AstroNvim/compare/v4.30.1...v4.30.2) (2025-02-13)
 
 
