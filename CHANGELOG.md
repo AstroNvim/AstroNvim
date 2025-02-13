@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.31.1](https://github.com/AstroNvim/AstroNvim/compare/v4.31.0...v4.31.1) (2025-02-13)
+
+
+### Bug Fixes
+
+* **treesitter:** load `nvim-treesitter` on `VeryLazy` as it can be needed before a file is opened ([54d7415](https://github.com/AstroNvim/AstroNvim/commit/54d741501bfbabf407f2b27a5ebd298638bf3b13))
+
 ## [4.31.0](https://github.com/AstroNvim/AstroNvim/compare/v4.30.3...v4.31.0) (2025-02-13)
 
 
