@@ -16,16 +16,12 @@ return {
       end,
     },
   },
-  opts = function()
-    local opts = {
-      delay = 200,
-      min_count_to_highlight = 2,
-      large_file_overrides = { providers = { "lsp" } },
-      should_enable = function(bufnr) return require("astrocore.buffer").is_valid(bufnr) end,
-    }
-    local large_buf = vim.tbl_get(require("astrocore").config, "features", "large_buf")
-    if large_buf then opts.large_file_cutoff = large_buf.lines or nil end
-    return opts
-  end,
+  opts = {
+    delay = 200,
+    min_count_to_highlight = 2,
+    should_enable = function(bufnr)
+      return require("astrocore.buffer").is_valid(bufnr) and not require("astrocore").is_large_buf(bufnr)
+    end,
+  },
   config = function(...) require "astronvim.plugins.configs.vim-illuminate"(...) end,
 }
