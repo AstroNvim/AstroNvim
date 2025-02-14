@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.32.0](https://github.com/AstroNvim/AstroNvim/compare/v4.31.1...v4.32.0) (2025-02-14)
+
+
+### Features
+
+* **autopairs:** only enable auto pairs in actual file editing buffers ([7e633c9](https://github.com/AstroNvim/AstroNvim/commit/7e633c9adc387b67452b971270422a29c0d36f0a))
+
 ## [4.31.1](https://github.com/AstroNvim/AstroNvim/compare/v4.31.0...v4.31.1) (2025-02-13)
 
 
