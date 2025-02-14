@@ -183,10 +183,6 @@ return {
             vim.opt_local.list = false -- disable list chars
             vim.b[args.buf].autoformat = false -- disable autoformat on save
             vim.b[args.buf].cmp_enabled = false -- disable completion
-            vim.b[args.buf].miniindentscope_disable = true -- disable indent scope
-            vim.b[args.buf].matchup_matchparen_enabled = 0 -- disable vim-matchup
-            local ibl_avail, ibl = pcall(require, "ibl") -- disable indent-blankline
-            if ibl_avail then ibl.setup_buffer(args.buf, { enabled = false }) end
           end,
         },
       },
