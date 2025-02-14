@@ -13,7 +13,7 @@ return {
   opts_extend = { "disable_filetype" },
   opts = {
     check_ts = true,
-    disable_filetype = { "TelescopePrompt", "snacks_picker_input", "spectre_panel", "grug-far" },
+    enabled = function(bufnr) return require("astrocore.buffer").is_valid(bufnr) end,
     ts_config = { java = false },
     fast_wrap = {
       map = "<M-e>",
