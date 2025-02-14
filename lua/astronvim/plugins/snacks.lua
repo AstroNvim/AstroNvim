@@ -33,6 +33,10 @@ return {
       end,
       animate = { enabled = false },
     }
+
+    opts.scope = {
+      filter = function(bufnr) return buf_utils.is_valid(bufnr) and not buf_utils.is_large(bufnr) end,
+    }
   end,
   specs = {
     {
