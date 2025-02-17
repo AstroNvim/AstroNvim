@@ -1,5 +1,5 @@
 return {
-  { "AstroNvim/astrocore", version = "^1.12.1", optional = true },
+  { "AstroNvim/astrocore", version = "^1.15", optional = true },
   { "AstroNvim/astrolsp", version = "^2.0.2", optional = true },
   { "AstroNvim/astrotheme", version = "^4", optional = true },
   { "AstroNvim/astroui", version = "^2", optional = true },

@@ -55,6 +55,8 @@ return {
     maps.n["<Leader>/"] = { "gcc", remap = true, desc = "Toggle comment line" }
     maps.x["<Leader>/"] = { "gc", remap = true, desc = "Toggle comment" }
 
+    maps.n["<Leader>R"] = { function() require("astrocore").rename_file() end, desc = "Rename file" }
+
     -- Neovim Default LSP Mappings
     if vim.fn.has "nvim-0.11" ~= 1 then
       maps.n["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
