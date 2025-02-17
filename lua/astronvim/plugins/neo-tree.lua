@@ -56,7 +56,7 @@ return {
   },
   cmd = "Neotree",
   opts_extend = { "sources" },
-  opts = function()
+  opts = function(_, opts)
     local astro, get_icon = require "astrocore", require("astroui").get_icon
     local git_available = vim.fn.executable "git" == 1
     local sources = {
@@ -67,7 +67,7 @@ return {
     if git_available then
       table.insert(sources, 3, { source = "git_status", display_name = get_icon("Git", 1, true) .. "Git" })
     end
-    local opts = {
+    opts = astro.extend_tbl(opts, {
       enable_git_status = git_available,
       auto_clean_after_session_restore = true,
       close_if_last_window = true,
@@ -191,16 +191,16 @@ return {
         hijack_netrw_behavior = "open_current",
         use_libuv_file_watcher = vim.fn.has "win32" ~= 1,
       },
-      event_handlers = {
-        {
-          event = "neo_tree_buffer_enter",
-          handler = function(_)
-            vim.opt_local.signcolumn = "auto"
-            vim.opt_local.foldcolumn = "0"
-          end,
-        },
-      },
-    }
+    })
+
+    if not opts.event_handlers then opts.event_handlers = {} end
+    table.insert(opts.event_handlers, {
+      event = "neo_tree_buffer_enter",
+      handler = function(_)
+        vim.opt_local.signcolumn = "auto"
+        vim.opt_local.foldcolumn = "0"
+      end,
+    })
 
     if astro.is_available "telescope.nvim" then
       opts.commands.find_in_dir = function(state)
