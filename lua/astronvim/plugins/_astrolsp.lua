@@ -43,56 +43,31 @@ return {
       optional = true,
       opts = function(_, opts)
         if not opts.event_handlers then opts.event_handlers = {} end
-        vim.list_extend(opts.event_handlers, {
-          {
-            event = "before_file_move",
-            id = "astrolsp_willmove",
-            handler = function(args)
-              require("astrolsp.file_operations").willRenameFiles { from = args.source, to = args.destination }
-            end,
+        local operations = {
+          willRenameFiles = {
+            events = { "before_file_move", "before_file_rename" },
+            args = function(args) return { from = args.source, to = args.destination } end,
           },
-          {
-            event = "before_file_rename",
-            id = "astrolsp_willrename",
-            handler = function(args)
-              require("astrolsp.file_operations").willRenameFiles { from = args.source, to = args.destination }
-            end,
+          willDeleteFiles = { events = { "before_file_delete" } },
+          willCreateFiles = { events = { "before_file_add" } },
+          didRenameFiles = {
+            events = { "file_moved", "file_renamed" },
+            args = function(args) return { from = args.source, to = args.destination } end,
           },
-          {
-            event = "before_file_delete",
-            id = "astrolsp_willdelete",
-            handler = function(args) require("astrolsp.file_operations").willDeleteFiles(args) end,
-          },
-          {
-            event = "before_file_add",
-            id = "astrolsp_willcreate",
-            handler = function(args) require("astrolsp.file_operations").willCreateFiles(args) end,
-          },
-          {
-            event = "file_moved",
-            id = "astrolsp_didmove",
-            handler = function(args)
-              require("astrolsp.file_operations").didRenameFiles { from = args.source, to = args.destination }
-            end,
-          },
-          {
-            event = "file_renamed",
-            id = "astrolsp_didrename",
-            handler = function(args)
-              require("astrolsp.file_operations").didRenameFiles { from = args.source, to = args.destination }
-            end,
-          },
-          {
-            event = "file_deleted",
-            id = "astrolsp_diddelete",
-            handler = function(args) require("astrolsp.file_operations").didDeleteFiles(args) end,
-          },
-          {
-            event = "file_added",
-            id = "astrolsp_didcreate",
-            handler = function(args) require("astrolsp.file_operations").didCreateFiles(args) end,
-          },
-        })
+          didDeleteFiles = { events = { "file_deleted" } },
+          didCreateFiles = { events = { "file_added" } },
+        }
+        for operation, config in pairs(operations) do
+          for _, event in ipairs(config.events) do
+            table.insert(opts.event_handlers, {
+              event = event,
+              id = "astrolsp_" .. operation,
+              handler = function(args)
+                require("astrolsp.file_operations")[module](config.args and config.args(args) or args)
+              end,
+            })
+          end
+        end
       end,
     },
   },
