@@ -25,12 +25,12 @@ return {
     file_operations = {
       timeout = 10000,
       operations = {
-        didCreate = false,
-        didDelete = false,
-        didRename = false,
-        willCreate = false,
-        willDelete = false,
-        willRename = false,
+        didCreate = true,
+        didDelete = true,
+        didRename = true,
+        willCreate = true,
+        willDelete = true,
+        willRename = true,
       },
     },
     flags = {},
