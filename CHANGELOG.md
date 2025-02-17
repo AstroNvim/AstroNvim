@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.32.0](https://github.com/AstroNvim/AstroNvim/compare/v4.31.1...v4.32.0) (2025-02-17)
+
+
+### Features
+
+* **astrolsp:** add LSP based file operations and neo-tree integration ([71853c9](https://github.com/AstroNvim/AstroNvim/commit/71853c97440ac479a70c2dab507be6e029b4df9d))
+* **autopairs:** only enable auto pairs in actual file editing buffers ([7e633c9](https://github.com/AstroNvim/AstroNvim/commit/7e633c9adc387b67452b971270422a29c0d36f0a))
+* **mappings:** add `&lt;Leader&gt;R` to rename the current file ([415adc9](https://github.com/AstroNvim/AstroNvim/commit/415adc944ccf01e5df46a7705865abe2ed5161b2))
+
+
+### Bug Fixes
+
+* **astrolsp:** disable LSP file operations by default until v5 ([ac15557](https://github.com/AstroNvim/AstroNvim/commit/ac1555797980dc2791a391e9e40224ee5349d96b))
+
 ## [4.31.1](https://github.com/AstroNvim/AstroNvim/compare/v4.31.0...v4.31.1) (2025-02-13)
 
 
