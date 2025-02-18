@@ -52,7 +52,7 @@ return {
     },
     event = "InsertEnter",
     opts_extend = { "sources" },
-    opts = function()
+    opts = function(_, opts)
       local cmp, astro = require "cmp", require "astrocore"
 
       local sources = {}
@@ -89,7 +89,7 @@ return {
         return item
       end
 
-      return {
+      return astro.extend_tbl(opts, {
         enabled = function()
           -- Disable completion when recording macros
           if vim.fn.reg_recording() ~= "" or vim.fn.reg_executing() ~= "" then return false end
@@ -165,7 +165,7 @@ return {
           end, { "i", "s" }),
         },
         sources = sources,
-      }
+      })
     end,
     config = function(...) require "astronvim.plugins.configs.cmp"(...) end,
   },
