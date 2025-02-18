@@ -42,20 +42,16 @@ return {
       "nvim-neo-tree/neo-tree.nvim",
       optional = true,
       opts = function(_, opts)
+        local events = require "neo-tree.events"
         if not opts.event_handlers then opts.event_handlers = {} end
+        local move_args = function(args) return { from = args.source, to = args.destination } end
         local operations = {
-          willRenameFiles = {
-            events = { "before_file_move", "before_file_rename" },
-            args = function(args) return { from = args.source, to = args.destination } end,
-          },
-          willDeleteFiles = { events = { "before_file_delete" } },
-          willCreateFiles = { events = { "before_file_add" } },
-          didRenameFiles = {
-            events = { "file_moved", "file_renamed" },
-            args = function(args) return { from = args.source, to = args.destination } end,
-          },
-          didDeleteFiles = { events = { "file_deleted" } },
-          didCreateFiles = { events = { "file_added" } },
+          willCreateFiles = { events = { events.BEFORE_FILE_ADD } },
+          didCreateFiles = { events = { events.FILE_ADDED } },
+          willDeleteFiles = { events = { events.BEFORE_FILE_DELETE } },
+          didDeleteFiles = { events = { events.FILE_DELETED } },
+          willRenameFiles = { events = { events.BEFORE_FILE_MOVE, events.BEFORE_FILE_RENAME }, args = move_args },
+          didRenameFiles = { events = { events.FILE_MOVED, events.FILE_RENAMED }, args = move_args },
         }
         for operation, config in pairs(operations) do
           for _, event in ipairs(config.events) do
