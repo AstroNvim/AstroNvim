@@ -59,7 +59,7 @@ return {
               event = event,
               id = "astrolsp_" .. operation,
               handler = function(args)
-                require("astrolsp.file_operations")[module](config.args and config.args(args) or args)
+                require("astrolsp.file_operations")[operation](config.args and config.args(args) or args)
               end,
             })
           end
