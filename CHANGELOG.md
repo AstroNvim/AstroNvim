@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.32.1](https://github.com/AstroNvim/AstroNvim/compare/v4.32.0...v4.32.1) (2025-02-19)
+
+
+### Bug Fixes
+
+* **_astrolsp:** use correct variable name 'operation' instead of 'module' in file operations ([52f6b2b](https://github.com/AstroNvim/AstroNvim/commit/52f6b2be972cb83923745961f714b3dd576263e0))
+
 ## [4.32.0](https://github.com/AstroNvim/AstroNvim/compare/v4.31.1...v4.32.0) (2025-02-17)
 
 
