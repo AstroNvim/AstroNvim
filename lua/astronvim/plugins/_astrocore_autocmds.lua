@@ -13,6 +13,13 @@ return {
       },
       AstroReload = { function() require("astrocore").reload() end, desc = "Reload AstroNvim (Experimental)" },
       AstroUpdate = { function() require("astrocore").update_packages() end, desc = "Update Lazy and Mason" },
+      AstroRename = {
+        function(opts) require("astrocore").rename_file { to = opts.fargs[1], overwrite = opts.bang } end,
+        desc = "Rename the current file, optionally new filename argument",
+        bang = true,
+        nargs = "?",
+        complete = "file",
+      },
     },
     autocmds = {
       auto_quit = {
