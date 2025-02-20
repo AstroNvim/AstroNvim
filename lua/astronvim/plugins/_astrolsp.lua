@@ -41,6 +41,39 @@ return {
   },
   specs = {
     {
+      "AstroNvim/astrocore",
+      ---@type AstroCoreOpts
+      opts = {
+        autocmds = {
+          astrolsp_createfiles_events = {
+            {
+              event = "BufWritePre",
+              desc = "trigger willCreateFiles before writing a new file",
+              callback = function(args)
+                local filename = require("astrocore.buffer").is_valid(args.buf)
+                  and vim.fn.expand("#" .. args.buf .. ":p")
+                if filename and not vim.uv.fs_stat(filename) then
+                  vim.b[args.buf].new_file = filename
+                  require("astrolsp.file_operations").willCreateFiles(filename)
+                end
+              end,
+            },
+            {
+              event = "BufWritePost",
+              desc = "trigger didCreateFiles after writing a new file",
+              callback = function(args)
+                local filename = vim.b[args.buf].new_file
+                if filename then
+                  vim.b[args.buf].new_file = false
+                  require("astrolsp.file_operations").didCreateFiles(filename)
+                end
+              end,
+            },
+          },
+        },
+      },
+    },
+    {
       "nvim-neo-tree/neo-tree.nvim",
       optional = true,
       opts = function(_, opts)
