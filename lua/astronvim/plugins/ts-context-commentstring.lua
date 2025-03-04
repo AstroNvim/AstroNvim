@@ -1,5 +1,7 @@
+-- TODO: Remove when dropping support for Neovim v0.10
 return {
   "JoosepAlviste/nvim-ts-context-commentstring",
+  enabled = vim.fn.has "nvim-0.11" ~= 1,
   lazy = true,
   init = function()
     -- HACK: add workaround for native comments: https://github.com/JoosepAlviste/nvim-ts-context-commentstring/issues/109
