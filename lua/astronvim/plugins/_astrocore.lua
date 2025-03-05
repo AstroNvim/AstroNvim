@@ -36,7 +36,7 @@ return {
           large_buf = { notify = true, size = 1.5 * 1024 * 1024, lines = 100000, line_length = 1000 }, -- set global limits for large files
           autopairs = true, -- enable autopairs at start
           cmp = true, -- enable completion at start
-          diagnostics_mode = 3, -- enable diagnostics by default
+          diagnostics = true, -- enable diagnostics by default
           highlighturl = true, -- highlight URLs by default
           notifications = true, -- disable notifications
         },
