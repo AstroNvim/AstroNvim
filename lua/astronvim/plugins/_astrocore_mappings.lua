@@ -184,6 +184,12 @@ return {
     maps.n["<Leader>uS"] = { function() require("astrocore.toggles").conceal() end, desc = "Toggle conceal" }
     maps.n["<Leader>ut"] = { function() require("astrocore.toggles").tabline() end, desc = "Toggle tabline" }
     maps.n["<Leader>uu"] = { function() require("astrocore.toggles").url_match() end, desc = "Toggle URL highlight" }
+    maps.n["<Leader>uv"] = { function() require("astrocore.toggles").virtual_text() end, desc = "Toggle virtual text" }
+    -- TODO: remove check when dropping support for Neovim 0.10
+    if vim.fn.has "nvim-0.11" == 1 then
+      maps.n["<Leader>uV"] =
+        { function() require("astrocore.toggles").virtual_lines() end, desc = "Toggle virtual lines" }
+    end
     maps.n["<Leader>uw"] = { function() require("astrocore.toggles").wrap() end, desc = "Toggle wrap" }
     maps.n["<Leader>uy"] =
       { function() require("astrocore.toggles").buffer_syntax() end, desc = "Toggle syntax highlight" }
