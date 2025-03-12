@@ -41,6 +41,9 @@ return {
     maps.n["<Leader>/"] = { "gcc", remap = true, desc = "Toggle comment line" }
     maps.x["<Leader>/"] = { "gc", remap = true, desc = "Toggle comment" }
 
+    maps.n["gco"] = { "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Below" }
+    maps.n["gcO"] = { "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Above" }
+
     maps.n["<Leader>R"] = { function() require("astrocore").rename_file() end, desc = "Rename file" }
 
     -- Neovim Default LSP Mappings
