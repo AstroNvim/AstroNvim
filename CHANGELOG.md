@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.32.2](https://github.com/AstroNvim/AstroNvim/compare/v4.32.1...v4.32.2) (2025-03-15)
+
+
+### Bug Fixes
+
+* **autocmds:** fix `auto_hlsearch` `vim.on_key` function to only check for start of mapping commands ([445c0e3](https://github.com/AstroNvim/AstroNvim/commit/445c0e3995ff2074083b01e7de0a2731458b5559)), closes [#2765](https://github.com/AstroNvim/AstroNvim/issues/2765)
+
 ## [4.32.1](https://github.com/AstroNvim/AstroNvim/compare/v4.32.0...v4.32.1) (2025-02-19)
 
 
