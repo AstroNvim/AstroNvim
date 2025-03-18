@@ -13,6 +13,14 @@ return {
         changedelete = { text = get_icon "GitSign" },
         untracked = { text = get_icon "GitSign" },
       },
+      signs_staged = {
+        add = { text = get_icon "GitSign" },
+        change = { text = get_icon "GitSign" },
+        delete = { text = get_icon "GitSign" },
+        topdelete = { text = get_icon "GitSign" },
+        changedelete = { text = get_icon "GitSign" },
+        untracked = { text = get_icon "GitSign" },
+      },
       on_attach = function(bufnr)
         local astrocore = require "astrocore"
         local prefix, maps = "<Leader>g", astrocore.empty_map_table()

@@ -25,7 +25,7 @@ return {
   { "jay-babu/mason-nvim-dap.nvim", version = "^2", optional = true },
   { "kevinhwang91/nvim-ufo", version = "^1", optional = true },
   { "kevinhwang91/promise-async", version = "^1", optional = true },
-  { "lewis6991/gitsigns.nvim", version = "^0.9", optional = true },
+  { "lewis6991/gitsigns.nvim", version = "^1", optional = true },
   { "lukas-reineke/indent-blankline.nvim", commit = "e10626f7fcd51ccd56d7ffc00883ba7e0aa28f78", optional = true },
   { "max397574/better-escape.nvim", version = "^2", optional = true },
   { "mfussenegger/nvim-dap", commit = "a720d4966f758ab22e8ec28812b6df90a53e0f02", optional = true },
