@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.32.3](https://github.com/AstroNvim/AstroNvim/compare/v4.32.2...v4.32.3) (2025-03-18)
+
+
+### Bug Fixes
+
+* **gitsigns:** use the same signs for staged lines ([604b07d](https://github.com/AstroNvim/AstroNvim/commit/604b07d0ca6eff61607f6735786678ae1f18885d))
+
 ## [4.32.2](https://github.com/AstroNvim/AstroNvim/compare/v4.32.1...v4.32.2) (2025-03-15)
 
 
