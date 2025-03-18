@@ -37,6 +37,9 @@ return {
       },
     }
 
+    -- configure image support
+    if require("snacks.image").supports_terminal() then opts.image = { doc = { enabled = false } } end
+
     -- configure `vim.ui.input`
     opts.input = {}
 
