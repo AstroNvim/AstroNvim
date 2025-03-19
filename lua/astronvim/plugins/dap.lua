@@ -90,7 +90,10 @@ return {
         },
       },
       dependencies = { { "nvim-neotest/nvim-nio", lazy = true } },
-      opts = { floating = { border = "rounded" } },
+      opts = {
+        -- TODO: remove when dropping support for Neovim v0.10
+        floating = vim.fn.has "nvim-0.11" == 0 and { border = "rounded" } or nil,
+      },
       config = function(...) require "astronvim.plugins.configs.nvim-dap-ui"(...) end,
     },
     {

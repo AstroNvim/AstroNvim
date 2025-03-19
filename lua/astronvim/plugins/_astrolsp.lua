@@ -13,11 +13,13 @@ return {
     config = {},
     defaults = {
       hover = {
-        border = "rounded",
+        -- TODO: remove when dropping support for Neovim v0.10
+        border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
         silent = true,
       },
       signature_help = {
-        border = "rounded",
+        -- TODO: remove when dropping support for Neovim v0.10
+        border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
         silent = true,
         focusable = false,
       },

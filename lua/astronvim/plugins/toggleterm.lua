@@ -99,6 +99,7 @@ return {
       end
     end,
     shading_factor = 2,
-    float_opts = { border = "rounded" },
+    -- TODO: remove when dropping support for Neovim v0.10
+    float_opts = vim.fn.has "nvim-0.11" == 0 and { border = "rounded" } or nil,
   },
 }

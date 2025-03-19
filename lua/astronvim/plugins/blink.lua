@@ -120,7 +120,8 @@ return {
       list = { selection = { preselect = false, auto_insert = true } },
       menu = {
         auto_show = function(ctx) return ctx.mode ~= "cmdline" end,
-        border = "rounded",
+        -- TODO: remove when dropping support for Neovim v0.10
+        border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
         draw = {
           treesitter = { "lsp" },
@@ -139,7 +140,8 @@ return {
         auto_show = true,
         auto_show_delay_ms = 0,
         window = {
-          border = "rounded",
+          -- TODO: remove when dropping support for Neovim v0.10
+          border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
           winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
         },
       },
@@ -147,7 +149,8 @@ return {
     cmdline = { completion = { ghost_text = { enabled = false } } },
     signature = {
       window = {
-        border = "rounded",
+        -- TODO: remove when dropping support for Neovim v0.10
+        border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
       },
     },
