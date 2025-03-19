@@ -42,6 +42,8 @@ return {
     opt.undofile = true -- enable persistent undo
     opt.updatetime = 300 -- length of time to wait before triggering the plugin
     opt.virtualedit = "block" -- allow going past end of line in visual block mode
+    -- TODO: remove check when dropping support for Neovim v0.10
+    opt.winborder = vim.fn.has "nvim-0.11" == 1 and "rounded" or nil -- set default winborder to rounded
     opt.wrap = false -- disable wrapping of lines longer than the width of window
     opt.writebackup = false -- disable making a backup before overwriting a file
 

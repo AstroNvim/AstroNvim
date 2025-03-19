@@ -110,11 +110,13 @@ return {
           completion = cmp.config.window.bordered {
             col_offset = -2,
             side_padding = 0,
-            border = "rounded",
+            -- TODO: remove when dropping support for Neovim v0.10
+            border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
             winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
           },
           documentation = cmp.config.window.bordered {
-            border = "rounded",
+            -- TODO: remove when dropping support for Neovim v0.10
+            border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
             winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
           },
         },
