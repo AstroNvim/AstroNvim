@@ -105,20 +105,28 @@ return {
 
     maps.n["<Leader>l"] = vim.tbl_get(sections, "l")
     maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
-    local function diagnostic_goto(dir, severity)
-      local go = vim.diagnostic["goto_" .. (dir and "next" or "prev")]
-      if type(severity) == "string" then severity = vim.diagnostic.severity[severity] end
-      return function() go { severity = severity } end
+    local function diagnostic_jump(dir, severity)
+      local jump_opts = {}
+      if type(severity) == "string" then jump_opts.severity = vim.diagnostic.severity[severity] end
+      if vim.fn.has "nvim-0.11" == 1 then
+        return function()
+          jump_opts.count = dir and vim.v.count1 or -vim.v.count1
+          vim.diagnostic.jump(jump_opts)
+        end
+      else -- TODO: remove when dropping support for Neovim v0.10
+        local jump = vim.diagnostic["goto_" .. (dir and "next" or "prev")]
+        return function() jump(jump_opts) end
+      end
     end
     -- TODO: Remove mapping after dropping support for Neovim v0.10, it's automatic
     if vim.fn.has "nvim-0.11" == 0 then
-      maps.n["[d"] = { diagnostic_goto(false), desc = "Previous diagnostic" }
-      maps.n["]d"] = { diagnostic_goto(true), desc = "Next diagnostic" }
+      maps.n["[d"] = { diagnostic_jump(false), desc = "Previous diagnostic" }
+      maps.n["]d"] = { diagnostic_jump(true), desc = "Next diagnostic" }
     end
-    maps.n["[e"] = { diagnostic_goto(false, "ERROR"), desc = "Previous error" }
-    maps.n["]e"] = { diagnostic_goto(true, "ERROR"), desc = "Next error" }
-    maps.n["[w"] = { diagnostic_goto(false, "WARN"), desc = "Previous warning" }
-    maps.n["]w"] = { diagnostic_goto(true, "WARN"), desc = "Next warning" }
+    maps.n["[e"] = { diagnostic_jump(false, "ERROR"), desc = "Previous error" }
+    maps.n["]e"] = { diagnostic_jump(true, "ERROR"), desc = "Next error" }
+    maps.n["[w"] = { diagnostic_jump(false, "WARN"), desc = "Previous warning" }
+    maps.n["]w"] = { diagnostic_jump(true, "WARN"), desc = "Next warning" }
     maps.n["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
 
     -- Navigate tabs
