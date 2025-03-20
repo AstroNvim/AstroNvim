@@ -52,10 +52,10 @@ return {
       end,
     },
   },
-  opts = function()
+  opts = function(_, opts)
     local status = require "astroui.status"
     local ui_config = require("astroui").config
-    return {
+    return require("astrocore").extend_tbl(opts, {
       opts = {
         colors = require("astroui").config.status.setup_colors(),
         disable_winbar_cb = function(args)
@@ -95,7 +95,7 @@ return {
             file_read_only = false,
             hl = status.hl.get_attributes("winbarnc", true),
             surround = false,
-            update = "BufEnter",
+            update = { "BufEnter", "BufFilePost" },
           },
         },
         status.component.breadcrumbs { hl = status.hl.get_attributes("winbar", true) },
@@ -135,6 +135,6 @@ return {
         status.component.numbercolumn(),
         status.component.signcolumn(),
       },
-    }
+    })
   end,
 }

@@ -33,10 +33,16 @@ return {
       local get_icon = require("astroui").get_icon
       return require("astrocore").extend_tbl(opts, {
         features = {
-          large_buf = { notify = true, size = 1.5 * 1024 * 1024, lines = 100000, line_length = 1000 }, -- set global limits for large files
+          large_buf = {
+            enabled = function(bufnr) return require("astrocore.buffer").is_valid(bufnr) end,
+            notify = true,
+            size = 1.5 * 1024 * 1024,
+            lines = 100000,
+            line_length = 1000,
+          },
           autopairs = true, -- enable autopairs at start
           cmp = true, -- enable completion at start
-          diagnostics_mode = 3, -- enable diagnostics by default
+          diagnostics = true, -- enable diagnostics by default
           highlighturl = true, -- highlight URLs by default
           notifications = true, -- disable notifications
         },
@@ -50,7 +56,7 @@ return {
               [vim.diagnostic.severity.INFO] = get_icon "DiagnosticInfo",
             },
           },
-          update_in_insert = true,
+          update_in_insert = false,
           underline = true,
           severity_sort = true,
           float = {

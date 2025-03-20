@@ -1,5 +1,7 @@
+-- TODO: Remove when dropping support for Neovim v0.10
 return {
   "numToStr/Comment.nvim",
+  enabled = vim.fn.has "nvim-0.11" ~= 1,
   specs = {
     {
       "AstroNvim/astrocore",
