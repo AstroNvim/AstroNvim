@@ -95,7 +95,7 @@ return {
             file_read_only = false,
             hl = status.hl.get_attributes("winbarnc", true),
             surround = false,
-            update = "BufEnter",
+            update = { "BufEnter", "BufFilePost" },
           },
         },
         status.component.breadcrumbs { hl = status.hl.get_attributes("winbar", true) },
