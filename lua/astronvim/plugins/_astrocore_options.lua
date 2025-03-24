@@ -3,6 +3,12 @@ return {
   ---@param opts AstroCoreOpts
   opts = function(_, opts)
     local opt = {}
+
+    if vim.fn.has "nvim-0.11" == 1 then
+      -- TODO: remove check when dropping support for Neovim v0.10
+      opt.tabclose = "uselast" -- go to last used tab when closing the current tab
+    end
+
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
     opt.breakindent = true -- wrap indent to match  line start
     if not vim.env.SSH_TTY then -- only set `clipboard` if in SSH session and in neovim 0.10+
