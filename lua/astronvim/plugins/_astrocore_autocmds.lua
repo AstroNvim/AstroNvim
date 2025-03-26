@@ -190,7 +190,7 @@ return {
           callback = function(args)
             vim.opt_local.list = false -- disable list chars
             vim.b[args.buf].autoformat = false -- disable autoformat on save
-            vim.b[args.buf].cmp_enabled = false -- disable completion
+            vim.b[args.buf].completion = false -- disable completion
           end,
         },
       },

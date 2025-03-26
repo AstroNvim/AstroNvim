@@ -15,9 +15,16 @@ return {
   },
   specs = {
     {
-      "hrsh7th/nvim-cmp",
+      "Saghen/blink.cmp",
       optional = true,
-      opts = function(_, opts) table.insert(opts.sources, { name = "lazydev", group_index = 0 }) end,
+      opts = {
+        sources = {
+          default = { "lazydev" },
+          providers = {
+            lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
+          },
+        },
+      },
     },
   },
 }
