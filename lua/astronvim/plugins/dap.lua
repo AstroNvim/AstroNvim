@@ -96,8 +96,25 @@ return {
     {
       "rcarriga/cmp-dap",
       lazy = true,
-      dependencies = { "hrsh7th/nvim-cmp" },
       config = function(...) require "astronvim.plugins.configs.cmp-dap"(...) end,
+      specs = {
+        {
+          "Saghen/blink.cmp",
+          optional = true,
+          specs = { "Saghen/blink.compat", lazy = true, opts = {} },
+          opts = {
+            sources = {
+              providers = {
+                dap = {
+                  name = "dap",
+                  module = "blink.compat.source",
+                  score_offset = 100,
+                },
+              },
+            },
+          },
+        },
+      },
     },
   },
   config = function(...) require "astronvim.plugins.configs.nvim-dap"(...) end,
