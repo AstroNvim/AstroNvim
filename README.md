@@ -126,7 +126,7 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup { "AstroNvim/AstroNvim", version = "^4", import = "astronvim.plugins" }
+require("lazy").setup { "AstroNvim/AstroNvim", version = "^5", import = "astronvim.plugins" }
 ```
 
 ## 📦 Basic Setup
