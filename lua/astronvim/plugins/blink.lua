@@ -21,6 +21,8 @@ local function get_kind_icon(CTX)
           end
         elseif ctx.item.source_name == "Path" then
           ctx.kind_icon, ctx.kind_hl = mini_icons.get(ctx.kind == "Folder" and "directory" or "file", ctx.label)
+        elseif ctx.item.source_name == "Snippets" then
+          ctx.kind_icon, ctx.kind_hl = mini_icons.get("lsp", "snippet")
         end
       end
     end
@@ -30,6 +32,9 @@ local function get_kind_icon(CTX)
         icon_provider = function(ctx)
           if ctx.item.source_name == "LSP" then
             local icon = lspkind.symbolic(ctx.kind, { mode = "symbol" })
+            if icon then ctx.kind_icon = icon end
+          elseif ctx.item.source_name == "Snippets" then
+            local icon = lspkind.symbolic("snippet", { mode = "symbol" })
             if icon then ctx.kind_icon = icon end
           end
         end
