@@ -7,7 +7,9 @@ return {
       return package.loaded["nvim-web-devicons"]
     end
   end,
-  opts = {},
+  opts = function(_, opts)
+    if vim.g.icons_enabled == false then opts.style = "ascii" end
+  end,
   specs = {
     {
       "nvim-neo-tree/neo-tree.nvim",
