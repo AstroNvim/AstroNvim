@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.0.1](https://github.com/AstroNvim/AstroNvim/compare/v5.0.0...v5.0.1) (2025-03-27)
+
+
+### Bug Fixes
+
+* **blink:** use ascii icons when icons are disabled ([a32c53f](https://github.com/AstroNvim/AstroNvim/commit/a32c53fe57fa15342cfe09dba7e1696d7ffb16ee))
+* **blink:** use icon provider for snippets source ([57778ec](https://github.com/AstroNvim/AstroNvim/commit/57778ecc8e67bf31126fe24a56750562ad6312a8))
+* **mason:** use ascii icons if icons are disabled ([533d716](https://github.com/AstroNvim/AstroNvim/commit/533d7166593d42886ca2e05f0997299472ac160a))
+* **mini-icons:** set style to `ascii` if icons are disabled ([87d8642](https://github.com/AstroNvim/AstroNvim/commit/87d86425ed6f7a8aa831b3ef4a9fdb621d367492))
+
 ## [5.0.0](https://github.com/AstroNvim/AstroNvim/compare/v4.32.3...v5.0.0) (2025-03-26)
 
 
