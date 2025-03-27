@@ -151,6 +151,41 @@ return {
     },
   },
   specs = {
+    { -- disable blink icons if icons are disabled
+      "Saghen/blink.cmp",
+      opts = function(_, opts)
+        if vim.g.icons_enabled == false then
+          if not opts.appearance then opts.appearance = {} end
+          opts.appearance.kind_icons = {
+            Text = "T",
+            Method = "M",
+            Function = "F",
+            Constructor = "C",
+            Field = "F",
+            Variable = "V",
+            Property = "P",
+            Class = "C",
+            Interface = "I",
+            Struct = "S",
+            Module = "M",
+            Unit = "U",
+            Value = "V",
+            Enum = "E",
+            EnumMember = "E",
+            Keyword = "K",
+            Constant = "C",
+            Snippet = "S",
+            Color = "C",
+            File = "F",
+            Reference = "R",
+            Folder = "F",
+            Event = "E",
+            Operator = "O",
+            TypeParameter = "T",
+          }
+        end
+      end,
+    },
     {
       "AstroNvim/astrolsp",
       optional = true,
