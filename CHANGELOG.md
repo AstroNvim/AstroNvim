@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.2](https://github.com/AstroNvim/AstroNvim/compare/v5.0.1...v5.0.2) (2025-03-28)
+
+
+### Bug Fixes
+
+* **which-key:** disable all icons when icons are disabled ([10fd1c6](https://github.com/AstroNvim/AstroNvim/commit/10fd1c6d07e1ef1142ab33ff262b2c8abbbcc9c2)), closes [#2770](https://github.com/AstroNvim/AstroNvim/issues/2770)
+
 ## [5.0.1](https://github.com/AstroNvim/AstroNvim/compare/v5.0.0...v5.0.1) (2025-03-27)
 
 
