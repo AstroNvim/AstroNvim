@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.3](https://github.com/AstroNvim/AstroNvim/compare/v5.0.2...v5.0.3) (2025-03-29)
+
+
+### Bug Fixes
+
+* **snapshot:** temporarily pin todo-comments to commit until next release ([30b0d2f](https://github.com/AstroNvim/AstroNvim/commit/30b0d2fe6bcd057c5f8d57b22d820bc954603eeb))
+
 ## [5.0.2](https://github.com/AstroNvim/AstroNvim/compare/v5.0.1...v5.0.2) (2025-03-28)
 
 
