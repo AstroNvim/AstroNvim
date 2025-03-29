@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.4](https://github.com/AstroNvim/AstroNvim/compare/v5.0.3...v5.0.4) (2025-03-29)
+
+
+### Bug Fixes
+
+* **snacks:** always enable `snacks.image` because utility function locks in configuration early ([bec1085](https://github.com/AstroNvim/AstroNvim/commit/bec1085c6886f0a9b20a48fdcf04544fc0b0da7c)), closes [#2774](https://github.com/AstroNvim/AstroNvim/issues/2774)
+
 ## [5.0.3](https://github.com/AstroNvim/AstroNvim/compare/v5.0.2...v5.0.3) (2025-03-29)
 
 
