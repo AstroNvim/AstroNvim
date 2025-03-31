@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.5](https://github.com/AstroNvim/AstroNvim/compare/v5.0.4...v5.0.5) (2025-03-31)
+
+
+### Bug Fixes
+
+* **blink:** incorrect order of tab operations, select should happen with highest priority ([4230a6f](https://github.com/AstroNvim/AstroNvim/commit/4230a6f7f53a6768dac77f9c1d4a941d9c29c0a0))
+
 ## [5.0.4](https://github.com/AstroNvim/AstroNvim/compare/v5.0.3...v5.0.4) (2025-03-29)
 
 
