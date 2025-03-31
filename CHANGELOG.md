@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.6](https://github.com/AstroNvim/AstroNvim/compare/v5.0.5...v5.0.6) (2025-03-31)
+
+
+### Bug Fixes
+
+* **blink:** prefer rust based fuzzy matching but silently fall back to lua ([f14a3d9](https://github.com/AstroNvim/AstroNvim/commit/f14a3d91db4eb4aed16a80da07a349644038dd98))
+* **treesitter:** load treesitter immediately if opening a file directly ([ab69f95](https://github.com/AstroNvim/AstroNvim/commit/ab69f958bd7b2bf7bdaaeabd40ef5c6460d04c8d))
+
 ## [5.0.5](https://github.com/AstroNvim/AstroNvim/compare/v5.0.4...v5.0.5) (2025-03-31)
 
 
