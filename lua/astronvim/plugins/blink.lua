@@ -115,6 +115,7 @@ return {
         "fallback",
       },
     },
+    fuzzy = { implementation = "prefer_rust" },
     completion = {
       list = { selection = { preselect = false, auto_insert = true } },
       menu = {
