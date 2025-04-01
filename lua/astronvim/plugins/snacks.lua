@@ -234,6 +234,8 @@ return {
         },
         window = {
           mappings = {
+            f = { "show_help", nowait = false, config = { title = "Find Files", prefix_key = "f" } },
+            ["f/"] = "filter_on_submit",
             ff = "find_files_in_dir",
             fF = "find_all_files_in_dir",
             fw = vim.fn.executable "rg" == 1 and "find_words_in_dir" or nil,
