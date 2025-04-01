@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.1.0](https://github.com/AstroNvim/AstroNvim/compare/v5.0.6...v5.1.0) (2025-04-01)
+
+
+### Features
+
+* **snacks:** add find in dir commands for neo-tree ([008c7c9](https://github.com/AstroNvim/AstroNvim/commit/008c7c9a1fe7c7f0ed131201a67aba744ec42f4a))
+* **snacks:** add help text for find mappings ([517a6f5](https://github.com/AstroNvim/AstroNvim/commit/517a6f5cee17236235dbeecad69f836feb55bcf0))
+
+
+### Bug Fixes
+
+* **blink:** disable `cmdline` by default due to instability ([0a22f02](https://github.com/AstroNvim/AstroNvim/commit/0a22f029e4cd82f53d22b3f515d350a8c1ad5fdc)), closes [#2782](https://github.com/AstroNvim/AstroNvim/issues/2782)
+
 ## [5.0.6](https://github.com/AstroNvim/AstroNvim/compare/v5.0.5...v5.0.6) (2025-03-31)
 
 
