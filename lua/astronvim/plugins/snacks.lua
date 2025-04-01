@@ -211,13 +211,35 @@ return {
       optional = true,
       opts = {
         commands = {
-          find_in_dir = function(state)
+          find_files_in_dir = function(state)
             local node = state.tree:get_node()
             local path = node.type == "file" and node:get_parent_id() or node:get_id()
             require("snacks").picker.files { cwd = path }
           end,
+          find_all_files_in_dir = function(state)
+            local node = state.tree:get_node()
+            local path = node.type == "file" and node:get_parent_id() or node:get_id()
+            require("snacks").picker.files { cwd = path, hidden = true, ignored = true }
+          end,
+          find_words_in_dir = function(state)
+            local node = state.tree:get_node()
+            local path = node.type == "file" and node:get_parent_id() or node:get_id()
+            require("snacks").picker.grep { cwd = path }
+          end,
+          find_all_words_in_dir = function(state)
+            local node = state.tree:get_node()
+            local path = node.type == "file" and node:get_parent_id() or node:get_id()
+            require("snacks").picker.grep { cwd = path, hidden = true, ignored = true }
+          end,
         },
-        window = { mappings = { F = "find_in_dir" } },
+        window = {
+          mappings = {
+            ff = "find_files_in_dir",
+            fF = "find_all_files_in_dir",
+            fw = vim.fn.executable "rg" == 1 and "find_words_in_dir" or nil,
+            fW = vim.fn.executable "rg" == 1 and "find_all_words_in_dir" or nil,
+          },
+        },
       },
     },
   },
