@@ -144,6 +144,7 @@ return {
         },
       },
     },
+    cmdline = { enabled = false },
     signature = {
       window = {
         border = "rounded",
