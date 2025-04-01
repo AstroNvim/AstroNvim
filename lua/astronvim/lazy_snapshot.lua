@@ -33,7 +33,7 @@ return {
   { "nvim-lua/plenary.nvim", commit = "857c5ac632080dba10aae49dba902ce3abf91b35", optional = true },
   { "nvim-neo-tree/neo-tree.nvim", version = "^3", optional = true },
   { "nvim-neotest/nvim-nio", version = "^1", optional = true },
-  { "nvim-treesitter/nvim-treesitter", commit = "9be6836ebeb88a536055bf1ce0961eef68da4bc6", optional = true },
+  { "nvim-treesitter/nvim-treesitter", commit = "4b390e1e46ca2e6220f14641cb840bbf9ad5446f", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "9937e5e356e5b227ec56d83d0a9d0a0f6bc9cad4", optional = true },
   { "nvimtools/none-ls.nvim", commit = "a117163db44c256d53c3be8717f3e1a2a28e6299", optional = true },
   { "rafamadriz/friendly-snippets", commit = "efff286dd74c22f731cdec26a70b46e5b203c619", optional = true },
@@ -45,6 +45,6 @@ return {
   { "stevearc/resession.nvim", version = "^1", optional = true },
   { "williamboman/mason-lspconfig.nvim", commit = "1a31f824b9cd5bc6f342fc29e9a53b60d74af245", optional = true },
   { "williamboman/mason.nvim", version = "^1", optional = true },
-  { "windwp/nvim-autopairs", commit = "6522027785b305269fa17088395dfc0f456cedd2", optional = true },
+  { "windwp/nvim-autopairs", commit = "84a81a7d1f28b381b32acf1e8fe5ff5bef4f7968", optional = true },
   { "windwp/nvim-ts-autotag", commit = "a1d526af391f6aebb25a8795cbc05351ed3620b5", optional = true },
 }
