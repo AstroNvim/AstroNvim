@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.1.1](https://github.com/AstroNvim/AstroNvim/compare/v5.1.0...v5.1.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* **blink:** disable `ghost_text` in `cmdline` by default ([186eae3](https://github.com/AstroNvim/AstroNvim/commit/186eae3b4643865570238303d17d7e87ffacb445))
+
+
+### Reverts
+
+* **blink:** re-enable `cmdline` in `blink.cmp` after fix upstream ([9cb32ab](https://github.com/AstroNvim/AstroNvim/commit/9cb32ab5bfb8dae23256048bf11b62ea8aca72f5))
+
 ## [5.1.0](https://github.com/AstroNvim/AstroNvim/compare/v5.0.6...v5.1.0) (2025-04-01)
 
 
