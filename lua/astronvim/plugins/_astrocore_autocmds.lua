@@ -179,6 +179,7 @@ return {
           event = "TextYankPost",
           desc = "Highlight yanked text",
           pattern = "*",
+          -- TODO: remove check when dropping support for Neovim v0.10
           callback = function() (vim.hl or vim.highlight).on_yank() end,
         },
       },
