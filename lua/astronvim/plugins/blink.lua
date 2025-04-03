@@ -144,6 +144,7 @@ return {
         },
       },
     },
+    cmdline = { completion = { ghost_text = { enabled = false } } },
     signature = {
       window = {
         border = "rounded",
