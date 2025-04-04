@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.2](https://github.com/AstroNvim/AstroNvim/compare/v5.1.1...v5.1.2) (2025-04-04)
+
+
+### Bug Fixes
+
+* **snacks:** make it possible to disable mappings for individual snacks ([724397c](https://github.com/AstroNvim/AstroNvim/commit/724397c9cce2312342682fac09d51198a31d51db))
+
 ## [5.1.1](https://github.com/AstroNvim/AstroNvim/compare/v5.1.0...v5.1.1) (2025-04-03)
 
 
