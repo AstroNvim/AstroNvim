@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.3](https://github.com/AstroNvim/AstroNvim/compare/v5.1.2...v5.1.3) (2025-04-04)
+
+
+### Bug Fixes
+
+* **snacks:** leave toggle mappings disabling on startup but toggling later ([b5d033c](https://github.com/AstroNvim/AstroNvim/commit/b5d033c54dc22966550662170993401c7865d915))
+
 ## [5.1.2](https://github.com/AstroNvim/AstroNvim/compare/v5.1.1...v5.1.2) (2025-04-04)
 
 
