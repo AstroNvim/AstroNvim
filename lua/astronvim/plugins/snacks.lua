@@ -110,24 +110,20 @@ return {
         local snack_opts = require("astrocore").plugin_opts "snacks.nvim"
 
         -- Snacks.dashboard mappins
-        if vim.tbl_get(snack_opts, "dashboard", "enabled") ~= false then
-          maps.n["<Leader>h"] = {
-            function()
-              if vim.bo.filetype == "snacks_dashboard" then
-                require("astrocore.buffer").close()
-              else
-                require("snacks").dashboard()
-              end
-            end,
-            desc = "Home Screen",
-          }
-        end
+        maps.n["<Leader>h"] = {
+          function()
+            if vim.bo.filetype == "snacks_dashboard" then
+              require("astrocore.buffer").close()
+            else
+              require("snacks").dashboard()
+            end
+          end,
+          desc = "Home Screen",
+        }
 
         -- Snacks.indent mappings
-        if vim.tbl_get(snack_opts, "indent", "enabled") ~= false then
-          maps.n["<Leader>u|"] =
-            { function() require("snacks").toggle.indent():toggle() end, desc = "Toggle indent guides" }
-        end
+        maps.n["<Leader>u|"] =
+          { function() require("snacks").toggle.indent():toggle() end, desc = "Toggle indent guides" }
 
         -- Snacks.notifier mappings
         if vim.tbl_get(snack_opts, "notifier", "enabled") ~= false then
