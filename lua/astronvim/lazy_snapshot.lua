@@ -12,7 +12,7 @@ return {
   { "Saghen/blink.compat", version = "^2", optional = true },
   { "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "4aa03a08c3705e622f2e7886783fd450f7749cdd", optional = true },
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
-  { "brenoprata10/nvim-highlight-colors", commit = "63a0319d0933157e4fac72c992678785f7e7fa0c", optional = true },
+  { "brenoprata10/nvim-highlight-colors", commit = "b42a5ccec7457b44e89f7ed3b3afb1b375bb2093", optional = true },
   { "echasnovski/mini.icons", version = "^0.15", optional = true },
   { "folke/lazy.nvim", version = "^11", optional = true },
   { "folke/lazydev.nvim", version = "^1", optional = true },
