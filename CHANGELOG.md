@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.4](https://github.com/AstroNvim/AstroNvim/compare/v5.1.3...v5.1.4) (2025-04-14)
+
+
+### Bug Fixes
+
+* **highlight-colors:** update for important bug fix ([02f599c](https://github.com/AstroNvim/AstroNvim/commit/02f599c7330010eb2a391846574831dcdbfb52a6))
+
 ## [5.1.3](https://github.com/AstroNvim/AstroNvim/compare/v5.1.2...v5.1.3) (2025-04-04)
 
 
