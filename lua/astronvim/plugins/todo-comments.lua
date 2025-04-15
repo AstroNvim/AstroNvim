@@ -1,15 +1,27 @@
 return {
   "folke/todo-comments.nvim",
   dependencies = { { "folke/snacks.nvim", optional = true } },
-  cmd = { "TodoTrouble", "TodoTelescope", "TodoLocList", "TodoQuickFix" },
+  cmd = { "TodoTrouble", "TodoLocList", "TodoQuickFix" },
   event = "User AstroFile",
   specs = {
+    {
+      "nvim-telescope/telescope.nvim",
+      optional = true,
+      specs = { "folke/todo-comments.nvim", cmd = { "TodoTelescope" } },
+    },
+    {
+      "ibhagwan/fzf-lua",
+      optional = true,
+      specs = { "folke/todo-comments.nvim", cmd = { "TodoFzfLua" } },
+    },
     { "nvim-lua/plenary.nvim", lazy = true },
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
         local maps = opts.mappings
-        if require("astrocore").is_available "telescope.nvim" then
+        if require("astrocore").is_available "fzf-lua" then
+          maps.n["<Leader>fT"] = { "<Cmd>TodoFzfLua<CR>", desc = "Find TODOs" }
+        elseif require("astrocore").is_available "telescope.nvim" then
           maps.n["<Leader>fT"] = { "<Cmd>TodoTelescope<CR>", desc = "Find TODOs" }
         elseif require("astrocore").is_available "snacks.nvim" then
           if vim.tbl_get(require("astrocore").plugin_opts "snacks.nvim", "picker", "enabled") ~= false then
