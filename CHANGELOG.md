@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.5](https://github.com/AstroNvim/AstroNvim/compare/v5.1.4...v5.1.5) (2025-04-15)
+
+
+### Bug Fixes
+
+* **neo-tree:** automatically extend `event_handlers` table ([c43b681](https://github.com/AstroNvim/AstroNvim/commit/c43b68155fb249967a707793ac7843c54c3ac027))
+
 ## [5.1.4](https://github.com/AstroNvim/AstroNvim/compare/v5.1.3...v5.1.4) (2025-04-14)
 
 
