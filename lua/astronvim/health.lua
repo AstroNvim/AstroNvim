@@ -37,7 +37,7 @@ function M.check()
     {
       cmd = { "rg" },
       type = "warn",
-      msg = "Used for Telescope `live_grep` picker, `<Leader>fw` and `<Leader>fW` by default (Optional)",
+      msg = "Used for Pickers `live_grep` picker, `<Leader>fw` and `<Leader>fW` by default (Optional)",
     },
     { cmd = { "lazygit" }, type = "warn", msg = "Used for mappings to pull up git TUI (Optional)" },
     { cmd = { "node" }, type = "warn", msg = "Used for mappings to pull up node REPL (Optional)" },
