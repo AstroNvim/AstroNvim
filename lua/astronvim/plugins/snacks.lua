@@ -205,6 +205,7 @@ return {
               desc = "Find words in all files",
             }
           end
+          maps.n["<Leader>fu"] = { function() require("snacks").picker.undo() end, desc = "Find undo history" }
           maps.n["<Leader>lD"] = { function() require("snacks").picker.diagnostics() end, desc = "Search diagnostics" }
           maps.n["<Leader>ls"] = {
             function()
