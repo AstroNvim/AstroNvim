@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/AstroNvim/AstroNvim/compare/v5.1.5...v5.2.0) (2025-04-15)
+
+
+### Features
+
+* **snacks:** add undo history picker ([ebcdba5](https://github.com/AstroNvim/AstroNvim/commit/ebcdba5ab43d8a9e9fa2717e401dbfa679dd2ed7))
+
 ## [5.1.5](https://github.com/AstroNvim/AstroNvim/compare/v5.1.4...v5.1.5) (2025-04-15)
 
 
