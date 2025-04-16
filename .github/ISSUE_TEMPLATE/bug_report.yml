@@ -25,7 +25,7 @@ body:
       required: true
     attributes:
       label: "Operating system/version"
-      placeholder: "macOS 11.5"
+      placeholder: "macOS 15"
   - type: input
     id: terminal
     validations:
