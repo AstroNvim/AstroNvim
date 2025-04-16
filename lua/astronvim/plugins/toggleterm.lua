@@ -12,6 +12,7 @@ return {
           maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
           local lazygit = {
             callback = function()
+              vim.cmd [[ wall]]
               local worktree = astro.file_worktree()
               local flags = worktree and (" --work-tree=%s --git-dir=%s"):format(worktree.toplevel, worktree.gitdir)
                 or ""
