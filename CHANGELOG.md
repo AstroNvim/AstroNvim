@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.1](https://github.com/AstroNvim/AstroNvim/compare/v5.2.0...v5.2.1) (2025-04-16)
+
+
+### Bug Fixes
+
+* **nui:** pin to commit until next release ([c1784e3](https://github.com/AstroNvim/AstroNvim/commit/c1784e3a0d7d035211726894e550026bf890da1b))
+* **todo-comments:** properly resolve lazy load commands based on plugin availability ([cdddbd3](https://github.com/AstroNvim/AstroNvim/commit/cdddbd3b9e1d83f39a0dae326a41585dba6c4c03))
+
 ## [5.2.0](https://github.com/AstroNvim/AstroNvim/compare/v5.1.5...v5.2.0) (2025-04-15)
 
 
