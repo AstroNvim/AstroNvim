@@ -11,9 +11,7 @@ return {
 
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
     opt.breakindent = true -- wrap indent to match  line start
-    if not vim.env.SSH_TTY then -- only set `clipboard` if in SSH session and in neovim 0.10+
-      opt.clipboard = "unnamedplus" -- connection to the system clipboard
-    end
+    opt.clipboard = "unnamedplus" -- connection to the system clipboard
     opt.cmdheight = 0 -- hide command line unless needed
     opt.completeopt = { "menu", "menuone", "noselect" } -- Options for insert mode completion
     opt.confirm = true -- raise a dialog asking if you wish to save the current file(s)
