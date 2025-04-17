@@ -1,7 +1,18 @@
 return function(plugin, opts)
   local ts = require(plugin.main)
 
-  if vim.fn.executable "git" == 0 then opts.ensure_installed = nil end
+  -- if no compiler or git available, disable installation
+  if
+    vim.fn.executable "git" == 0
+    or not vim.tbl_contains(
+      require("nvim-treesitter.install").compilers,
+      function(c) return c ~= vim.NIL and vim.fn.executable(c) == 1 end,
+      { predicate = true }
+    )
+  then
+    opts.auto_install = false
+    opts.ensure_installed = nil
+  end
 
   -- disable all treesitter modules on large buffer
   for _, module in ipairs(ts.available_modules()) do
