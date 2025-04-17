@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.2](https://github.com/AstroNvim/AstroNvim/compare/v5.2.1...v5.2.2) (2025-04-17)
+
+
+### Bug Fixes
+
+* **highlight-colors:** fix typo in config option ([c0aa908](https://github.com/AstroNvim/AstroNvim/commit/c0aa90857f62f7e7e778c592df125b84e133bdc0))
+* **options:** always set `clipboard` to `unnamedplus` as this works with OSC52 ([eb583af](https://github.com/AstroNvim/AstroNvim/commit/eb583af3696d486ecd6c2a88ee90511d2d1e1314))
+
 ## [5.2.1](https://github.com/AstroNvim/AstroNvim/compare/v5.2.0...v5.2.1) (2025-04-16)
 
 
