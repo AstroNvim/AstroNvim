@@ -10,7 +10,7 @@ return {
     end,
   },
   opts = {
-    enabled_named_colors = false,
+    enable_named_colors = false,
     virtual_symbol = "󱓻",
     exclude_buffer = function(bufnr)
       local buf_utils = require "astrocore.buffer"
