@@ -7,6 +7,7 @@ return {
     if vim.fn.has "nvim-0.11" == 1 then
       -- TODO: remove check when dropping support for Neovim v0.10
       opt.tabclose = "uselast" -- go to last used tab when closing the current tab
+      opt.winborder = "rounded" -- set default winborder to rounded
     end
 
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
