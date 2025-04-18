@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.3](https://github.com/AstroNvim/AstroNvim/compare/v5.2.2...v5.2.3) (2025-04-18)
+
+
+### Bug Fixes
+
+* **treesitter:** only perform treesitter installations when compiler is available ([ceadde7](https://github.com/AstroNvim/AstroNvim/commit/ceadde78e655df563d30cbb7d73dc6b649d29be6))
+
 ## [5.2.2](https://github.com/AstroNvim/AstroNvim/compare/v5.2.1...v5.2.2) (2025-04-17)
 
 
