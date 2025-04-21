@@ -1,3 +1,4 @@
+local astroui_foldexpr = "v:lua.require'astroui.folding'.foldexpr()"
 return {
   "AstroNvim/astroui",
   lazy = true,
@@ -11,8 +12,8 @@ return {
               event = "FileType",
               callback = function()
                 if require("astrocore.buffer").is_valid() then
-                  if vim.wo[0][0].foldexpr ~= "v:lua.require'astroui.folding'.foldexpr()" then
-                    vim.wo[0][0].foldexpr = "v:lua.require'astroui.folding'.foldexpr()"
+                  if vim.wo[0][0].foldexpr ~= astroui_foldexpr and vim.go.foldexpr == astroui_foldexpr then
+                    vim.wo[0][0].foldexpr = astroui_foldexpr
                   end
                 end
               end,
@@ -23,7 +24,7 @@ return {
           opt = {
             foldcolumn = "1", -- display fold column
             foldenable = true, -- enable folds
-            foldexpr = "v:lua.require'astroui.folding'.foldexpr()", -- set function for calculating folds
+            foldexpr = astroui_foldexpr, -- set function for calculating folds
             foldlevel = 99, -- set high foldlevel
             foldmethod = "expr", -- use `foldexpr` for calculating folds
             foldtext = "", -- use transparent foldtext
