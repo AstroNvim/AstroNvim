@@ -20,6 +20,8 @@ return {
         opt.foldenable = true
         opt.foldlevel = 99
         opt.foldlevelstart = 99
+
+        opts.autocmds.persistent_astroui_foldexpr = nil
       end,
     },
     {

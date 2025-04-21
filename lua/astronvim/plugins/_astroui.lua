@@ -5,6 +5,20 @@ return {
     {
       "AstroNvim/astrocore",
       opts = {
+        autocmds = {
+          persistent_astroui_foldexpr = {
+            {
+              event = "FileType",
+              callback = function()
+                if require("astrocore.buffer").is_valid() then
+                  if vim.wo[0][0].foldexpr ~= "v:lua.require'astroui.folding'.foldexpr()" then
+                    vim.wo[0][0].foldexpr = "v:lua.require'astroui.folding'.foldexpr()"
+                  end
+                end
+              end,
+            },
+          },
+        },
         options = {
           opt = {
             foldcolumn = "1", -- display fold column
