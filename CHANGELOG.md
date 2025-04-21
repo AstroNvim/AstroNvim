@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.4](https://github.com/AstroNvim/AstroNvim/compare/v5.2.3...v5.2.4) (2025-04-21)
+
+
+### Bug Fixes
+
+* **astrocore:** make AstroUI folding persistent and override ftplugins ([90409ec](https://github.com/AstroNvim/AstroNvim/commit/90409ecf294765d9967c5f903c706f3d54505d72))
+* **neo-tree:** only map filter mappings for filesystem window ([2ddcd27](https://github.com/AstroNvim/AstroNvim/commit/2ddcd27161607fcc9e6b8a3c979538e2e7affec3)), closes [#2802](https://github.com/AstroNvim/AstroNvim/issues/2802)
+
 ## [5.2.3](https://github.com/AstroNvim/AstroNvim/compare/v5.2.2...v5.2.3) (2025-04-18)
 
 
