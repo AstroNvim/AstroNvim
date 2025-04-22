@@ -30,8 +30,12 @@ return {
       opts = function(_, opts)
         local astrocore = require "astrocore"
         if astrocore.is_available "nvim-ufo" then
-          opts.capabilities = astrocore.extend_tbl(opts.capabilities, {
-            textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } },
+          opts.config = astrocore.extend_tbl(opts.config, {
+            ["*"] = {
+              capabilities = {
+                textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } },
+              },
+            },
           })
         end
       end,
