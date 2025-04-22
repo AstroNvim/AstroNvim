@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.5](https://github.com/AstroNvim/AstroNvim/compare/v5.2.4...v5.2.5) (2025-04-22)
+
+
+### Bug Fixes
+
+* **astrocore:** restrict overriding of `foldexpr` on `FileType` ([848884a](https://github.com/AstroNvim/AstroNvim/commit/848884ae2db41c4e2ee96a621ee43e15f462a6ed))
+
 ## [5.2.4](https://github.com/AstroNvim/AstroNvim/compare/v5.2.3...v5.2.4) (2025-04-21)
 
 
