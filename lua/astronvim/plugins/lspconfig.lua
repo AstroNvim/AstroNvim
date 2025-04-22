@@ -3,15 +3,11 @@ return {
   specs = {
     {
       "AstroNvim/astrolsp",
-      opts = function(_, opts)
-        local maps = opts.mappings
-        maps.n["<Leader>li"] =
-          { "<Cmd>LspInfo<CR>", desc = "LSP information", cond = function() return vim.fn.exists ":LspInfo" > 0 end }
-      end,
+      optional = true,
+      dependencies = { "neovim/nvim-lspconfig" },
     },
   },
   dependencies = {
-    { "folke/neoconf.nvim", lazy = true, opts = {} },
     {
       "williamboman/mason-lspconfig.nvim",
       version = "^1", -- make sure to always set version to v1 even on development
@@ -25,10 +21,6 @@ return {
       config = function(...) require "astronvim.plugins.configs.mason-lspconfig"(...) end,
     },
   },
-  cmd = function(_, cmds) -- HACK: lazy load lspconfig on `:Neoconf` if neoconf is available
-    if require("lazy.core.config").spec.plugins["neoconf.nvim"] then table.insert(cmds, "Neoconf") end
-    vim.list_extend(cmds, { "LspInfo", "LspLog", "LspStart" }) -- add normal `nvim-lspconfig` commands
-  end,
+  cmd = { "LspInfo", "LspLog", "LspStart" },
   event = "User AstroFile",
-  config = function(...) require "astronvim.plugins.configs.lspconfig"(...) end,
 }
