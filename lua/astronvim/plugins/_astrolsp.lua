@@ -8,9 +8,7 @@ return {
       inlay_hints = false,
       semantic_tokens = true,
     },
-    capabilities = vim.lsp.protocol.make_client_capabilities(),
-    ---@diagnostic disable-next-line: missing-fields
-    config = {},
+    config = { ["*"] = { capabilities = vim.lsp.protocol.make_client_capabilities() } },
     defaults = {
       hover = {
         border = "rounded",
@@ -33,9 +31,8 @@ return {
         willRename = true,
       },
     },
-    flags = {},
     formatting = { format_on_save = { enabled = true }, disabled = {} },
-    handlers = { function(server, server_opts) require("lspconfig")[server].setup(server_opts) end },
+    handlers = {},
     servers = {},
     on_attach = nil,
   },
