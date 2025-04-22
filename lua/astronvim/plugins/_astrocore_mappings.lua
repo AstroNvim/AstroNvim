@@ -104,6 +104,7 @@ return {
     maps.n["<Leader>bsm"] = { function() require("astrocore.buffer").sort "modified" end, desc = "By modification" }
 
     maps.n["<Leader>l"] = vim.tbl_get(sections, "l")
+    maps.n["<Leader>li"] = { function() vim.cmd.checkhealth "vim.lsp" end, desc = "Lsp Information" }
     maps.n["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" }
     local function diagnostic_jump(dir, severity)
       local jump_opts = {}

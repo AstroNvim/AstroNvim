@@ -16,7 +16,6 @@ return {
   { "echasnovski/mini.icons", version = "^0.16", optional = true },
   { "folke/lazy.nvim", version = "^11", optional = true },
   { "folke/lazydev.nvim", version = "^1", optional = true },
-  { "folke/neoconf.nvim", commit = "7a8d7fd36f95f5cbbf57d4a5c463f6c54ad54cd3", optional = true },
   { "folke/snacks.nvim", version = "^2", optional = true },
   { "folke/todo-comments.nvim", commit = "304a8d204ee787d2544d8bc23cd38d2f929e7cc5", optional = true },
   { "folke/which-key.nvim", version = "^3", optional = true },
