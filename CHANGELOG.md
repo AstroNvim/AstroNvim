@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.6](https://github.com/AstroNvim/AstroNvim/compare/v5.2.5...v5.2.6) (2025-04-23)
+
+
+### Bug Fixes
+
+* **resession:** get configuration directly from AstroCore ([caf0c74](https://github.com/AstroNvim/AstroNvim/commit/caf0c74ce86d29378c15a224c43c7b2c21246b61))
+
 ## [5.2.5](https://github.com/AstroNvim/AstroNvim/compare/v5.2.4...v5.2.5) (2025-04-22)
 
 
