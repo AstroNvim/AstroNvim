@@ -5,7 +5,7 @@ return {
   { "AstroNvim/astroui", version = "^3", optional = true },
   { "JoosepAlviste/nvim-ts-context-commentstring", commit = "1b212c2eee76d787bbea6aa5e92a2b534e7b4f8f", optional = true },
   { "L3MON4D3/LuaSnip", version = "^2", optional = true },
-  { "MunifTanjim/nui.nvim", commit = "8d3bce9764e627b62b07424e0df77f680d47ffdb", optional = true },
+  { "MunifTanjim/nui.nvim", version = "^0.4, optional = true },
   { "NMAC427/guess-indent.nvim", commit = "84a4987ff36798c2fc1169cbaff67960aed9776f", optional = true },
   { "RRethy/vim-illuminate", commit = "1fa4b23409e22a03823648e344c77f260e2572cb", optional = true },
   { "Saghen/blink.cmp", version = "^1", optional = true },
