@@ -43,6 +43,18 @@ return {
     -- configure `vim.ui.input`
     opts.input = {}
 
+    -- configure toggle term
+    opts.terminal = {
+      win = {
+        keys = {
+          nav_h = { "<C-h>", term_nav "h", desc = "Go to Left Window", expr = true, mode = "t" },
+          nav_j = { "<C-j>", term_nav "j", desc = "Go to Lower Window", expr = true, mode = "t" },
+          nav_k = { "<C-k>", term_nav "k", desc = "Go to Upper Window", expr = true, mode = "t" },
+          nav_l = { "<C-l>", term_nav "l", desc = "Go to Right Window", expr = true, mode = "t" },
+        },
+      },
+    }
+
     -- configure notifier
     opts.notifier = {}
     opts.notifier.icons = {
@@ -144,6 +156,9 @@ return {
           maps.n["<Leader>f"] = vim.tbl_get(opts, "_map_sections", "f")
           if vim.fn.executable "git" == 1 then
             maps.n["<Leader>g"] = vim.tbl_get(opts, "_map_sections", "g")
+            if vim.fn.executable "lazygit" == 1 then
+              maps.n("<Leader>gg", function() Snacks.lazygit() end, { desc = "Lazygit" })
+            end
             maps.n["<Leader>gb"] = { function() require("snacks").picker.git_branches() end, desc = "Git branches" }
             maps.n["<Leader>gc"] = {
               function() require("snacks").picker.git_log() end,
