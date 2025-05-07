@@ -44,7 +44,7 @@ return {
   { "stevearc/aerial.nvim", version = "^2.2", optional = true },
   { "stevearc/resession.nvim", version = "^1", optional = true },
   { "williamboman/mason-lspconfig.nvim", commit = "1a31f824b9cd5bc6f342fc29e9a53b60d74af245", optional = true },
-  { "williamboman/mason.nvim", version = "^1", optional = true },
+  { "williamboman/mason.nvim", version = "^2", optional = true },
   { "windwp/nvim-autopairs", commit = "4d74e75913832866aa7de35e4202463ddf6efd1b", optional = true },
   { "windwp/nvim-ts-autotag", commit = "a1d526af391f6aebb25a8795cbc05351ed3620b5", optional = true },
 }
