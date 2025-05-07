@@ -8,7 +8,7 @@ return {
     "MasonToolsClean",
   },
   dependencies = {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     {
       "AstroNvim/astrocore",
       opts = function(_, opts)
