@@ -24,6 +24,8 @@ return {
   { "kevinhwang91/nvim-ufo", version = "^1", optional = true },
   { "kevinhwang91/promise-async", version = "^1", optional = true },
   { "lewis6991/gitsigns.nvim", version = "^1", optional = true },
+  { "mason-org/mason-lspconfig.nvim", commit = "^2", optional = true },
+  { "mason-org/mason.nvim", version = "^2", optional = true },
   { "max397574/better-escape.nvim", version = "^2", optional = true },
   { "mfussenegger/nvim-dap", commit = "a479e25ed5b5d331fb46ee4b9e160ff02ac64310", optional = true },
   { "mrjones2014/smart-splits.nvim", version = "^1", optional = true },
@@ -42,8 +44,6 @@ return {
   { "s1n7ax/nvim-window-picker", version = "^2", optional = true },
   { "stevearc/aerial.nvim", version = "^2.2", optional = true },
   { "stevearc/resession.nvim", version = "^1", optional = true },
-  { "williamboman/mason-lspconfig.nvim", version = "^1", optional = true },
-  { "williamboman/mason.nvim", version = "^2", optional = true },
   { "windwp/nvim-autopairs", commit = "23320e75953ac82e559c610bec5a90d9c6dfa743", optional = true },
   { "windwp/nvim-ts-autotag", commit = "a1d526af391f6aebb25a8795cbc05351ed3620b5", optional = true },
 }
