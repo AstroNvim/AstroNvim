@@ -72,6 +72,7 @@ end
 
 return {
   "Saghen/blink.cmp",
+  version = "^1", -- make sure to always set version to v1 even on development
   event = { "InsertEnter", "CmdlineEnter" },
   opts_extend = { "sources.default", "cmdline.sources", "term.sources" },
   opts = {

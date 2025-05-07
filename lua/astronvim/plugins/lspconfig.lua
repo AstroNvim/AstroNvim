@@ -14,6 +14,7 @@ return {
     { "folke/neoconf.nvim", lazy = true, opts = {} },
     {
       "williamboman/mason-lspconfig.nvim",
+      version = "^1", -- make sure to always set version to v1 even on development
       dependencies = { "williamboman/mason.nvim" },
       cmd = { "LspInstall", "LspUninstall" },
       opts_extend = { "ensure_installed" },
