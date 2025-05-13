@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.3.0](https://github.com/AstroNvim/AstroNvim/compare/v5.2.6...v5.3.0) (2025-05-13)
+
+
+### Features
+
+* **snapshot:** update Mason to v2 ([b786c47](https://github.com/AstroNvim/AstroNvim/commit/b786c47284c50dca399857c8eef886035bec2e32))
+
+
+### Bug Fixes
+
+* always pin `blink.cmp` and `mason-lspconfig` even in development mode ([790c5ca](https://github.com/AstroNvim/AstroNvim/commit/790c5ca2bdcf6deee8973644476b49a4470ebe8e))
+* **lspconfig:** pin `nvim-lspconfig` to last version not requiring `vim.lsp.config` for Neovim v0.11 ([a5e4de2](https://github.com/AstroNvim/AstroNvim/commit/a5e4de2db3cf7c1deb89f57545a3a4bcde4e6bd2))
+
 ## [5.2.6](https://github.com/AstroNvim/AstroNvim/compare/v5.2.5...v5.2.6) (2025-04-23)
 
 
