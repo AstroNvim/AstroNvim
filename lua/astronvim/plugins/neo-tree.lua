@@ -71,6 +71,8 @@ return {
       enable_git_status = git_available,
       auto_clean_after_session_restore = true,
       close_if_last_window = true,
+      -- TODO: remove when dropping support for Neovim v0.10
+      popup_border_style = vim.fn.has "nvim-0.11" == 1 and "" or nil,
       sources = { "filesystem", "buffers", git_available and "git_status" or nil },
       source_selector = {
         winbar = true,
