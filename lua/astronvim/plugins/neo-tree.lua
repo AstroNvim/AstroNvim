@@ -22,13 +22,14 @@ return {
           {
             event = "BufEnter",
             desc = "Open Neo-Tree on startup with directory",
-            callback = function()
+            callback = function(args)
               if package.loaded["neo-tree"] then
                 return true
               else
-                local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(0))
+                local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(args.buf))
                 if stats and stats.type == "directory" then
                   require("lazy").load { plugins = { "neo-tree.nvim" } }
+                  pcall(vim.api.nvim_exec_autocmds, "BufEnter", { group = "NeoTree_NetrwDeferred", buffer = args.buf })
                   return true
                 end
               end
