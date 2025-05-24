@@ -121,7 +121,7 @@ return {
           },
           { -- close button for current tab
             provider = status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
-            hl = status.hl.get_attributes("tab_close", true),
+            hl = function() return status.hl.get_attributes("tab_close", true) end,
             on_click = {
               callback = function() require("astrocore.buffer").close_tab() end,
               name = "heirline_tabline_close_tab_callback",
