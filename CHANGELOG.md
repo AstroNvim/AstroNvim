@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.3.2](https://github.com/AstroNvim/AstroNvim/compare/v5.3.1...v5.3.2) (2025-05-27)
+
+
+### Bug Fixes
+
+* **heirline:** fix highlights not being set until `setup` is called ([9d14deb](https://github.com/AstroNvim/AstroNvim/commit/9d14deb242d4e37621ea61ccc997b51b4d5e36dc))
+
+
+### Performance Improvements
+
+* **heirline:** add caching for highlight functions ([f082fac](https://github.com/AstroNvim/AstroNvim/commit/f082faccf483bc095ad539aed62352ed0d57bdad))
+
 ## [5.3.1](https://github.com/AstroNvim/AstroNvim/compare/v5.3.0...v5.3.1) (2025-05-21)
 
 
