@@ -89,16 +89,16 @@ return {
           condition = function() return not status.condition.is_active() end,
           status.component.separated_path(),
           status.component.file_info {
-            file_icon = { hl = status.hl.file_icon "winbar", padding = { left = 0 } },
+            file_icon = { hl = function(self) return status.hl.file_icon "winbar"(self) end, padding = { left = 0 } },
             filename = {},
             filetype = false,
             file_read_only = false,
-            hl = status.hl.get_attributes("winbarnc", true),
+            hl = function() return status.hl.get_attributes("winbarnc", true) end,
             surround = false,
             update = { "BufEnter", "BufFilePost" },
           },
         },
-        status.component.breadcrumbs { hl = status.hl.get_attributes("winbar", true) },
+        status.component.breadcrumbs { hl = function() return status.hl.get_attributes("winbar", true) end },
       },
       tabline = { -- bufferline
         { -- automatic sidebar padding
@@ -121,7 +121,7 @@ return {
           },
           { -- close button for current tab
             provider = status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
-            hl = status.hl.get_attributes("tab_close", true),
+            hl = function() return status.hl.get_attributes("tab_close", true) end,
             on_click = {
               callback = function() require("astrocore.buffer").close_tab() end,
               name = "heirline_tabline_close_tab_callback",
