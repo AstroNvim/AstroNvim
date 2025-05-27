@@ -60,6 +60,7 @@ return {
   opts = function(_, opts)
     local astro, get_icon = require "astrocore", require("astroui").get_icon
     local git_available = vim.fn.executable "git" == 1
+    local Snacks = require "snacks"
     local events = require "neo-tree.events"
     local function on_move(data) Snacks.rename.on_rename_file(data.source, data.destination) end
     local sources = {
@@ -201,13 +202,13 @@ return {
         vim.opt_local.foldcolumn = "0"
       end,
     })
-    table.insert(opts.event_handlers,{
+    table.insert(opts.event_handlers, {
       event = events.FILE_MOVED,
-      handler = on_move
+      handler = on_move,
     })
-    table.insert(opts.event_handlers,{
+    table.insert(opts.event_handlers, {
       event = events.FILE_RENAMED,
-      handler = on_move
+      handler = on_move,
     })
     return opts
   end,
