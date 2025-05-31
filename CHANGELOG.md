@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.3.3](https://github.com/AstroNvim/AstroNvim/compare/v5.3.2...v5.3.3) (2025-05-31)
+
+
+### Bug Fixes
+
+* **astrolsp:** use `astrolsp.utils` for `supports_method` for deprecation protection ([555be37](https://github.com/AstroNvim/AstroNvim/commit/555be37d8903b0ead166a35ff80dac22076fa375))
+* **treesitter:** specify `master` branch in preparation to default branch change ([ed3c636](https://github.com/AstroNvim/AstroNvim/commit/ed3c636e132ae8c40ddc2557c64874b76c420e3a))
+
 ## [5.3.2](https://github.com/AstroNvim/AstroNvim/compare/v5.3.1...v5.3.2) (2025-05-27)
 
 
