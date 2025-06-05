@@ -181,8 +181,7 @@ return {
           event = "TextYankPost",
           desc = "Highlight yanked text",
           pattern = "*",
-          -- TODO: remove check when dropping support for Neovim v0.10
-          callback = function() (vim.hl or vim.highlight).on_yank() end,
+          callback = function() vim.hl.on_yank() end,
         },
       },
       large_buf_settings = {
@@ -246,19 +245,6 @@ return {
           end,
         },
       },
-      -- TODO: remove autocommand when dropping support for Neovim v0.10
-      terminal_settings = vim.fn.has "nvim-0.11" ~= 1 and {
-        {
-          event = "TermOpen",
-          desc = "Disable line number/fold column/sign column for terminals",
-          callback = function()
-            vim.opt_local.number = false
-            vim.opt_local.relativenumber = false
-            vim.opt_local.foldcolumn = "0"
-            vim.opt_local.signcolumn = "no"
-          end,
-        },
-      } or false,
       unlist_quickfix = {
         {
           event = "FileType",
