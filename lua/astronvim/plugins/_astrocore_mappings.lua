@@ -109,20 +109,10 @@ return {
     local function diagnostic_jump(dir, severity)
       local jump_opts = {}
       if type(severity) == "string" then jump_opts.severity = vim.diagnostic.severity[severity] end
-      if vim.fn.has "nvim-0.11" == 1 then
-        return function()
-          jump_opts.count = dir and vim.v.count1 or -vim.v.count1
-          vim.diagnostic.jump(jump_opts)
-        end
-      else -- TODO: remove when dropping support for Neovim v0.10
-        local jump = vim.diagnostic["goto_" .. (dir and "next" or "prev")]
-        return function() jump(jump_opts) end
+      return function()
+        jump_opts.count = dir and vim.v.count1 or -vim.v.count1
+        vim.diagnostic.jump(jump_opts)
       end
-    end
-    -- TODO: Remove mapping after dropping support for Neovim v0.10, it's automatic
-    if vim.fn.has "nvim-0.11" == 0 then
-      maps.n["[d"] = { diagnostic_jump(false), desc = "Previous diagnostic" }
-      maps.n["]d"] = { diagnostic_jump(true), desc = "Next diagnostic" }
     end
     maps.n["[e"] = { diagnostic_jump(false, "ERROR"), desc = "Previous error" }
     maps.n["]e"] = { diagnostic_jump(true, "ERROR"), desc = "Next error" }
@@ -197,11 +187,8 @@ return {
     maps.n["<Leader>ut"] = { function() require("astrocore.toggles").tabline() end, desc = "Toggle tabline" }
     maps.n["<Leader>uu"] = { function() require("astrocore.toggles").url_match() end, desc = "Toggle URL highlight" }
     maps.n["<Leader>uv"] = { function() require("astrocore.toggles").virtual_text() end, desc = "Toggle virtual text" }
-    -- TODO: remove check when dropping support for Neovim 0.10
-    if vim.fn.has "nvim-0.11" == 1 then
-      maps.n["<Leader>uV"] =
-        { function() require("astrocore.toggles").virtual_lines() end, desc = "Toggle virtual lines" }
-    end
+    maps.n["<Leader>uV"] =
+      { function() require("astrocore.toggles").virtual_lines() end, desc = "Toggle virtual lines" }
     maps.n["<Leader>uw"] = { function() require("astrocore.toggles").wrap() end, desc = "Toggle wrap" }
     maps.n["<Leader>uy"] =
       { function() require("astrocore.toggles").buffer_syntax() end, desc = "Toggle syntax highlight" }

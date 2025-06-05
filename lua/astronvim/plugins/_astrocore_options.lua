@@ -4,11 +4,6 @@ return {
   opts = function(_, opts)
     local opt = {}
 
-    if vim.fn.has "nvim-0.11" == 1 then
-      -- TODO: remove check when dropping support for Neovim v0.10
-      opt.tabclose = "uselast" -- go to last used tab when closing the current tab
-    end
-
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
     opt.breakindent = true -- wrap indent to match  line start
     opt.clipboard = "unnamedplus" -- connection to the system clipboard
@@ -39,6 +34,7 @@ return {
     opt.smartcase = true -- case sensitive searching
     opt.splitbelow = true -- splitting a new window below the current one
     opt.splitright = true -- splitting a new window at the right of the current one
+    opt.tabclose = "uselast" -- go to last used tab when closing the current tab
     opt.tabstop = 2 -- number of space in a tab
     opt.termguicolors = true -- enable 24-bit RGB color in the TUI
     opt.timeoutlen = 500 -- shorten key timeout length a little bit for which-key
