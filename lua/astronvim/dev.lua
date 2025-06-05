@@ -24,7 +24,6 @@ function M.generate_snapshot(write)
     end,
     ["AstroNvim/AstroNvim"] = false, -- Managed by user
     ["Bilal2453/luvit-meta"] = false, -- Not a real plugin, used for type stubs only
-    ["rcarriga/nvim-notify"] = 'version = vim.fn.has "nvim-0.10" ~= 1 and "~3.14" or "^3"',
     -- example for pinning a plugin to a specific commit for older version of neovim
     -- ["neovim/nvim-lspconfig"] = function(plugin)
     --   return ('commit = vim.fn.has "nvim-0.10" ~= 1 and "76e7c8b029e6517f3689390d6599e9b446551704" or %q'):format(
