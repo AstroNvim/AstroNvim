@@ -1,6 +1,6 @@
 return {
   "mason-org/mason-lspconfig.nvim",
-  dependencies = { "mason-org/mason.nvim" },
+  dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
   event = "User AstroFile",
   cmd = { "LspInstall", "LspUninstall" },
   opts_extend = { "ensure_installed" },
