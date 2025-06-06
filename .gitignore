@@ -1,5 +1,4 @@
 # Project gitignore
-.luarc.json
 coc-settings.json
 
 # Global gitignore
