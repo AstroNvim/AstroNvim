@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.4](https://github.com/AstroNvim/AstroNvim/compare/v5.3.3...v5.3.4) (2025-07-01)
+
+
+### Bug Fixes
+
+* **snapshot:** update dependencies ([c2f9ac8](https://github.com/AstroNvim/AstroNvim/commit/c2f9ac881ab830989726b5eb7fea7cd07f12d570))
+
 ## [5.3.3](https://github.com/AstroNvim/AstroNvim/compare/v5.3.2...v5.3.3) (2025-05-31)
 
 
