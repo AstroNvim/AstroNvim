@@ -203,7 +203,7 @@ return {
     end
     maps.n["<Leader>uw"] = { function() require("astrocore.toggles").wrap() end, desc = "Toggle wrap" }
     maps.n["<Leader>uy"] =
-      { function() require("astrocore.toggles").buffer_syntax() end, desc = "Toggle syntax highlight" }
+      { function() require("astrocore.toggles").buffer_syntax() end, desc = "Toggle syntax highlight (buffer)" }
 
     opts.mappings = maps
   end,
