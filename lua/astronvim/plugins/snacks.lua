@@ -46,11 +46,11 @@ return {
     -- configure notifier
     opts.notifier = {}
     opts.notifier.icons = {
-      DEBUG = get_icon "Debugger",
-      ERROR = get_icon "DiagnosticError",
-      INFO = get_icon "DiagnosticInfo",
-      TRACE = get_icon "DiagnosticHint",
-      WARN = get_icon "DiagnosticWarn",
+      debug = get_icon "Debugger",
+      error = get_icon "DiagnosticError",
+      info = get_icon "DiagnosticInfo",
+      trace = get_icon "DiagnosticHint",
+      warn = get_icon "DiagnosticWarn",
     }
 
     -- configure picker and `vim.ui.select`
