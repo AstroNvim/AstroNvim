@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.3.5](https://github.com/AstroNvim/AstroNvim/compare/v5.3.4...v5.3.5) (2025-07-21)
+
+
+### Bug Fixes
+
+* **astrocore:** fix incorrect which-key mapping label to indicate buffer local mapping ([047c941](https://github.com/AstroNvim/AstroNvim/commit/047c941a9d7037065ef5069b76531d46688319c5))
+* **snacks:** Fix Snacks notifier icons ([e72c9a0](https://github.com/AstroNvim/AstroNvim/commit/e72c9a0523b9f4b76cdc6fa165298d42ae8b91ae))
+
 ## [5.3.4](https://github.com/AstroNvim/AstroNvim/compare/v5.3.3...v5.3.4) (2025-07-01)
 
 
