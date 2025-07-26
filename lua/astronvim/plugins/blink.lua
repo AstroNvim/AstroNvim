@@ -145,7 +145,12 @@ return {
         },
       },
     },
-    cmdline = { completion = { ghost_text = { enabled = false } } },
+    cmdline = {
+      keymap = {
+        ["<End>"] = { "hide", "fallback" },
+      },
+      completion = { ghost_text = { enabled = false } },
+    },
     signature = {
       window = {
         border = "rounded",
