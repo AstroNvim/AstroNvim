@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.6](https://github.com/AstroNvim/AstroNvim/compare/v5.3.5...v5.3.6) (2025-07-26)
+
+
+### Bug Fixes
+
+* **blink:** add workaround for missing `<End>` mapping in `cmdline` mappings ([fa68880](https://github.com/AstroNvim/AstroNvim/commit/fa68880bcb1c47790ec5acb3da5548e7616574d2))
+
 ## [5.3.5](https://github.com/AstroNvim/AstroNvim/compare/v5.3.4...v5.3.5) (2025-07-21)
 
 
