@@ -35,7 +35,7 @@ return {
   { "nvim-neotest/nvim-nio", version = "^1", optional = true },
   { "nvim-treesitter/nvim-treesitter", commit = "42fc28ba918343ebfd5565147a42a26580579482", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "89ebe73cd2836db80a22d9748999ace0241917a5", optional = true },
-  { "nvimtools/none-ls.nvim", commit = "a5954f00ee88bcdf154e931198ec636a26a1077c", optional = true },
+  { "nvimtools/none-ls.nvim", commit = "3ce66bc62eb363f19cceeb1fae2e71ea2bede56d", optional = true },
   { "rafamadriz/friendly-snippets", commit = "572f5660cf05f8cd8834e096d7b4c921ba18e175", optional = true },
   { "rcarriga/cmp-dap", commit = "ea92773e84c0ad3288c3bc5e452ac91559669087", optional = true },
   { "rcarriga/nvim-dap-ui", commit = "cf91d5e2d07c72903d052f5207511bf7ecdb7122", optional = true },
