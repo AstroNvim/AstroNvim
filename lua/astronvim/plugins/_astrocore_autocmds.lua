@@ -269,7 +269,7 @@ return {
     on_keys = {
       auto_hlsearch = {
         function(char)
-          if vim.fn.mode() == "n" and not mid_mapping then
+          if vim.tbl_contains({ "n", "c" }, vim.fn.mode()) and not mid_mapping then
             local new_hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
             if vim.o.hlsearch ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
             mid_mapping = true
