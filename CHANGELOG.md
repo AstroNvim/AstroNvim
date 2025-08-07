@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.8](https://github.com/AstroNvim/AstroNvim/compare/v5.3.7...v5.3.8) (2025-08-07)
+
+
+### Reverts
+
+* move back to previous logic for automatic hlsearch management ([ff58f54](https://github.com/AstroNvim/AstroNvim/commit/ff58f5490880edfc0934e2ebec23a1cf11fa99bf))
+
 ## [5.3.7](https://github.com/AstroNvim/AstroNvim/compare/v5.3.6...v5.3.7) (2025-08-07)
 
 
