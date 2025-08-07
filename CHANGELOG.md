@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.7](https://github.com/AstroNvim/AstroNvim/compare/v5.3.6...v5.3.7) (2025-08-07)
+
+
+### Bug Fixes
+
+* **autocmds:** improve detection of automatic hlsearch management ([09d3128](https://github.com/AstroNvim/AstroNvim/commit/09d31282ace6872ad6335fd4b38511ad99ec17fd))
+
 ## [5.3.6](https://github.com/AstroNvim/AstroNvim/compare/v5.3.5...v5.3.6) (2025-07-26)
 
 
