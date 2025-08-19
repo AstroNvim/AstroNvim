@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.9](https://github.com/AstroNvim/AstroNvim/compare/v5.3.8...v5.3.9) (2025-08-19)
+
+
+### Bug Fixes
+
+* check for `gdu` executable first on Mac before checking for `gdu-go` ([042d87c](https://github.com/AstroNvim/AstroNvim/commit/042d87c1e53feb0b296d32274e60afac36debfe3)), closes [#2839](https://github.com/AstroNvim/AstroNvim/issues/2839)
+
 ## [5.3.8](https://github.com/AstroNvim/AstroNvim/compare/v5.3.7...v5.3.8) (2025-08-07)
 
 
