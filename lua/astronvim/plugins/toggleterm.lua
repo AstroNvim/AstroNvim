@@ -25,8 +25,14 @@ return {
         if vim.fn.executable "node" == 1 then
           maps.n["<Leader>tn"] = { function() astro.toggle_term_cmd "node" end, desc = "ToggleTerm node" }
         end
-        local gdu = vim.fn.has "mac" == 1 and "gdu-go" or "gdu"
-        if vim.fn.has "win32" == 1 and vim.fn.executable(gdu) ~= 1 then gdu = "gdu_windows_amd64.exe" end
+        local gdu = "gdu"
+        if vim.fn.executable(gdu) ~= 1 then
+          if vim.fn.has "win32" == 1 then
+            gdu = "gdu_windows_amd64.exe"
+          elseif vim.fn.has "mac" == 1 then
+            gdu = "gdu-go"
+          end
+        end
         if vim.fn.executable(gdu) == 1 then
           maps.n["<Leader>tu"] =
             { function() astro.toggle_term_cmd { cmd = gdu, direction = "float" } end, desc = "ToggleTerm gdu" }

@@ -42,7 +42,7 @@ function M.check()
     { cmd = { "lazygit" }, type = "warn", msg = "Used for mappings to pull up git TUI (Optional)" },
     { cmd = { "node" }, type = "warn", msg = "Used for mappings to pull up node REPL (Optional)" },
     {
-      cmd = { vim.fn.has "mac" == 1 and "gdu-go" or "gdu", "gdu_windows_amd64.exe" },
+      cmd = { "gdu", "gdu-go", "gdu_windows_amd64.exe" },
       type = "warn",
       msg = "Used for mappings to pull up disk usage analyzer (Optional)",
     },
