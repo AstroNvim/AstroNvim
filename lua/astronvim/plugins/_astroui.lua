@@ -36,6 +36,9 @@ return {
   ---@type AstroUIOpts
   opts = {
     colorscheme = "astrotheme",
+    status = {
+      show_close_button = true, -- enable close button in tabline by default
+    },
     folding = {
       enabled = function(bufnr) return require("astrocore.buffer").is_valid(bufnr) end,
       methods = { "lsp", "treesitter", "indent" },
