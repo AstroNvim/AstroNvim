@@ -12,7 +12,7 @@ return {
   { "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "517ef5994ef9d6b738322664d5fdd948f0fdeb46", optional = true },
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
   { "brenoprata10/nvim-highlight-colors", commit = "e0c4a58ec8c3ca7c92d3ee4eb3bc1dd0f7be317e", optional = true },
-  { "echasnovski/mini.icons", version = "^0.16", optional = true },
+  { "nvim-mini/mini.icons", version = "^0.16", optional = true },
   { "folke/lazy.nvim", version = "^11", optional = true },
   { "folke/lazydev.nvim", version = "^1", optional = true },
   { "folke/snacks.nvim", version = "^2", optional = true },
