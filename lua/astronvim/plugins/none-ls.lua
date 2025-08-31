@@ -18,7 +18,7 @@ return {
   dependencies = {
     {
       "jay-babu/mason-null-ls.nvim",
-      dependencies = { "williamboman/mason.nvim" },
+      dependencies = { "mason-org/mason.nvim" },
       cmd = { "NullLsInstall", "NullLsUninstall" },
       opts_extend = { "ensure_installed" },
       opts = { ensure_installed = {}, handlers = {} },
