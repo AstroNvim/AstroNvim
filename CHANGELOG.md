@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.10](https://github.com/AstroNvim/AstroNvim/compare/v5.3.9...v5.3.10) (2025-08-31)
+
+
+### Bug Fixes
+
+* **autocmds:** resolve aerial not closing when last buffer ([f3e7cd3](https://github.com/AstroNvim/AstroNvim/commit/f3e7cd30d851e5b0d5bfc347dec76427d0e1e9c9)), closes [#2843](https://github.com/AstroNvim/AstroNvim/issues/2843)
+
 ## [5.3.9](https://github.com/AstroNvim/AstroNvim/compare/v5.3.8...v5.3.9) (2025-08-19)
 
 
