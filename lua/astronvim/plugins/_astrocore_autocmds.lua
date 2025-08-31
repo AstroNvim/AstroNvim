@@ -28,8 +28,8 @@ return {
           desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
           callback = function()
             local wins = vim.api.nvim_tabpage_list_wins(0)
-            -- Both neo-tree and aerial will auto-quit if there is only a single window left
-            if #wins <= 1 then return end
+            -- neo-tree handles if there is only a single window left
+            if #wins == 1 and vim.bo[vim.api.nvim_win_get_buf(wins[1])].filetype ~= "aerial" then return end
             local sidebar_fts = { aerial = true, ["neo-tree"] = true }
             for _, winid in ipairs(wins) do
               if vim.api.nvim_win_is_valid(winid) then
