@@ -62,7 +62,8 @@ return {
           float = {
             focused = false,
             style = "minimal",
-            border = "rounded",
+            -- TODO: remove when dropping support for Neovim v0.10
+            border = vim.fn.has "nvim-0.11" == 0 and "rounded" or nil,
             source = true,
             header = "",
             prefix = "",
