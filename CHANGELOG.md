@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.11](https://github.com/AstroNvim/AstroNvim/compare/v5.3.10...v5.3.11) (2025-09-11)
+
+
+### Bug Fixes
+
+* **snapshot:** update `lazy_snapshot` ([3f34751](https://github.com/AstroNvim/AstroNvim/commit/3f34751725337ad2bcd3a9546cd185ab286ab5b2))
+
 ## [5.3.10](https://github.com/AstroNvim/AstroNvim/compare/v5.3.9...v5.3.10) (2025-08-31)
 
 
