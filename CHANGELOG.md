@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.12](https://github.com/AstroNvim/AstroNvim/compare/v5.3.11...v5.3.12) (2025-09-26)
+
+
+### Bug Fixes
+
+* **blink:** fix missing snippet icon when use `lspkind` symbols ([d871f76](https://github.com/AstroNvim/AstroNvim/commit/d871f76baeb7e27815a75e37380042166e8c031a))
+
 ## [5.3.11](https://github.com/AstroNvim/AstroNvim/compare/v5.3.10...v5.3.11) (2025-09-11)
 
 
