@@ -269,12 +269,24 @@ return {
     on_keys = {
       auto_hlsearch = {
         function(char)
-          if vim.fn.mode() == "n" and not mid_mapping then
-            local new_hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
-            if vim.o.hlsearch ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
-            mid_mapping = true
-            vim.schedule(function() mid_mapping = false end)
+          if mid_mapping then return end
+          local new_hlsearch
+          if vim.fn.mode() == "n" then -- enable highlight search when actively searching in normal mode
+            new_hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
+          elseif vim.fn.mode() == "r" then -- always enable highlight search in replace mode
+            new_hlsearch = true
+          -- enable highlight search when searching in command mode
+          elseif vim.fn.mode() == "c" and vim.tbl_contains({ "<CR>" }, vim.fn.keytrans(char)) then
+            local cmd = vim.fn.getcmdline()
+            if (cmd:match "^s" or cmd:match "^%%s" or cmd:match "^'<,'>s") and vim.o.incsearch then
+              new_hlsearch = true
+            end
+          else
+            return
           end
+          if vim.o.hlsearch ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
+          mid_mapping = true
+          vim.schedule(function() mid_mapping = false end)
         end,
       },
     },
