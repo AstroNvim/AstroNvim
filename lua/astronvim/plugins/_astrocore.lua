@@ -90,6 +90,7 @@ return {
           },
         },
         treesitter = {
+          disabled = function(_, bufnr) return require("astrocore.buffer").is_large(bufnr) end,
           highlight = true,
           indent = true,
           ensure_installed = { "bash", "c", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" },
