@@ -27,6 +27,7 @@ return {
   {
     "AstroNvim/astrocore",
     dependencies = { "AstroNvim/astroui" },
+    opts_extend = { "treesitter.ensure_installed" },
     lazy = false,
     priority = 10000,
     opts = function(_, opts)
@@ -87,6 +88,11 @@ return {
             filetypes = { "gitcommit", "gitrebase" },
             buftypes = {},
           },
+        },
+        treesitter = {
+          highlight = true,
+          indent = true,
+          ensure_installed = { "bash", "c", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" },
         },
       } --[[@as AstroCoreOpts]])
     end,
