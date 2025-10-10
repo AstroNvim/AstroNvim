@@ -5,6 +5,5 @@ return {
   lazy = vim.fn.argc(-1) == 0, -- load treesitter immediately when opening a file from the cmdline
   cmd = { "TSInstall", "TSInstallFromGrammar", "TSUninstall", "TSUpdate", "TSLog" },
   build = ":TSUpdate",
-  opts_extend = { "ensure_installed" },
   opts = {},
 }
