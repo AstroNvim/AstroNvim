@@ -69,7 +69,22 @@ return {
     }
 
     opts.scope = {
-      filter = function(bufnr) return buf_utils.is_valid(bufnr) and not buf_utils.is_large(bufnr) end,
+      filter = function(bufnr)
+        return buf_utils.is_valid(bufnr)
+          and not buf_utils.is_large(bufnr)
+          and vim.g.snacks_scope ~= false
+          and vim.b[bufnr].snacks_scope ~= false
+      end,
+    }
+
+    opts.words = {
+      enabled = true,
+      filter = function(bufnr)
+        return buf_utils.is_valid(bufnr)
+          and not buf_utils.is_large(bufnr)
+          and vim.g.snacks_words ~= false
+          and vim.b[bufnr].snacks_words ~= false
+      end,
     }
 
     opts.zen = {
@@ -218,6 +233,14 @@ return {
             end,
             desc = "Search symbols",
           }
+        end
+
+        -- Snacks.words mappings
+        if vim.tbl_get(snack_opts, "words", "enabled") ~= false then
+          maps.n["<Leader>ur"] =
+            { function() require("snacks").toggle.words():toggle() end, desc = "Toggle reference highlighting" }
+          maps.n["]r"] = { function() require("snacks").words.jump(vim.v.count1) end, desc = "Next reference" }
+          maps.n["[r"] = { function() require("snacks").words.jump(-vim.v.count1) end, desc = "Previous reference" }
         end
 
         -- Snacks.zen mappings
