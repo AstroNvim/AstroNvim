@@ -153,6 +153,7 @@ return {
               function() require("snacks").picker.git_log { current_file = true, follow = true } end,
               desc = "Git commits (current file)",
             }
+            maps.n["<Leader>gd"] = { function() require("snacks").picker.git_diff() end, desc = "Find git diff" }
             maps.n["<Leader>gt"] = { function() require("snacks").picker.git_status() end, desc = "Git status" }
             maps.n["<Leader>gT"] = { function() require("snacks").picker.git_stash() end, desc = "Git stash" }
           end
