@@ -121,7 +121,6 @@ return {
       list = { selection = { preselect = false, auto_insert = true } },
       menu = {
         auto_show = function(ctx) return ctx.mode ~= "cmdline" end,
-        border = "rounded",
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
         draw = {
           treesitter = { "lsp" },
@@ -140,7 +139,6 @@ return {
         auto_show = true,
         auto_show_delay_ms = 0,
         window = {
-          border = "rounded",
           winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
         },
       },
@@ -153,7 +151,6 @@ return {
     },
     signature = {
       window = {
-        border = "rounded",
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
       },
     },
