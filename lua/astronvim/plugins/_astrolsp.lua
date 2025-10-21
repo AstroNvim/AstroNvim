@@ -11,11 +11,9 @@ return {
     config = { ["*"] = { capabilities = vim.lsp.protocol.make_client_capabilities() } },
     defaults = {
       hover = {
-        border = "rounded",
         silent = true,
       },
       signature_help = {
-        border = "rounded",
         silent = true,
         focusable = false,
       },

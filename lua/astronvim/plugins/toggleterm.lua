@@ -105,6 +105,5 @@ return {
       end
     end,
     shading_factor = 2,
-    float_opts = { border = "rounded" },
   },
 }
