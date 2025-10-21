@@ -90,7 +90,7 @@ return {
         },
       },
       dependencies = { { "nvim-neotest/nvim-nio", lazy = true } },
-      opts = { floating = { border = "rounded" } },
+      opts = {},
       config = function(...) require "astronvim.plugins.configs.nvim-dap-ui"(...) end,
     },
     {

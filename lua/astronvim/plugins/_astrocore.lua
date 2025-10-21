@@ -63,7 +63,6 @@ return {
           float = {
             focused = false,
             style = "minimal",
-            border = "rounded",
             source = true,
             header = "",
             prefix = "",
