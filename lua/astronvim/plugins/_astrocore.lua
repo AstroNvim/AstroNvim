@@ -92,6 +92,7 @@ return {
           enabled = function(_, bufnr) return not require("astrocore.buffer").is_large(bufnr) end,
           highlight = true,
           indent = true,
+          auto_install = true,
           ensure_installed = { "bash", "c", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" },
           textobjects = {
             select = {
