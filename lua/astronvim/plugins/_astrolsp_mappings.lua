@@ -104,6 +104,15 @@ return {
     maps.n["<Leader>lG"] =
       { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols", cond = "workspace/symbol" }
 
+    -- TODO: Remove check when dropping support for Neovim v0.11
+    if vim.lsp.buf.workspace_diagnostics then
+      maps.n["<Leader>lw"] = {
+        function() vim.lsp.buf.workspace_diagnostics() end,
+        desc = "Workspace diagnostics",
+        cond = "workspace/diagnostic",
+      }
+    end
+
     maps.n["<Leader>uY"] = {
       function() require("astrolsp.toggles").buffer_semantic_tokens() end,
       desc = "Toggle LSP semantic highlight (buffer)",
