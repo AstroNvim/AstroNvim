@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.13](https://github.com/AstroNvim/AstroNvim/compare/v5.3.12...v5.3.13) (2025-11-13)
+
+
+### Bug Fixes
+
+* **autocmds:** improve `on_key` function to handle searching in command mode and replace mode ([0001b5a](https://github.com/AstroNvim/AstroNvim/commit/0001b5adbd6b6b9c14166f5c5955c43fde5624de))
+
 ## [5.3.12](https://github.com/AstroNvim/AstroNvim/compare/v5.3.11...v5.3.12) (2025-09-26)
 
 
