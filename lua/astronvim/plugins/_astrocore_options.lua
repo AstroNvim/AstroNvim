@@ -3,11 +3,7 @@ return {
   ---@param opts AstroCoreOpts
   opts = function(_, opts)
     local opt = {}
-
-    if vim.fn.has "nvim-0.11" == 1 then
-      -- TODO: remove check when dropping support for Neovim v0.10
-      opt.tabclose = "uselast" -- go to last used tab when closing the current tab
-    end
+    local get_icon = require("astroui").get_icon
 
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
     opt.breakindent = true -- wrap indent to match  line start
@@ -19,7 +15,14 @@ return {
     opt.cursorline = true -- highlight the text line of the cursor
     opt.diffopt = vim.list_extend(vim.opt.diffopt:get(), { "algorithm:histogram", "linematch:60" }) -- enable linematch diff algorithm
     opt.expandtab = true -- enable the use of space in tab
-    opt.fillchars = { eob = " " } -- disable `~` on nonexistent lines
+    opt.fillchars = {
+      eob = " ",
+      foldopen = get_icon "FoldOpened", -- fold open icon
+      foldclose = get_icon "FoldClosed", -- fold close icon
+      foldsep = get_icon "FoldSeparator", -- fold separator
+      -- TODO: Remove check when dropping support for Neovim v0.11
+      foldinner = vim.fn.has "nvim-0.12" == 1 and get_icon "FoldSeparator" or nil, -- nested fold separator
+    } -- disable `~` on nonexistent lines
     opt.ignorecase = true -- case insensitive searching
     opt.infercase = true -- infer cases in keyword completion
     opt.jumpoptions = {} -- apply no jumpoptions on startup
@@ -39,6 +42,7 @@ return {
     opt.smartcase = true -- case sensitive searching
     opt.splitbelow = true -- splitting a new window below the current one
     opt.splitright = true -- splitting a new window at the right of the current one
+    opt.tabclose = "uselast" -- go to last used tab when closing the current tab
     opt.tabstop = 2 -- number of space in a tab
     opt.termguicolors = true -- enable 24-bit RGB color in the TUI
     opt.timeoutlen = 500 -- shorten key timeout length a little bit for which-key
@@ -46,6 +50,7 @@ return {
     opt.undofile = true -- enable persistent undo
     opt.updatetime = 300 -- length of time to wait before triggering the plugin
     opt.virtualedit = "block" -- allow going past end of line in visual block mode
+    opt.winborder = "rounded" -- set default winborder to rounded
     opt.wrap = false -- disable wrapping of lines longer than the width of window
     opt.writebackup = false -- disable making a backup before overwriting a file
 

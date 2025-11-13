@@ -27,6 +27,7 @@ return {
   {
     "AstroNvim/astrocore",
     dependencies = { "AstroNvim/astroui" },
+    opts_extend = { "treesitter.ensure_installed" },
     lazy = false,
     priority = 10000,
     opts = function(_, opts)
@@ -62,13 +63,11 @@ return {
           float = {
             focused = false,
             style = "minimal",
-            border = "rounded",
             source = true,
             header = "",
             prefix = "",
           },
-          -- TODO: remove check when dropping support for neovim v0.10
-          jump = vim.fn.has "nvim-0.11" == 1 and { float = true } or nil,
+          jump = { float = true },
         },
         rooter = {
           enabled = true,
@@ -87,6 +86,65 @@ return {
             dirs = {},
             filetypes = { "gitcommit", "gitrebase" },
             buftypes = {},
+          },
+        },
+        treesitter = {
+          enabled = function(_, bufnr) return not require("astrocore.buffer").is_large(bufnr) end,
+          highlight = true,
+          indent = true,
+          auto_install = true,
+          ensure_installed = { "bash", "c", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" },
+          textobjects = {
+            select = {
+              select_textobject = {
+                ["ak"] = { query = "@block.outer", desc = "around block" },
+                ["ik"] = { query = "@block.inner", desc = "inside block" },
+                ["ac"] = { query = "@class.outer", desc = "around class" },
+                ["ic"] = { query = "@class.inner", desc = "inside class" },
+                ["a?"] = { query = "@conditional.outer", desc = "around conditional" },
+                ["i?"] = { query = "@conditional.inner", desc = "inside conditional" },
+                ["af"] = { query = "@function.outer", desc = "around function" },
+                ["if"] = { query = "@function.inner", desc = "inside function" },
+                ["ao"] = { query = "@loop.outer", desc = "around loop" },
+                ["io"] = { query = "@loop.inner", desc = "inside loop" },
+                ["aa"] = { query = "@parameter.outer", desc = "around argument" },
+                ["ia"] = { query = "@parameter.inner", desc = "inside argument" },
+              },
+            },
+            move = {
+              goto_next_start = {
+                ["]k"] = { query = "@block.outer", desc = "Next block start" },
+                ["]f"] = { query = "@function.outer", desc = "Next function start" },
+                ["]a"] = { query = "@parameter.inner", desc = "Next argument start" },
+              },
+              goto_next_end = {
+                ["]K"] = { query = "@block.outer", desc = "Next block end" },
+                ["]F"] = { query = "@function.outer", desc = "Next function end" },
+                ["]A"] = { query = "@parameter.inner", desc = "Next argument end" },
+              },
+              goto_previous_start = {
+                ["[k"] = { query = "@block.outer", desc = "Previous block start" },
+                ["[f"] = { query = "@function.outer", desc = "Previous function start" },
+                ["[a"] = { query = "@parameter.inner", desc = "Previous argument start" },
+              },
+              goto_previous_end = {
+                ["[K"] = { query = "@block.outer", desc = "Previous block end" },
+                ["[F"] = { query = "@function.outer", desc = "Previous function end" },
+                ["[A"] = { query = "@parameter.inner", desc = "Previous argument end" },
+              },
+            },
+            swap = {
+              swap_next = {
+                [">K"] = { query = "@block.outer", desc = "Swap next block" },
+                [">F"] = { query = "@function.outer", desc = "Swap next function" },
+                [">A"] = { query = "@parameter.inner", desc = "Swap next argument" },
+              },
+              swap_previous = {
+                ["<K"] = { query = "@block.outer", desc = "Swap previous block" },
+                ["<F"] = { query = "@function.outer", desc = "Swap previous function" },
+                ["<A"] = { query = "@parameter.inner", desc = "Swap previous argument" },
+              },
+            },
           },
         },
       } --[[@as AstroCoreOpts]])
