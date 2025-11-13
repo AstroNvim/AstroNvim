@@ -1,6 +1,9 @@
 return {
   "AstroNvim/astrolsp",
-  lazy = true,
+  dependencies = {
+    { "neovim/nvim-lspconfig", optional = true },
+  },
+  event = "User AstroFile",
   ---@type AstroLSPOpts
   opts = {
     features = {
