@@ -39,7 +39,7 @@ return {
   { "rcarriga/nvim-dap-ui", commit = "cf91d5e2d07c72903d052f5207511bf7ecdb7122", optional = true },
   { "rebelot/heirline.nvim", version = "^1", optional = true },
   { "s1n7ax/nvim-window-picker", version = "^2", optional = true },
-  { "stevearc/aerial.nvim", version = "^2.2", optional = true },
+  { "stevearc/aerial.nvim", version = "^3", optional = true },
   { "stevearc/resession.nvim", version = "^1", optional = true },
   { "windwp/nvim-autopairs", commit = "c2a0dd0d931d0fb07665e1fedb1ea688da3b80b4", optional = true },
   { "windwp/nvim-ts-autotag", commit = "c4ca798ab95b316a768d51eaaaee48f64a4a46bc", optional = true },
