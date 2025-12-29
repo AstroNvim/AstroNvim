@@ -102,7 +102,9 @@ return {
         {
           event = { "FocusGained", "TermClose", "TermLeave" },
           desc = "Check if buffers changed on editor focus",
-          command = "checktime",
+          callback = function()
+            if vim.bo.buftype ~= "nofile" then vim.cmd "checktime" end
+          end,
         },
       },
       create_dir = {
