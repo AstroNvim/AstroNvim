@@ -59,7 +59,7 @@ return {
   dependencies = {
     {
       "jay-babu/mason-nvim-dap.nvim",
-      dependencies = { "nvim-dap", "williamboman/mason.nvim" },
+      dependencies = { "nvim-dap", "mason-org/mason.nvim" },
       cmd = { "DapInstall", "DapUninstall" },
       opts_extend = { "ensure_installed" },
       opts = { ensure_installed = {}, handlers = {} },
@@ -90,7 +90,7 @@ return {
         },
       },
       dependencies = { { "nvim-neotest/nvim-nio", lazy = true } },
-      opts = { floating = { border = "rounded" } },
+      opts = {},
       config = function(...) require "astronvim.plugins.configs.nvim-dap-ui"(...) end,
     },
     {
