@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.14](https://github.com/AstroNvim/AstroNvim/compare/v5.3.13...v5.3.14) (2025-12-29)
+
+
+### Bug Fixes
+
+* **autocmds:** only check time of valid buffers ([7381fbd](https://github.com/AstroNvim/AstroNvim/commit/7381fbd5f43a685b877df4ef5d0ef85d362cfcbc))
+
 ## [5.3.13](https://github.com/AstroNvim/AstroNvim/compare/v5.3.12...v5.3.13) (2025-11-13)
 
 
