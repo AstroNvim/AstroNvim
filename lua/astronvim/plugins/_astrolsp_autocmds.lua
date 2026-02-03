@@ -17,16 +17,19 @@ return {
       },
     },
     autocmds = {
-      lsp_codelens_refresh = {
-        cond = "textDocument/codeLens",
-        {
-          event = { "TextChanged", "InsertLeave", "BufEnter" },
-          desc = "Refresh codelens (buffer)",
-          callback = function(args)
-            if require("astrolsp").config.features.codelens then vim.lsp.codelens.refresh { bufnr = args.buf } end
-          end,
-        },
-      },
+      -- TODO: remove autocommand when dropping support for Neovim v0.11
+      lsp_codelens_refresh = not vim.lsp.codelens.enable
+          and {
+            cond = "textDocument/codeLens",
+            {
+              event = { "TextChanged", "InsertLeave", "BufEnter" },
+              desc = "Refresh codelens (buffer)",
+              callback = function(args)
+                if require("astrolsp").config.features.codelens then vim.lsp.codelens.refresh { bufnr = args.buf } end
+              end,
+            },
+          }
+        or false,
       lsp_auto_signature_help = {
         cond = "textDocument/signatureHelp",
         {

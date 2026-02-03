@@ -17,8 +17,18 @@ return {
       cond = "textDocument/codeAction",
     }
 
-    maps.n["<Leader>ll"] =
-      { function() vim.lsp.codelens.refresh() end, desc = "LSP CodeLens refresh", cond = "textDocument/codeLens" }
+    -- TODO: remove mapping when dropping support for Neovim v0.11
+    maps.n["<Leader>ll"] = {
+      function()
+        if vim.lsp.codelens.enable then
+          vim.lsp.codelens.enable(true)
+        else
+          vim.lsp.codelens.refresh()
+        end
+      end,
+      desc = "LSP CodeLens refresh",
+      cond = "textDocument/codeLens",
+    }
     maps.n["<Leader>lL"] =
       { function() vim.lsp.codelens.run() end, desc = "LSP CodeLens run", cond = "textDocument/codeLens" }
     maps.n["<Leader>uL"] = {
