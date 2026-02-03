@@ -5,6 +5,8 @@ local function formatting_enabled(client)
     and not vim.tbl_contains(formatting_disabled, client.name)
 end
 
+local signature_help_triggered = false
+
 return {
   "AstroNvim/astrolsp",
   ---@type AstroLSPOpts
@@ -43,22 +45,19 @@ return {
               local retrigger = vim.b[args.buf].signature_help_retriggerCharacters or {}
               local pos = vim.api.nvim_win_get_cursor(0)[2]
               local cur_char = vim.api.nvim_get_current_line():sub(pos, pos)
-              if
-                vim.g.signature_help_triggered and (cur_char:match "%s" or retrigger[cur_char])
-                or trigger[cur_char]
-              then
-                vim.g.signature_help_triggered = true
+              if signature_help_triggered and (cur_char:match "%s" or retrigger[cur_char]) or trigger[cur_char] then
+                signature_help_triggered = true
                 vim.lsp.buf.signature_help()
                 return
               end
             end
-            vim.g.signature_help_triggered = false
+            signature_help_triggered = false
           end,
         },
         {
           event = "InsertLeave",
           desc = "Clear automatic signature help internals when leaving insert",
-          callback = function() vim.g.signature_help_triggered = false end,
+          callback = function() signature_help_triggered = false end,
         },
       },
       lsp_auto_format = {
