@@ -99,9 +99,9 @@ return {
       config = function(...) require "astronvim.plugins.configs.cmp-dap"(...) end,
       specs = {
         {
-          "Saghen/blink.cmp",
+          "saghen/blink.cmp",
           optional = true,
-          specs = { "Saghen/blink.compat", lazy = true, opts = {} },
+          specs = { "saghen/blink.compat", lazy = true, opts = {} },
           opts = {
             sources = {
               providers = {

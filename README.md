@@ -45,7 +45,7 @@ AstroNvim is an aesthetically pleasing and feature-rich neovim config that is ex
 
 - Common plugin specifications with [AstroCommunity](https://github.com/AstroNvim/astrocommunity)
 - File explorer with [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim)
-- Autocompletion with [Blink.cmp](https://github.com/Saghen/blink.cmp)
+- Autocompletion with [Blink.cmp](https://github.com/saghen/blink.cmp)
 - Git integration with [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
 - Statusline, Winbar, and Bufferline, Statuscolumn with [Heirline](https://github.com/rebelot/heirline.nvim)
 - Terminal with [Toggleterm](https://github.com/akinsho/toggleterm.nvim)

@@ -71,7 +71,7 @@ local function get_kind_icon(CTX)
 end
 
 return {
-  "Saghen/blink.cmp",
+  "saghen/blink.cmp",
   version = "^1", -- make sure to always set version to v1 even on development
   event = { "InsertEnter", "CmdlineEnter" },
   opts_extend = { "sources.default", "cmdline.sources", "term.sources" },
@@ -157,7 +157,7 @@ return {
   },
   specs = {
     { -- disable blink icons if icons are disabled
-      "Saghen/blink.cmp",
+      "saghen/blink.cmp",
       opts = function(_, opts)
         if vim.g.icons_enabled == false then
           if not opts.appearance then opts.appearance = {} end
