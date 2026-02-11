@@ -8,7 +8,7 @@ return function()
     end
     if not parser then
       local json5_avail, json5 = pcall(require, "json5")
-      parser = json5_avail and json5.parse or vim.json.decode
+      parser = json5_avail and json5.parse or function(_str) return vim.json.decode(_str, { skip_comments = true }) end
     end
     if type(cleaner) == "function" then str = cleaner(str) end
     local parsed_ok, parsed = pcall(parser, str)
