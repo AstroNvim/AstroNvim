@@ -4,6 +4,7 @@ return {
     { "neovim/nvim-lspconfig", optional = true },
   },
   event = "User AstroFile",
+  opts_extend = { "servers" },
   ---@type AstroLSPOpts
   opts = {
     features = {
