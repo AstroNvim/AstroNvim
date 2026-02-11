@@ -11,7 +11,7 @@ return {
     region_check_events = "CursorMoved",
   },
   specs = {
-    { "Saghen/blink.cmp", optional = true, opts = { snippets = { preset = "luasnip" } } },
+    { "saghen/blink.cmp", optional = true, opts = { snippets = { preset = "luasnip" } } },
   },
   config = function(...) require "astronvim.plugins.configs.luasnip"(...) end,
 }
