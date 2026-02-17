@@ -59,6 +59,8 @@ AstroNvim is an aesthetically pleasing and feature-rich neovim config that is ex
 
 - [Nerd Fonts](https://www.nerdfonts.com/font-downloads) (_Optional with manual intervention:_ See [Documentation on customizing icons](https://docs.astronvim.com/Recipes/icons)) <sup>[[1]](#1)</sup>
 - [Neovim 0.11+ (_Not_ including nightly)](https://github.com/neovim/neovim/releases/tag/stable)
+- [Tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md) (_Note:_ If not installed, this will be auto-installed with Mason if available)
+- A C compiler in your path (see [https://docs.rs/cc/latest/cc/#compile-time-requirements](https://docs.rs/cc/latest/cc/#compile-time-requirements))
 - A clipboard tool is necessary for the integration with the system clipboard (see [`:help clipboard-tool`](https://neovim.io/doc/user/provider.html#clipboard-tool) for supported solutions)
 - Terminal with true color support (for the default theme, otherwise it is dependent on the theme you are using) <sup>[[2]](#2)</sup>
 - Optional Requirements:
