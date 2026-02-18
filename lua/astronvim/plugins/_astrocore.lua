@@ -85,7 +85,7 @@ return {
           ignore = {
             dirs = {},
             filetypes = { "gitcommit", "gitrebase" },
-            buftypes = {},
+            buftypes = { "nofile" },
           },
         },
         treesitter = {
