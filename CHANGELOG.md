@@ -1,5 +1,43 @@
 # Changelog
 
+## [6.0.0](https://github.com/AstroNvim/AstroNvim/compare/v5.3.15...v6.0.0) (2026-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Neovim v0.10
+
+### Features
+
+* **astrocore:** add `foldinner` icon ([a62b7d4](https://github.com/AstroNvim/AstroNvim/commit/a62b7d4bda769c9843ea8363b978960fa6fb66b8))
+* **astrocore:** automatically install treesitter parsers as needed ([b1b8b5c](https://github.com/AstroNvim/AstroNvim/commit/b1b8b5c99cd16c61d534cdc3c927c127f5c508a3))
+* **astrolsp:** add mapping for workspace diagnostics ([bcb18b8](https://github.com/AstroNvim/AstroNvim/commit/bcb18b8fa7983abe43e6b244ccd721db455f6d28))
+* **mason-lspconfig:** integrate mason-lspconfig v2 with AstroLSP ([14b4ba9](https://github.com/AstroNvim/AstroNvim/commit/14b4ba9abba96fa396fe614a64e6d9ac64bf078b))
+* migrate from `vim-illuminate` to `snacks.words` ([b345b81](https://github.com/AstroNvim/AstroNvim/commit/b345b811dc4a6b9a5c35b7e315c71f68532e5f0c))
+* **options:** migrate to using the new `winborder` option for setting default floating window style ([3be57af](https://github.com/AstroNvim/AstroNvim/commit/3be57aff50470dd0378c0e48c471697a37911db5))
+* **treesitter:** add configuration of treesitter based text objects ([295d3a2](https://github.com/AstroNvim/AstroNvim/commit/295d3a23db849d9b6cb5deae5120c4a13f0f3cbd))
+* **treesitter:** add disabling treesitter on large buffers ([6ecbe18](https://github.com/AstroNvim/AstroNvim/commit/6ecbe188eb2d387107174217b0b1846008671a80))
+* **treesitter:** migrate to `main` branch of `nvim-treesitter` ([10a2c59](https://github.com/AstroNvim/AstroNvim/commit/10a2c597dd1172b573725ae7ec4e0be9e684ebc5))
+* update to `mason-lspconfig` v2 ([207f78a](https://github.com/AstroNvim/AstroNvim/commit/207f78aca0e5e410ba125708e7d41dd59a58ad9c))
+* update to AstroLSP v4 ([36bd147](https://github.com/AstroNvim/AstroNvim/commit/36bd1475bde6a6657daaee9e2a979879df9245ff))
+
+
+### Bug Fixes
+
+* add support for the new `vim.lsp.codelens` implementation ([b04e9cb](https://github.com/AstroNvim/AstroNvim/commit/b04e9cb474896dfc96c75bc0ed889eeb363431df))
+* **astrocore:** ignore `nofile` buffers in session management ([f07ad72](https://github.com/AstroNvim/AstroNvim/commit/f07ad72296c330f3aae49f73a54cbaf9c3787fdc))
+* **astrolsp:** use `opts_extend` for `servers` key ([2a7bfde](https://github.com/AstroNvim/AstroNvim/commit/2a7bfde5818625552de1f4fc5d5ee386f1261a9d))
+* **lspconfig:** update lazy load command when `:lsp` is upstreamed ([d23df5b](https://github.com/AstroNvim/AstroNvim/commit/d23df5bdbe78ed1b105767c541c50607aa8150e4))
+* **nvim-dap:** use new `skip_comments` flag in `vim.json.decode` if available ([12c7819](https://github.com/AstroNvim/AstroNvim/commit/12c7819c706fae292c352fc900d17a058b17ce1d))
+* resolve loading dependency order ([0b68415](https://github.com/AstroNvim/AstroNvim/commit/0b684155198f1e4c943dcad5a65c08603057e298))
+* rework lazy loading and loading order of AstroLSP and lspconfig ([04246bd](https://github.com/AstroNvim/AstroNvim/commit/04246bdb5e09d8e8827aa0bc827f46691fa40570))
+* **snapshot:** pin `lazydev` to commit until next release ([72a2605](https://github.com/AstroNvim/AstroNvim/commit/72a26058d77c10441870559120ec783d2c1dd94d))
+
+
+### Code Refactoring
+
+* drop support for Neovim v0.10 ([32abe14](https://github.com/AstroNvim/AstroNvim/commit/32abe1413f77f8dc450a838bf23892f82523afa4))
+
 ## [5.3.15](https://github.com/AstroNvim/AstroNvim/compare/v5.3.14...v5.3.15) (2026-01-26)
 
 
