@@ -22,7 +22,7 @@ return {
   { "mason-org/mason.nvim", version = "^2", optional = true },
   { "max397574/better-escape.nvim", version = "^2", optional = true },
   { "mfussenegger/nvim-dap", commit = "4f5deb110d9ff8994d96c21df95e2271d11214f9", optional = true },
-  { "mrjones2014/smart-splits.nvim", version = "^2", optional = true },
+  { "mrjones2014/smart-splits.nvim", commit = "12426763591f06b865c20990d8423345ea96d44f", optional = true },
   { "neovim/nvim-lspconfig", version = "^2", optional = true },
   { "nvim-lua/plenary.nvim", commit = "b9fd5226c2f76c951fc8ed5923d85e4de065e509", optional = true },
   { "nvim-mini/mini.icons", version = "^0.17", optional = true },
