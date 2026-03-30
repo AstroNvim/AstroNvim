@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.1](https://github.com/AstroNvim/AstroNvim/compare/v6.0.0...v6.0.1) (2026-03-30)
+
+
+### Bug Fixes
+
+* **snapshot:** pin `smart-splits.nvim` to commit until next release ([0169b20](https://github.com/AstroNvim/AstroNvim/commit/0169b20a5ece5670b80745c1b84ad12eebfc5a78))
+
 ## [6.0.0](https://github.com/AstroNvim/AstroNvim/compare/v5.3.15...v6.0.0) (2026-03-30)
 
 
