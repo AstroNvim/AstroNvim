@@ -11,7 +11,7 @@ return {
   { "akinsho/toggleterm.nvim", version = "^2", optional = true },
   { "brenoprata10/nvim-highlight-colors", commit = "e2cb22089cc2358b2b995c09578224f142de6039", optional = true },
   { "folke/lazy.nvim", version = "^11", optional = true },
-  { "folke/lazydev.nvim", version = "^1", optional = true },
+  { "folke/lazydev.nvim", commit = "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d", optional = true },
   { "folke/snacks.nvim", version = "^2", optional = true },
   { "folke/todo-comments.nvim", version = "^1", optional = true },
   { "folke/which-key.nvim", version = "^3", optional = true },
