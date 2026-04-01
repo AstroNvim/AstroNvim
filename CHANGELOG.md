@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.2](https://github.com/AstroNvim/AstroNvim/compare/v6.0.1...v6.0.2) (2026-04-01)
+
+
+### Bug Fixes
+
+* **astrolsp:** disable codelens by default until Neovim v0.12.1 ([bb4eec4](https://github.com/AstroNvim/AstroNvim/commit/bb4eec444bb67479e2bf906df23d4fa350835141))
+* **blink:** use lspkind.nvim new api ([a77d527](https://github.com/AstroNvim/AstroNvim/commit/a77d52718866b8d2c8ba9590676ec37c9f937f3a))
+
 ## [6.0.1](https://github.com/AstroNvim/AstroNvim/compare/v6.0.0...v6.0.1) (2026-03-30)
 
 
