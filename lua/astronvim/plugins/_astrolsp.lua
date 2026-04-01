@@ -8,7 +8,7 @@ return {
   ---@type AstroLSPOpts
   opts = {
     features = {
-      codelens = true,
+      codelens = false, -- HACK: disable codelens until v0.12.1 release
       inlay_hints = false,
       semantic_tokens = true,
     },
