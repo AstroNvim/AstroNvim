@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.3](https://github.com/AstroNvim/AstroNvim/compare/v6.0.2...v6.0.3) (2026-04-07)
+
+
+### Bug Fixes
+
+* **astrolsp:** only disable codelens by default for 0.12.0 ([9fdc103](https://github.com/AstroNvim/AstroNvim/commit/9fdc10340afe04fe3af65dbfc800ed995a92d362))
+* **snapshot:** pin `nvim-treesitter` to valid commit for Neovim v0.11 ([81909e4](https://github.com/AstroNvim/AstroNvim/commit/81909e4a77d9eece01e7411e9ccf2a3ed027f974))
+
 ## [6.0.2](https://github.com/AstroNvim/AstroNvim/compare/v6.0.1...v6.0.2) (2026-04-01)
 
 
