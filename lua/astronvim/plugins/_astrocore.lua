@@ -61,13 +61,15 @@ return {
           underline = true,
           severity_sort = true,
           float = {
-            focused = false,
-            style = "minimal",
-            source = true,
+            source = "if_many",
             header = "",
             prefix = "",
           },
-          jump = { float = true },
+          jump = {
+            -- TODO: remove when dropping support for Neovim v0.11
+            float = vim.fn.has "nvim-0.11" == 1 and true or nil,
+            on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = "cursor", focus = false } end,
+          },
         },
         rooter = {
           enabled = true,
