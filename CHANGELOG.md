@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.4](https://github.com/AstroNvim/AstroNvim/compare/v6.0.3...v6.0.4) (2026-04-07)
+
+
+### Bug Fixes
+
+* **astrocore:** remove usage of deprecated `float` option in diagnostics ([5e3ca0b](https://github.com/AstroNvim/AstroNvim/commit/5e3ca0bf951aaac6fd8e341ea72c74bcbed22803))
+
 ## [6.0.3](https://github.com/AstroNvim/AstroNvim/compare/v6.0.2...v6.0.3) (2026-04-07)
 
 
