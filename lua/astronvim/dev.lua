@@ -24,9 +24,14 @@ function M.generate_snapshot(write)
     end,
     ["AstroNvim/AstroNvim"] = false, -- Managed by user
     ["Bilal2453/luvit-meta"] = false, -- Not a real plugin, used for type stubs only
+    ["nvim-treesitter/nvim-treesitter"] = function(plugin)
+      return ('commit = vim.fn.has "nvim-0.12" ~= 1 and "90cd6580e720caedacb91fdd587b747a6e77d61f" or %q'):format(
+        plugin.commit
+      )
+    end,
     -- example for pinning a plugin to a specific commit for older version of neovim
-    -- ["neovim/nvim-lspconfig"] = function(plugin)
-    --   return ('commit = vim.fn.has "nvim-0.10" ~= 1 and "76e7c8b029e6517f3689390d6599e9b446551704" or %q'):format(
+    -- ["nvim-treesitter/nvim-treesitter"] = function(plugin)
+    --   return ('commit = vim.fn.has "nvim-0.12" ~= 1 and "90cd6580e720caedacb91fdd587b747a6e77d61f" or %q'):format(
     --     plugin.commit
     --   )
     -- end,
