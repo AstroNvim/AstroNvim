@@ -114,7 +114,7 @@ return {
           callback = function(args)
             local file = args.match
             if not require("astrocore.buffer").is_valid(args.buf) or file:match "^%w+:[\\/][\\/]" then return end
-            vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(file) or file, ":p:h"), "p")
+            vim.fn.mkdir(vim.fs.abspath(vim.fs.dirname(vim.uv.fs_realpath(file) or file)), "p")
           end,
         },
       },
@@ -148,7 +148,7 @@ return {
                 end
                 skip_augroups["filetypedetect"] = false -- don't skip filetypedetect events
                 astro.event "File"
-                local folder = vim.fn.fnamemodify(current_file, ":p:h")
+                local folder = vim.fs.abspath(vim.fs.dirname(current_file))
                 if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
                 if vim.fn.executable "git" == 1 then
                   if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
@@ -259,12 +259,13 @@ return {
         function(char)
           if mid_mapping then return end
           local new_hlsearch
-          if vim.fn.mode() == "n" then -- enable highlight search when actively searching in normal mode
+          local mode = vim.api.nvim_get_mode().mode:sub(1, 1)
+          if mode == "n" then -- enable highlight search when actively searching in normal mode
             new_hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
-          elseif vim.fn.mode() == "r" then -- always enable highlight search in replace mode
+          elseif mode == "r" then -- always enable highlight search in replace mode
             new_hlsearch = true
           -- enable highlight search when searching in command mode
-          elseif vim.fn.mode() == "c" and vim.tbl_contains({ "<CR>" }, vim.fn.keytrans(char)) then
+          elseif mode == "c" and vim.tbl_contains({ "<CR>" }, vim.fn.keytrans(char)) then
             local cmd = vim.fn.getcmdline()
             if (cmd:match "^s" or cmd:match "^%%s" or cmd:match "^'<,'>s") and vim.o.incsearch then
               new_hlsearch = true

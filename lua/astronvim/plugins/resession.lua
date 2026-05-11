@@ -10,7 +10,7 @@ return {
         maps.n["<Leader>Sl"] = { function() require("resession").load "Last Session" end, desc = "Load last session" }
         maps.n["<Leader>Ss"] = { function() require("resession").save() end, desc = "Save this session" }
         maps.n["<Leader>SS"] = {
-          function() require("resession").save(vim.fn.getcwd(), { dir = "dirsession" }) end,
+          function() require("resession").save(vim.uv.cwd(), { dir = "dirsession" }) end,
           desc = "Save this dirsession",
         }
         maps.n["<Leader>St"] = { function() require("resession").save_tab() end, desc = "Save this tab's session" }
@@ -21,7 +21,7 @@ return {
         maps.n["<Leader>SF"] =
           { function() require("resession").load(nil, { dir = "dirsession" }) end, desc = "Load a dirsession" }
         maps.n["<Leader>S."] = {
-          function() require("resession").load(vim.fn.getcwd(), { dir = "dirsession" }) end,
+          function() require("resession").load(vim.uv.cwd(), { dir = "dirsession" }) end,
           desc = "Load current dirsession",
         }
         opts.autocmds.resession_auto_save = {
@@ -34,7 +34,7 @@ return {
               if autosave and buf_utils.is_valid_session() then
                 local save = require("resession").save
                 if autosave.last then save("Last Session", { notify = false }) end
-                if autosave.cwd then save(vim.fn.getcwd(), { dir = "dirsession", notify = false }) end
+                if autosave.cwd then save(vim.uv.cwd(), { dir = "dirsession", notify = false }) end
               end
             end,
           },
