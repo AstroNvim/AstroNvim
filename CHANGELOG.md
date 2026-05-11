@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.5](https://github.com/AstroNvim/AstroNvim/compare/v6.0.4...v6.0.5) (2026-05-11)
+
+
+### Performance Improvements
+
+* migrate some vim functions to Lua APIs ([2946f98](https://github.com/AstroNvim/AstroNvim/commit/2946f9817b2952446c7a22fc61f5131ce7b73307))
+
 ## [6.0.4](https://github.com/AstroNvim/AstroNvim/compare/v6.0.3...v6.0.4) (2026-04-07)
 
 
