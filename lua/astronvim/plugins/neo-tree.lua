@@ -72,6 +72,7 @@ return {
       enable_git_status = git_available,
       auto_clean_after_session_restore = true,
       close_if_last_window = true,
+      popup_border_style = "",
       sources = { "filesystem", "buffers", git_available and "git_status" or nil },
       source_selector = {
         winbar = true,
