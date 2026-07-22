@@ -45,7 +45,7 @@ return {
           cmp = true, -- enable completion at start
           diagnostics = true, -- enable diagnostics by default
           highlighturl = true, -- highlight URLs by default
-          notifications = true, -- disable notifications
+          notifications = true, -- enable notifications
         },
         diagnostics = {
           virtual_text = true,

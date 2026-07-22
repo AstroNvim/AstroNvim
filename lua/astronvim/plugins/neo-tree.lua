@@ -122,7 +122,7 @@ return {
           if node:has_children() then
             if not node:is_expanded() then -- if unexpanded, expand
               state.commands.toggle_node(state)
-            else -- if expanded and has children, seleect the next child
+            else -- if expanded and has children, select the next child
               if node.type == "file" then
                 state.commands.open(state)
               else

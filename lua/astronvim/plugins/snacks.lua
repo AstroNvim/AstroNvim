@@ -124,7 +124,7 @@ return {
         local maps = opts.mappings
         local snack_opts = require("astrocore").plugin_opts "snacks.nvim"
 
-        -- Snacks.dashboard mappins
+        -- Snacks.dashboard mappings
         maps.n["<Leader>h"] = {
           function()
             if vim.bo.filetype == "snacks_dashboard" then
