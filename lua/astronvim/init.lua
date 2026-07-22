@@ -9,7 +9,7 @@ function M.version()
   local plugin = assert(astrocore.get_plugin "AstroNvim")
   local version_ok, version_str = pcall(astrocore.read_file, plugin.dir .. "/version.txt")
   if not version_ok then
-    require("astrocore").notify("Unable to calculate version", vim.log.levels.ERROR)
+    astrocore.notify("Unable to calculate version", vim.log.levels.ERROR)
     return
   end
 
@@ -20,7 +20,7 @@ function M.version()
     if vim.fn.executable "git" == 1 then
       local git_description = astrocore.cmd({ "git", "-C", plugin.dir, "describe", "--tags" }, false)
       if git_description then
-        local nightly_version = git_description and git_description:match ".*(-%d+-g%x+)\n*$"
+        local nightly_version = git_description:match ".*(-%d+-g%x+)\n*$"
         if nightly_version then version_str = version_str .. nightly_version end
       end
     end
