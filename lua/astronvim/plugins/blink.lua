@@ -52,7 +52,7 @@ local function get_kind_icon(CTX)
         if ctx.item.kind == kinds.Color then
           local doc = vim.tbl_get(ctx, "item", "documentation")
           if doc then
-            local color_item = highlight_colors_avail and highlight_colors.format(doc, { kind = kinds[kinds.Color] })
+            local color_item = highlight_colors.format(doc, { kind = kinds[kinds.Color] })
             if color_item and color_item.abbr_hl_group then
               if color_item.abbr then ctx.kind_icon = color_item.abbr end
               ctx.kind_hl = color_item.abbr_hl_group
