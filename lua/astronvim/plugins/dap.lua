@@ -85,7 +85,7 @@ return {
             }
             maps.n["<Leader>du"] = { function() require("dapui").toggle() end, desc = "Toggle Debugger UI" }
             maps.n["<Leader>dh"] = { function() require("dap.ui.widgets").hover() end, desc = "Debugger Hover" }
-            maps.v["<Leader>dE"] = { function() require("dapui").eval() end, desc = "Evaluate Input" }
+            maps.v["<Leader>dE"] = { function() require("dapui").eval() end, desc = "Evaluate Selection" }
           end,
         },
       },
