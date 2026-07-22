@@ -49,8 +49,7 @@ return {
               event = "BufWritePre",
               desc = "trigger willCreateFiles before writing a new file",
               callback = function(args)
-                local filename = require("astrocore.buffer").is_valid(args.buf)
-                  and vim.fn.expand("#" .. args.buf .. ":p")
+                local filename = require("astrocore.buffer").is_valid(args.buf) and vim.api.nvim_buf_get_name(args.buf)
                 if filename and not vim.uv.fs_stat(filename) then
                   vim.b[args.buf].new_file = filename
                   require("astrolsp.file_operations").willCreateFiles(filename)
