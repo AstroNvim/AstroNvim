@@ -66,7 +66,7 @@ return {
     end
     return require("astrocore").extend_tbl(opts, {
       opts = {
-        colors = require("astroui").config.status.setup_colors(),
+        colors = ui_config.status.setup_colors(),
         disable_winbar_cb = function(args)
           local enabled = vim.tbl_get(ui_config, "status", "winbar", "enabled")
           if enabled and status.condition.buffer_matches(enabled, args.buf) then return false end
