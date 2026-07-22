@@ -236,7 +236,7 @@ return {
           desc = "Restore last cursor position when opening a file",
           callback = function(args)
             local buf = args.buf
-            if vim.b[buf].last_loc_restored or vim.tbl_contains({ "gitcommit" }, vim.bo[buf].filetype) then return end
+            if vim.b[buf].last_loc_restored or vim.bo[buf].filetype == "gitcommit" then return end
             vim.b[buf].last_loc_restored = true
             local mark = vim.api.nvim_buf_get_mark(buf, '"')
             if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(buf) then
@@ -265,7 +265,7 @@ return {
           elseif mode == "r" then -- always enable highlight search in replace mode
             new_hlsearch = true
           -- enable highlight search when searching in command mode
-          elseif mode == "c" and vim.tbl_contains({ "<CR>" }, vim.fn.keytrans(char)) then
+          elseif mode == "c" and vim.fn.keytrans(char) == "<CR>" then
             local cmd = vim.fn.getcmdline()
             if (cmd:match "^s" or cmd:match "^%%s" or cmd:match "^'<,'>s") and vim.o.incsearch then
               new_hlsearch = true
