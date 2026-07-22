@@ -16,8 +16,8 @@ local paused = false
 ---@return boolean # whether or not the notifications are paused
 function M.is_paused() return paused end
 
---- Check now many notifications are pending
----@return table[] # the number of pending notifications
+--- Check how many notifications are pending
+---@return table[] # the pending notifications
 function M.pending() return notifications end
 
 --- Pause notifications
@@ -34,8 +34,8 @@ end
 
 --- A pausable `vim.notify` function
 ---@param message string|string[] Notification message
----@param level string|number Log level. See vim.log.levels
----@param opts notify.Options Notification options
+---@param level? string|number Log level. See vim.log.levels
+---@param opts? table Notification options
 function M.notify(message, level, opts)
   if M.is_paused() then
     local pos = opts and opts.replace
@@ -50,7 +50,7 @@ function M.notify(message, level, opts)
 end
 
 --- Set `vim.notify` to extend it to be pause-able
----@param notify? function|notify the original notification function (defaults to `vim.notify`)
+---@param notify? function the original notification function (defaults to `vim.notify`)
 function M.setup(notify)
   if not notify then notify = vim.notify end
   assert(notify ~= M.notify, "vim.notify is already setup")
