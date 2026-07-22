@@ -25,7 +25,7 @@ return {
       auto_quit = {
         {
           event = "BufEnter",
-          desc = "Quit AstroNvim if more than one window is open and only sidebar windows are list",
+          desc = "Quit AstroNvim if more than one window is open and only sidebar windows are left",
           callback = function()
             local wins = vim.api.nvim_tabpage_list_wins(0)
             -- neo-tree handles if there is only a single window left
