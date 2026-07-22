@@ -46,18 +46,6 @@ return {
 
     maps.n["<Leader>R"] = { function() require("astrocore").rename_file() end, desc = "Rename file" }
 
-    -- Neovim Default LSP Mappings
-    if vim.fn.has "nvim-0.11" ~= 1 then
-      maps.n["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
-      maps.x["gra"] = { function() vim.lsp.buf.code_action() end, desc = "vim.lsp.buf.code_action()" }
-      maps.n["grn"] = { function() vim.lsp.buf.rename() end, desc = "vim.lsp.buf.rename()" }
-      maps.n["grr"] = { function() vim.lsp.buf.references() end, desc = "vim.lsp.buf.references()" }
-      maps.n["gri"] = { function() vim.lsp.buf.implementation() end, desc = "vim.lsp.buf.implementation()" }
-      maps.n["gO"] = { function() vim.lsp.buf.document_symbol() end, desc = "vim.lsp.buf.document_symbol()" }
-      maps.i["<C-S>"] = { function() vim.lsp.buf.signature_help() end, desc = "vim.lsp.buf.signature_help()" }
-      maps.s["<C-S>"] = { function() vim.lsp.buf.signature_help() end, desc = "vim.lsp.buf.signature_help()" }
-    end
-
     -- Plugin Manager
     maps.n["<Leader>p"] = vim.tbl_get(sections, "p")
     maps.n["<Leader>pi"] = { function() require("lazy").install() end, desc = "Plugins Install" }
