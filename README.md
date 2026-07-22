@@ -2,7 +2,6 @@
   <img
     src="https://astronvim.com/logo/astronvim.svg"
     width="110"
-    ,
     height="100"
   />
 </div>
@@ -47,7 +46,7 @@ AstroNvim is an aesthetically pleasing and feature-rich neovim config that is ex
 - File explorer with [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim)
 - Autocompletion with [Blink.cmp](https://github.com/saghen/blink.cmp)
 - Git integration with [Gitsigns](https://github.com/lewis6991/gitsigns.nvim)
-- Statusline, Winbar, and Bufferline, Statuscolumn with [Heirline](https://github.com/rebelot/heirline.nvim)
+- Statusline, Winbar, Bufferline, and Statuscolumn with [Heirline](https://github.com/rebelot/heirline.nvim)
 - Terminal with [Toggleterm](https://github.com/akinsho/toggleterm.nvim)
 - Fuzzy finding with [Snacks Picker](https://github.com/folke/snacks.nvim/blob/main/docs/picker.md)
 - Syntax highlighting with [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
@@ -119,7 +118,7 @@ nvim
 
 #### Minimal `~/.config/nvim/init.lua`
 
-Some user's might not want to use an entire template or do any customization. Here is a minimal `~/.config/nvim/init.lua` file that simply set's up a base AstroNvim installation:
+Some users might not want to use an entire template or do any customization. Here is a minimal `~/.config/nvim/init.lua` file that simply sets up a base AstroNvim installation:
 
 ```lua
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
