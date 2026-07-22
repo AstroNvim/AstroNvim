@@ -4,7 +4,7 @@ return {
   opts = function(_, opts)
     local astro = require "astrocore"
     local get_icon = require("astroui").get_icon
-    -- initialize internally use mapping section titles
+    -- initialize internally used mapping section titles
     opts._map_sections = {
       f = { desc = get_icon("Search", 1, true) .. "Find" },
       p = { desc = get_icon("Package", 1, true) .. "Packages" },
