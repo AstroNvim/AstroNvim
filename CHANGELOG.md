@@ -1,5 +1,22 @@
 # Changelog
 
+## [6.0.6](https://github.com/AstroNvim/AstroNvim/compare/v6.0.5...v6.0.6) (2026-07-22)
+
+
+### Bug Fixes
+
+* **astrocore:** correct `auto_quit` autocmd description ([e203400](https://github.com/AstroNvim/AstroNvim/commit/e203400d7333859c3d77f42961a50eb0ab85a2ef))
+* **astrocore:** correct Makefile capitalization in rooter detector ([0e9ac19](https://github.com/AstroNvim/AstroNvim/commit/0e9ac19c2c5367de1d46496eaed731e087666b9f))
+* **dap:** correct visual mode evaluate mapping description ([fdf9dee](https://github.com/AstroNvim/AstroNvim/commit/fdf9dee461c45c898d861b95acb1cd1c92dd53a3))
+* **health:** fix garbled ripgrep check message ([010fd74](https://github.com/AstroNvim/AstroNvim/commit/010fd7498598724514ec0f02be8d44b4c2c2a8fb))
+
+
+### Performance Improvements
+
+* **astrocore:** replace single-element tbl_contains with direct comparisons ([fa7f028](https://github.com/AstroNvim/AstroNvim/commit/fa7f02888dc4f31d214d8b93eedc525b3f636c49))
+* **astrolsp:** use nvim_buf_get_name instead of expand ([eb6ec31](https://github.com/AstroNvim/AstroNvim/commit/eb6ec313548cd3edb1e8e4523f368477872e7298))
+* **health:** use nvim_exec2 to retrieve Neovim version ([c236cbb](https://github.com/AstroNvim/AstroNvim/commit/c236cbb390d9caf26d3da84adef6bb3d3dd48f95))
+
 ## [6.0.5](https://github.com/AstroNvim/AstroNvim/compare/v6.0.4...v6.0.5) (2026-06-22)
 
 
