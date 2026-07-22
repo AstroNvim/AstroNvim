@@ -273,7 +273,7 @@ return {
           else
             return
           end
-          if vim.o.hlsearch ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
+          if vim.o.hlsearch ~= new_hlsearch then vim.o.hlsearch = new_hlsearch end
           mid_mapping = true
           vim.schedule(function() mid_mapping = false end)
         end,
