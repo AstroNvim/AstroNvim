@@ -86,12 +86,12 @@ return {
     maps.n["<Leader>uh"] = {
       function() require("astrolsp.toggles").buffer_inlay_hints() end,
       desc = "Toggle LSP inlay hints (buffer)",
-      cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
+      cond = "textDocument/inlayHint",
     }
     maps.n["<Leader>uH"] = {
       function() require("astrolsp.toggles").inlay_hints() end,
       desc = "Toggle LSP inlay hints (global)",
-      cond = vim.lsp.inlay_hint and "textDocument/inlayHint" or false,
+      cond = "textDocument/inlayHint",
     }
 
     maps.n["<Leader>lR"] =
@@ -126,9 +126,7 @@ return {
     maps.n["<Leader>uY"] = {
       function() require("astrolsp.toggles").buffer_semantic_tokens() end,
       desc = "Toggle LSP semantic highlight (buffer)",
-      cond = function(client)
-        return client:supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens
-      end,
+      cond = function(client) return client:supports_method "textDocument/semanticTokens/full" end,
     }
     opts.mappings = require("astrocore").extend_tbl(opts.mappings, maps)
   end,
