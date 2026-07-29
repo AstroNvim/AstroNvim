@@ -16,7 +16,7 @@ function M.generate_snapshot(write)
   table.sort(plugins, function(l, r) return l[1] < r[1] end)
   local function git_commit(dir)
     local commit = assert(astrocore.cmd({ "git", "-C", dir, "rev-parse", "HEAD" }, false))
-    if commit then return vim.trim(commit) end
+    return vim.trim(commit)
   end
   local pinners = {
     ["*"] = function(plugin)
