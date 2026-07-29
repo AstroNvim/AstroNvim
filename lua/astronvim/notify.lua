@@ -43,7 +43,14 @@ function M.notify(message, level, opts)
     local pos = opts and opts.replace
     if type(pos) == "table" and pos.id then pos = pos.id end
     if type(pos) ~= "number" or not notifications[pos] then pos = #notifications + 1 end
-    if opts then opts.replace = nil end
+    if opts then
+      local queued_opts = {}
+      for key, value in pairs(opts) do
+        queued_opts[key] = value
+      end
+      queued_opts.replace = nil
+      opts = queued_opts
+    end
     notifications[pos] = vim.F.pack_len(message, level, opts)
     return { id = pos }
   else
