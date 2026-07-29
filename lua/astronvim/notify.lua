@@ -16,7 +16,7 @@ local paused = false
 ---@return boolean # whether or not the notifications are paused
 function M.is_paused() return paused end
 
---- Check how many notifications are pending
+--- Get the pending notifications
 ---@return table[] # the pending notifications
 function M.pending() return notifications end
 
@@ -51,7 +51,7 @@ function M.notify(message, level, opts)
   end
 end
 
---- Set `vim.notify` to extend it to be pause-able
+--- Set `vim.notify` to extend it to be pausable
 ---@param notify? function the original notification function (defaults to `vim.notify`)
 function M.setup(notify)
   if not notify then notify = vim.notify end
@@ -82,7 +82,7 @@ function M.defer_startup()
   checker:start(function()
     if vim.notify ~= M.notify then replay() end
   end)
-  -- or if it took more than 500ms, then something went wrong
+  -- or replay after 500ms as a fallback
   timer:start(500, 0, replay)
 end
 

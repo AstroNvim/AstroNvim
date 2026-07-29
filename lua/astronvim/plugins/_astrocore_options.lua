@@ -34,7 +34,7 @@ return {
     opt.pumheight = 10 -- height of the pop up menu
     opt.relativenumber = true -- show relative numberline
     opt.shiftround = true -- round indentation with `>`/`<` to shiftwidth
-    opt.shiftwidth = 0 -- number of space inserted for indentation; when zero the 'tabstop' value will be used
+    opt.shiftwidth = 0 -- number of spaces inserted for indentation; when zero the 'tabstop' value will be used
     opt.shortmess = vim.tbl_deep_extend("force", vim.opt.shortmess:get(), { s = true, I = true, c = true, C = true }) -- disable search count wrap, startup messages, and completion messages
     opt.showmode = false -- disable showing modes in command line
     opt.showtabline = 2 -- always display tabline
@@ -43,7 +43,7 @@ return {
     opt.splitbelow = true -- splitting a new window below the current one
     opt.splitright = true -- splitting a new window at the right of the current one
     opt.tabclose = "uselast" -- go to last used tab when closing the current tab
-    opt.tabstop = 2 -- number of space in a tab
+    opt.tabstop = 2 -- number of spaces in a tab
     opt.termguicolors = true -- enable 24-bit RGB color in the TUI
     opt.timeoutlen = 500 -- shorten key timeout length a little bit for which-key
     opt.title = true -- set terminal title to the filename and path
