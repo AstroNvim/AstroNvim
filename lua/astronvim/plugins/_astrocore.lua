@@ -67,7 +67,7 @@ return {
           },
           jump = {
             -- TODO: remove when dropping support for Neovim v0.11
-            float = vim.fn.has "nvim-0.11" == 1 and true or nil,
+            float = vim.fn.has "nvim-0.12" == 0 and true or nil,
             on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = "cursor", focus = false } end,
           },
         },
