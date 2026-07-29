@@ -59,7 +59,7 @@ end
 
 --- Remove `astronvim.notify` utilities and restore original `vim.notify`
 function M.restore()
-  M.notify = M._original
+  if vim.notify == M.notify then vim.notify = M._original end
   if M.is_paused() then M.resume() end
 end
 
