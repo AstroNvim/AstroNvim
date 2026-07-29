@@ -101,7 +101,7 @@ return {
         {
           "saghen/blink.cmp",
           optional = true,
-          specs = { "saghen/blink.compat", lazy = true, opts = {} },
+          specs = { { "saghen/blink.compat", lazy = true, opts = {} } },
           opts = {
             sources = {
               providers = {
