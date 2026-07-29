@@ -27,7 +27,9 @@ function M.pause() paused = true end
 function M.resume()
   paused = false
   vim.schedule(function()
-    vim.tbl_map(function(notif) vim.notify(vim.F.unpack_len(notif)) end, notifications)
+    for _, notif in pairs(notifications) do
+      vim.notify(vim.F.unpack_len(notif))
+    end
     notifications = {}
   end)
 end
