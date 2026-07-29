@@ -49,6 +49,7 @@ return {
               event = "BufWritePre",
               desc = "trigger willCreateFiles before writing a new file",
               callback = function(args)
+                vim.b[args.buf].new_file = false
                 local filename = require("astrocore.buffer").is_valid(args.buf) and vim.api.nvim_buf_get_name(args.buf)
                 if filename and not vim.uv.fs_stat(filename) then
                   vim.b[args.buf].new_file = filename
@@ -83,7 +84,10 @@ return {
           didCreateFiles = { events = { events.FILE_ADDED } },
           willDeleteFiles = { events = { events.BEFORE_FILE_DELETE } },
           didDeleteFiles = { events = { events.FILE_DELETED } },
-          willRenameFiles = { events = { events.BEFORE_FILE_MOVE, events.BEFORE_FILE_RENAME }, args = move_args },
+          willRenameFiles = {
+            events = { events.BEFORE_FILE_MOVE, events.BEFORE_FILE_RENAME },
+            args = move_args,
+          },
           didRenameFiles = { events = { events.FILE_MOVED, events.FILE_RENAMED }, args = move_args },
         }
         for operation, config in pairs(operations) do
