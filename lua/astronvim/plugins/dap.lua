@@ -117,5 +117,5 @@ return {
       },
     },
   },
-  config = function(...) require "astronvim.plugins.configs.nvim-dap"(...) end,
+  config = function() require "astronvim.plugins.configs.nvim-dap"() end,
 }

@@ -7,6 +7,7 @@ return {
       ---@param opts AstroCoreOpts
       opts = function(_, opts)
         local maps = opts.mappings
+        ---@cast maps AstroCoreMappings
         maps.n["<Leader>bb"] = {
           function()
             require("astroui.status.heirline").buffer_picker(function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end)
