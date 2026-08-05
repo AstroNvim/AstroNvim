@@ -1,5 +1,26 @@
 # Changelog
 
+## [6.0.7](https://github.com/AstroNvim/AstroNvim/compare/v6.0.6...v6.0.7) (2026-08-05)
+
+
+### Bug Fixes
+
+* **astrocore:** gate legacy diagnostic float ([46e1fdf](https://github.com/AstroNvim/AstroNvim/commit/46e1fdf1894541197d39237170628cf52446400f))
+* **astrolsp:** clear stale new file markers ([b11ed4f](https://github.com/AstroNvim/AstroNvim/commit/b11ed4fae02bbe598ee37f274ba8c0e4289fb16c))
+* **core:** harden startup and notification state ([8d6f791](https://github.com/AstroNvim/AstroNvim/commit/8d6f79138f2065f3b3f8f40ee2ef9cea45799e3f))
+* **integrations:** harden tool startup and terminal paths ([dea48b3](https://github.com/AstroNvim/AstroNvim/commit/dea48b3a5526f1685a7fd52f86a9eb55827390e4))
+* **lsp:** preserve buffer-scoped operations ([90847b6](https://github.com/AstroNvim/AstroNvim/commit/90847b63b6429edb910db4917f4b31fbb13afca9))
+* **mappings:** restore visual force write ([5430913](https://github.com/AstroNvim/AstroNvim/commit/5430913c76e1699639f993e2e7139d6e23c468fa))
+* **notify:** preserve caller options while paused ([1e60074](https://github.com/AstroNvim/AstroNvim/commit/1e60074e019d699033ab682d797f73c3602d0b27))
+* **notify:** restore original notification function ([f236a97](https://github.com/AstroNvim/AstroNvim/commit/f236a972560b2e041322e373c02a565bb423b31d))
+* **options:** update diffopt for Neovim 0.13 ([8bec3f8](https://github.com/AstroNvim/AstroNvim/commit/8bec3f8c0d3a8d4220c735b26498e7af97283f56))
+* **types:** align plugin configuration contracts ([b2d0921](https://github.com/AstroNvim/AstroNvim/commit/b2d0921c203a8bb8d62a4c1b8e8499407bfffbc5))
+
+
+### Performance Improvements
+
+* replace side-effect table maps with loops ([9845b31](https://github.com/AstroNvim/AstroNvim/commit/9845b3136f500991793df1c1f41f65d7a0d83e69))
+
 ## [6.0.6](https://github.com/AstroNvim/AstroNvim/compare/v6.0.5...v6.0.6) (2026-07-27)
 
 
