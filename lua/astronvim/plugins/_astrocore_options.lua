@@ -13,7 +13,10 @@ return {
     opt.confirm = true -- raise a dialog asking if you wish to save the current file(s)
     opt.copyindent = true -- copy the previous indentation on autoindenting
     opt.cursorline = true -- highlight the text line of the cursor
-    opt.diffopt = vim.list_extend(vim.opt.diffopt:get(), { "algorithm:histogram", "linematch:60" }) -- enable linematch diff algorithm
+    -- TODO: Remove check when dropping support for Neovim v0.12
+    opt.diffopt = vim.fn.has "nvim-0.13" == 1
+        and vim.tbl_deep_extend("force", vim.opt.diffopt:get(), { algorithm = "histogram", linematch = 60 })
+      or vim.list_extend(vim.opt.diffopt:get(), { "algorithm:histogram", "linematch:60" }) -- enable linematch diff algorithm
     opt.expandtab = true -- enable the use of space in tab
     opt.fillchars = {
       eob = " ",
