@@ -34,7 +34,7 @@ return {
     maps.n["<Leader>Q"] = { "<Cmd>confirm qall<CR>", desc = "Exit AstroNvim" }
     maps.n["<Leader>n"] = { "<Cmd>enew<CR>", desc = "New File" }
     maps.n["<C-S>"] = { "<Cmd>silent! update! | redraw<CR>", desc = "Force write" }
-    maps.x["<C-S>"] = maps.i["<C-s>"]
+    maps.x["<C-S>"] = maps.n["<C-S>"]
     maps.n["<C-Q>"] = { "<Cmd>q!<CR>", desc = "Force quit" }
     maps.n["|"] = { "<Cmd>vsplit<CR>", desc = "Vertical Split" }
     maps.n["\\"] = { "<Cmd>split<CR>", desc = "Horizontal Split" }
