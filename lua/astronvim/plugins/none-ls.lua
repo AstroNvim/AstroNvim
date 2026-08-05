@@ -26,5 +26,5 @@ return {
     },
   },
   event = "User AstroFile",
-  opts = function(_, opts) opts.on_attach = require("astrolsp").on_attach end,
+  opts = {},
 }

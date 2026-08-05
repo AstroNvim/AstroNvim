@@ -8,7 +8,7 @@ return {
   ---@type AstroLSPOpts
   opts = {
     features = {
-      codelens = not vim.version.range("0.12.0-0.12.1"):has(vim.version()),
+      codelens = not vim.version.range("0.12.0 - 0.12.1"):has(vim.version()),
       inlay_hints = false,
       semantic_tokens = true,
     },
@@ -78,12 +78,33 @@ return {
       opts = function(_, opts)
         local events = require "neo-tree.events"
         if not opts.event_handlers then opts.event_handlers = {} end
-        local move_args = function(args) return { from = args.source, to = args.destination } end
+        local deleted_paths = {}
+        local function path_kind(path)
+          local stat = vim.uv.fs_stat(path)
+          return stat and (stat.type == "directory" and "folder" or "file")
+        end
+        local function delete_args(path)
+          local typed_path = { path = path, kind = path_kind(path) or "file" }
+          deleted_paths[path] = typed_path
+          return typed_path
+        end
+        local function deleted_args(path)
+          local typed_path = deleted_paths[path] or { path = path, kind = path_kind(path) or "file" }
+          deleted_paths[path] = nil
+          return typed_path
+        end
+        local function move_args(args)
+          return {
+            from = args.source,
+            to = args.destination,
+            kind = path_kind(args.source) or path_kind(args.destination) or "file",
+          }
+        end
         local operations = {
           willCreateFiles = { events = { events.BEFORE_FILE_ADD } },
           didCreateFiles = { events = { events.FILE_ADDED } },
-          willDeleteFiles = { events = { events.BEFORE_FILE_DELETE } },
-          didDeleteFiles = { events = { events.FILE_DELETED } },
+          willDeleteFiles = { events = { events.BEFORE_FILE_DELETE }, args = delete_args },
+          didDeleteFiles = { events = { events.FILE_DELETED }, args = deleted_args },
           willRenameFiles = {
             events = { events.BEFORE_FILE_MOVE, events.BEFORE_FILE_RENAME },
             args = move_args,
