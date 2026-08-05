@@ -13,7 +13,11 @@ return {
           local lazygit = {
             callback = function()
               local worktree = astro.file_worktree()
-              local flags = worktree and (" --work-tree=%s --git-dir=%s"):format(worktree.toplevel, worktree.gitdir)
+              local flags = worktree
+                  and (" --work-tree=%s --git-dir=%s"):format(
+                    vim.fn.shellescape(worktree.toplevel),
+                    vim.fn.shellescape(worktree.gitdir)
+                  )
                 or ""
               astro.toggle_term_cmd { cmd = "lazygit " .. flags, direction = "float" }
             end,
