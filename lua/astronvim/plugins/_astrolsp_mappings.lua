@@ -50,9 +50,11 @@ return {
 
     local function formatting_checker(method)
       method = "textDocument/" .. (method or "formatting")
-      return function(client)
+      return function(client, bufnr)
         local disabled = opts.formatting.disabled
-        return client:supports_method(method) and disabled ~= true and not vim.tbl_contains(disabled, client.name)
+        return client:supports_method(method, bufnr)
+          and disabled ~= true
+          and not vim.tbl_contains(disabled, client.name)
       end
     end
     local formatting_enabled = formatting_checker()
@@ -126,7 +128,7 @@ return {
     maps.n["<Leader>uY"] = {
       function() require("astrolsp.toggles").buffer_semantic_tokens() end,
       desc = "Toggle LSP semantic highlight (buffer)",
-      cond = function(client) return client:supports_method "textDocument/semanticTokens/full" end,
+      cond = function(client, bufnr) return client:supports_method("textDocument/semanticTokens/full", bufnr) end,
     }
     opts.mappings = require("astrocore").extend_tbl(opts.mappings, maps)
   end,

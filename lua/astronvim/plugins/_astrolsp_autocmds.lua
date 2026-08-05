@@ -1,6 +1,6 @@
-local function formatting_enabled(client)
+local function formatting_enabled(client, bufnr)
   local formatting_disabled = vim.tbl_get(require("astrolsp").config, "formatting", "disabled")
-  return client:supports_method "textDocument/formatting"
+  return client:supports_method("textDocument/formatting", bufnr)
     and formatting_disabled ~= true
     and not vim.tbl_contains(formatting_disabled, client.name)
 end
@@ -67,10 +67,9 @@ return {
           desc = "autoformat on save",
           callback = function(_, _, bufnr)
             local astrolsp = require "astrolsp"
-            local autoformat = assert(astrolsp.config.formatting.format_on_save)
             local buffer_autoformat = vim.b[bufnr].autoformat
-            if buffer_autoformat == nil then buffer_autoformat = autoformat.enabled end
-            if buffer_autoformat and ((not autoformat.filter) or autoformat.filter(bufnr)) then
+            if buffer_autoformat == nil then buffer_autoformat = astrolsp.autoformat_enabled(bufnr) end
+            if buffer_autoformat then
               vim.lsp.buf.format(vim.tbl_deep_extend("force", astrolsp.format_opts, { bufnr = bufnr }))
             end
           end,

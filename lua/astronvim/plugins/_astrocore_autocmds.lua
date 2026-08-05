@@ -136,42 +136,42 @@ return {
           desc = "AstroNvim user events for file detection (AstroFile and AstroGitFile)",
           callback = function(args)
             if vim.b[args.buf].astrofile_checked then return end
-            vim.b[args.buf].astrofile_checked = true
             vim.schedule(function()
-              if not vim.api.nvim_buf_is_valid(args.buf) then return end
+              if not vim.api.nvim_buf_is_valid(args.buf) or vim.b[args.buf].astrofile_checked then return end
               local astro = require "astrocore"
               local current_file = vim.api.nvim_buf_get_name(args.buf)
-              if vim.g.vscode or not (current_file == "" or vim.bo[args.buf].buftype == "nofile") then
-                local skip_augroups = {}
-                for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
-                  if autocmd.group_name then skip_augroups[autocmd.group_name] = true end
-                end
-                skip_augroups["filetypedetect"] = false -- don't skip filetypedetect events
-                astro.event "File"
-                local folder = vim.fs.abspath(vim.fs.dirname(current_file))
-                if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
-                if vim.fn.executable "git" == 1 then
-                  if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
-                    astro.event "GitFile"
-                    pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
-                  end
-                else
+              if not vim.g.vscode and (current_file == "" or vim.bo[args.buf].buftype == "nofile") then return end
+
+              vim.b[args.buf].astrofile_checked = true
+              local skip_augroups = {}
+              for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
+                if autocmd.group_name then skip_augroups[autocmd.group_name] = true end
+              end
+              skip_augroups["filetypedetect"] = false -- don't skip filetypedetect events
+              astro.event "File"
+              local folder = vim.fs.abspath(vim.fs.dirname(current_file))
+              if vim.fn.has "win32" == 1 then folder = ('"%s"'):format(folder) end
+              if vim.fn.executable "git" == 1 then
+                if astro.cmd({ "git", "-C", folder, "rev-parse" }, false) or astro.file_worktree() then
+                  astro.event "GitFile"
                   pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
                 end
-                vim.schedule(function()
-                  if require("astrocore.buffer").is_valid(args.buf) then
-                    for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
-                      if autocmd.group_name and not skip_augroups[autocmd.group_name] then
-                        vim.api.nvim_exec_autocmds(
-                          args.event,
-                          { group = autocmd.group_name, buffer = args.buf, data = args.data }
-                        )
-                        skip_augroups[autocmd.group_name] = true
-                      end
+              else
+                pcall(vim.api.nvim_del_augroup_by_name, "file_user_events")
+              end
+              vim.schedule(function()
+                if require("astrocore.buffer").is_valid(args.buf) then
+                  for _, autocmd in ipairs(vim.api.nvim_get_autocmds { event = args.event }) do
+                    if autocmd.group_name and not skip_augroups[autocmd.group_name] then
+                      vim.api.nvim_exec_autocmds(
+                        args.event,
+                        { group = autocmd.group_name, buffer = args.buf, data = args.data }
+                      )
+                      skip_augroups[autocmd.group_name] = true
                     end
                   end
-                end)
-              end
+                end
+              end)
             end)
           end,
         },

@@ -197,7 +197,7 @@ return {
       opts = function(_, opts)
         if not opts.config then opts.config = {} end
         if not opts.config["*"] then opts.config["*"] = {} end
-        opts.config["*"].capabilities = require("blink.cmp").get_lsp_capabilities(opts.config.capabilities)
+        opts.config["*"].capabilities = require("blink.cmp").get_lsp_capabilities(opts.config["*"].capabilities)
 
         -- disable AstroLSP signature help if `blink.cmp` is providing it
         local blink_opts = require("astrocore").plugin_opts "blink.cmp"
