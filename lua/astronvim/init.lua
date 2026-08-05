@@ -42,24 +42,28 @@ function M.init()
   if M.did_init then return end
   M.did_init = true
 
-  local notify = require "astronvim.notify"
-  notify.setup()
-  notify.defer_startup()
+  local success, err = pcall(function()
+    require("astronvim.notify").defer_startup()
 
-  -- force setup during initialization
-  local plugin = require("lazy.core.config").spec.plugins.AstroNvim
+    -- force setup during initialization
+    local plugin = require("lazy.core.config").spec.plugins.AstroNvim
 
-  local opts = require("lazy.core.plugin").values(plugin, "opts")
-  if opts.pin_plugins == nil then opts.pin_plugins = plugin.version ~= nil end
+    local opts = require("lazy.core.plugin").values(plugin, "opts")
+    if opts.pin_plugins == nil then opts.pin_plugins = plugin.version ~= nil end
 
-  ---@diagnostic disable-next-line: cast-local-type
-  opts = vim.tbl_deep_extend("force", M.config, opts)
-  ---@cast opts -nil
-  M.config = opts
+    ---@diagnostic disable-next-line: cast-local-type
+    opts = vim.tbl_deep_extend("force", M.config, opts)
+    ---@cast opts -nil
+    M.config = opts
 
-  if not vim.g.mapleader and M.config.mapleader then vim.g.mapleader = M.config.mapleader end
-  if not vim.g.maplocalleader and M.config.maplocalleader then vim.g.maplocalleader = M.config.maplocalleader end
-  if M.config.icons_enabled == false then vim.g.icons_enabled = false end
+    if not vim.g.mapleader and M.config.mapleader then vim.g.mapleader = M.config.mapleader end
+    if not vim.g.maplocalleader and M.config.maplocalleader then vim.g.maplocalleader = M.config.maplocalleader end
+    if M.config.icons_enabled == false then vim.g.icons_enabled = false end
+  end)
+  if not success then
+    M.did_init = false
+    error(err, 0)
+  end
 end
 
 function M.setup() end

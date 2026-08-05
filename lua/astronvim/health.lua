@@ -12,7 +12,7 @@ local health = vim.health
 function M.check()
   health.start "Checking requirements"
 
-  health.info("AstroNvim Version: " .. require("astronvim").version())
+  health.info("AstroNvim Version: " .. (require("astronvim").version() or "unknown"))
   health.info("Neovim Version: v" .. vim.api.nvim_exec2("version", { output = true }).output:match "NVIM v([^\n]*)")
 
   if vim.version().prerelease then
