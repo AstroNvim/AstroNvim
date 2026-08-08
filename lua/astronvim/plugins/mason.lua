@@ -19,7 +19,9 @@ return {
   opts_extend = { "registries" },
   opts = function(_, opts)
     if not opts.registries then opts.registries = {} end
-    table.insert(opts.registries, "github:mason-org/mason-registry")
+    if not vim.tbl_contains(opts.registries, "github:mason-org/mason-registry") then
+      table.insert(opts.registries, "github:mason-org/mason-registry")
+    end
     if not opts.ui then opts.ui = {} end
     opts.ui.icons = vim.g.icons_enabled == false
         and {
