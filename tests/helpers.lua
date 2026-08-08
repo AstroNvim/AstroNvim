@@ -5,16 +5,35 @@ local M = {}
 local cases = setmetatable({}, { __mode = "k" })
 local xdg_variables = { "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_STATE_HOME", "XDG_CACHE_HOME", "XDG_RUNTIME_DIR" }
 local deterministic_environment = {
-  LC_ALL = "C.UTF-8",
-  LANG = "C.UTF-8",
+  LC_ALL = "C",
+  LANG = "C",
   TZ = "UTC",
   TERM = "xterm-256color",
   COLORTERM = "truecolor",
 }
 
+local function create_directory(path)
+  if vim.fn.mkdir(path, "p", 448) ~= 0 or vim.fn.isdirectory(path) == 1 then return end
+  error("Failed to create test fixture directory: " .. path, 0)
+end
+
 local function copy_directory(source, destination)
-  local result = vim.system({ "cp", "-R", source .. "/.", destination }, { text = true }):wait()
-  if result.code ~= 0 then error(("Failed to copy fixture project: %s"):format(result.stderr), 0) end
+  local scanner, scan_error = vim.uv.fs_scandir(source)
+  if not scanner then error(("Failed to copy fixture project: %s"):format(scan_error), 0) end
+
+  while true do
+    local name, entry_type = vim.uv.fs_scandir_next(scanner)
+    if not name then break end
+    local source_path = vim.fs.joinpath(source, name)
+    local destination_path = vim.fs.joinpath(destination, name)
+    if entry_type == "directory" then
+      create_directory(destination_path)
+      copy_directory(source_path, destination_path)
+    else
+      local copied, copy_error = vim.uv.fs_copyfile(source_path, destination_path)
+      if not copied then error(("Failed to copy fixture project: %s"):format(copy_error), 0) end
+    end
+  end
 end
 
 local function run(command, message, environment)
@@ -76,8 +95,16 @@ local function initialize_fixture_repository(case)
   )
 end
 
+local function delete_fixture_root(root)
+  if vim.fn.delete(root, "rf") == 0 then return end
+  return "Failed to delete test fixture root: " .. root
+end
+
+local function cleanup_error_message(err) return type(err) == "string" and err or vim.inspect(err) end
+
 local function make_case()
-  local root = assert(vim.uv.fs_mkdtemp "/tmp/a.XXXXXX")
+  local temporary_directory = vim.uv.os_tmpdir() or vim.fn.stdpath "cache"
+  local root = assert(vim.uv.fs_mkdtemp(vim.fs.joinpath(temporary_directory, "a.XXXXXX")))
   local paths = {
     root = root,
     config = root .. "/config",
@@ -91,24 +118,33 @@ local function make_case()
     git_hooks = root .. "/git-hooks",
   }
 
-  for _, path in ipairs {
-    paths.config,
-    paths.data,
-    paths.state,
-    paths.cache,
-    paths.runtime,
-    paths.project,
-    paths.git_template,
-    paths.git_hooks,
-  } do
-    vim.fn.mkdir(path, "p", 448)
+  local ok, err = xpcall(function()
+    for _, path in ipairs {
+      paths.config,
+      paths.data,
+      paths.state,
+      paths.cache,
+      paths.runtime,
+      paths.project,
+      paths.git_template,
+      paths.git_hooks,
+    } do
+      create_directory(path)
+    end
+    if vim.fn.writefile({}, paths.git_global) ~= 0 then
+      error("Failed to create test fixture Git configuration: " .. paths.git_global, 0)
+    end
+    for _, path in ipairs { paths.data .. "/nvim", paths.state .. "/nvim", paths.cache .. "/nvim" } do
+      create_directory(path)
+    end
+    copy_directory(config.fixture_project, paths.project)
+    initialize_fixture_repository(paths)
+  end, debug.traceback)
+  if not ok then
+    local cleanup_error = delete_fixture_root(root)
+    if cleanup_error then err = err .. "\n" .. cleanup_error end
+    error(err, 0)
   end
-  vim.fn.writefile({}, paths.git_global)
-  for _, path in ipairs { paths.data .. "/nvim", paths.state .. "/nvim", paths.cache .. "/nvim" } do
-    vim.fn.mkdir(path, "p", 448)
-  end
-  copy_directory(config.fixture_project, paths.project)
-  initialize_fixture_repository(paths)
   return paths
 end
 
@@ -188,7 +224,7 @@ local function cleanup_failed_start(child, case, existing_channels)
   local running, is_running = pcall(child.is_running)
   if running and is_running then
     local stopped, stop_err = pcall(child.stop)
-    if not stopped then table.insert(cleanup_errors, stop_err) end
+    if not stopped then table.insert(cleanup_errors, cleanup_error_message(stop_err)) end
   end
 
   local jobs = vim.tbl_keys(job_ids)
@@ -199,16 +235,19 @@ local function cleanup_failed_start(child, case, existing_channels)
   end
 
   cases[child] = nil
-  vim.fn.delete(case.root, "rf")
+  local root_cleanup_error = delete_fixture_root(case.root)
+  if root_cleanup_error then table.insert(cleanup_errors, root_cleanup_error) end
   return table.concat(cleanup_errors, "\n")
 end
 
 function M.start_child(child_environment)
   local case = make_case()
-  local child = MiniTest.new_child_neovim()
-  local existing_channels = parent_job_channels()
-  cases[child] = case
+  local child
+  local existing_channels
   local ok, err = xpcall(function()
+    existing_channels = parent_job_channels()
+    child = MiniTest.new_child_neovim()
+    cases[child] = case
     with_child_environment(
       case,
       child_environment,
@@ -226,7 +265,12 @@ function M.start_child(child_environment)
   end, debug.traceback)
 
   if not ok then
-    local cleanup_error = cleanup_failed_start(child, case, existing_channels)
+    local cleanup_error
+    if child then
+      cleanup_error = cleanup_failed_start(child, case, existing_channels or {})
+    else
+      cleanup_error = delete_fixture_root(case.root) or ""
+    end
     if cleanup_error ~= "" then error(err .. "\nFailed child cleanup: " .. cleanup_error, 0) end
     error(err, 0)
   end
@@ -247,17 +291,25 @@ function M.stop_child(child)
 
   local case = cases[child]
   local job_id = child_job_id(child)
-  if child.is_running() then pcall(child.stop) end
+  local cleanup_errors = {}
+  local running_ok, running = pcall(child.is_running)
+  if running_ok and running then
+    local stopped, stop_error = pcall(child.stop)
+    if not stopped then table.insert(cleanup_errors, cleanup_error_message(stop_error)) end
+  end
 
   if job_is_alive(job_id) then
     pcall(vim.fn.jobstop, job_id)
     vim.fn.jobwait({ job_id }, 1000)
   end
 
-  if job_is_alive(job_id) then error("Child Neovim process survived shutdown", 0) end
-
+  if job_is_alive(job_id) then table.insert(cleanup_errors, "Child Neovim process survived shutdown") end
   cases[child] = nil
-  if case then vim.fn.delete(case.root, "rf") end
+  if case then
+    local root_cleanup_error = delete_fixture_root(case.root)
+    if root_cleanup_error then table.insert(cleanup_errors, root_cleanup_error) end
+  end
+  if #cleanup_errors > 0 then error(table.concat(cleanup_errors, "\n"), 0) end
 end
 
 function M.fixture_project(child)

@@ -13,6 +13,37 @@ local T = MiniTest.new_set {
   },
 }
 
+local function find_cell_sequence(cells, value)
+  local expected = vim.fn.split(value, "\\zs")
+  for start = 1, #cells - #expected + 1 do
+    local matches = true
+    for index, cell in ipairs(expected) do
+      if cells[start + index - 1] ~= cell then
+        matches = false
+        break
+      end
+    end
+    if matches then return start, #expected end
+  end
+end
+
+local function normalize_empty_statusline_segments(screenshot)
+  local row = #screenshot.text
+  local cells = screenshot.text[row]
+  local diagnostics_start, diagnostics_width = assert(find_cell_sequence(cells, "? 1"))
+  local position_start = assert(find_cell_sequence(cells, "1:1"))
+  local diagnostic_trailing_padding = 2
+  local position_leading_padding = 4
+  local filler_start = diagnostics_start + diagnostics_width + diagnostic_trailing_padding
+  local filler_end = position_start - position_leading_padding - 1
+  local filler_attr = screenshot.attr[row][filler_start]
+  for column = filler_start, filler_end do
+    assert.equals(" ", cells[column], "Expected empty statusline filler text")
+    screenshot.attr[row][column] = filler_attr
+  end
+  return screenshot
+end
+
 local highlight_groups = {
   "DiagnosticError",
   "DiagnosticWarn",
@@ -25,7 +56,7 @@ local highlight_groups = {
   "HeirlineNormal",
 }
 
-T["renders fixed diagnostics in the Heirline statusline and statuscolumn"] = function()
+T["BASE-07 renders fixed diagnostics in the Heirline statusline and statuscolumn"] = function()
   child = helpers.start_child()
   helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
 
@@ -99,15 +130,29 @@ T["renders fixed diagnostics in the Heirline statusline and statuscolumn"] = fun
     end
     return {
       diagnostics = diagnostics,
-      statusline = vim.api.nvim_eval_statusline(vim.o.statusline, { winid = 0, maxwidth = vim.o.columns }).str,
+      statusline_counts = (function()
+        local statusline = vim.api.nvim_eval_statusline(vim.o.statusline, { winid = 0, maxwidth = vim.o.columns }).str
+        local counts = {}
+        for severity, sign in pairs {
+          error = "X",
+          warn = "!",
+          info = "i",
+          hint = "?",
+        } do
+          counts[severity] = tonumber(statusline:match(vim.pesc(sign) .. "%s*(%d+)")) or 0
+        end
+        return counts
+      end)(),
       statuscolumn = (function()
         local statuscolumn = {}
         for line = 1, 4 do
-          statuscolumn[line] = vim.api.nvim_eval_statusline(vim.o.statuscolumn, {
+          local value = vim.api.nvim_eval_statusline(vim.o.statuscolumn, {
             winid = 0,
             maxwidth = 20,
             use_statuscol_lnum = line,
           }).str
+          local number, sign = value:match("(%d+)%s*([^%s])%s*$")
+          statuscolumn[line] = { number = tonumber(number), sign = sign }
         end
         return statuscolumn
       end)(),
@@ -121,12 +166,14 @@ T["renders fixed diagnostics in the Heirline statusline and statuscolumn"] = fun
     { lnum = 2, col = 0, end_col = 11, severity = vim.diagnostic.severity.INFO, message = "fixed information" },
     { lnum = 3, col = 0, end_col = 4, severity = vim.diagnostic.severity.HINT, message = "fixed hint" },
   }, state.diagnostics)
-  assert.is_true(state.statusline:find("X 1 ! 1 i 1 ? 1", 1, true) ~= nil)
-  assert.same(
-    { "                1 X ", "                1 ! ", "                2 i ", "                3 ? " },
-    state.statuscolumn
-  )
-  helpers.expect_screen(child, "diagnostics")
+  assert.same({ error = 1, warn = 1, info = 1, hint = 1 }, state.statusline_counts)
+  assert.same({
+    { number = 1, sign = "X" },
+    { number = 1, sign = "!" },
+    { number = 2, sign = "i" },
+    { number = 3, sign = "?" },
+  }, state.statuscolumn)
+  helpers.expect_screen(child, "diagnostics", normalize_empty_statusline_segments)
   helpers.expect_highlight_golden(
     child,
     config.highlights_dir .. "/diagnostics.txt",

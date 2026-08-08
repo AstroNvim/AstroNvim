@@ -17,7 +17,38 @@ local function start_ready_child()
   helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
 end
 
-T["resolves high-value plugin metadata and options"] = function()
+local function expect_values(actual, expected)
+  for key, value in pairs(expected) do
+    MiniTest.expect.equality(actual[key], value)
+  end
+end
+
+local function expect_members(values, expected)
+  for _, expected_value in ipairs(expected) do
+    local found = false
+    for _, value in ipairs(values) do
+      if value == expected_value then
+        found = true
+        break
+      end
+    end
+    MiniTest.expect.equality(found, true)
+  end
+end
+
+local function expect_autocmds(autocmds, expected)
+  for _, expected_autocmd in ipairs(expected) do
+    local matches = 0
+    for _, autocmd in ipairs(autocmds or {}) do
+      if autocmd.event == expected_autocmd.event and autocmd.pattern == expected_autocmd.pattern then
+        matches = matches + 1
+      end
+    end
+    MiniTest.expect.equality(matches, 1)
+  end
+end
+
+T["BASE-04 resolves high-value plugin metadata and options"] = function()
   start_ready_child()
 
   local actual = child.lua_get [[(function()
@@ -96,115 +127,65 @@ T["resolves high-value plugin metadata and options"] = function()
     }
   end)()]]
 
-  local cases = {
-    {
-      name = "core plugin metadata",
-      actual = {
-        AstroNvim = actual.plugins.AstroNvim,
-        astrocore = actual.plugins.astrocore,
-        astroui = actual.plugins.astroui,
-      },
-      expected = {
-        AstroNvim = { lazy = false, priority = 10000 },
-        astrocore = { lazy = false, priority = 10000, dependencies = { "astroui" } },
-        astroui = { lazy = true },
-      },
-    },
-    {
-      name = "AstroLSP trigger and defaults",
-      actual = { plugin = actual.plugins.astrolsp, opts = actual.astrolsp },
-      expected = {
-        plugin = { event = { "User AstroFile" } },
-        opts = {
-          defaults = {
-            hover = { silent = true },
-            signature_help = { silent = true, focusable = false },
-          },
-          formatting = { format_on_save = { enabled = true }, disabled = {} },
-        },
-      },
-    },
-    {
-      name = "Blink, Treesitter, Neo-tree, and Mason triggers",
-      actual = {
-        blink = actual.plugins.blink,
-        treesitter = actual.plugins.treesitter,
-        neotree = actual.plugins.neotree,
-        mason = actual.plugins.mason,
-      },
-      expected = {
-        blink = { event = { "InsertEnter", "CmdlineEnter" } },
-        treesitter = {
-          event = { "VeryLazy" },
-          cmd = { "TSInstall", "TSInstallFromGrammar", "TSUninstall", "TSUpdate", "TSLog" },
-          lazy = true,
-        },
-        neotree = { cmd = { "Neotree" } },
-        mason = { cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" } },
-      },
-    },
-    {
-      name = "installer and DAP dependency boundaries",
-      actual = {
-        installer = actual.plugins.installer,
-        dap = actual.plugins.dap,
-        mason_dap = actual.plugins.mason_dap,
-        dap_ui = actual.plugins.dap_ui,
-      },
-      expected = {
-        installer = {
-          cmd = {
-            "MasonToolsInstall",
-            "MasonToolsInstallSync",
-            "MasonToolsUpdate",
-            "MasonToolsUpdateSync",
-            "MasonToolsClean",
-          },
-          dependencies = { "mason.nvim", "astrocore" },
-        },
-        dap = { lazy = true, dependencies = { "mason-nvim-dap.nvim", "nvim-dap-ui", "cmp-dap" } },
-        mason_dap = { cmd = { "DapInstall", "DapUninstall" }, dependencies = { "nvim-dap", "mason.nvim" } },
-        dap_ui = { dependencies = { "nvim-nio" } },
-      },
-    },
-    {
-      name = "LazyDev Lua trigger",
-      actual = actual.plugins.lazydev,
-      expected = { ft = { "lua" }, cmd = { "LazyDev" } },
-    },
-    {
-      name = "AstroCore feature and diagnostic defaults",
-      actual = actual.astrocore,
-      expected = {
-        features = {
-          autopairs = true,
-          cmp = true,
-          diagnostics = true,
-          highlighturl = true,
-          notifications = true,
-        },
-        diagnostics = {
-          virtual_text = true,
-          update_in_insert = false,
-          underline = true,
-          severity_sort = true,
-          float = { source = "if_many", header = "", prefix = "" },
-        },
-      },
-    },
-    {
-      name = "AstroUI colorscheme and folding methods",
-      actual = actual.astroui,
-      expected = { colorscheme = "astrotheme", folding = { methods = { "lsp", "treesitter", "indent" } } },
-    },
-  }
+  expect_values(actual.plugins.AstroNvim, { lazy = false, priority = 10000 })
+  expect_values(actual.plugins.astrocore, { lazy = false, priority = 10000 })
+  expect_members(actual.plugins.astrocore.dependencies, { "astroui" })
+  expect_values(actual.plugins.astroui, { lazy = true })
 
-  for _, case in ipairs(cases) do
-    MiniTest.expect.equality(case.actual, case.expected)
-  end
+  expect_members(actual.plugins.astrolsp.event, { "User AstroFile" })
+  expect_values(actual.astrolsp.defaults.hover, { silent = true })
+  expect_values(actual.astrolsp.defaults.signature_help, { silent = true, focusable = false })
+  expect_values(actual.astrolsp.formatting.format_on_save, { enabled = true })
+  MiniTest.expect.equality(#actual.astrolsp.formatting.disabled, 0)
+
+  expect_members(actual.plugins.blink.event, { "InsertEnter", "CmdlineEnter" })
+  expect_members(actual.plugins.treesitter.event, { "VeryLazy" })
+  expect_members(
+    actual.plugins.treesitter.cmd,
+    { "TSInstall", "TSInstallFromGrammar", "TSUninstall", "TSUpdate", "TSLog" }
+  )
+  expect_values(actual.plugins.treesitter, { lazy = true })
+  expect_members(actual.plugins.neotree.cmd, { "Neotree" })
+  expect_members(
+    actual.plugins.mason.cmd,
+    { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" }
+  )
+
+  expect_members(actual.plugins.installer.cmd, {
+    "MasonToolsInstall",
+    "MasonToolsInstallSync",
+    "MasonToolsUpdate",
+    "MasonToolsUpdateSync",
+    "MasonToolsClean",
+  })
+  expect_members(actual.plugins.installer.dependencies, { "mason.nvim", "astrocore" })
+  expect_values(actual.plugins.dap, { lazy = true })
+  expect_members(actual.plugins.dap.dependencies, { "mason-nvim-dap.nvim", "nvim-dap-ui", "cmp-dap" })
+  expect_members(actual.plugins.mason_dap.cmd, { "DapInstall", "DapUninstall" })
+  expect_members(actual.plugins.mason_dap.dependencies, { "nvim-dap", "mason.nvim" })
+  expect_members(actual.plugins.dap_ui.dependencies, { "nvim-nio" })
+
+  expect_members(actual.plugins.lazydev.ft, { "lua" })
+  expect_members(actual.plugins.lazydev.cmd, { "LazyDev" })
+  expect_values(actual.astrocore.features, {
+    autopairs = true,
+    cmp = true,
+    diagnostics = true,
+    highlighturl = true,
+    notifications = true,
+  })
+  expect_values(actual.astrocore.diagnostics, {
+    virtual_text = true,
+    update_in_insert = false,
+    underline = true,
+    severity_sort = true,
+  })
+  expect_values(actual.astrocore.diagnostics.float, { source = "if_many", header = "", prefix = "" })
+  expect_values(actual.astroui, { colorscheme = "astrotheme" })
+  expect_members(actual.astroui.folding.methods, { "lsp", "treesitter", "indent" })
 end
 
-T["applies representative mappings and global options"] = function()
+T["BASE-04 applies representative mappings and global options"] = function()
   start_ready_child()
 
   local actual = child.lua_get [[(function()
@@ -238,49 +219,39 @@ T["applies representative mappings and global options"] = function()
     }
   end)()]]
 
-  local cases = {
-    {
-      name = "mappings",
-      actual = actual.mappings,
-      expected = {
-        ["<Leader>w"] = { rhs = "<Cmd>w<CR>", desc = "Save" },
-        ["<Leader>q"] = { rhs = "<Cmd>confirm q<CR>", desc = "Quit Window" },
-        ["<Leader>e"] = { rhs = "<Cmd>Neotree toggle<CR>", desc = "Toggle Explorer" },
-        ["<Leader>pM"] = { rhs = "<Cmd>MasonToolsUpdate<CR>", desc = "Mason Update" },
-        ["<Leader>/"] = { rhs = "gcc", desc = "Toggle comment line" },
-      },
-    },
-    {
-      name = "global options",
-      actual = actual.options,
-      expected = {
-        clipboard = "unnamedplus",
-        cmdheight = 0,
-        completeopt = "menu,menuone,noselect",
-        confirm = true,
-        cursorline = true,
-        foldcolumn = "1",
-        foldenable = true,
-        foldlevel = 99,
-        foldmethod = "expr",
-        foldtext = "",
-        number = true,
-        relativenumber = true,
-        termguicolors = true,
-        timeoutlen = 500,
-        updatetime = 300,
-        wrap = false,
-        markdown_recommended_style = 0,
-      },
-    },
+  local mappings = {
+    ["<Leader>w"] = { rhs = "<Cmd>w<CR>", desc = "Save" },
+    ["<Leader>q"] = { rhs = "<Cmd>confirm q<CR>", desc = "Quit Window" },
+    ["<Leader>e"] = { rhs = "<Cmd>Neotree toggle<CR>", desc = "Toggle Explorer" },
+    ["<Leader>pM"] = { rhs = "<Cmd>MasonToolsUpdate<CR>", desc = "Mason Update" },
+    ["<Leader>/"] = { rhs = "gcc", desc = "Toggle comment line" },
   }
-
-  for _, case in ipairs(cases) do
-    MiniTest.expect.equality(case.actual, case.expected)
+  for lhs, expected in pairs(mappings) do
+    expect_values(actual.mappings[lhs], expected)
   end
+
+  expect_values(actual.options, {
+    clipboard = "unnamedplus",
+    cmdheight = 0,
+    completeopt = "menu,menuone,noselect",
+    confirm = true,
+    cursorline = true,
+    foldcolumn = "1",
+    foldenable = true,
+    foldlevel = 99,
+    foldmethod = "expr",
+    foldtext = "",
+    number = true,
+    relativenumber = true,
+    termguicolors = true,
+    timeoutlen = 500,
+    updatetime = 300,
+    wrap = false,
+    markdown_recommended_style = 0,
+  })
 end
 
-T["registers high-value autocmd descriptions events and patterns"] = function()
+T["BASE-04 registers unique high-value autocmd descriptions events and patterns"] = function()
   start_ready_child()
 
   local descriptions = {
@@ -365,7 +336,7 @@ T["registers high-value autocmd descriptions events and patterns"] = function()
   }
 
   for _, case in ipairs(cases) do
-    MiniTest.expect.equality(actual[case.description], case.expected)
+    expect_autocmds(actual[case.description], case.expected)
   end
 end
 

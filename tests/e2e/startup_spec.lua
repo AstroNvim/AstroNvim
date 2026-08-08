@@ -13,7 +13,7 @@ local T = MiniTest.new_set {
   },
 }
 
-T["starts the local AstroNvim distribution with installed locked production plugins"] = function()
+T["BASE-01 starts the local AstroNvim distribution with the generated production plugin lock"] = function()
   child = helpers.start_child()
   helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
 
@@ -40,7 +40,7 @@ T["starts the local AstroNvim distribution with installed locked production plug
       if plugin.url and not plugin._.is_local and plugin._.cond ~= false then
         local entry = lock[name]
         if not entry then
-          table.insert(errors, "lock: " .. name .. " has no committed lock entry")
+          table.insert(errors, "lock: " .. name .. " has no generated lock entry")
         elseif not plugin._.installed then
           table.insert(errors, "install: " .. name)
         else
@@ -81,7 +81,7 @@ T["starts the local AstroNvim distribution with installed locked production plug
   assert.same({}, startup.errors)
 end
 
-T["replays startup error notifications before reporting readiness"] = function()
+T["BASE-02 replays startup error notifications before reporting readiness"] = function()
   local message = "AstroNvim startup notifier regression"
   local parent_value = vim.uv.os_getenv "ASTRONVIM_TEST_STARTUP_ERROR"
   child = helpers.start_child { ASTRONVIM_TEST_STARTUP_ERROR = message }
@@ -90,6 +90,30 @@ T["replays startup error notifications before reporting readiness"] = function()
 
   local captured = child.lua_get "vim.g.astronvim_test_error_notifications_before_ready"
   assert.is_true(vim.tbl_contains(captured, vim.inspect(message)))
+
+  helpers.wait_until(
+    child,
+    ([[(function()
+      local matches = 0
+      for _, notification in ipairs(Snacks.notifier.get_history()) do
+        if notification.msg == %s and notification.level == "error" then matches = matches + 1 end
+      end
+      return matches == 1 and #require("astronvim.notify").pending() == 0
+    end)()]]):format(vim.inspect(message)),
+    "startup notification delivery"
+  )
+  local delivery = child.lua_get(([[(function()
+    local matches = 0
+    for _, notification in ipairs(Snacks.notifier.get_history()) do
+      if notification.msg == %s and notification.level == "error" then matches = matches + 1 end
+    end
+    return {
+      matches = matches,
+      pending = #require("astronvim.notify").pending(),
+      paused = require("astronvim.notify").is_paused(),
+    }
+  end)()]]):format(vim.inspect(message)))
+  assert.same({ matches = 1, pending = 0, paused = false }, delivery)
 end
 
 return T
