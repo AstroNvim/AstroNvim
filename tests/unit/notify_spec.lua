@@ -299,4 +299,198 @@ T["NOTIFY-10C makes notifier restoration and competing startup completion idempo
   end)
 end
 
+T["NOTIFY-10A preserves caller options while replacement delivery receives a copy"] = function()
+  local calls = {}
+  with_notify(recorder(calls), function(notify, context)
+    notify.pause()
+    local first = vim.notify "first"
+    local nested_options = { identity = "preserved" }
+    local options = { replace = { id = first.id }, title = "Updated", user_data = nested_options }
+    local expected_options = vim.deepcopy(options)
+    vim.notify("replacement", nil, options)
+
+    assert.same(expected_options, options)
+    notify.resume()
+    context.drain_scheduled()
+
+    assert.equals(1, #calls)
+    assert.equals("replacement", calls[1].message)
+    assert.is_true(calls[1].opts ~= options)
+    assert.is_nil(calls[1].opts.replace)
+    assert.equals("Updated", calls[1].opts.title)
+    assert.is_true(calls[1].opts.user_data == nested_options)
+
+    notify.pause()
+    local stale = vim.notify("stale replacement", nil, { replace = { id = first.id } })
+    assert.is_true(stale.id ~= first.id)
+    notify.resume()
+    context.drain_scheduled()
+    assert.equals(2, #calls)
+    assert.equals("stale replacement", calls[2].message)
+  end)
+end
+
+T["NOTIFY-10B restores the notifier and cleans up handles when startup allocation fails"] = function()
+  for _, failure in ipairs { "timer", "checker" } do
+    local handles = {}
+    local original = function() end
+    local function new_handle()
+      local handle = { stopped = false, closed = false }
+      function handle:stop() self.stopped = true end
+      function handle:close() self.closed = true end
+      table.insert(handles, handle)
+      return handle
+    end
+
+    with_notify(original, function(notify)
+      local ok, err = pcall(notify.defer_startup)
+      assert.is_false(ok)
+      assert.is_true(tostring(err):find("Unable to create startup notification", 1, true) ~= nil)
+      assert.equals(original, vim.notify)
+      assert.is_false(notify.is_paused())
+      for _, handle in ipairs(handles) do
+        assert.is_true(handle.stopped)
+        assert.is_true(handle.closed)
+      end
+    end, {
+      fake_uv = false,
+      replace_vim = { uv = true },
+      vim = {
+        uv = {
+          new_timer = function()
+            if failure == "timer" then return end
+            return new_handle()
+          end,
+          new_check = function()
+            if failure == "checker" then return end
+            return new_handle()
+          end,
+        },
+      },
+    })
+  end
+end
+
+T["NOTIFY-10B preserves an active startup deferral when replacement allocation fails"] = function()
+  local calls = {}
+  local original = recorder(calls)
+  local timers = {}
+  local checkers = {}
+  local checker_allocations = 0
+  local function new_handle(collection)
+    local handle = { closed = false, started = false, stopped = false }
+    function handle:start(...)
+      self.started = true
+      self.callback = select(select("#", ...), ...)
+      return 0
+    end
+    function handle:stop() self.stopped = true end
+    function handle:close() self.closed = true end
+    table.insert(collection, handle)
+    return handle
+  end
+
+  with_notify(original, function(notify, context)
+    notify.defer_startup()
+    vim.notify "prior deferred notification"
+    local prior_timer = timers[1]
+    local prior_checker = checkers[1]
+
+    local ok, err = pcall(notify.defer_startup)
+    assert.is_false(ok)
+    assert.is_true(tostring(err):find("Unable to create startup notification checker", 1, true) ~= nil)
+    assert.equals(notify.notify, vim.notify)
+    assert.is_true(notify.is_paused())
+    assert.equals(1, #notify.pending())
+    assert.is_true(prior_timer.started)
+    assert.is_true(prior_checker.started)
+    assert.is_false(prior_timer.stopped)
+    assert.is_false(prior_timer.closed)
+    assert.is_false(prior_checker.stopped)
+    assert.is_false(prior_checker.closed)
+    assert.is_true(timers[2].stopped)
+    assert.is_true(timers[2].closed)
+
+    prior_timer.callback()
+    context.drain_scheduled()
+    assert.same({ "prior deferred notification" }, { calls[1].message })
+    notify.restore()
+    assert.equals(original, vim.notify)
+  end, {
+    fake_uv = false,
+    replace_vim = { uv = true },
+    vim = {
+      uv = {
+        new_timer = function() return new_handle(timers) end,
+        new_check = function()
+          checker_allocations = checker_allocations + 1
+          return checker_allocations == 1 and new_handle(checkers) or nil
+        end,
+      },
+    },
+  })
+end
+
+T["NOTIFY-10B preserves an active startup deferral when replacement handle startup fails"] = function()
+  for _, failure in ipairs { "checker", "timer" } do
+    local calls = {}
+    local original = recorder(calls)
+    local timers = {}
+    local checkers = {}
+    local allocation = 0
+    local function new_handle(collection, kind)
+      local handle = { closed = false, kind = kind, started = false, stopped = false }
+      function handle:start(...)
+        self.started = true
+        self.callback = select(select("#", ...), ...)
+        if allocation == 2 and failure == self.kind then return nil, self.kind .. " start failed" end
+        return 0
+      end
+      function handle:stop() self.stopped = true end
+      function handle:close() self.closed = true end
+      table.insert(collection, handle)
+      return handle
+    end
+
+    with_notify(original, function(notify, context)
+      allocation = 1
+      notify.defer_startup()
+      vim.notify "prior deferred notification"
+      local prior_timer = timers[1]
+      local prior_checker = checkers[1]
+
+      allocation = 2
+      local ok, err = pcall(notify.defer_startup)
+      assert.is_false(ok)
+      assert.is_true(tostring(err):find(failure .. " start failed", 1, true) ~= nil)
+      assert.equals(notify.notify, vim.notify)
+      assert.is_true(notify.is_paused())
+      assert.equals(1, #notify.pending())
+      assert.is_false(prior_timer.stopped)
+      assert.is_false(prior_timer.closed)
+      assert.is_false(prior_checker.stopped)
+      assert.is_false(prior_checker.closed)
+      assert.is_true(timers[2].stopped)
+      assert.is_true(timers[2].closed)
+      assert.is_true(checkers[2].stopped)
+      assert.is_true(checkers[2].closed)
+
+      prior_timer.callback()
+      context.drain_scheduled()
+      assert.same({ "prior deferred notification" }, { calls[1].message })
+      notify.restore()
+      assert.equals(original, vim.notify)
+    end, {
+      fake_uv = false,
+      replace_vim = { uv = true },
+      vim = {
+        uv = {
+          new_timer = function() return new_handle(timers, "timer") end,
+          new_check = function() return new_handle(checkers, "checker") end,
+        },
+      },
+    })
+  end
+end
+
 return T
