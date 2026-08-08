@@ -61,6 +61,6 @@ return {
     g.markdown_recommended_style = 0
 
     if not vim.t.bufs then vim.t.bufs = vim.api.nvim_list_bufs() end -- initialize buffer list
-    opts.options = { opt = opt, g = g, t = { bufs = vim.t.bufs } }
+    opts.options = vim.tbl_deep_extend("force", { opt = opt, g = g, t = { bufs = vim.t.bufs } }, opts.options or {})
   end,
 }
