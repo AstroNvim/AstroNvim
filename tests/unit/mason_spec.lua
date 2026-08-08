@@ -515,4 +515,30 @@ T["MASON-08 adds only the NullLsInfo mapping and preserves caller mappings"] = f
   end)
 end
 
+T["MASON-09 preserves the existing AstroNvim registry and unrelated Mason options"] = function()
+  local registry = "github:mason-org/mason-registry"
+  unit_helpers.with_module("astronvim.plugins.mason", {
+    vim = { g = { icons_enabled = false } },
+  }, function(spec)
+    local options = {
+      registries = { "custom:first", registry, "custom:last" },
+      ui = { border = "rounded", custom = { keep = true } },
+      install_root_dir = "/tmp/mason",
+    }
+
+    spec.opts(nil, options)
+
+    assert.same({ "custom:first", registry, "custom:last" }, options.registries)
+    local registry_count = 0
+    for _, configured_registry in ipairs(options.registries) do
+      if configured_registry == registry then registry_count = registry_count + 1 end
+    end
+    assert.equals(1, registry_count)
+    assert.equals("rounded", options.ui.border)
+    assert.same({ keep = true }, options.ui.custom)
+    assert.equals("/tmp/mason", options.install_root_dir)
+    assert.same({ package_installed = "O", package_uninstalled = "X", package_pending = "0" }, options.ui.icons)
+  end)
+end
+
 return T
