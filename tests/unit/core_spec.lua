@@ -1086,4 +1086,23 @@ T["AUTOCMD-13F applies the complete automatic hlsearch state matrix"] = function
   end
 end
 
+T["OPTIONS-04 preserves unrelated user option, global, tab, and list values"] = function()
+  with_options({ tab = { bufs = { 11, 13 } } }, function(options_spec)
+    local options = option_values(options_spec, {
+      options = {
+        opt = { number = false, wildignore = { ".git", "node_modules" }, custom = { keep = true } },
+        g = { user_option = "keep" },
+        t = { user_buffers = { 21, 34 } },
+      },
+    })
+
+    assert.equals(false, options.opt.number)
+    assert.same({ ".git", "node_modules" }, options.opt.wildignore)
+    assert.equals(true, options.opt.custom.keep)
+    assert.equals("keep", options.g.user_option)
+    assert.same({ 21, 34 }, options.t.user_buffers)
+    assert.same({ 11, 13 }, options.t.bufs)
+  end)
+end
+
 return T
