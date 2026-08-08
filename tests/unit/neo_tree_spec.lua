@@ -343,10 +343,11 @@ T["NEO-07 keeps selected selector open watcher and window invariants"] = functio
 end
 
 T["NEO-08 safely delegates navigation with missing targets"] = function()
+  local focus_calls = {}
   with_neo_tree({
     loaded = {
       ["neo-tree.ui.renderer"] = {
-        focus_node = function() end,
+        focus_node = function(state, id) table.insert(focus_calls, { state = state, id = id }) end,
       },
     },
   }, function(spec)
@@ -376,6 +377,30 @@ T["NEO-08 safely delegates navigation with missing targets"] = function()
       },
     })
     assert.is_true(child_available)
+    assert.equals(2, #focus_calls)
+    assert.is_nil(focus_calls[1].id)
+    assert.is_nil(focus_calls[2].id)
+  end)
+end
+
+T["NEO-08 keeps repeated AstroNvim-owned handlers idempotent"] = function()
+  with_neo_tree(nil, function(spec)
+    local unrelated_handler = { id = "foreign_buffer_enter", event = "neo_tree_buffer_enter", handler = function() end }
+    local options = { event_handlers = { unrelated_handler } }
+    options = neo_tree_options(spec, options)
+    options = neo_tree_options(spec, options)
+
+    local owned_handlers = 0
+    local unrelated_preserved = false
+    for _, handler in ipairs(options.event_handlers) do
+      if handler == unrelated_handler then unrelated_preserved = true end
+      if handler.id == "astronvim_neo_tree_buffer_enter" and handler.event == "neo_tree_buffer_enter" then
+        owned_handlers = owned_handlers + 1
+      end
+    end
+    assert.is_true(unrelated_preserved)
+    assert.equals(1, owned_handlers)
+    assert.equals(2, #options.event_handlers)
   end)
 end
 
