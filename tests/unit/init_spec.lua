@@ -267,4 +267,49 @@ T["INIT-10C reports malformed AstroNvim version.txt content without leaking impl
   end)
 end
 
+T["INIT-10A restores the real notifier after deferred setup failure and allows retry"] = function()
+  local deliveries = {}
+  local original_notify = function(message) table.insert(deliveries, message) end
+  local values_calls = 0
+
+  unit_helpers.with_module("astronvim.init", {
+    fake_uv = true,
+    notify = original_notify,
+    loaded = {
+      ["astronvim.config"] = vim.deepcopy(default_config),
+      ["astronvim.notify"] = unit_helpers.remove,
+      ["lazy.core.config"] = { spec = { plugins = { AstroNvim = {} } } },
+      ["lazy.core.plugin"] = {
+        values = function()
+          values_calls = values_calls + 1
+          if values_calls == 1 then
+            vim.notify "queued before setup failure"
+            error "setup failure after deferral"
+          end
+          return {}
+        end,
+      },
+    },
+    vim = { fn = { has = function() return 1 end }, g = {} },
+  }, function(init, context)
+    local ok, err = pcall(init.init)
+
+    assert.is_false(ok)
+    assert.is_true(tostring(err):find("setup failure after deferral", 1, true) ~= nil)
+    assert.equals(false, init.did_init)
+    assert.equals(original_notify, vim.notify)
+    assert.is_false(require("astronvim.notify").is_paused())
+    for _, handle in ipairs(context.handles) do
+      assert.is_true(context.is_stopped(handle))
+      assert.is_true(context.is_closed(handle))
+    end
+    context.drain_scheduled()
+    assert.same({ "queued before setup failure" }, deliveries)
+
+    init.init()
+    assert.equals(2, values_calls)
+    assert.equals(true, init.did_init)
+  end)
+end
+
 return T

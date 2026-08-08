@@ -22,6 +22,7 @@ local function fake_handle(handles, kind)
   function handle:start(...)
     self.started = true
     self.callback = select(select("#", ...), ...)
+    return 0
   end
 
   function handle:stop() self.stopped = true end

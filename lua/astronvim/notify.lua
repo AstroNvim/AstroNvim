@@ -103,7 +103,14 @@ function M.notify(message, level, opts)
     notification_ids[pos] = id
     notification_positions[id] = pos
   end
-  if opts then opts.replace = nil end
+  if opts then
+    local queued_opts = {}
+    for key, value in pairs(opts) do
+      queued_opts[key] = value
+    end
+    queued_opts.replace = nil
+    opts = queued_opts
+  end
   notifications[pos] = vim.F.pack_len(message, level, opts)
   return { id = id }
 end
@@ -117,32 +124,51 @@ end
 
 --- Pause notifications for a 500ms delay or until `vim.notify` changes
 function M.defer_startup()
-  M.pause()
-  if startup_defer then startup_defer(false) end
-
   -- defer initially for 500ms or until `vim.notify` changes
-  local timer = assert(vim.uv.new_timer(), "Unable to create startup notification timer")
-  local checker = assert(vim.uv.new_check(), "Unable to create startup notification checker")
+  local timer, checker
+  local function close_handles()
+    for _, handle in ipairs { timer, checker } do
+      if handle then
+        pcall(handle.stop, handle)
+        pcall(handle.close, handle)
+      end
+    end
+  end
+  local allocated, err = pcall(function()
+    timer = assert(vim.uv.new_timer(), "Unable to create startup notification timer")
+    checker = assert(vim.uv.new_check(), "Unable to create startup notification checker")
+  end)
+  if not allocated then
+    close_handles()
+    error(err, 0)
+  end
+
   local complete = false
 
   local function finish(resume)
     if complete then return end
     complete = true
-    timer:stop()
-    checker:stop()
-    timer:close()
-    checker:close()
+    close_handles()
     if startup_defer == finish then startup_defer = nil end
     if resume then M.resume() end
   end
-  startup_defer = finish
 
-  -- wait till vim.notify has been replaced
-  checker:start(function()
-    if vim.notify ~= M.notify then finish(true) end
+  local started, start_err = pcall(function()
+    -- wait till vim.notify has been replaced
+    assert(checker:start(function()
+      if vim.notify ~= M.notify then finish(true) end
+    end))
+    -- or replay after 500ms as a fallback
+    assert(timer:start(500, 0, function() finish(true) end))
   end)
-  -- or replay after 500ms as a fallback
-  timer:start(500, 0, function() finish(true) end)
+  if not started then
+    close_handles()
+    error(start_err, 0)
+  end
+
+  M.pause()
+  if startup_defer then startup_defer(false) end
+  startup_defer = finish
 end
 
 return M
