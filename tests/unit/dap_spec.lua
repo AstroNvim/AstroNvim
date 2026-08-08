@@ -460,4 +460,32 @@ T["DAP-08 owns missing and existing DAP signs with exact icon lookup deltas"] = 
   end)
 end
 
+T["DAP-07a registers each Blink DAP source once across repeated setup"] = function()
+  local calls = {}
+  unit_helpers.with_module("astronvim.plugins.configs.cmp-dap", {
+    loaded = {
+      ["blink.cmp"] = {
+        add_filetype_source = function(...) table.insert(calls, { ... }) end,
+      },
+    },
+  }, function(configure)
+    configure()
+    configure()
+    local counts = registration_counts(calls)
+    for _, filetype in ipairs { "dap-repl", "dapui_watches", "dapui_hover" } do
+      assert.equals(1, counts[filetype .. ":dap"])
+    end
+
+    local reloaded_calls = {}
+    package.loaded["blink.cmp"] = {
+      add_filetype_source = function(...) table.insert(reloaded_calls, { ... }) end,
+    }
+    configure()
+    local reloaded_counts = registration_counts(reloaded_calls)
+    for _, filetype in ipairs { "dap-repl", "dapui_watches", "dapui_hover" } do
+      assert.equals(1, reloaded_counts[filetype .. ":dap"])
+    end
+  end)
+end
+
 return T
