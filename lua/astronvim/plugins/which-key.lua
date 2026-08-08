@@ -10,7 +10,7 @@ return {
     if vim.g.icons_enabled == false then
       opts.icons.breadcrumb = ">"
       opts.icons.group = "+"
-      opts.icons.keys = {
+      opts.icons.keys = vim.tbl_deep_extend("force", {
         Up = "Up",
         Down = "Down",
         Left = "Left",
@@ -39,7 +39,7 @@ return {
         F10 = "F10",
         F11 = "F11",
         F12 = "F12",
-      }
+      }, opts.icons.keys or {})
     end
   end,
 }

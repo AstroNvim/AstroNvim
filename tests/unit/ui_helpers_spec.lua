@@ -505,4 +505,16 @@ T["TODO-02 keeps navigation independent from search backends and hands off lazy 
   end
 end
 
+T["WHICHKEY-02 preserves existing key labels while applying owned ASCII defaults"] = function()
+  with_which_key({ icons_enabled = false }, function(spec)
+    local options = { icons = { keys = { Custom = "Custom key" } } }
+    spec.opts(nil, options)
+    assert.equals("Custom key", options.icons.keys.Custom)
+    assert.equals("Ctrl+", options.icons.keys.C)
+    assert.equals("Enter", options.icons.keys.CR)
+    assert.equals(">", options.icons.breadcrumb)
+    assert.equals("+", options.icons.group)
+  end)
+end
+
 return T
