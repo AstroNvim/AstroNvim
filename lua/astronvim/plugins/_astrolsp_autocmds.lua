@@ -5,7 +5,7 @@ local function formatting_enabled(client, bufnr)
     and not vim.tbl_contains(formatting_disabled, client.name)
 end
 
-local signature_help_triggered = false
+local signature_help_triggered = {}
 
 return {
   "AstroNvim/astrolsp",
@@ -45,19 +45,27 @@ return {
               local retrigger = vim.b[args.buf].signature_help_retriggerCharacters or {}
               local pos = vim.api.nvim_win_get_cursor(0)[2]
               local cur_char = vim.api.nvim_get_current_line():sub(pos, pos)
-              if signature_help_triggered and (cur_char:match "%s" or retrigger[cur_char]) or trigger[cur_char] then
-                signature_help_triggered = true
+              if
+                (signature_help_triggered[args.buf] and (cur_char:match "%s" or retrigger[cur_char]))
+                or trigger[cur_char]
+              then
+                signature_help_triggered[args.buf] = true
                 vim.lsp.buf.signature_help()
                 return
               end
             end
-            signature_help_triggered = false
+            signature_help_triggered[args.buf] = false
           end,
         },
         {
           event = "InsertLeave",
           desc = "Clear automatic signature help internals when leaving insert",
-          callback = function() signature_help_triggered = false end,
+          callback = function(args) signature_help_triggered[args.buf] = false end,
+        },
+        {
+          event = "BufDelete",
+          desc = "Clear automatic signature help state for deleted buffers",
+          callback = function(args) signature_help_triggered[args.buf] = nil end,
         },
       },
       lsp_auto_format = {

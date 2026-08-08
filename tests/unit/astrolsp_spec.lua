@@ -794,4 +794,82 @@ T["LSP-11 keeps Neo-tree ownership stable"] = function()
   end)
 end
 
+T["LSP-12 keeps signature-help state scoped to its buffer lifecycle"] = function()
+  local current = { buffer = 1, line = "" }
+  local buffer_vars = {
+    [1] = {
+      signature_help = true,
+      signature_help_triggerCharacters = { ["("] = true },
+      signature_help_retriggerCharacters = { [","] = true },
+    },
+    [2] = {
+      signature_help = true,
+      signature_help_triggerCharacters = { ["("] = true },
+      signature_help_retriggerCharacters = { [","] = true },
+    },
+  }
+  local signature_calls = {}
+
+  unit_helpers.with_module("astronvim.plugins._astrolsp_autocmds", {
+    loaded = {
+      astrolsp = {
+        config = { features = { codelens = true, signature_help = true }, formatting = { disabled = {} } },
+        format_opts = {},
+      },
+    },
+    replace_vim = { b = true, lsp = true },
+    vim = {
+      b = buffer_vars,
+      api = {
+        nvim_win_get_cursor = function() return { 1, #current.line } end,
+        nvim_get_current_line = function() return current.line end,
+      },
+      lsp = {
+        codelens = { enable = function() end },
+        buf = {
+          signature_help = function()
+            if current.buffer == 1 and current.line == "error(" then error "signature callback failure" end
+            table.insert(signature_calls, current.buffer)
+          end,
+        },
+      },
+    },
+  }, function(spec)
+    local signature_help = spec.opts.autocmds.lsp_auto_signature_help
+    local changed = signature_help[1].callback
+    local function cleanup_callback(event)
+      for _, autocmd in ipairs(signature_help) do
+        local events = type(autocmd.event) == "table" and autocmd.event or { autocmd.event }
+        if contains(events, event) then return autocmd.callback end
+      end
+    end
+    local insert_leave = assert(cleanup_callback "InsertLeave")
+    local buffer_delete = assert(cleanup_callback "BufDelete")
+    local function change(buffer, line)
+      current.buffer = buffer
+      current.line = line
+      changed { buf = buffer }
+    end
+
+    change(1, "call(")
+    buffer_vars[2].signature_help = false
+    change(2, "disabled(")
+    change(1, "call( ")
+
+    buffer_vars[2].signature_help = true
+    change(2, "switch(")
+    insert_leave { buf = 1 }
+    change(2, "switch( ")
+    buffer_delete { buf = 1 }
+    change(2, "switch(  ")
+
+    local ok, error_message = pcall(change, 1, "error(")
+    assert.is_false(ok)
+    assert.is_true(tostring(error_message):find("signature callback failure", 1, true) ~= nil)
+    change(2, "switch(   ")
+  end)
+
+  assert.same({ 1, 1, 2, 2, 2, 2 }, signature_calls)
+end
+
 return T

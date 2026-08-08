@@ -150,4 +150,49 @@ T["LSP-10 gives a fake none-ls client one AstroLSP attach path"] = function()
   assert.equals(1, state.astro_attach_handlers)
 end
 
+T["LSP-12 scopes live signature triggers across window and buffer switches"] = function()
+  start_ready_child()
+
+  local state = child.lua_get [[(function()
+    local calls = {}
+    local client = {
+      id = 903,
+      name = "fake-signature-help",
+      server_capabilities = { signatureHelpProvider = { triggerCharacters = { "(" } } },
+      _enabled_capabilities = {},
+      registrations = {},
+      supports_method = function(_, method) return method == "textDocument/signatureHelp" end,
+    }
+    vim.lsp.get_client_by_id = function(id) return id == client.id and client or nil end
+    vim.lsp.get_clients = function() return { client } end
+    vim.lsp.buf.signature_help = function() table.insert(calls, vim.api.nvim_get_current_buf()) end
+
+    local function attach(buffer)
+      vim.api.nvim_exec_autocmds("LspAttach", { buffer = buffer, data = { client_id = client.id } })
+      vim.b[buffer].signature_help = true
+      vim.b[buffer].signature_help_triggerCharacters = { ["("] = true }
+    end
+    local function trigger(buffer, line)
+      vim.api.nvim_set_current_buf(buffer)
+      vim.api.nvim_buf_set_lines(buffer, 0, -1, false, { line })
+      vim.api.nvim_win_set_cursor(0, { 1, #line - 1 })
+      vim.api.nvim_exec_autocmds("TextChangedI", { buffer = buffer })
+    end
+
+    local first = vim.api.nvim_create_buf(true, false)
+    local second = vim.api.nvim_create_buf(true, false)
+    attach(first)
+    attach(second)
+
+    trigger(first, "call(x")
+    vim.b[second].signature_help = false
+    trigger(second, "disabled(x")
+    trigger(first, "call( x")
+
+    return { calls = calls, first = first, second = second }
+  end)()]]
+
+  assert.same({ state.first, state.first }, state.calls)
+end
+
 return T
