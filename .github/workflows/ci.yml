@@ -17,6 +17,48 @@ jobs:
       plugin_name: ${{ github.event.repository.name }}
       is_production: ${{ github.event_name == 'push' }}
       docs: false
+  Tests:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NVIM_VERSION: "0.12.4"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Neovim
+        run: |
+          curl --fail --location --silent --show-error --retry 3 \
+            "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-x86_64.tar.gz" \
+            --output /tmp/nvim.tar.gz
+          tar --extract --gzip --file /tmp/nvim.tar.gz --directory /tmp
+          echo "/tmp/nvim-linux-x86_64/bin" >> "$GITHUB_PATH"
+          test "$(nvim --version | head -n 1)" = "NVIM v${NVIM_VERSION}"
+      - name: Cache locked test dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .tests/lazy.nvim
+            .tests/data/nvim/lazy
+          key: ${{ runner.os }}-nvim-${{ env.NVIM_VERSION }}-tests-${{ hashFiles('tests/config.lua', 'tests/lazy-lock.json') }}
+      - name: Prepare test dependencies
+        run: make test-prepare
+      - name: Run test suite twice
+        run: |
+          make test
+          make test
+      - name: Install test linters
+        run: |
+          cargo install stylua --version 2.5.2 --locked
+          cargo install selene --version 0.31.0 --locked
+      - name: Lint test files
+        run: |
+          stylua --check tests
+          selene tests
+      - name: Verify repository is unchanged
+        run: |
+          git diff --check
+          git diff --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"
   PR:
     uses: AstroNvim/.github/.github/workflows/validate_pr.yml@main
     if: ${{ github.event_name == 'pull_request_target' }}

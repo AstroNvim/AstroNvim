@@ -1,0 +1,1 @@
+AstroNvim test fixture.
