@@ -13,7 +13,8 @@ function M.check()
   health.start "Checking requirements"
 
   health.info("AstroNvim Version: " .. (require("astronvim").version() or "unknown"))
-  health.info("Neovim Version: v" .. vim.api.nvim_exec2("version", { output = true }).output:match "NVIM v([^\n]*)")
+  local nvim_version = vim.api.nvim_exec2("version", { output = true }).output:match "NVIM v(%d+%.%d+%.%d+[^%s]*)"
+  health.info("Neovim Version: " .. (nvim_version and "v" .. nvim_version or "unknown"))
 
   if vim.version().prerelease then
     health.warn "Neovim nightly is not officially supported and may have breaking changes"
