@@ -17,7 +17,7 @@ local function start_ready_child()
   helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
 end
 
-T["changes buffer, window, and layout state with production mappings"] = function()
+T["BASE-05 changes buffer, window, and layout state with production mappings"] = function()
   start_ready_child()
 
   child.lua 'vim.cmd.edit "plain.txt"'
@@ -58,7 +58,7 @@ T["changes buffer, window, and layout state with production mappings"] = functio
   assert.is_true(state.current_buffer_in_all_windows)
 end
 
-T["navigates tabs with production mappings"] = function()
+T["BASE-05 navigates tabs with production mappings"] = function()
   start_ready_child()
 
   child.lua "vim.cmd.tabnew()"
@@ -80,7 +80,7 @@ T["navigates tabs with production mappings"] = function()
   assert.equals(first_tab, child.lua_get "vim.api.nvim_get_current_tabpage()")
 end
 
-T["toggles live UI state with production mappings"] = function()
+T["BASE-05 toggles live UI state with production mappings"] = function()
   start_ready_child()
 
   assert.is_false(child.lua_get "vim.wo.wrap")
@@ -111,7 +111,7 @@ T["toggles live UI state with production mappings"] = function()
   helpers.wait_until(child, "not vim.diagnostic.is_enabled()", "diagnostics toggle")
 end
 
-T["installs q close mapping on a help split and closes it from input"] = function()
+T["BASE-05 installs q close mapping on a help split and closes it from input"] = function()
   start_ready_child()
 
   assert.equals(1, child.lua_get "#vim.api.nvim_list_wins()")
@@ -126,7 +126,7 @@ T["installs q close mapping on a help split and closes it from input"] = functio
   helpers.wait_until(child, "#vim.api.nvim_list_wins() == 1", "q close mapping")
 end
 
-T["applies large-buffer and quickfix autocmd behavior"] = function()
+T["BASE-05 applies large-buffer and quickfix autocmd behavior"] = function()
   start_ready_child()
 
   child.lua [[
@@ -148,7 +148,7 @@ T["applies large-buffer and quickfix autocmd behavior"] = function()
   assert.is_false(child.lua_get "vim.bo.buflisted")
 end
 
-T["creates missing parent directories before writing fixture files"] = function()
+T["BASE-05 creates missing parent directories before writing fixture files"] = function()
   start_ready_child()
 
   local path = helpers.fixture_project(child) .. "/nested/fixture/created.txt"

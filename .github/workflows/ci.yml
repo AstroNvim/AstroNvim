@@ -7,6 +7,13 @@ on:
     types: [opened, edited, synchronize]
   release:
     types: [published]
+  schedule:
+    - cron: "0 6 * * *"
+    - cron: "0 8 * * 1"
+
+env:
+  TEST_ENVIRONMENT_SCHEMA: "2"
+  TEST_ENVIRONMENT_CACHE_ROTATION: "1"
 
 jobs:
   CI:
@@ -31,30 +38,175 @@ jobs:
             "https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-x86_64.tar.gz" \
             --output /tmp/nvim.tar.gz
           tar --extract --gzip --file /tmp/nvim.tar.gz --directory /tmp
+          export PATH="/tmp/nvim-linux-x86_64/bin:$PATH"
           echo "/tmp/nvim-linux-x86_64/bin" >> "$GITHUB_PATH"
           test "$(nvim --version | head -n 1)" = "NVIM v${NVIM_VERSION}"
-      - name: Cache locked test dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            .tests/lazy.nvim
-            .tests/data/nvim/lazy
-          key: ${{ runner.os }}-nvim-${{ env.NVIM_VERSION }}-tests-${{ hashFiles('tests/config.lua', 'tests/lazy-lock.json') }}
-      - name: Prepare test dependencies
-        run: make test-prepare
-      - name: Run test suite twice
-        run: |
-          make test
-          make test
       - name: Install test linters
         run: |
           cargo install stylua --version 2.5.2 --locked
           cargo install selene --version 0.31.0 --locked
-      - name: Lint test files
+      - name: Run static repository checks
         run: |
           stylua --check tests
           selene tests
+          git diff --check
+          git diff --exit-code
+      - name: Restore test environment cache
+        id: test-environment-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .tests
+          key: test-environment-${{ runner.os }}-${{ runner.arch }}-nvim-${{ env.NVIM_VERSION }}-schema-${{ env.TEST_ENVIRONMENT_SCHEMA }}-rotation-${{ env.TEST_ENVIRONMENT_CACHE_ROTATION }}
+      - name: Prepare test environment
+        run: make test-prepare
+      - name: Save test environment cache
+        if: steps.test-environment-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .tests
+          key: test-environment-${{ runner.os }}-${{ runner.arch }}-nvim-${{ env.NVIM_VERSION }}-schema-${{ env.TEST_ENVIRONMENT_SCHEMA }}-rotation-${{ env.TEST_ENVIRONMENT_CACHE_ROTATION }}
+      - name: Run test suite twice
+        run: |
+          make test
+          make test
       - name: Verify repository is unchanged
+        run: |
+          git diff --check
+          git diff --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"
+  Semantic:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: minimum supported
+            os: ubuntu-latest
+            neovim: v0.11.0
+          - name: latest supported stable
+            os: ubuntu-latest
+            neovim: v0.12.4
+          - name: macOS smoke
+            os: macos-latest
+            neovim: v0.12.4
+          - name: Windows smoke
+            os: windows-latest
+            neovim: v0.12.4
+    name: Semantic Tests (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      NVIM_VERSION: ${{ matrix.neovim }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: ${{ matrix.neovim }}
+      - name: Verify Neovim version
+        shell: bash
+        run: test "$(nvim --version | head -n 1)" = "NVIM ${NVIM_VERSION}"
+      - name: Run repository preflight
+        shell: bash
+        run: |
+          git diff --check
+          git diff --exit-code
+      - name: Restore test environment cache
+        id: test-environment-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .tests
+          key: test-environment-${{ runner.os }}-${{ runner.arch }}-nvim-${{ env.NVIM_VERSION }}-schema-${{ env.TEST_ENVIRONMENT_SCHEMA }}-rotation-${{ env.TEST_ENVIRONMENT_CACHE_ROTATION }}
+      - name: Prepare test environment
+        shell: bash
+        run: make test-prepare
+      - name: Save test environment cache
+        if: steps.test-environment-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .tests
+          key: test-environment-${{ runner.os }}-${{ runner.arch }}-nvim-${{ env.NVIM_VERSION }}-schema-${{ env.TEST_ENVIRONMENT_SCHEMA }}-rotation-${{ env.TEST_ENVIRONMENT_CACHE_ROTATION }}
+      - name: Run semantic suite
+        shell: bash
+        run: make test-semantic
+      - name: Verify repository is unchanged
+        shell: bash
+        run: |
+          git diff --check
+          git diff --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"
+  Nightly:
+    name: Nightly Smoke
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 6 * * *' }}
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NVIM_VERSION: nightly
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Neovim nightly
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+      - name: Run repository preflight
+        run: |
+          git diff --check
+          git diff --exit-code
+      - name: Restore test environment cache
+        id: test-environment-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .tests
+          key: test-environment-${{ runner.os }}-${{ runner.arch }}-nvim-${{ env.NVIM_VERSION }}-schema-${{ env.TEST_ENVIRONMENT_SCHEMA }}-rotation-${{ env.TEST_ENVIRONMENT_CACHE_ROTATION }}
+      - name: Prepare test environment
+        run: make test-prepare
+      - name: Save test environment cache
+        if: steps.test-environment-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .tests
+          key: test-environment-${{ runner.os }}-${{ runner.arch }}-nvim-${{ env.NVIM_VERSION }}-schema-${{ env.TEST_ENVIRONMENT_SCHEMA }}-rotation-${{ env.TEST_ENVIRONMENT_CACHE_ROTATION }}
+      - name: Run semantic smoke suite
+        run: make test-semantic
+      - name: Verify repository is unchanged
+        run: |
+          git diff --check
+          git diff --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"
+  Dependency-Refresh:
+    name: Weekly Dependency Rebuild
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 8 * * 1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NVIM_VERSION: v0.12.4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install latest supported Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: ${{ env.NVIM_VERSION }}
+      - name: Verify Neovim version
+        run: test "$(nvim --version | head -n 1)" = "NVIM ${NVIM_VERSION}"
+      - name: Run repository preflight
+        run: |
+          git diff --check
+          git diff --exit-code
+      - name: Rebuild test environment from latest dependencies
+        run: make test-update-deps
+      - name: Save rebuilt test environment cache
+        uses: actions/cache/save@v4
+        with:
+          path: .tests
+          key: test-environment-${{ runner.os }}-${{ runner.arch }}-nvim-${{ env.NVIM_VERSION }}-schema-${{ env.TEST_ENVIRONMENT_SCHEMA }}-rotation-${{ env.TEST_ENVIRONMENT_CACHE_ROTATION }}-weekly-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Run semantic smoke suite
+        run: make test-semantic
+      - name: Verify repository is unchanged
+        if: ${{ always() }}
         run: |
           git diff --check
           git diff --exit-code

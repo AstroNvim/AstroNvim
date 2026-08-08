@@ -1,0 +1,4 @@
+{
+  "name": "fixture-session",
+  "buffers": ["plain.txt", "indentation.txt"]
+}

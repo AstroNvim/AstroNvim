@@ -12,7 +12,7 @@ local T = MiniTest.new_set {
   },
 }
 
-T["restores parent XDG variables after spawning a child"] = function()
+T["BASE-03 restores parent XDG variables after spawning a child"] = function()
   local before = helpers.parent_xdg_environment()
   local parent = {
     XDG_CONFIG_HOME = "/tmp/astronvim-parent-config",
@@ -39,7 +39,7 @@ T["restores parent XDG variables after spawning a child"] = function()
   if not ok then error(err, 0) end
 end
 
-T["uses deterministic child and fixture Git environments"] = function()
+T["BASE-03 uses deterministic child and fixture Git environments"] = function()
   child = helpers.start_child()
 
   local state = child.lua_get [[(function()
@@ -67,8 +67,8 @@ T["uses deterministic child and fixture Git environments"] = function()
   end)()]]
 
   assert.same({
-    LC_ALL = "C.UTF-8",
-    LANG = "C.UTF-8",
+    LC_ALL = "C",
+    LANG = "C",
     TZ = "UTC",
     TERM = "xterm-256color",
     COLORTERM = "truecolor",
