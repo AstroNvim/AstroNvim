@@ -241,4 +241,30 @@ T["INIT-09 rolls back initialization when startup deferral or option merging fai
   end
 end
 
+T["INIT-10C reports malformed AstroNvim version.txt content without leaking implementation errors"] = function()
+  local calls = {}
+  unit_helpers.with_module("astronvim.init", {
+    loaded = {
+      ["astronvim.config"] = vim.deepcopy(default_config),
+      astrocore = {
+        get_plugin = function() return { dir = "/tmp/AstroNvim" } end,
+        read_file = function() return "not-a-version" end,
+        notify = function(message, level)
+          calls.message, calls.level = message, level
+        end,
+      },
+    },
+    vim = {
+      fn = { executable = function() return 0 end },
+      trim = function(value) return value:match "^%s*(.-)%s*$" end,
+    },
+  }, function(init)
+    local ok, version = pcall(init.version)
+    assert.is_true(ok)
+    assert.is_nil(version)
+    assert.equals("Unable to calculate version", calls.message)
+    assert.equals(vim.log.levels.ERROR, calls.level)
+  end)
+end
+
 return T

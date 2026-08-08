@@ -13,7 +13,12 @@ function M.version()
     return
   end
 
-  version_str = "v" .. vim.trim(version_str)
+  version_str = vim.trim(version_str)
+  if not version_str:match "^%d+%.%d+%.%d+$" then
+    astrocore.notify("Unable to calculate version", vim.log.levels.ERROR)
+    return
+  end
+  version_str = "v" .. version_str
 
   if not plugin.version then
     version_str = version_str .. "-dev"

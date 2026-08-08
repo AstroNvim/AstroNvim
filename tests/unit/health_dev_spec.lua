@@ -355,4 +355,26 @@ T["SNAPSHOT-01 keeps the explicit older-Neovim Treesitter release contract"] = f
   end
 end
 
+T["HEALTH-04 reports plausible Neovim versions and rejects malformed tokens"] = function()
+  for _, case in ipairs {
+    { output = "NVIM v0.11.4\n", expected = "v0.11.4" },
+    { output = "NVIM v0.12.0-dev-123+gabcdef\n", expected = "v0.12.0-dev-123+gabcdef" },
+    { output = "not a Neovim version\n", expected = "unknown" },
+    { output = "NVIM v\n", expected = "unknown" },
+    { output = "NVIM vgarbage\n", expected = "unknown" },
+  } do
+    with_health({ check = false, version_output = case.output }, function(calls)
+      local ok, check_error = pcall(function()
+        local health = require "astronvim.health"
+        health.check()
+      end)
+      assert.is_true(ok, tostring(check_error))
+      assert.same({ kind = "start", message = "Checking requirements" }, calls[1])
+      assert.same({ kind = "info", message = "AstroNvim Version: v5.0.0" }, calls[2])
+      assert.same({ kind = "info", message = "Neovim Version: " .. case.expected }, calls[3])
+      assert.same({ command = "version", options = { output = true } }, calls.exec2)
+    end)
+  end
+end
+
 return T
