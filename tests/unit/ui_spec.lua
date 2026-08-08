@@ -638,4 +638,54 @@ T["UI-07b sources the tabline foreground from TabLineFill"] = function()
   }, function(status) assert.equals("tabline-fill-foreground", status.setup_colors().tabline_fg) end)
 end
 
+T["HEIR-07a caches nil builder results within the wrapper cache lifetime"] = function()
+  local file_icon_calls = 0
+  with_heirline({
+    file_icon = function()
+      file_icon_calls = file_icon_calls + 1
+      return nil
+    end,
+  }, function(spec)
+    local inactive_file_info = spec.opts(nil, {}).winbar[1][2].options
+    local file_icon = inactive_file_info.file_icon.hl
+
+    assert.is_nil(file_icon {})
+    assert.is_nil(file_icon {})
+    assert.equals(1, file_icon_calls)
+  end)
+end
+
+T["HEIR-07b retains the foreign AstroColorScheme callback and one refresh callback across setup"] = function()
+  with_heirline({ heirline_loaded = true }, function(spec, calls)
+    local foreign_callback = function() end
+    local core_options = {
+      mappings = { n = {} },
+      autocmds = {
+        heirline_colors = {
+          { event = "User", pattern = "AstroColorScheme", callback = foreign_callback },
+        },
+      },
+    }
+
+    spec.specs[1].opts(nil, core_options)
+    spec.specs[1].opts(nil, core_options)
+
+    local callbacks = core_options.autocmds.heirline_colors
+    local foreign_callbacks = 0
+    local refresh_callbacks = {}
+    for _, autocmd in ipairs(callbacks) do
+      if autocmd.event == "User" and autocmd.pattern == "AstroColorScheme" then
+        if autocmd.callback == foreign_callback then foreign_callbacks = foreign_callbacks + 1 end
+        if autocmd.desc == "Refresh heirline colors" then table.insert(refresh_callbacks, autocmd.callback) end
+      end
+    end
+    assert.equals(1, foreign_callbacks)
+    assert.equals(1, #refresh_callbacks)
+
+    calls.actions = {}
+    refresh_callbacks[1]()
+    assert.same({ { name = "heirline.refresh_colors", arguments = { n = 0 } } }, calls.actions)
+  end)
+end
+
 return T
