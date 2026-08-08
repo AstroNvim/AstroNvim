@@ -193,7 +193,14 @@ return {
     })
 
     if not opts.event_handlers then opts.event_handlers = {} end
+    opts.event_handlers = vim.tbl_filter(
+      function(event_handler)
+        return event_handler.id ~= "astronvim_neo_tree_buffer_enter" or event_handler.event ~= "neo_tree_buffer_enter"
+      end,
+      opts.event_handlers
+    )
     table.insert(opts.event_handlers, {
+      id = "astronvim_neo_tree_buffer_enter",
       event = "neo_tree_buffer_enter",
       handler = function(_)
         vim.opt_local.signcolumn = "auto"
