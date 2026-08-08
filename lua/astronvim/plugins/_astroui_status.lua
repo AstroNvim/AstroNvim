@@ -154,7 +154,7 @@ return {
         local HeirlineCommand =
           resolve_lualine(get_hlgroup("HeirlineCommand", { bg = nil }).bg, "command", color.bright_yellow)
         local HeirlineTerminal =
-          resolve_lualine(get_hlgroup("HeirlineTerminal", { bg = nil }).bg, "insert", HeirlineInsert)
+          resolve_lualine(get_hlgroup("HeirlineTerminal", { bg = nil }).bg, "terminal", HeirlineInsert)
 
         local colors = {
           close_fg = Error.fg,
@@ -179,7 +179,7 @@ return {
           winbarnc_fg = WinBarNC.fg,
           winbarnc_bg = WinBarNC.bg,
           tabline_bg = TabLineFill.bg,
-          tabline_fg = TabLineFill.bg,
+          tabline_fg = TabLineFill.fg,
           buffer_fg = Comment.fg,
           buffer_path_fg = WinBarNC.fg,
           buffer_close_fg = Comment.fg,

@@ -328,7 +328,7 @@ T["UI-04 resolves status colors, overrides, fallback section colors, and winbar 
     assert.equals("normal-background", colors.normal)
     assert.equals("resolved:insert:#98c379", colors.insert)
     assert.equals("resolved:visual:#c678dd", colors.visual)
-    assert.equals("resolved:insert:resolved:insert:#98c379", colors.terminal)
+    assert.equals("resolved:terminal:resolved:insert:#98c379", colors.terminal)
     assert.equals("winbar-fg", colors.winbar_fg)
     assert.equals("winbar-bg", colors.winbar_bg)
     assert.equals("winbarnc-fg", colors.winbarnc_fg)
@@ -618,6 +618,24 @@ T["UI-06 installs the AstroUI foldexpr only for an eligible buffer state"] = fun
       assert.equals(case.expected_writes, calls.foldexpr_writes, case.name)
     end)
   end
+end
+
+T["UI-07a resolves terminal colors through the terminal lualine mode"] = function()
+  with_status_options({ highlights = { HeirlineTerminal = { bg = "NONE" } } }, function(status, calls)
+    local colors = status.setup_colors()
+    local terminal_resolver
+    for _, call in ipairs(calls.lualine) do
+      if call.mode == "terminal" then terminal_resolver = call end
+    end
+    assert.is_true(terminal_resolver ~= nil)
+    assert.equals("resolved:terminal:resolved:insert:#98c379", colors.terminal)
+  end)
+end
+
+T["UI-07b sources the tabline foreground from TabLineFill"] = function()
+  with_status_options({
+    highlights = { TabLineFill = { fg = "tabline-fill-foreground", bg = "tabline-fill-background" } },
+  }, function(status) assert.equals("tabline-fill-foreground", status.setup_colors().tabline_fg) end)
 end
 
 return T
