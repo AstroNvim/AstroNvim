@@ -53,7 +53,11 @@ return {
                 local filename = require("astrocore.buffer").is_valid(args.buf) and vim.api.nvim_buf_get_name(args.buf)
                 if filename and not vim.uv.fs_stat(filename) then
                   vim.b[args.buf].new_file = filename
-                  require("astrolsp.file_operations").willCreateFiles(filename)
+                  local ok, err = pcall(require("astrolsp.file_operations").willCreateFiles, filename)
+                  if not ok then
+                    vim.b[args.buf].new_file = false
+                    error(err, 0)
+                  end
                 end
               end,
             },
@@ -113,9 +117,14 @@ return {
         }
         for operation, config in pairs(operations) do
           for _, event in ipairs(config.events) do
+            local handler_id = "astrolsp_" .. operation
+            for index = #opts.event_handlers, 1, -1 do
+              local handler = opts.event_handlers[index]
+              if handler.event == event and handler.id == handler_id then table.remove(opts.event_handlers, index) end
+            end
             table.insert(opts.event_handlers, {
               event = event,
-              id = "astrolsp_" .. operation,
+              id = handler_id,
               handler = function(args)
                 require("astrolsp.file_operations")[operation](config.args and config.args(args) or args)
               end,

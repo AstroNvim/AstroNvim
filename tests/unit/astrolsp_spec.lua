@@ -693,4 +693,105 @@ T["LSPMAP-03 exposes legacy LSP commands only without native :lsp"] = function()
   end
 end
 
+T["LSP-03 repeats new writes and clears state after failed write callbacks"] = function()
+  with_astrolsp_spec({
+    buffers = { [1] = {}, [2] = {}, [3] = {} },
+    valid_buffers = { [1] = true, [2] = true, [3] = true },
+    names = {
+      [1] = "/workspace/repeated.lua",
+      [2] = "/workspace/failed-write.lua",
+      [3] = "/workspace/will-error.lua",
+    },
+    operations = {
+      willCreateFiles = function(path)
+        if path == "/workspace/will-error.lua" then error "willCreateFiles failed" end
+      end,
+    },
+  }, function(spec, calls, buffers)
+    local will_create, did_create = unpack(file_events(spec))
+
+    for _ = 1, 2 do
+      will_create.callback { buf = 1 }
+      did_create.callback { buf = 1 }
+    end
+    assert.equals(false, buffers[1].new_file)
+
+    will_create.callback { buf = 2 }
+    assert.equals("/workspace/failed-write.lua", buffers[2].new_file)
+
+    local ok, err = pcall(will_create.callback, { buf = 3 })
+    assert.is_false(ok)
+    assert.is_true(tostring(err):find("willCreateFiles failed", 1, true) ~= nil)
+    assert.equals(false, buffers[3].new_file)
+
+    did_create.callback { buf = 3 }
+
+    assert.same({
+      { operation = "willCreateFiles", argument = "/workspace/repeated.lua" },
+      { operation = "didCreateFiles", argument = "/workspace/repeated.lua" },
+      { operation = "willCreateFiles", argument = "/workspace/repeated.lua" },
+      { operation = "didCreateFiles", argument = "/workspace/repeated.lua" },
+      { operation = "willCreateFiles", argument = "/workspace/failed-write.lua" },
+      { operation = "willCreateFiles", argument = "/workspace/will-error.lua" },
+    }, calls)
+  end)
+end
+
+T["LSP-11 clears failed file creation state"] = function()
+  with_astrolsp_spec({
+    buffers = { [1] = {} },
+    valid_buffers = { [1] = true },
+    names = { [1] = "/workspace/failing.lua" },
+    fs_stat = function() return nil end,
+    operations = {
+      willCreateFiles = function() error "will create failure" end,
+    },
+  }, function(spec, calls, buffers)
+    local will_create, did_create = unpack(file_events(spec))
+    local ok, error_message = pcall(will_create.callback, { buf = 1 })
+
+    assert.is_false(ok)
+    assert.is_true(tostring(error_message):find("will create failure", 1, true) ~= nil)
+    assert.is_false(buffers[1].new_file)
+
+    did_create.callback { buf = 1 }
+    assert.same({ { operation = "willCreateFiles", argument = "/workspace/failing.lua" } }, calls)
+  end)
+end
+
+T["LSP-11 keeps Neo-tree ownership stable"] = function()
+  local stats = {
+    ["/workspace/first"] = { type = "directory" },
+    ["/workspace/second"] = { type = "file" },
+  }
+  with_astrolsp_spec({ fs_stat = function(path) return stats[path] end }, function(spec, calls)
+    local neo_tree = spec.specs[2]
+    local options = { event_handlers = { { id = "caller_handler", event = "caller" } } }
+    neo_tree.opts(nil, options)
+    neo_tree.opts(nil, options)
+
+    local handlers = {}
+    for _, handler in ipairs(options.event_handlers) do
+      local key = handler.id .. "_" .. handler.event
+      assert.is_nil(handlers[key], "Duplicate Neo-tree handler: " .. key)
+      handlers[key] = handler.handler
+    end
+    assert.equals(9, #options.event_handlers)
+
+    handlers.astrolsp_willDeleteFiles_before_file_delete "/workspace/first"
+    handlers.astrolsp_willDeleteFiles_before_file_delete "/workspace/second"
+
+    handlers.astrolsp_didDeleteFiles_file_deleted "/workspace/second"
+    stats["/workspace/first"] = nil
+    handlers.astrolsp_didDeleteFiles_file_deleted "/workspace/first"
+
+    assert.same({
+      { operation = "willDeleteFiles", argument = { path = "/workspace/first", kind = "folder" } },
+      { operation = "willDeleteFiles", argument = { path = "/workspace/second", kind = "file" } },
+      { operation = "didDeleteFiles", argument = { path = "/workspace/second", kind = "file" } },
+      { operation = "didDeleteFiles", argument = { path = "/workspace/first", kind = "folder" } },
+    }, calls)
+  end)
+end
+
 return T
