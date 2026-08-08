@@ -1,5 +1,10 @@
 # Project gitignore
 coc-settings.json
+.tests/
+
+# BEGIN pi deepwork
+.slim/deepwork/
+# END pi deepwork
 
 # Global gitignore
 # ----------------

@@ -1,0 +1,6 @@
+{
+  "format": {
+    "enabled": false
+  },
+  "ignore": [".tests/**"]
+}

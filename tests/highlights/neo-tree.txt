@@ -1,0 +1,3 @@
+NeoTreeDirectoryName = { fg = "#50a4e9" }
+NeoTreeFileName = { fg = "#9b9fa9" }
+NeoTreeRootName = { fg = "#adb0bb", bold = true }

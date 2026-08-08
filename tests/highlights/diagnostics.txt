@@ -1,0 +1,9 @@
+DiagnosticError = { fg = "#f8747e" }
+DiagnosticWarn = { fg = "#d09214" }
+DiagnosticInfo = { fg = "#50a4e9" }
+DiagnosticHint = { fg = "#00b298" }
+DiagnosticSignError = { fg = "#f8747e" }
+DiagnosticSignWarn = { fg = "#d09214" }
+DiagnosticSignInfo = { fg = "#50a4e9" }
+DiagnosticSignHint = { fg = "#00b298" }
+HeirlineNormal = { fg = "#111317", bg = "#50a4e9" }
