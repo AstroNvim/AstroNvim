@@ -77,10 +77,11 @@ function M.validate_ready_environment()
   local lock, lock_error = read_json(M.lockfile)
   if not lock then return false, "cannot read lazy-lock.json: " .. tostring(lock_error) end
 
+  local fingerprint = environment.compatibility_fingerprint(M.root)
   local valid, result = environment.validate_ready(marker, manifest, lock, function(relative_path, expected_type)
     if not environment.is_safe_relative_path(relative_path) then return false end
     return environment.has_safe_path_type(M.root, M.test_root .. "/" .. relative_path, expected_type, lstat)
-  end)
+  end, fingerprint)
   if not valid then return false, result end
   if not verify_repository(result.lazy.path, result.lazy.commit) then
     return false, "lazy.nvim is missing, changed, or has tracked modifications"

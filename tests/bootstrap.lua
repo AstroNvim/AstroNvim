@@ -113,19 +113,23 @@ local function with_prepare_lock(callback)
 end
 
 local function test_spec()
-  return {
+  local dependencies = environment.managed_dependencies
+  local root_plugin = dependencies.root_plugin
+  local spec = {
     {
       dir = config.root,
-      name = "AstroNvim",
-      lazy = false,
-      priority = 10000,
-      opts = { icons_enabled = false, pin_plugins = false, update_notification = false },
+      name = root_plugin.name,
+      lazy = root_plugin.lazy,
+      priority = root_plugin.priority,
+      opts = root_plugin.options,
     },
-    { import = "astronvim.plugins" },
-    { "echasnovski/mini.test" },
-    { "lunarmodules/luassert" },
-    { "Olivine-Labs/say" },
+    { import = dependencies.import },
   }
+  for _, plugin in ipairs(dependencies.plugins) do
+    table.insert(spec, { plugin })
+  end
+  vim.list_extend(spec, dependencies.overrides)
+  return spec
 end
 
 local function setup_lazy(paths)
@@ -227,6 +231,7 @@ local function managed_plugins(paths)
 
   return {
     schema = environment.schema,
+    fingerprint = environment.compatibility_fingerprint(config.root),
     lockfile = "lazy-lock.json",
     lazy = { path = "lazy.nvim", commit = lazy_commit },
     plugin_root = "data/nvim/lazy",
@@ -246,8 +251,9 @@ local function copy_test_libraries(paths, destination_lua_dir)
 end
 
 local function validate_staged_environment(paths, manifest, lock, lua_root)
+  local fingerprint = environment.compatibility_fingerprint(config.root)
   local valid, validation_error = environment.validate_ready(
-    { schema = environment.schema, manifest = "manifest.json", lockfile = "lazy-lock.json" },
+    { schema = environment.schema, fingerprint = fingerprint, manifest = "manifest.json", lockfile = "lazy-lock.json" },
     manifest,
     lock,
     function(relative_path, expected_type)
@@ -259,7 +265,8 @@ local function validate_staged_environment(paths, manifest, lock, lua_root)
       end
       local entry = vim.uv.fs_lstat(root .. "/" .. relative_path)
       return entry and entry.type == expected_type
-    end
+    end,
+    fingerprint
   )
   if not valid then error("Generated test environment is invalid: " .. validation_error, 0) end
 end
@@ -275,6 +282,7 @@ local function create_fresh_environment()
   ensure_directory(staging.root)
   ensure_directory(staging.root .. "/data")
   ensure_directory(staging.shared_data_dir)
+  ensure_directory(staging.test_lua_dir)
   ensure_directory(staging.state_dir)
   ensure_directory(staging.cache_dir)
 
@@ -298,10 +306,12 @@ local function create_fresh_environment()
   local generated_lock = read_json(staging.lockfile)
   validate_staged_environment(staging, manifest, generated_lock, staging.root)
   write_json_atomic(staging.manifest, manifest)
-  write_json_atomic(
-    staging.ready,
-    { schema = environment.schema, manifest = "manifest.json", lockfile = "lazy-lock.json" }
-  )
+  write_json_atomic(staging.ready, {
+    schema = environment.schema,
+    fingerprint = environment.compatibility_fingerprint(config.root),
+    manifest = "manifest.json",
+    lockfile = "lazy-lock.json",
+  })
 
   local safe_to_publish, safety_error = environment.can_publish_fresh(filesystem(), staging.root, config.test_root)
   if not safe_to_publish then error("Failed to atomically publish test environment: " .. safety_error, 0) end
@@ -319,10 +329,12 @@ local function stage_legacy_artifacts(manifest, lock)
     copy_test_libraries(config, staging.test_lua_dir)
     write_json_atomic(staging.lockfile, lock)
     write_json_atomic(staging.manifest, manifest)
-    write_json_atomic(
-      staging.ready,
-      { schema = environment.schema, manifest = "manifest.json", lockfile = "lazy-lock.json" }
-    )
+    write_json_atomic(staging.ready, {
+      schema = environment.schema,
+      fingerprint = environment.compatibility_fingerprint(config.root),
+      manifest = "manifest.json",
+      lockfile = "lazy-lock.json",
+    })
     validate_staged_environment(config, manifest, lock, staging.root)
   end, debug.traceback)
   if not ok then

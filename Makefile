@@ -1,4 +1,4 @@
-.PHONY: test test-semantic test-prepare test-clear test-update-deps test-update-goldens test-unit test-unit-environment test-unit-helpers test-unit-e2e-helpers test-unit-init test-unit-notify test-unit-core test-unit-astrolsp test-unit-mason test-unit-blink test-unit-language-helpers test-unit-dap test-unit-ui test-unit-neo-tree test-unit-snacks test-unit-ui-helpers test-unit-workflows test-unit-health-dev test-unit-entrypoint test-unit-contracts test-fixtures test-startup test-astrocore test-astrolsp test-neo-tree test-snacks test-workflows test-diagnostics test-contracts test-behavior
+.PHONY: test test-semantic test-prepare test-clear test-update-deps test-update-goldens test-fingerprint test-unit test-unit-environment test-unit-helpers test-unit-e2e-helpers test-unit-init test-unit-notify test-unit-core test-unit-astrolsp test-unit-mason test-unit-blink test-unit-language-helpers test-unit-dap test-unit-ui test-unit-neo-tree test-unit-snacks test-unit-ui-helpers test-unit-workflows test-unit-health-dev test-unit-entrypoint test-unit-contracts test-fixtures test-startup test-astrocore test-astrolsp test-neo-tree test-snacks test-workflows test-diagnostics test-contracts test-behavior
 
 TEST_TARGETS := test test-semantic test-update-goldens test-unit test-unit-environment test-unit-helpers test-unit-e2e-helpers test-unit-init test-unit-notify test-unit-core test-unit-astrolsp test-unit-mason test-unit-blink test-unit-language-helpers test-unit-dap test-unit-ui test-unit-neo-tree test-unit-snacks test-unit-ui-helpers test-unit-workflows test-unit-health-dev test-unit-entrypoint test-unit-contracts test-fixtures test-startup test-astrocore test-astrolsp test-neo-tree test-snacks test-workflows test-diagnostics test-contracts test-behavior
 
@@ -19,6 +19,9 @@ test-clear:
 test-update-deps:
 	@$(MAKE) test-clear
 	@$(MAKE) test-prepare
+
+test-fingerprint:
+	@nvim -l tests/print_fingerprint.lua
 
 test-update-goldens:
 	@export ASTRONVIM_TEST_UPDATE_GOLDENS=1; $(MAKE) test
