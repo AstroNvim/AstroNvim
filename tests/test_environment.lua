@@ -1,6 +1,27 @@
 local M = {}
 
 M.schema = 2
+M.managed_layout = {
+  lazy_path = "lazy.nvim",
+  plugin_root = "data/nvim/lazy",
+  test_lua_dir = "lua",
+  lockfile = "lazy-lock.json",
+  manifest = "manifest.json",
+  ready = ".ready",
+  copied_libraries = { "luassert:src", "say:src/say" },
+}
+M.dependency_spec_paths = { "lua/astronvim/plugins" }
+M.managed_dependencies = {
+  root_plugin = {
+    name = "AstroNvim",
+    lazy = false,
+    priority = 10000,
+    options = { icons_enabled = false, pin_plugins = false, update_notification = false },
+  },
+  import = "astronvim.plugins",
+  plugins = { "echasnovski/mini.test", "lunarmodules/luassert", "Olivine-Labs/say" },
+  overrides = { { "mason-org/mason.nvim", build = false } },
+}
 
 local function is_table(value) return type(value) == "table" end
 
@@ -43,18 +64,94 @@ function M.has_safe_path_type(root, path, expected_type, lstat)
 end
 
 function M.paths_for_test_root(test_root)
+  local layout = M.managed_layout
   return {
     test_root = test_root,
-    lazy_path = test_root .. "/lazy.nvim",
-    plugin_root = test_root .. "/data/nvim/lazy",
-    test_lua_dir = test_root .. "/lua",
-    lockfile = test_root .. "/lazy-lock.json",
-    manifest = test_root .. "/manifest.json",
-    ready = test_root .. "/.ready",
+    lazy_path = test_root .. "/" .. layout.lazy_path,
+    plugin_root = test_root .. "/" .. layout.plugin_root,
+    test_lua_dir = test_root .. "/" .. layout.test_lua_dir,
+    lockfile = test_root .. "/" .. layout.lockfile,
+    manifest = test_root .. "/" .. layout.manifest,
+    ready = test_root .. "/" .. layout.ready,
     shared_data_dir = test_root .. "/data/nvim",
     state_dir = test_root .. "/state",
     cache_dir = test_root .. "/cache",
   }
+end
+
+local function normalize_path(path) return path:gsub("\\", "/") end
+
+local function collect_dependency_spec_files(root)
+  local files = {}
+  local function collect(relative_path)
+    local absolute_path = vim.fs.joinpath(root, relative_path)
+    local entry = vim.uv.fs_lstat(absolute_path)
+    if not entry then error("Missing managed dependency specification path: " .. relative_path, 0) end
+    if entry.type == "file" then
+      table.insert(files, normalize_path(relative_path))
+      return
+    end
+    if entry.type ~= "directory" then
+      error("Unsupported managed dependency specification path: " .. relative_path, 0)
+    end
+
+    local scanner = assert(vim.uv.fs_scandir(absolute_path))
+    while true do
+      local name, child_type = vim.uv.fs_scandir_next(scanner)
+      if not name then break end
+      local child = normalize_path(vim.fs.joinpath(relative_path, name))
+      if child_type == "directory" then
+        collect(child)
+      elseif child_type == "file" and name:sub(-4) == ".lua" then
+        table.insert(files, child)
+      end
+    end
+  end
+
+  for _, path in ipairs(M.dependency_spec_paths) do
+    collect(path)
+  end
+  table.sort(files)
+  return files
+end
+
+local function dependency_spec_digest(root)
+  local chunks = {}
+  for _, path in ipairs(collect_dependency_spec_files(root)) do
+    local file = assert(io.open(vim.fs.joinpath(root, path), "rb"))
+    local contents = assert(file:read "*a")
+    file:close()
+    table.insert(chunks, path .. "\0" .. contents)
+  end
+  return vim.fn.sha256(table.concat(chunks, "\0"))
+end
+
+function M.compatibility_fingerprint(root)
+  root = root or vim.fn.getcwd()
+  local dependencies = M.managed_dependencies
+  local layout = M.managed_layout
+  local root_plugin = dependencies.root_plugin
+  return vim.fn.sha256(table.concat({
+    "schema=" .. M.schema,
+    "layout="
+      .. table.concat(
+        { layout.lazy_path, layout.plugin_root, layout.test_lua_dir, layout.lockfile, layout.manifest, layout.ready },
+        "|"
+      ),
+    "copied_libraries=" .. table.concat(layout.copied_libraries, "|"),
+    "root_plugin=" .. table.concat({
+      root_plugin.name,
+      tostring(root_plugin.lazy),
+      tostring(root_plugin.priority),
+      tostring(root_plugin.options.icons_enabled),
+      tostring(root_plugin.options.pin_plugins),
+      tostring(root_plugin.options.update_notification),
+    }, "|"),
+    "import=" .. dependencies.import,
+    "plugins=" .. table.concat(dependencies.plugins, "|"),
+    "overrides=mason-org/mason.nvim:build=false",
+    "dependency_spec=" .. dependency_spec_digest(root),
+  }, "\n"))
 end
 
 function M.paths(root)
@@ -96,12 +193,18 @@ function M.required_paths(manifest)
   return paths
 end
 
-function M.validate_ready(marker, manifest, lock, path_metadata)
+function M.validate_ready(marker, manifest, lock, path_metadata, fingerprint)
   if not is_table(marker) or marker.schema ~= M.schema then return false, "the .ready marker schema is incompatible" end
+  if fingerprint and marker.fingerprint ~= fingerprint then
+    return false, "the .ready marker fingerprint is incompatible"
+  end
   if marker.manifest ~= "manifest.json" or marker.lockfile ~= "lazy-lock.json" then
     return false, "the .ready marker references unexpected files"
   end
   if not is_table(manifest) or manifest.schema ~= M.schema then return false, "the manifest schema is incompatible" end
+  if fingerprint and manifest.fingerprint ~= fingerprint then
+    return false, "the manifest fingerprint is incompatible"
+  end
   if manifest.lockfile ~= "lazy-lock.json" then return false, "the manifest references an unexpected lockfile" end
   if not is_table(manifest.lazy) or manifest.lazy.path ~= "lazy.nvim" or not is_commit(manifest.lazy.commit) then
     return false, "the lazy.nvim manifest entry is invalid"
@@ -232,7 +335,7 @@ function M.remove_tree(filesystem, path)
   local function inspect_tree(current_path)
     local entry = filesystem.lstat(current_path)
     if not entry then return true, false end
-    if entry_type(entry) == "link" then return false, "refusing to remove a symbolic-link path: " .. current_path end
+    if entry_type(entry) == "link" then return true, true end
     if entry_type(entry) ~= "directory" then
       return false, "refusing to recursively remove a non-directory path: " .. current_path
     end
@@ -243,7 +346,6 @@ function M.remove_tree(filesystem, path)
       local child = current_path .. "/" .. name
       local child_entry = filesystem.lstat(child)
       if not child_entry then return false, "failed to inspect " .. child end
-      if entry_type(child_entry) == "link" then return false, "refusing to remove a symbolic-link path: " .. child end
       if entry_type(child_entry) == "directory" then
         local safe, safety_error = inspect_tree(child)
         if not safe then return false, safety_error end
@@ -255,6 +357,11 @@ function M.remove_tree(filesystem, path)
   local safe, exists_or_error = inspect_tree(path)
   if not safe then return false, exists_or_error end
   if not exists_or_error then return true end
+  if entry_type(filesystem.lstat(path)) == "link" then
+    local removed, remove_error = filesystem.unlink(path)
+    if not removed then return false, "failed to remove " .. path .. ": " .. tostring(remove_error) end
+    return true
+  end
 
   local function remove_directory(current_path)
     local children, scan_error = filesystem.scandir(current_path)

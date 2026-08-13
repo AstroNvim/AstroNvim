@@ -4,10 +4,17 @@ local environment = require "test_environment"
 local T = MiniTest.new_set()
 
 local function ready_environment()
+  local fingerprint = environment.compatibility_fingerprint()
   return {
-    marker = { schema = environment.schema, manifest = "manifest.json", lockfile = "lazy-lock.json" },
+    marker = {
+      schema = environment.schema,
+      fingerprint = fingerprint,
+      manifest = "manifest.json",
+      lockfile = "lazy-lock.json",
+    },
     manifest = {
       schema = environment.schema,
+      fingerprint = fingerprint,
       lockfile = "lazy-lock.json",
       lazy = { path = "lazy.nvim", commit = "1234567" },
       plugin_root = "data/nvim/lazy",
@@ -72,6 +79,14 @@ T["ENV-00 constructs paths for arbitrary test roots"] = function()
   assert.equals("/temporary/runtime/.ready", paths.ready)
 end
 
+T["ENV-00 produces a deterministic compatibility fingerprint"] = function()
+  local fingerprint = environment.compatibility_fingerprint()
+
+  assert.equals(fingerprint, environment.compatibility_fingerprint())
+  assert.equals(64, #fingerprint)
+  assert.is_truthy(fingerprint:match "^[a-f0-9]+$" ~= nil)
+end
+
 T["ENV-01 classifies marked environments for offline reuse without mutation"] = function()
   local paths = environment.paths "/repository"
   local present = {}
@@ -105,26 +120,34 @@ T["ENV-03 validates exact path types and concrete module entries"] = function()
   local fixture = ready_environment()
   local paths = ready_paths()
 
-  assert.is_true(environment.validate_ready(fixture.marker, fixture.manifest, fixture.lock, paths))
+  local fingerprint = environment.compatibility_fingerprint()
+  assert.is_true(environment.validate_ready(fixture.marker, fixture.manifest, fixture.lock, paths, fingerprint))
   paths["lua/say/init.lua"] = "directory"
-  local valid, error_message = environment.validate_ready(fixture.marker, fixture.manifest, fixture.lock, paths)
+  local valid, error_message =
+    environment.validate_ready(fixture.marker, fixture.manifest, fixture.lock, paths, fingerprint)
   assert.is_false(valid)
   assert.is_true(error_message:find("lua/say/init.lua", 1, true) ~= nil)
 end
 
 T["ENV-04 rejects incompatible markers and mismatched locks"] = function()
   local fixture = ready_environment()
-  local valid, error_message = environment.validate_ready(
-    { schema = environment.schema + 1, manifest = "manifest.json", lockfile = "lazy-lock.json" },
-    fixture.manifest,
-    fixture.lock,
-    ready_paths()
-  )
+  local valid, error_message = environment.validate_ready({
+    schema = environment.schema + 1,
+    fingerprint = environment.compatibility_fingerprint(),
+    manifest = "manifest.json",
+    lockfile = "lazy-lock.json",
+  }, fixture.manifest, fixture.lock, ready_paths())
   assert.is_false(valid)
   assert.is_true(error_message:find("marker schema", 1, true) ~= nil)
 
   fixture.lock["mini.test"].commit = "7654321"
-  valid, error_message = environment.validate_ready(fixture.marker, fixture.manifest, fixture.lock, ready_paths())
+  valid, error_message = environment.validate_ready(
+    fixture.marker,
+    fixture.manifest,
+    fixture.lock,
+    ready_paths(),
+    environment.compatibility_fingerprint()
+  )
   assert.is_false(valid)
   assert.is_true(error_message:find("does not match mini.test", 1, true) ~= nil)
 end
@@ -225,7 +248,7 @@ T["ENV-07 validates fresh atomic publication targets"] = function()
   assert.is_true(error_message:find("missing", 1, true) ~= nil)
 end
 
-T["ENV-08 safely rejects symbolic links while cleaning interrupted staging"] = function()
+T["ENV-08 unlinks symbolic-link leaves without traversing them during cleanup"] = function()
   local entries = {
     ["/repository/.tests.bootstrap"] = { type = "directory" },
     ["/repository/.tests.bootstrap/copied.lua"] = { type = "file" },
@@ -243,10 +266,30 @@ T["ENV-08 safely rejects symbolic links while cleaning interrupted staging"] = f
     rmdir = function() return true end,
   }
 
-  local success, error_message = environment.remove_tree(filesystem, "/repository/.tests.bootstrap")
-  assert.is_false(success)
-  assert.is_true(error_message:find("symbolic-link", 1, true) ~= nil)
-  assert.equals(nil, removed["/repository/.tests.bootstrap/copied.lua"])
+  local success = environment.remove_tree(filesystem, "/repository/.tests.bootstrap")
+  assert.is_true(success)
+  assert.is_true(removed["/repository/.tests.bootstrap/copied.lua"])
+  assert.is_true(removed["/repository/.tests.bootstrap/external"])
+end
+
+T["ENV-08 unlinks a symbolic-link cleanup root without scanning its target"] = function()
+  local entries = { ["/repository/.tests.bootstrap"] = { type = "link" } }
+  local scanned = false
+  local filesystem = {
+    lstat = function(path) return entries[path] end,
+    scandir = function()
+      scanned = true
+      return { "external" }
+    end,
+    unlink = function(path)
+      entries[path] = nil
+      return true
+    end,
+  }
+
+  assert.is_true(environment.remove_tree(filesystem, "/repository/.tests.bootstrap"))
+  assert.is_false(scanned)
+  assert.equals(nil, entries["/repository/.tests.bootstrap"])
 end
 
 T["ENV-09 retries only explicit lock contention and releases the lock"] = function()
@@ -320,7 +363,7 @@ T["ENV-10 clears only the canonical environment and treats absence as a no-op"] 
   assert.equals(nil, entries["/repository/.tests.prepare.lock"])
 end
 
-T["ENV-11 rejects symbolic links anywhere in the clear tree"] = function()
+T["ENV-11 unlinks symbolic-link leaves while clearing the owned tree"] = function()
   local entries = {
     ["/repository/.tests"] = { type = "directory" },
     ["/repository/.tests/external"] = { type = "link" },
@@ -336,14 +379,17 @@ T["ENV-11 rejects symbolic links anywhere in the clear tree"] = function()
       return true
     end,
     scandir = function() return { "external" } end,
+    unlink = function(path)
+      entries[path] = nil
+      return true
+    end,
     now = function() return 0 end,
     wait = function() end,
   }
 
-  local ok, error_message = pcall(environment.clear_test_environment, filesystem, "/repository")
-  assert.is_false(ok)
-  assert.is_true(error_message:find("symbolic-link", 1, true) ~= nil)
-  assert.equals("link", entries["/repository/.tests/external"].type)
+  assert.is_true(environment.clear_test_environment(filesystem, "/repository"))
+  assert.equals(nil, entries["/repository/.tests/external"])
+  assert.equals(nil, entries["/repository/.tests"])
   assert.equals(nil, entries["/repository/.tests.prepare.lock"])
 end
 
