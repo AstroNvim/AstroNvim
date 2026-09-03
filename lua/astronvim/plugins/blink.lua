@@ -1,3 +1,6 @@
+-- TODO: Remove this compatibility alias when support for Neovim older than v0.13 is dropped.
+local if_nil = vim.nonnil or vim.F.if_nil
+
 local function has_words_before()
   local line, col = (unpack or table.unpack)(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
@@ -81,7 +84,7 @@ return {
       local dap_prompt = astro.is_available "cmp-dap" -- add interoperability with cmp-dap
         and vim.tbl_contains({ "dap-repl", "dapui_watches", "dapui_hover" }, vim.bo.filetype)
       if vim.bo.buftype == "prompt" and not dap_prompt then return false end
-      return vim.F.if_nil(vim.b.completion, astro.config.features.cmp)
+      return if_nil(vim.b.completion, astro.config.features.cmp)
     end,
     -- remember to enable your providers here
     sources = {

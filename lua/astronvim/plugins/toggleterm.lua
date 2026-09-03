@@ -1,3 +1,6 @@
+-- TODO: Remove this compatibility alias when support for Neovim older than v0.13 is dropped.
+local buf_key = vim.fn.has "nvim-0.13" == 1 and "buf" or "buffer"
+
 return {
   "akinsho/toggleterm.nvim",
   cmd = { "ToggleTerm", "TermExec" },
@@ -104,8 +107,8 @@ return {
       vim.opt_local.signcolumn = "no"
       if t.hidden then
         local function toggle() t:toggle() end
-        vim.keymap.set({ "n", "t", "i" }, "<C-'>", toggle, { desc = "Toggle terminal", buffer = t.bufnr })
-        vim.keymap.set({ "n", "t", "i" }, "<F7>", toggle, { desc = "Toggle terminal", buffer = t.bufnr })
+        vim.keymap.set({ "n", "t", "i" }, "<C-'>", toggle, { desc = "Toggle terminal", [buf_key] = t.bufnr })
+        vim.keymap.set({ "n", "t", "i" }, "<F7>", toggle, { desc = "Toggle terminal", [buf_key] = t.bufnr })
       end
     end,
     shading_factor = 2,

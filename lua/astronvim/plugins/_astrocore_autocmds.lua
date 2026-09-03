@@ -1,4 +1,10 @@
 local mid_mapping = false
+
+-- TODO: Remove this compatibility block when support for Neovim older than v0.13 is dropped.
+local if_nil = vim.nonnil or vim.F.if_nil
+local hl_op = vim.hl.hl_op or vim.hl.on_yank
+local buf_key = vim.fn.has "nvim-0.13" == 1 and "buf" or "buffer"
+
 return {
   "AstroNvim/astrocore",
   ---@type AstroCoreOpts
@@ -123,7 +129,7 @@ return {
           event = "FileType",
           desc = "Ensure editorconfig settings take highest precedence",
           callback = function(args)
-            if vim.F.if_nil(vim.b.editorconfig, vim.g.editorconfig) then
+            if if_nil(vim.b.editorconfig, vim.g.editorconfig) then
               local editorconfig_avail, editorconfig = pcall(require, "editorconfig")
               if editorconfig_avail then editorconfig.config(args.buf) end
             end
@@ -165,7 +171,7 @@ return {
                     if autocmd.group_name and not skip_augroups[autocmd.group_name] then
                       vim.api.nvim_exec_autocmds(
                         args.event,
-                        { group = autocmd.group_name, buffer = args.buf, data = args.data }
+                        { group = autocmd.group_name, [buf_key] = args.buf, data = args.data }
                       )
                       skip_augroups[autocmd.group_name] = true
                     end
@@ -181,7 +187,7 @@ return {
           event = "TextYankPost",
           desc = "Highlight yanked text",
           pattern = "*",
-          callback = function() vim.hl.on_yank() end,
+          callback = function() hl_op() end,
         },
       },
       large_buf_settings = {
@@ -215,7 +221,7 @@ return {
             if vim.tbl_contains({ "help", "nofile", "quickfix" }, vim.bo[args.buf].buftype) then
               vim.keymap.set("n", "q", "<Cmd>close<CR>", {
                 desc = "Close window",
-                buffer = args.buf,
+                [buf_key] = args.buf,
                 silent = true,
                 nowait = true,
               })

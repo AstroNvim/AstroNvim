@@ -2,6 +2,9 @@ local M = {}
 
 local astrocore = require "astrocore"
 
+-- TODO: Remove this compatibility alias when support for Neovim older than v0.13 is dropped.
+local if_nil = vim.nonnil or vim.F.if_nil
+
 --- Helper function to generate AstroNvim snapshots (For internal use only)
 ---@param write? false write to AstroNvim if in `dev` mode, false to force no write
 ---@return table # The plugin specification table of the snapshot
@@ -38,7 +41,7 @@ function M.generate_snapshot(write)
   } --[=[@as { [string]: false|string|fun(plugin: LazyPlugin): string?} ]=]
   local snapshot, module = {}, "return {\n"
   for _, plugin in ipairs(plugins) do
-    local pinner = vim.F.if_nil(pinners[plugin[1]], pinners["*"])
+    local pinner = if_nil(pinners[plugin[1]], pinners["*"])
     if pinner ~= false then
       plugin = { plugin[1], commit = git_commit(plugin.dir), version = plugin.version }
       local prev_version = vim.tbl_get(prev_snapshot, plugin[1], "version")
