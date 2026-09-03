@@ -41,6 +41,14 @@ return {
     maps.n["<Leader>/"] = { "gcc", remap = true, desc = "Toggle comment line" }
     maps.x["<Leader>/"] = { "gc", remap = true, desc = "Toggle comment" }
 
+    -- TODO: remove check when dropping support for Neovim v0.12
+    if vim.fn.has "nvim-0.13" == 1 then
+      maps.n["<C-BS>"] = {
+        function() vim.api.nvim_buf_clear_namespace(0, vim.api.nvim_create_namespace "nvim.multicursor", 0, -1) end,
+        desc = "Clear Multicursors",
+      }
+    end
+
     maps.n["gco"] = { "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Below" }
     maps.n["gcO"] = { "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Above" }
 
