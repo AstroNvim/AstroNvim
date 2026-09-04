@@ -47,6 +47,11 @@ return {
       desc = "Show the definition of current symbol",
       cond = "textDocument/definition",
     }
+    maps.n["gI"] = {
+      function() vim.lsp.buf.implementation() end,
+      desc = "Implementation of current symbol",
+      cond = "textDocument/implementation",
+    }
 
     local function formatting_checker(method)
       method = "textDocument/" .. (method or "formatting")
