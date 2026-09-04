@@ -1,5 +1,18 @@
 # Changelog
 
+## [6.1.0](https://github.com/AstroNvim/AstroNvim/compare/v6.0.7...v6.1.0) (2026-09-04)
+
+
+### Features
+
+* add `<C-BS>` mapping for clearing multicursors in Neovim v0.13 ([29868d4](https://github.com/AstroNvim/AstroNvim/commit/29868d413d9b3834bacc9bd2349541e7a6a8c5c3))
+* **astrolsp:** add `gI` mapping for go to implementation ([d74bdd2](https://github.com/AstroNvim/AstroNvim/commit/d74bdd2d54bf22c11c5ee899deb2105556dd1439)), closes [#2904](https://github.com/AstroNvim/AstroNvim/issues/2904)
+
+
+### Bug Fixes
+
+* align compatibility with Neovim 0.13 ([e7cf3e2](https://github.com/AstroNvim/AstroNvim/commit/e7cf3e23d2b49b1fac8abac06bd1561149db73d7))
+
 ## [6.0.7](https://github.com/AstroNvim/AstroNvim/compare/v6.0.6...v6.0.7) (2026-08-05)
 
 
