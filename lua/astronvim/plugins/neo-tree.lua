@@ -7,6 +7,12 @@ return {
     { "nvim-lua/plenary.nvim", lazy = true },
     { "MunifTanjim/nui.nvim", lazy = true },
     {
+      "s1n7ax/nvim-window-picker",
+      main = "window-picker",
+      lazy = true,
+      opts = { picker_config = { statusline_winbar_picker = { use_winbar = "smart" } } },
+    },
+    {
       "AstroNvim/astrocore",
       opts = function(_, opts)
         local maps = opts.mappings
