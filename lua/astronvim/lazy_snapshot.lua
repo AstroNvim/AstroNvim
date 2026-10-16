@@ -26,7 +26,7 @@ return {
   { "nvim-mini/mini.icons", version = "^0.17", optional = true },
   { "nvim-neo-tree/neo-tree.nvim", version = "^3", optional = true },
   { "nvim-neotest/nvim-nio", version = "^1", optional = true },
-  { "nvim-treesitter/nvim-treesitter", commit = vim.fn.has "nvim-0.12" ~= 1 and "90cd6580e720caedacb91fdd587b747a6e77d61f" or "ca581c3436fc2b236847f5b739ebc263739e5ca6", optional = true },
+  { "nvim-treesitter/nvim-treesitter", commit = "ca581c3436fc2b236847f5b739ebc263739e5ca6", optional = true },
   { "nvim-treesitter/nvim-treesitter-textobjects", commit = "5c7b0263797dfd1bd6202f2b219f3b53a80b2187", optional = true },
   { "nvimtools/none-ls.nvim", commit = "c4b82bb63b13856ba4d6b971b7aad3bb38fc6fe2", optional = true },
   { "rafamadriz/friendly-snippets", commit = "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219", optional = true },
