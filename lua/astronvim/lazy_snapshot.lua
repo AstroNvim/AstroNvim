@@ -37,7 +37,7 @@ return {
   { "saghen/blink.cmp", version = "^1", optional = true },
   { "saghen/blink.compat", version = "^2", optional = true },
   { "smart-splits-nvim/smart-splits.nvim", version = "^3", optional = true },
-  { "stevearc/aerial.nvim", version = "^3", optional = true },
+  { "stevearc/aerial.nvim", version = "^4", optional = true },
   { "stevearc/resession.nvim", version = "^1", optional = true },
   { "windwp/nvim-autopairs", commit = "3172f40c16563db871a58f20d205c710ad782311", optional = true },
   { "windwp/nvim-ts-autotag", commit = "d7220b55e16ed3c04e88086256def5d282429493", optional = true },
