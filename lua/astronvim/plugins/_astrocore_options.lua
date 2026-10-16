@@ -5,6 +5,8 @@ return {
     local opt = {}
     local get_icon = require("astroui").get_icon
 
+    -- TODO: Remove check when dropping support for Neovim v0.12
+    opt.autoread = vim.fn.has "nvim-0.13" == 1 -- automatically detect external changes to files
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
     opt.breakindent = true -- wrap indent to match  line start
     opt.clipboard = "unnamedplus" -- connection to the system clipboard
