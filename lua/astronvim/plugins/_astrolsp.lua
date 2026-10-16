@@ -25,6 +25,7 @@ return {
     file_operations = {
       timeout = 10000,
       operations = {
+        dynamicRegistration = true,
         didCreate = true,
         didDelete = true,
         didRename = true,
