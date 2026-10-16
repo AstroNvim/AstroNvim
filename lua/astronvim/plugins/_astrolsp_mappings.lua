@@ -17,18 +17,6 @@ return {
       cond = "textDocument/codeAction",
     }
 
-    -- TODO: remove mapping when dropping support for Neovim v0.11
-    maps.n["<Leader>ll"] = {
-      function()
-        if vim.lsp.codelens.enable then
-          vim.lsp.codelens.enable(true)
-        else
-          vim.lsp.codelens.refresh()
-        end
-      end,
-      desc = "LSP CodeLens refresh",
-      cond = "textDocument/codeLens",
-    }
     maps.n["<Leader>lL"] =
       { function() vim.lsp.codelens.run() end, desc = "LSP CodeLens run", cond = "textDocument/codeLens" }
     maps.n["<Leader>uL"] = {
@@ -121,14 +109,11 @@ return {
     maps.n["<Leader>lG"] =
       { function() vim.lsp.buf.workspace_symbol() end, desc = "Search workspace symbols", cond = "workspace/symbol" }
 
-    -- TODO: Remove check when dropping support for Neovim v0.11
-    if vim.lsp.buf.workspace_diagnostics then
-      maps.n["<Leader>lw"] = {
-        function() vim.lsp.buf.workspace_diagnostics() end,
-        desc = "Workspace diagnostics",
-        cond = "workspace/diagnostic",
-      }
-    end
+    maps.n["<Leader>lw"] = {
+      function() vim.lsp.buf.workspace_diagnostics() end,
+      desc = "Workspace diagnostics",
+      cond = "workspace/diagnostic",
+    }
 
     maps.n["<Leader>uY"] = {
       function() require("astrolsp.toggles").buffer_semantic_tokens() end,
