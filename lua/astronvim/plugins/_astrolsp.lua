@@ -8,7 +8,7 @@ return {
   ---@type AstroLSPOpts
   opts = {
     features = {
-      codelens = not vim.version.range("0.12.0 - 0.12.1"):has(vim.version()),
+      codelens = true,
       inlay_hints = false,
       semantic_tokens = true,
     },

@@ -23,8 +23,7 @@ return {
       foldopen = get_icon "FoldOpened", -- fold open icon
       foldclose = get_icon "FoldClosed", -- fold close icon
       foldsep = get_icon "FoldSeparator", -- fold separator
-      -- TODO: Remove check when dropping support for Neovim v0.11
-      foldinner = vim.fn.has "nvim-0.12" == 1 and get_icon "FoldSeparator" or nil, -- nested fold separator
+      foldinner = get_icon "FoldSeparator", -- nested fold separator
     } -- disable `~` on nonexistent lines
     opt.ignorecase = true -- case insensitive searching
     opt.infercase = true -- infer cases in keyword completion

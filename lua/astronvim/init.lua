@@ -30,9 +30,9 @@ function M.version()
 end
 
 function M.init()
-  if vim.fn.has "nvim-0.11" == 0 then
+  if vim.fn.has "nvim-0.12" == 0 then
     vim.api.nvim_echo({
-      { "AstroNvim requires Neovim >= 0.11.0\n", "ErrorMsg" },
+      { "AstroNvim requires Neovim >= 0.12.0\n", "ErrorMsg" },
       { "Press any key to exit", "MoreMsg" },
     }, true, {})
     vim.fn.getchar()
