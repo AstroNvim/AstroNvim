@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.1.1](https://github.com/AstroNvim/AstroNvim/compare/v6.1.0...v6.1.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* **astrolsp:** enable dynamic registration of file operations by default ([b37cf4f](https://github.com/AstroNvim/AstroNvim/commit/b37cf4f6e5c5952ed5f9e218a52a58f8c4b034e7))
+* **neo-tree:** make `nvim-window-picker` a spec of `neo-tree` ([068ccf7](https://github.com/AstroNvim/AstroNvim/commit/068ccf7d4704af661827c47e1adfb5fe71fcfd35))
+* **snapshot:** pin smart-splits to v2 rather than specific commit ([c91d1f2](https://github.com/AstroNvim/AstroNvim/commit/c91d1f28d9b725a66002e804f5c9038ac4b2372c))
+
 ## [6.1.0](https://github.com/AstroNvim/AstroNvim/compare/v6.0.7...v6.1.0) (2026-09-04)
 
 
