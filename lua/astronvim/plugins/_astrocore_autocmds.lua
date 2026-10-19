@@ -109,6 +109,7 @@ return {
           event = { "FocusGained", "TermClose", "TermLeave" },
           desc = "Check if buffers changed on editor focus",
           callback = function()
+            if vim.bo.autoread then return end
             if vim.bo.buftype ~= "nofile" then vim.cmd "checktime" end
           end,
         },
