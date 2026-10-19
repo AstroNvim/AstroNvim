@@ -1,8 +1,8 @@
 return {
-  { "AstroNvim/astrocore", version = "^3", optional = true },
-  { "AstroNvim/astrolsp", version = "^4", optional = true },
-  { "AstroNvim/astrotheme", version = "^4", optional = true },
-  { "AstroNvim/astroui", version = "^4", optional = true },
+  { "AstroNvim/astrocore", version = "^4", optional = true },
+  { "AstroNvim/astrolsp", version = "^5", optional = true },
+  { "AstroNvim/astrotheme", version = "^5", optional = true },
+  { "AstroNvim/astroui", version = "^5", optional = true },
   { "L3MON4D3/LuaSnip", version = "^2", optional = true },
   { "MunifTanjim/nui.nvim", version = "^0.4", optional = true },
   { "NMAC427/guess-indent.nvim", commit = "84a4987ff36798c2fc1169cbaff67960aed9776f", optional = true },
