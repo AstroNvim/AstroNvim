@@ -1,6 +1,3 @@
--- TODO: Remove this compatibility alias when support for Neovim older than v0.13 is dropped.
-local buf_key = vim.fn.has "nvim-0.13" == 1 and "buf" or "buffer"
-
 return {
   "NMAC427/guess-indent.nvim",
   cmd = "GuessIndent",
@@ -20,7 +17,7 @@ return {
               desc = "Guess indentation when saving a new file",
               callback = function(args)
                 vim.api.nvim_create_autocmd("BufWritePost", {
-                  [buf_key] = args.buf,
+                  buf = args.buf,
                   once = true,
                   callback = function(wargs) require("guess-indent").set_from_buffer(wargs.buf, true, true) end,
                 })
