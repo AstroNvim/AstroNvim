@@ -3,7 +3,7 @@ local unit_helpers = require "unit_helpers"
 
 local T = MiniTest.new_set()
 
-local SHARED_WORKFLOW_REF = "main"
+local SHARED_WORKFLOW_REF = "cf41eb9"
 
 local function assert_nonempty_strings(values, names)
   for _, name in ipairs(names) do
@@ -82,7 +82,9 @@ T["DECL-01 keeps selected AstroUI icon, text-icon, and LazyGit theme declaration
 end
 
 T["CI-CONTRACT-01 delegates Neovim testing and separates unprivileged CI from release"] = function()
-  local workflow = read_file(vim.fn.getcwd() .. "/.github/workflows/ci.yml")
+  local root = vim.fn.getcwd()
+  local workflow = read_file(root .. "/.github/workflows/ci.yml")
+  local testing_workflow = read_file(root .. "/.github/workflows/neovim_testing.yml")
   local ci = workflow_job(workflow, "CI")
   local tests = workflow_job(workflow, "Tests")
   local release = workflow_job(workflow, "Release")
@@ -102,19 +104,32 @@ T["CI-CONTRACT-01 delegates Neovim testing and separates unprivileged CI from re
   assert.is_truthy(ci:find("docs: false", 1, true))
   assert.is_nil(ci:find("secrets:", 1, true))
 
-  assert.is_truthy(tests:find("neovim_testing.yml@" .. SHARED_WORKFLOW_REF, 1, true))
+  assert.is_truthy(tests:find("uses: ./.github/workflows/neovim_testing.yml", 1, true))
   assert.is_truthy(tests:find("github.event_name == 'push'", 1, true))
   assert.is_truthy(tests:find("github.event_name == 'pull_request'", 1, true))
   assert.is_truthy(tests:find("github.event_name == 'schedule'", 1, true))
   assert.is_nil(tests:find("pull_request_target", 1, true))
-  assert.is_truthy(tests:find('minimum_neovim: "0.11.0"', 1, true))
-  assert.is_truthy(tests:find('stable_neovim: "0.12.4"', 1, true))
-  assert.is_truthy(tests:find('cache_rotation: "1"', 1, true))
+  assert.is_truthy(tests:find('minimum_neovim: "0.12.0"', 1, true))
+  assert.is_truthy(tests:find('visual_neovim: "0.12.4"', 1, true))
+  assert.is_truthy(tests:find('nightly_neovim: "nightly"', 1, true))
   assert.is_truthy(tests:find("timeout_minutes: 30", 1, true))
   assert.is_truthy(tests:find("contents: read", 1, true))
   assert.is_nil(tests:find("secrets:", 1, true))
 
+  for _, required in ipairs {
+    "macos-15-intel",
+    "macos-14",
+    "windows-latest",
+    "actions/upload-artifact@",
+    "ASTRONVIM_TEST_CASE_RESULTS",
+    "semantic-nightly",
+    "continue-on-error: ${{ matrix.allow_failure }}",
+  } do
+    assert.is_truthy(testing_workflow:find(required, 1, true), required)
+  end
+
   assert.is_truthy(release:find("needs: Tests", 1, true))
+  assert.is_nil(workflow:find("NightlyTests", 1, true))
   assert.is_truthy(
     release:find(
       "concurrency:\n      group: ${{ github.event.repository.name }}-release\n      cancel-in-progress: false",

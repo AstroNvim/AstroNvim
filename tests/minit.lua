@@ -13,7 +13,28 @@ vim.opt.rtp:prepend(config.root)
 vim.env.LAZY = config.lazy_path
 vim.opt.rtp:prepend(config.lazy_path)
 
-require("lazy.minit").setup {
+local lazy_minit = require "lazy.minit"
+local original_minitest_run = lazy_minit.minitest.run
+lazy_minit.minitest.run = function()
+  local MiniTest = require "mini.test"
+  local stdout_reporter = MiniTest.gen_reporter.stdout()
+  local cases
+  local reporter = {
+    start = function(all_cases)
+      cases = all_cases
+      stdout_reporter.start(all_cases)
+    end,
+    update = stdout_reporter.update,
+    finish = function()
+      require("ci_results").write(cases, vim.env.ASTRONVIM_TEST_CASE_RESULTS)
+      stdout_reporter.finish()
+    end,
+  }
+  MiniTest.config.execute.reporter = reporter
+  return original_minitest_run()
+end
+
+lazy_minit.setup {
   root = config.plugin_root,
   lockfile = config.lockfile,
   local_spec = false,
