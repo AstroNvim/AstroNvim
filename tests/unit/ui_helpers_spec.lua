@@ -249,11 +249,16 @@ T["AERIAL-02 applies absent partial and complete large-buffer limits"] = functio
   end
 end
 
-T["WINDOW-01 declares a smart winbar window picker"] = function()
-  unit_helpers.with_module("astronvim.plugins.window-picker", nil, function(spec)
-    assert.equals("window-picker", spec.main)
-    assert.is_true(spec.lazy)
-    assert.equals("smart", spec.opts.picker_config.statusline_winbar_picker.use_winbar)
+T["WINDOW-01 declares a smart winbar window picker through Neo-tree"] = function()
+  unit_helpers.with_module("astronvim.plugins.neo-tree", nil, function(spec)
+    local picker
+    for _, nested_spec in ipairs(spec.specs) do
+      if nested_spec[1] == "s1n7ax/nvim-window-picker" then picker = nested_spec end
+    end
+    assert.is_not_nil(picker)
+    assert.equals("window-picker", picker.main)
+    assert.is_true(picker.lazy)
+    assert.equals("smart", picker.opts.picker_config.statusline_winbar_picker.use_winbar)
   end)
 end
 

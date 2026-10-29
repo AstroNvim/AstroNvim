@@ -177,15 +177,11 @@ local function inspect_repository(path)
   local entry = vim.uv.fs_lstat(path)
   if not entry or entry.type ~= "directory" then return nil, "missing or invalid repository directory" end
 
-  local revision = vim
-    .system({ "env", "GIT_OPTIONAL_LOCKS=0", "git", "-C", path, "rev-parse", "HEAD" }, { text = true })
-    :wait()
+  local git_environment = { GIT_OPTIONAL_LOCKS = "0" }
+  local revision = vim.system({ "git", "-C", path, "rev-parse", "HEAD" }, { text = true, env = git_environment }):wait()
   if revision.code ~= 0 then return nil, "cannot read repository HEAD" end
   local status = vim
-    .system(
-      { "env", "GIT_OPTIONAL_LOCKS=0", "git", "-C", path, "status", "--porcelain", "--untracked-files=no" },
-      { text = true }
-    )
+    .system({ "git", "-C", path, "status", "--porcelain", "--untracked-files=no" }, { text = true, env = git_environment })
     :wait()
   if status.code ~= 0 or status.stdout ~= "" then return nil, "repository has tracked modifications" end
   return vim.trim(revision.stdout)

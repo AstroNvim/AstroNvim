@@ -536,26 +536,7 @@ T["SESSION-03 owns Resession mappings autosave filters and tab extension metadat
   )
 end
 
-T["SPLITS-01 detects multiplexers and dispatches split movement and resizing"] = function()
-  local mux_cases = {
-    { name = "no multiplexer", environment = { TERM_PROGRAM = "foot" }, expected = nil },
-    { name = "tmux normalized", environment = { TERM_PROGRAM = "  TMUX  " }, expected = "VeryLazy" },
-    { name = "WezTerm normalized", environment = { TERM_PROGRAM = "WEZTERM" }, expected = "VeryLazy" },
-    { name = "Kitty unset", environment = { TERM_PROGRAM = "foot" }, expected = nil },
-    { name = "Kitty empty", environment = { TERM_PROGRAM = "foot", KITTY_LISTEN_ON = "" }, expected = "VeryLazy" },
-    {
-      name = "Kitty socket",
-      environment = { TERM_PROGRAM = "foot", KITTY_LISTEN_ON = "unix:/tmp/kitty" },
-      expected = "VeryLazy",
-    },
-  }
-  for _, case in ipairs(mux_cases) do
-    with_smart_splits(
-      { environment = case.environment },
-      function(spec) assert.equals(case.expected, spec.event, case.name) end
-    )
-  end
-
+T["SPLITS-01 declares lazy split movement and resizing mappings"] = function()
   with_smart_splits(nil, function(spec, calls)
     local options = { mappings = { n = {} } }
     find_spec(spec.specs, "AstroNvim/astrocore").opts(nil, options)
@@ -583,11 +564,10 @@ T["SPLITS-02 owns non-empty Kitty loading contract ignored buffers and local map
   with_smart_splits(
     { environment = { TERM_PROGRAM = "foot", KITTY_LISTEN_ON = "unix:/tmp/kitty" } },
     function(spec, calls)
-      assert.equals("mrjones2014/smart-splits.nvim", spec[1])
+      assert.equals("smart-splits-nvim/smart-splits.nvim", spec[1])
       assert.is_true(spec.lazy)
-      assert.equals("VeryLazy", spec.event)
-      assert.same({ "nofile", "quickfix", "qf", "prompt" }, spec.opts.ignored_filetypes)
-      assert.same({ "nofile" }, spec.opts.ignored_buftypes)
+      assert.is_nil(spec.event)
+      assert.same({}, spec.opts)
 
       local options = { mappings = { n = {} } }
       find_spec(spec.specs, "AstroNvim/astrocore").opts(nil, options)

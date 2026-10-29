@@ -24,7 +24,7 @@ T["GIT-04 loads Gitsigns from AstroGitFile without changing editor state"] = fun
     local buffer = vim.api.nvim_get_current_buf()
     local windows = #vim.api.nvim_list_wins()
     vim.api.nvim_exec_autocmds("User", { pattern = "AstroGitFile", modeline = false })
-    local loaded = vim.wait(3000, function() return package.loaded.gitsigns ~= nil end, 20)
+    local loaded = vim.wait(3000, function() return vim.fn.exists(":Gitsigns") == 2 end, 20)
     return {
       loaded = loaded,
       buffer = buffer,
@@ -228,11 +228,11 @@ T["INDENT-02 owns GuessIndent metadata and hands events to the matching buffer o
     local after_read = #calls
     new_file_callback { buf = new_file_buffer }
     local after_registration = #calls
-    vim.api.nvim_exec_autocmds("BufWritePost", { buffer = other_buffer })
+    vim.api.nvim_exec_autocmds("BufWritePost", { buf = other_buffer })
     local after_other_write = #calls
-    vim.api.nvim_exec_autocmds("BufWritePost", { buffer = new_file_buffer })
+    vim.api.nvim_exec_autocmds("BufWritePost", { buf = new_file_buffer })
     local after_first_write = #calls
-    vim.api.nvim_exec_autocmds("BufWritePost", { buffer = new_file_buffer })
+    vim.api.nvim_exec_autocmds("BufWritePost", { buf = new_file_buffer })
     local after_second_write = #calls
     return {
       calls = calls,

@@ -54,14 +54,14 @@ T["LSP-07 forwards Format and format-on-save options through a fake formatter"] 
         filter_is_forwarded = options.filter == format_opts.filter,
       })
     end
-    vim.api.nvim_exec_autocmds("LspAttach", { buffer = bufnr, data = { client_id = client.id } })
+    vim.api.nvim_exec_autocmds("LspAttach", { buf = bufnr, data = { client_id = client.id } })
 
     vim.cmd.Format()
 
     local function format_on_save(buffer_autoformat, global_autoformat)
       vim.b[bufnr].autoformat = buffer_autoformat
       astrolsp.config.formatting.format_on_save.enabled = global_autoformat
-      vim.api.nvim_exec_autocmds("BufWritePre", { buffer = bufnr })
+      vim.api.nvim_exec_autocmds("BufWritePre", { buf = bufnr })
       return #calls
     end
 
@@ -129,7 +129,7 @@ T["LSP-10 gives a fake none-ls client one AstroLSP attach path"] = function()
     vim.lsp.get_client_by_id = function(id) return id == client.id and client or nil end
     vim.lsp.get_clients = function() return {} end
     astrolsp.config.on_attach = integration_options.on_attach
-    vim.api.nvim_exec_autocmds("LspAttach", { buffer = bufnr, data = { client_id = client.id } })
+    vim.api.nvim_exec_autocmds("LspAttach", { buf = bufnr, data = { client_id = client.id } })
 
     return {
       configured_on_attach_is_nil = configured_on_attach == nil,
@@ -168,7 +168,7 @@ T["LSP-12 scopes live signature triggers across window and buffer switches"] = f
     vim.lsp.buf.signature_help = function() table.insert(calls, vim.api.nvim_get_current_buf()) end
 
     local function attach(buffer)
-      vim.api.nvim_exec_autocmds("LspAttach", { buffer = buffer, data = { client_id = client.id } })
+      vim.api.nvim_exec_autocmds("LspAttach", { buf = buffer, data = { client_id = client.id } })
       vim.b[buffer].signature_help = true
       vim.b[buffer].signature_help_triggerCharacters = { ["("] = true }
     end
@@ -176,7 +176,7 @@ T["LSP-12 scopes live signature triggers across window and buffer switches"] = f
       vim.api.nvim_set_current_buf(buffer)
       vim.api.nvim_buf_set_lines(buffer, 0, -1, false, { line })
       vim.api.nvim_win_set_cursor(0, { 1, #line - 1 })
-      vim.api.nvim_exec_autocmds("TextChangedI", { buffer = buffer })
+      vim.api.nvim_exec_autocmds("TextChangedI", { buf = buffer })
     end
 
     local first = vim.api.nvim_create_buf(true, false)

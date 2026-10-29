@@ -12,7 +12,7 @@ local T = MiniTest.new_set {
   },
 }
 
-T["BASE-03 restores parent XDG variables after spawning a child"] = function()
+T["HARNESS-01 restores parent XDG variables after spawning a child"] = function()
   local before = helpers.parent_xdg_environment()
   local parent = {
     XDG_CONFIG_HOME = "/tmp/astronvim-parent-config",
@@ -39,7 +39,7 @@ T["BASE-03 restores parent XDG variables after spawning a child"] = function()
   if not ok then error(err, 0) end
 end
 
-T["BASE-03 uses deterministic child and fixture Git environments"] = function()
+T["HARNESS-02 uses deterministic child and fixture Git environments"] = function()
   child = helpers.start_child()
 
   local state = child.lua_get [[(function()
@@ -78,9 +78,9 @@ T["BASE-03 uses deterministic child and fixture Git environments"] = function()
     GIT_CONFIG_KEY_0 = "core.hooksPath",
     GIT_CONFIG_VALUE_0 = state.environment.GIT_CONFIG_VALUE_0,
   }, state.environment)
-  assert.is_true(state.environment.GIT_CONFIG_GLOBAL:find("/gitconfig", 1, true) ~= nil)
-  assert.is_true(state.environment.GIT_TEMPLATE_DIR:find "/git%-template$" ~= nil)
-  assert.is_true(state.environment.GIT_CONFIG_VALUE_0:find "/git%-hooks$" ~= nil)
+  assert.equals("gitconfig", vim.fs.basename(vim.fs.normalize(state.environment.GIT_CONFIG_GLOBAL)))
+  assert.equals("git-template", vim.fs.basename(vim.fs.normalize(state.environment.GIT_TEMPLATE_DIR)))
+  assert.equals("git-hooks", vim.fs.basename(vim.fs.normalize(state.environment.GIT_CONFIG_VALUE_0)))
   assert.equals("main", state.branch)
   assert.equals("AstroNvim Test|test@astronvim.local|AstroNvim Test|test@astronvim.local", state.identity)
   assert.equals("946684800|946684800", state.dates)

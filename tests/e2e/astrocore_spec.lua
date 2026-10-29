@@ -18,6 +18,11 @@ local function start_ready_child()
   helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
 end
 
+local function terminal_sleep_command()
+  if vim.fn.has "win32" == 1 then return "ping -n 11 127.0.0.1 > NUL" end
+  return "sleep 10"
+end
+
 T["MAP-04 forwards buffer mapping arguments through registered mappings"] = function()
   start_ready_child()
 
@@ -110,7 +115,7 @@ T["MAP-05 dispatches diagnostic float and jump mappings with counts and severiti
   }, child.lua_get "_G.astronvim_test_diagnostic_calls")
 end
 
-T["AUTOCMD-02 keeps ordinary windows open and closes a sidebar-only secondary tab"] = function()
+T["AUTOCMD-02A keeps ordinary windows open and closes a sidebar-only secondary tab"] = function()
   start_ready_child()
 
   child.lua [[
@@ -120,7 +125,7 @@ T["AUTOCMD-02 keeps ordinary windows open and closes a sidebar-only secondary ta
     local sidebar = vim.api.nvim_create_buf(true, false)
     vim.bo[sidebar].filetype = "neo-tree"
     vim.api.nvim_win_set_buf(0, sidebar)
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = vim.api.nvim_get_current_buf() })
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = vim.api.nvim_get_current_buf() })
   ]]
   assert.equals(1, child.lua_get "#vim.api.nvim_list_tabpages()")
   assert.equals(2, child.lua_get "#vim.api.nvim_tabpage_list_wins(0)")
@@ -140,14 +145,14 @@ T["AUTOCMD-02 keeps ordinary windows open and closes a sidebar-only secondary ta
     vim.api.nvim_win_set_buf(0, neo_tree)
 
     vim.o.eventignore = eventignore
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = neo_tree })
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = neo_tree })
   ]]
 
   helpers.wait_until(child, "#vim.api.nvim_list_tabpages() == 1", "sidebar-only secondary tab close")
   assert.is_true(child.is_running())
 end
 
-T["AUTOCMD-02 terminates a disposable child when its final tab contains only sidebars"] = function()
+T["AUTOCMD-02B terminates a disposable child when its final tab contains only sidebars"] = function()
   start_ready_child()
 
   local job = child.job
@@ -167,7 +172,7 @@ T["AUTOCMD-02 terminates a disposable child when its final tab contains only sid
     vim.api.nvim_win_set_buf(0, neo_tree)
 
     vim.o.eventignore = eventignore
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = neo_tree })
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = neo_tree })
   ]]
   )
 
@@ -179,7 +184,7 @@ end
 T["AUTOCMD-03 tracks valid unique buffers across tabs deletion and terminal close"] = function()
   start_ready_child()
 
-  child.lua [[
+  child.lua(([=[
     local astro = require "astrocore"
     local buffer = require "astrocore.buffer"
     local redrawtabline = vim.cmd.redrawtabline
@@ -240,17 +245,17 @@ T["AUTOCMD-03 tracks valid unique buffers across tabs deletion and terminal clos
     local stale = vim.api.nvim_create_buf(true, false)
     vim.api.nvim_buf_delete(stale, { force = true })
     vim.t.bufs = { second, stale }
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = second })
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = second })
 
     vim.cmd "botright new"
-    vim.cmd "terminal sleep 10"
+    vim.cmd "terminal %s"
     local terminal = vim.api.nvim_get_current_buf()
     vim.g.astronvim_test_terminal_closed = false
     _G.astronvim_test_terminal_before_close = { count = count(vim.t.bufs, terminal) }
     _G.astronvim_test_terminal_event_start = #_G.astronvim_test_buffer_events
     _G.astronvim_test_terminal_redraw_start = _G.astronvim_test_redraws
     vim.api.nvim_create_autocmd("TermClose", {
-      buffer = terminal,
+      buf = terminal,
       once = true,
       callback = function() vim.g.astronvim_test_terminal_closed = true end,
     })
@@ -265,7 +270,7 @@ T["AUTOCMD-03 tracks valid unique buffers across tabs deletion and terminal clos
       stale = stale,
       terminal = terminal,
     }
-  ]]
+  ]=]):format(terminal_sleep_command()))
 
   helpers.wait_until(child, "vim.g.astronvim_test_terminal_closed == true", "terminal close")
 
@@ -525,12 +530,15 @@ end
 T["MAP-08 uses terminal navigation mappings in ordinary and floating terminal windows"] = function()
   start_ready_child()
 
-  child.lua [[
+  child.lua(([=[
+
     vim.cmd "vsplit"
     vim.cmd "wincmd l"
+    vim.g.astronvim_test_terminal_jobs = {}
     vim.g.astronvim_test_terminal_left = vim.fn.win_getid(vim.fn.winnr "h")
-    vim.cmd "terminal sleep 10"
-  ]]
+    vim.cmd "terminal %s"
+    table.insert(vim.g.astronvim_test_terminal_jobs, vim.b[vim.api.nvim_get_current_buf()].terminal_job_id)
+  ]=]):format(terminal_sleep_command()))
   child.type_keys "i"
   child.type_keys "<C-h>"
   helpers.wait_until(
@@ -539,7 +547,8 @@ T["MAP-08 uses terminal navigation mappings in ordinary and floating terminal wi
     "ordinary terminal window navigation"
   )
 
-  child.lua [[
+  child.lua(([=[
+
     local buffer = vim.api.nvim_create_buf(false, true)
     local window = vim.api.nvim_open_win(buffer, true, {
       relative = "editor",
@@ -551,19 +560,25 @@ T["MAP-08 uses terminal navigation mappings in ordinary and floating terminal wi
       zindex = 50,
     })
     vim.g.astronvim_test_floating_terminal = window
-    vim.cmd "terminal sleep 10"
-  ]]
+    vim.cmd "terminal %s"
+    table.insert(vim.g.astronvim_test_terminal_jobs, vim.b[vim.api.nvim_get_current_buf()].terminal_job_id)
+  ]=]):format(terminal_sleep_command()))
   child.type_keys "i"
   child.type_keys "<C-h>"
   assert.equals(child.lua_get "vim.g.astronvim_test_floating_terminal", child.lua_get "vim.api.nvim_get_current_win()")
   assert.equals(50, child.lua_get "vim.api.nvim_win_get_config(0).zindex")
+  child.lua [[
+    for _, job_id in ipairs(vim.g.astronvim_test_terminal_jobs or {}) do
+      if job_id then vim.fn.jobstop(job_id) end
+    end
+  ]]
 end
 
 T["AUTOCMD-13 covers sidebar exit and buffer tracking edge boundaries"] = function()
   start_ready_child()
 
   child.lua [[
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = vim.api.nvim_get_current_buf() })
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = vim.api.nvim_get_current_buf() })
   ]]
   assert.equals(1, child.lua_get "#vim.api.nvim_list_tabpages()")
   assert.is_true(child.is_running())
@@ -586,9 +601,9 @@ T["AUTOCMD-13 covers sidebar exit and buffer tracking edge boundaries"] = functi
 
     _G.astronvim_test_tracking_events = {}
     astro.event = function(name) table.insert(_G.astronvim_test_tracking_events, name) end
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = current })
-    vim.api.nvim_exec_autocmds("BufAdd", { buffer = invalid })
-    vim.api.nvim_exec_autocmds("BufDelete", { buffer = absent })
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = current })
+    vim.api.nvim_exec_autocmds("BufAdd", { buf = invalid })
+    vim.api.nvim_exec_autocmds("BufDelete", { buf = absent })
 
     _G.astronvim_test_tracking_edges = {
       current = buffer.current_buf,
@@ -608,7 +623,7 @@ T["AUTOCMD-13 covers sidebar exit and buffer tracking edge boundaries"] = functi
   assert.same({ "BufsUpdated" }, state.events)
 end
 
-T["AUTOCMD-02 closes a child with a single Aerial sidebar"] = function()
+T["AUTOCMD-02C closes a child with a single Aerial sidebar"] = function()
   start_ready_child()
 
   local job = child.job
@@ -622,7 +637,7 @@ T["AUTOCMD-02 closes a child with a single Aerial sidebar"] = function()
       vim.bo[aerial].filetype = "aerial"
       vim.api.nvim_win_set_buf(0, aerial)
       vim.o.eventignore = eventignore
-      vim.api.nvim_exec_autocmds("BufEnter", { buffer = aerial })
+      vim.api.nvim_exec_autocmds("BufEnter", { buf = aerial })
     ]]
   )
 
@@ -650,7 +665,7 @@ T["AUTOCMD-05 creates local parent directories and skips URI write targets"] = f
 
     vim.cmd "enew!"
     vim.api.nvim_buf_set_name(0, "https://example.invalid/uri-write-target/file.txt")
-    vim.api.nvim_exec_autocmds("BufWritePre", { buffer = 0 })
+    vim.api.nvim_exec_autocmds("BufWritePre", { buf = 0 })
     vim.fn.mkdir = mkdir
   ]=]):format(vim.inspect(path)))
 
@@ -701,9 +716,9 @@ T["AUTOCMD-10 keeps unrelated buffers unchanged and manages q-close mappings"] =
 
     local nofile = vim.api.nvim_create_buf(false, true)
     vim.bo[nofile].buftype = "nofile"
-    vim.keymap.set("n", "q", "<Cmd>let g:astronvim_test_q_preserved = true<CR>", { buffer = nofile })
+    vim.keymap.set("n", "q", "<Cmd>let g:astronvim_test_q_preserved = true<CR>", { buf = nofile })
     vim.api.nvim_win_set_buf(0, nofile)
-    vim.api.nvim_exec_autocmds("BufWinEnter", { buffer = nofile })
+    vim.api.nvim_exec_autocmds("BufWinEnter", { buf = nofile })
     _G.astronvim_test_nofile = {
       bufnr = nofile,
       mapping = vim.fn.maparg("q", "n", false, true),
@@ -712,7 +727,7 @@ T["AUTOCMD-10 keeps unrelated buffers unchanged and manages q-close mappings"] =
 
     vim.fn.setqflist { { filename = "plain.txt", lnum = 1, text = "quickfix entry" } }
     vim.cmd.copen()
-    vim.api.nvim_exec_autocmds("BufWinEnter", { buffer = vim.api.nvim_get_current_buf() })
+    vim.api.nvim_exec_autocmds("BufWinEnter", { buf = vim.api.nvim_get_current_buf() })
     _G.astronvim_test_quickfix = {
       bufnr = vim.api.nvim_get_current_buf(),
       mapping = vim.fn.maparg("q", "n", false, true),

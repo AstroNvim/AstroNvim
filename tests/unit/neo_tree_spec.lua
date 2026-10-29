@@ -130,7 +130,7 @@ T["NEO-02 starts Neo-tree only for an unloaded directory buffer"] = function()
       if case.lazy_load then assert.same({ plugins = { "neo-tree.nvim" } }, case.lazy_request) end
       assert.equals(case.deferred_enter, calls.autocmds ~= nil and #calls.autocmds == 1, case.name)
       if case.deferred_enter then
-        assert.same({ "BufEnter", { group = "NeoTree_NetrwDeferred", buffer = 7 } }, calls.autocmds[1])
+        assert.same({ "BufEnter", { group = "NeoTree_NetrwDeferred", buf = 7 } }, calls.autocmds[1])
       end
     end)
   end

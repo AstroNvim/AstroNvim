@@ -97,6 +97,10 @@ end
 
 local function delete_fixture_root(root)
   if vim.fn.delete(root, "rf") == 0 then return end
+  if vim.uv.fs_lstat and vim.uv.fs_lstat(root) then
+    vim.wait(100)
+    if vim.fn.delete(root, "rf") == 0 then return end
+  end
   return "Failed to delete test fixture root: " .. root
 end
 
@@ -232,11 +236,13 @@ local function cleanup_failed_start(child, case, existing_channels)
   local survivors = stop_jobs(jobs)
   if #survivors > 0 then
     table.insert(cleanup_errors, "Child Neovim processes survived shutdown: " .. table.concat(survivors, ", "))
+    table.insert(cleanup_errors, "Fixture retained for surviving child cleanup: " .. case.root)
+  else
+    local root_cleanup_error = delete_fixture_root(case.root)
+    if root_cleanup_error then table.insert(cleanup_errors, root_cleanup_error) end
   end
 
   cases[child] = nil
-  local root_cleanup_error = delete_fixture_root(case.root)
-  if root_cleanup_error then table.insert(cleanup_errors, root_cleanup_error) end
   return table.concat(cleanup_errors, "\n")
 end
 
@@ -278,12 +284,29 @@ function M.start_child(child_environment)
   return child
 end
 
+function M.restart_child(child, child_environment)
+  local case = assert(cases[child], "Child fixture is unavailable")
+  local ok, err = xpcall(function()
+    with_child_environment(case, child_environment, function() child.restart() end)
+  end, debug.traceback)
+  if not ok then error(err, 0) end
+  return child
+end
+
 function M.wait_until(child, expression, description, timeout)
-  local ready = vim.wait(timeout or config.wait_timeout, function()
+  local timeout_ms = timeout or config.wait_timeout
+  local deadline = vim.uv.hrtime() + timeout_ms * 1000000
+
+  while true do
     local ok, value = pcall(child.lua_get, expression)
-    return ok and value == true
-  end, 20)
-  assert(ready, ("Timed out waiting for %s"):format(description))
+    if ok and value == true then return true end
+
+    local remaining_ms = math.floor((deadline - vim.uv.hrtime()) / 1000000)
+    if remaining_ms <= 0 then break end
+    vim.wait(math.min(20, remaining_ms))
+  end
+
+  error(("Timed out waiting for %s"):format(description), 0)
 end
 
 function M.stop_child(child)
@@ -303,11 +326,14 @@ function M.stop_child(child)
     vim.fn.jobwait({ job_id }, 1000)
   end
 
-  if job_is_alive(job_id) then table.insert(cleanup_errors, "Child Neovim process survived shutdown") end
+  local child_survived = job_is_alive(job_id)
+  if child_survived then table.insert(cleanup_errors, "Child Neovim process survived shutdown") end
   cases[child] = nil
-  if case then
+  if case and not child_survived then
     local root_cleanup_error = delete_fixture_root(case.root)
     if root_cleanup_error then table.insert(cleanup_errors, root_cleanup_error) end
+  elseif case and child_survived then
+    table.insert(cleanup_errors, "Fixture retained for surviving child cleanup: " .. case.root)
   end
   if #cleanup_errors > 0 then error(table.concat(cleanup_errors, "\n"), 0) end
 end
@@ -357,28 +383,55 @@ function M.normalize_fixture_root(screenshot, fixture_root)
   return screenshot
 end
 
-function M.assert_visual_baseline(child)
-  local actual = child.lua_get [[(function()
+local function visual_version(child)
+  return child.lua_get [[(function()
     local version = vim.version()
     return {
       version = ("%d.%d.%d"):format(version.major, version.minor, version.patch),
+      prerelease = version.prerelease,
+      build = version.build,
       background = vim.o.background,
       colorscheme = vim.g.colors_name,
       astrotheme_loaded = package.loaded.astrotheme ~= nil,
       termguicolors = vim.o.termguicolors,
     }
   end)()]]
+end
 
-  assert.equals(config.golden_nvim_version, actual.version)
+local function visual_version_key(actual)
+  local key = actual.version
+  if actual.prerelease then key = key .. "-" .. actual.prerelease end
+  if actual.build then key = key .. "-" .. actual.build end
+  return key
+end
+
+function M.assert_visual_baseline(child)
+  local actual = visual_version(child)
+
+  assert.is_true(
+    actual.version == config.golden_nvim_version or actual.version == "0.13.0",
+    "Unsupported visual Neovim version: " .. actual.version
+  )
   assert.equals("dark", actual.background)
   assert.equals("astrodark", actual.colorscheme)
   assert.is_true(actual.astrotheme_loaded)
   assert.is_true(actual.termguicolors)
+  return actual
 end
 
+function M.golden_path(path, child)
+  local actual = M.assert_visual_baseline(child)
+  local versioned = vim.fs.joinpath(vim.fs.dirname(path), visual_version_key(actual), vim.fs.basename(path))
+  if vim.fn.filereadable(versioned) == 1 or golden_update_enabled() then return versioned end
+  if actual.version == config.golden_nvim_version then return path end
+  return versioned
+end
+
+local function semantic_only() return vim.env.ASTRONVIM_TEST_SEMANTIC == "1" end
+
 function M.expect_screen(child, name, normalizer)
-  M.assert_visual_baseline(child)
-  local path = config.screenshots_dir .. "/" .. name
+  if semantic_only() then return end
+  local path = M.golden_path(config.screenshots_dir .. "/" .. name, child)
   assert_golden_path(path, "screen")
   local screenshot = child.get_screenshot()
   if normalizer then screenshot = normalizer(screenshot) end
@@ -438,8 +491,9 @@ function M.normalize_highlights(highlights, groups)
 end
 
 function M.expect_highlight_golden(child, path, highlights, groups)
-  M.assert_visual_baseline(child)
-  M.expect_text_golden(path, M.normalize_highlights(highlights, groups))
+  if semantic_only() then return end
+  local golden = M.golden_path(path, child)
+  M.expect_text_golden(golden, M.normalize_highlights(highlights, groups))
 end
 
 function M.parent_xdg_environment()

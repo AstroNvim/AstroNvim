@@ -325,6 +325,7 @@ T["LSP-01 declares AstroLSP feature, file operation, and wildcard capability def
     assert.same({ codelens = true, inlay_hints = false, semantic_tokens = true }, options.features)
     assert.equals(10000, options.file_operations.timeout)
     assert.same({
+      dynamicRegistration = true,
       didCreate = true,
       didDelete = true,
       didRename = true,
@@ -334,19 +335,17 @@ T["LSP-01 declares AstroLSP feature, file operation, and wildcard capability def
     }, options.file_operations.operations)
     assert.is_true(options.config["*"].capabilities == metadata.capabilities)
     assert.equals(1, metadata.capability_calls)
-    assert.same({ "0.12.0 - 0.12.1" }, metadata.range_queries)
-    assert.equals(1, metadata.version_calls)
-    assert.is_true(metadata.range_version == metadata.version_value)
+    assert.same({}, metadata.range_queries)
+    assert.equals(0, metadata.version_calls)
     assert.same({}, options.handlers)
     assert.same({}, options.servers)
     assert.is_nil(options.on_attach)
   end)
 
   with_astrolsp_spec({ version_in_codelens_disabled_range = true }, function(spec, _, _, metadata)
-    assert.is_false(spec.opts.features.codelens)
-    assert.same({ "0.12.0 - 0.12.1" }, metadata.range_queries)
-    assert.equals(1, metadata.version_calls)
-    assert.is_true(metadata.range_version == metadata.version_value)
+    assert.is_true(spec.opts.features.codelens)
+    assert.same({}, metadata.range_queries)
+    assert.equals(0, metadata.version_calls)
   end)
 end
 
@@ -367,37 +366,8 @@ local function with_astrolsp_autocmd_spec(options, callback)
   }, callback)
 end
 
-T["LSP-09 registers legacy CodeLens refresh only without native enable"] = function()
-  local refreshes = {}
-  with_astrolsp_autocmd_spec({
-    codelens = {
-      refresh = function(options) table.insert(refreshes, options) end,
-    },
-  }, function(spec)
-    local autocmd = spec.opts.autocmds.lsp_codelens_refresh
-    assert.equals("textDocument/codeLens", autocmd.cond)
-    assert.equals(3, #autocmd[1].event)
-    for _, event in ipairs { "TextChanged", "InsertLeave", "BufEnter" } do
-      assert.is_true(contains(autocmd[1].event, event))
-    end
-
-    autocmd[1].callback { buf = 24 }
-    assert.same({ { bufnr = 24 } }, refreshes)
-  end)
-
-  with_astrolsp_autocmd_spec({
-    astrolsp = { config = { features = { codelens = false }, formatting = { disabled = {} } }, format_opts = {} },
-    codelens = {
-      refresh = function(options) table.insert(refreshes, options) end,
-    },
-  }, function(spec)
-    spec.opts.autocmds.lsp_codelens_refresh[1].callback { buf = 25 }
-    assert.same({ { bufnr = 24 } }, refreshes)
-  end)
-
-  with_astrolsp_autocmd_spec({
-    codelens = { enable = function() end },
-  }, function(spec) assert.is_false(spec.opts.autocmds.lsp_codelens_refresh) end)
+T["LSP-09 leaves CodeLens refresh ownership with AstroLSP"] = function()
+  with_astrolsp_autocmd_spec({}, function(spec) assert.is_nil(spec.opts.autocmds.lsp_codelens_refresh) end)
 end
 
 local function with_astrolsp_mappings(options, callback)
@@ -486,8 +456,8 @@ T["LSPMAP-01 inventories conditional mappings and their required methods"] = fun
       ["n:<Leader>la"] = "textDocument/codeAction",
       ["x:<Leader>la"] = "textDocument/codeAction",
       ["n:<Leader>lA"] = "textDocument/codeAction",
-      ["n:<Leader>ll"] = "textDocument/codeLens",
       ["n:<Leader>lL"] = "textDocument/codeLens",
+      ["n:gI"] = "textDocument/implementation",
       ["n:<Leader>uL"] = "textDocument/codeLens",
       ["n:gD"] = "textDocument/declaration",
       ["n:gd"] = "textDocument/definition",
@@ -552,7 +522,6 @@ T["LSPMAP-02 dispatches mapping calls with stable arguments"] = function()
       maps.n["<Leader>lA"],
       maps.n["<Leader>lf"],
       maps.v["<Leader>lf"],
-      maps.n["<Leader>ll"],
       maps.n["<Leader>lL"],
       maps.n["<Leader>uL"],
       maps.n["gD"],
@@ -580,7 +549,6 @@ T["LSPMAP-02 dispatches mapping calls with stable arguments"] = function()
       expected_call("code_action", { context = { only = { "source" }, diagnostics = {} } }),
       expected_call("format", { async = true }),
       expected_call("format", { async = true }),
-      expected_call("codelens_enable", true),
       expected_call "codelens_run",
       expected_call "toggle_codelens",
       expected_call "declaration",
@@ -602,9 +570,10 @@ T["LSPMAP-02 dispatches mapping calls with stable arguments"] = function()
   end)
 
   with_astrolsp_mappings({}, function(maps, calls)
-    assert.is_nil(maps.n["<Leader>lw"])
-    maps.n["<Leader>ll"][1]()
-    assert.same({ expected_call "codelens_refresh" }, calls)
+    assert.equals("workspace/diagnostic", maps.n["<Leader>lw"].cond)
+    assert.is_nil(maps.n["<Leader>ll"])
+    maps.n["<Leader>lL"][1]()
+    assert.same({ expected_call "codelens_run" }, calls)
   end)
 end
 

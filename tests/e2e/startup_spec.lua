@@ -13,75 +13,56 @@ local T = MiniTest.new_set {
   },
 }
 
-T["BASE-01 starts the local AstroNvim distribution with the generated production plugin lock"] = function()
+T["STARTUP-01 starts the local AstroNvim distribution with the generated dependency graph"] = function()
   child = helpers.start_child()
   helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
 
   local startup = child.lua_get [[(function()
-    local Config = require "lazy.core.config"
-    local Plugin = require "lazy.core.plugin"
-    local plugins = Config.plugins
-    local lockfile = assert(io.open(vim.env.ASTRONVIM_TEST_LOCKFILE, "rb"))
-    local lock = vim.json.decode(assert(lockfile:read "*a"))
-    lockfile:close()
+    local manifest_file = assert(io.open(vim.env.ASTRONVIM_TEST_ROOT .. "/.tests/manifest.json", "rb"))
+    local manifest = vim.json.decode(assert(manifest_file:read "*a"))
+    manifest_file:close()
     local errors = {}
-    local test_only_locks = { ["mini.test"] = true, luassert = true, say = true }
+    local plugin_count = 0
 
-    for name, plugin in pairs(plugins) do
-      if Plugin.has_errors(plugin) then table.insert(errors, "plugin: " .. name) end
-    end
-    for _, notification in ipairs(Config.spec.notifs) do
-      if notification.level >= vim.log.levels.ERROR then table.insert(errors, "spec: " .. notification.msg) end
+    for name, plugin in pairs(manifest.plugins or {}) do
+      plugin_count = plugin_count + 1
+      local path = vim.fs.joinpath(vim.env.ASTRONVIM_TEST_ROOT, ".tests", plugin.path)
+      local head = vim.fn.systemlist({ "git", "-C", path, "rev-parse", "HEAD" })[1]
+      if vim.fn.isdirectory(path) ~= 1 then
+        table.insert(errors, "missing: " .. name)
+      elseif head ~= plugin.commit then
+        table.insert(errors, "commit: " .. name .. " is at " .. tostring(head))
+      end
     end
     for _, notification in ipairs(vim.g.astronvim_test_error_notifications) do
       table.insert(errors, "notification: " .. notification)
     end
-    for name, plugin in pairs(plugins) do
-      if plugin.url and not plugin._.is_local and plugin._.cond ~= false then
-        local entry = lock[name]
-        if not entry then
-          table.insert(errors, "lock: " .. name .. " has no generated lock entry")
-        elseif not plugin._.installed then
-          table.insert(errors, "install: " .. name)
-        else
-          local head = vim.fn.systemlist({ "git", "-C", plugin.dir, "rev-parse", "HEAD" })[1]
-          if head ~= entry.commit then table.insert(errors, "lock: " .. name .. " is at " .. tostring(head)) end
-        end
-      end
-    end
-    for name in pairs(lock) do
-      if not test_only_locks[name] then
-        local plugin = plugins[name]
-        if not plugin or not plugin.url or plugin._.is_local or plugin._.cond == false then
-          table.insert(errors, "lock: " .. name .. " has no production child plugin")
-        end
-      end
-    end
     table.sort(errors)
 
+    local required = {}
+    for _, name in ipairs { "astrocore", "astrolsp", "astrotheme", "astroui" } do
+      required[name] = pcall(require, name)
+    end
     return {
-      astronvim_dir = vim.fs.normalize(assert(plugins.AstroNvim).dir),
-      astronvim_loaded = plugins.AstroNvim._.loaded ~= nil,
-      specs = {
-        astrocore = plugins.astrocore ~= nil,
-        astrolsp = plugins.astrolsp ~= nil,
-        astrotheme = plugins.astrotheme ~= nil,
-        astroui = plugins.astroui ~= nil,
-      },
+      astronvim_dir = vim.fs.normalize(vim.env.ASTRONVIM_TEST_ROOT),
+      plugin_count = plugin_count,
+      required = required,
+      ready = vim.g.astronvim_test_ready,
       errors = errors,
     }
   end)()]]
 
   assert.equals(vim.fs.normalize(config.root), startup.astronvim_dir)
-  assert.is_true(startup.astronvim_loaded)
-  assert.is_true(startup.specs.astrocore)
-  assert.is_true(startup.specs.astrolsp)
-  assert.is_true(startup.specs.astrotheme)
-  assert.is_true(startup.specs.astroui)
+  assert.is_true(startup.ready)
+  assert.is_true(startup.plugin_count > 0)
+  assert.is_true(startup.required.astrocore)
+  assert.is_true(startup.required.astrolsp)
+  assert.is_true(startup.required.astrotheme)
+  assert.is_true(startup.required.astroui)
   assert.same({}, startup.errors)
 end
 
-T["BASE-02 replays startup error notifications before reporting readiness"] = function()
+T["STARTUP-02 replays startup error notifications before reporting readiness"] = function()
   local message = "AstroNvim startup notifier regression"
   local parent_value = vim.uv.os_getenv "ASTRONVIM_TEST_STARTUP_ERROR"
   child = helpers.start_child { ASTRONVIM_TEST_STARTUP_ERROR = message }

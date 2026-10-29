@@ -1,6 +1,6 @@
-.PHONY: test test-semantic test-prepare test-clear test-update-deps test-update-goldens test-fingerprint test-unit test-unit-environment test-unit-helpers test-unit-e2e-helpers test-unit-init test-unit-notify test-unit-core test-unit-astrolsp test-unit-mason test-unit-blink test-unit-language-helpers test-unit-dap test-unit-ui test-unit-neo-tree test-unit-snacks test-unit-ui-helpers test-unit-workflows test-unit-health-dev test-unit-entrypoint test-unit-contracts test-fixtures test-startup test-astrocore test-astrolsp test-neo-tree test-snacks test-workflows test-diagnostics test-contracts test-behavior
+.PHONY: test test-semantic test-prepare test-clear test-update-deps test-update-goldens test-fingerprint test-unit test-unit-environment test-unit-helpers test-unit-e2e-helpers test-unit-init test-unit-notify test-unit-core test-unit-astrolsp test-unit-mason test-unit-blink test-unit-language-helpers test-unit-dap test-unit-ui test-unit-neo-tree test-unit-snacks test-unit-ui-helpers test-unit-workflows test-unit-health-dev test-unit-entrypoint test-unit-contracts test-fixtures test-startup test-astrocore test-astrolsp test-neo-tree test-snacks test-workflows test-diagnostics test-dap test-lsp test-mason test-resession test-blink-e2e test-treesitter test-neovim-013 test-contracts test-behavior
 
-TEST_TARGETS := test test-semantic test-update-goldens test-unit test-unit-environment test-unit-helpers test-unit-e2e-helpers test-unit-init test-unit-notify test-unit-core test-unit-astrolsp test-unit-mason test-unit-blink test-unit-language-helpers test-unit-dap test-unit-ui test-unit-neo-tree test-unit-snacks test-unit-ui-helpers test-unit-workflows test-unit-health-dev test-unit-entrypoint test-unit-contracts test-fixtures test-startup test-astrocore test-astrolsp test-neo-tree test-snacks test-workflows test-diagnostics test-contracts test-behavior
+TEST_TARGETS := test test-semantic test-update-goldens test-unit test-unit-environment test-unit-helpers test-unit-e2e-helpers test-unit-init test-unit-notify test-unit-core test-unit-astrolsp test-unit-mason test-unit-blink test-unit-language-helpers test-unit-dap test-unit-ui test-unit-neo-tree test-unit-snacks test-unit-ui-helpers test-unit-workflows test-unit-health-dev test-unit-entrypoint test-unit-contracts test-fixtures test-startup test-astrocore test-astrolsp test-neo-tree test-snacks test-workflows test-diagnostics test-dap test-lsp test-mason test-resession test-blink-e2e test-treesitter test-neovim-013 test-contracts test-behavior
 
 $(TEST_TARGETS): test-prepare
 
@@ -8,7 +8,7 @@ test:
 	@nvim -l tests/minit.lua --minitest
 
 test-semantic:
-	@nvim -l tests/minit.lua --minitest tests/unit/*.lua tests/e2e/astrocore_spec.lua tests/e2e/astrolsp_spec.lua tests/e2e/behavior_spec.lua tests/e2e/contracts_spec.lua tests/e2e/fixture_variants_spec.lua tests/e2e/scaffold_spec.lua tests/e2e/snacks_spec.lua tests/e2e/startup_spec.lua tests/e2e/workflows_spec.lua
+	@export ASTRONVIM_TEST_SEMANTIC=1; nvim -l tests/minit.lua --minitest tests/unit/*.lua tests/e2e/astrocore_spec.lua tests/e2e/astrolsp_spec.lua tests/e2e/behavior_spec.lua tests/e2e/lsp_spec.lua tests/e2e/blink_spec.lua tests/e2e/contracts_spec.lua tests/e2e/treesitter_spec.lua tests/e2e/dap_spec.lua tests/e2e/diagnostics_spec.lua tests/e2e/fixture_variants_spec.lua tests/e2e/mason_spec.lua tests/e2e/neovim013_spec.lua tests/e2e/resession_spec.lua tests/e2e/neo_tree_spec.lua tests/e2e/scaffold_spec.lua tests/e2e/snacks_spec.lua tests/e2e/startup_spec.lua tests/e2e/workflows_spec.lua
 
 test-prepare:
 	@nvim -l tests/bootstrap.lua
@@ -109,6 +109,27 @@ test-workflows:
 
 test-diagnostics:
 	@nvim -l tests/minit.lua --minitest tests/e2e/diagnostics_spec.lua
+
+test-dap:
+	@nvim -l tests/minit.lua --minitest tests/e2e/dap_spec.lua
+
+test-lsp:
+	@nvim -l tests/minit.lua --minitest tests/e2e/lsp_spec.lua
+
+test-mason:
+	@nvim -l tests/minit.lua --minitest tests/e2e/mason_spec.lua
+
+test-resession:
+	@nvim -l tests/minit.lua --minitest tests/e2e/resession_spec.lua
+
+test-blink-e2e:
+	@nvim -l tests/minit.lua --minitest tests/e2e/blink_spec.lua
+
+test-treesitter:
+	@nvim -l tests/minit.lua --minitest tests/e2e/treesitter_spec.lua
+
+test-neovim-013:
+	@export ASTRONVIM_TEST_SEMANTIC=1; nvim -l tests/minit.lua --minitest tests/e2e/neovim013_spec.lua
 
 test-contracts:
 	@nvim -l tests/minit.lua --minitest tests/e2e/contracts_spec.lua

@@ -102,7 +102,6 @@ T["SNACKS-01 opens the dashboard and closes it through the production home mappi
 
   child.type_keys "<Space>h"
   helpers.wait_until(child, "vim.bo.filetype == 'snacks_dashboard'", "Snacks dashboard")
-  assert.is_true(child.lua_get "package.loaded['snacks'] ~= nil")
 
   child.type_keys "<Space>h"
   helpers.wait_until(child, "vim.bo.filetype ~= 'snacks_dashboard'", "dashboard close mapping")

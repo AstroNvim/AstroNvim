@@ -126,6 +126,17 @@ local function dependency_spec_digest(root)
   return vim.fn.sha256(table.concat(chunks, "\0"))
 end
 
+local function runtime_identity()
+  local version = vim.version()
+  return table.concat({
+    tostring(version.major),
+    tostring(version.minor),
+    tostring(version.patch),
+    version.prerelease or "stable",
+    version.build or "",
+  }, ".")
+end
+
 function M.compatibility_fingerprint(root)
   root = root or vim.fn.getcwd()
   local dependencies = M.managed_dependencies
@@ -151,6 +162,7 @@ function M.compatibility_fingerprint(root)
     "plugins=" .. table.concat(dependencies.plugins, "|"),
     "overrides=mason-org/mason.nvim:build=false",
     "dependency_spec=" .. dependency_spec_digest(root),
+    "runtime=" .. runtime_identity(),
   }, "\n"))
 end
 

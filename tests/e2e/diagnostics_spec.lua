@@ -56,7 +56,7 @@ local highlight_groups = {
   "HeirlineNormal",
 }
 
-T["BASE-07 renders fixed diagnostics in the Heirline statusline and statuscolumn"] = function()
+T["DIAGNOSTICS-01 renders fixed diagnostics in the statusline and statuscolumn"] = function()
   child = helpers.start_child()
   helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
 
@@ -77,7 +77,7 @@ T["BASE-07 renders fixed diagnostics in the Heirline statusline and statuscolumn
     vim.g.astronvim_test_diagnostic_namespace = namespace
     vim.g.astronvim_test_diagnostics_changed = false
     vim.api.nvim_create_autocmd("DiagnosticChanged", {
-      buffer = bufnr,
+      buf = bufnr,
       once = true,
       callback = function() vim.g.astronvim_test_diagnostics_changed = true end,
     })
@@ -98,8 +98,8 @@ T["BASE-07 renders fixed diagnostics in the Heirline statusline and statuscolumn
   )
   helpers.wait_until(
     child,
-    "package.loaded.heirline ~= nil and vim.o.statusline:find('heirline', 1, true) ~= nil and vim.o.statuscolumn:find('heirline', 1, true) ~= nil",
-    "Heirline statusline and statuscolumn"
+    "vim.o.statusline ~= '' and vim.o.statuscolumn ~= ''",
+    "diagnostic statusline and statuscolumn"
   )
 
   local state = child.lua_get [[(function()

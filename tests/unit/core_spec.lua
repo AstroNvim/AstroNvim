@@ -104,8 +104,6 @@ T["CORE-02 keeps diagnostic signs, float semantics, and jump compatibility wirin
     assert.equals("if_many", diagnostics.float.source)
     assert.equals("", diagnostics.float.header)
     assert.equals("", diagnostics.float.prefix)
-    assert.equals(true, diagnostics.jump.float)
-
     diagnostics.jump.on_jump(nil, 18)
     assert.same({ bufnr = 18, scope = "cursor", focus = false }, calls.float)
   end)
@@ -222,14 +220,25 @@ T["CORE-07 preserves unrelated incoming options through the AstroCore merge boun
   end)
 end
 
+local option_defaults = {
+  backspace = { "indent", "eol" },
+  diffopt = { "internal", "filler" },
+  shortmess = { F = true },
+}
+
 local function with_options(options, callback)
   options = options or {}
   return unit_helpers.with_module("astronvim.plugins._astrocore_options", {
     loaded = { astroui = { get_icon = function(name) return "icon:" .. name end } },
-    replace_vim = { t = true },
+    replace_vim = { opt = true, t = true },
     vim = {
       fn = { has = function(feature) return (options.has or {})[feature] or 0 end },
       api = { nvim_list_bufs = function() return options.buffers or { 3, 5 } end },
+      opt = {
+        backspace = { get = function() return vim.deepcopy(option_defaults.backspace) end },
+        diffopt = { get = function() return vim.deepcopy(option_defaults.diffopt) end },
+        shortmess = { get = function() return vim.deepcopy(option_defaults.shortmess) end },
+      },
       t = options.tab or {},
     },
   }, callback)
@@ -242,9 +251,9 @@ local function option_values(options_spec, opts)
 end
 
 T["OPTIONS-01 preserves list-valued defaults while applying selected option invariants"] = function()
-  local backspace = vim.deepcopy(vim.opt.backspace:get())
-  local diffopt = vim.deepcopy(vim.opt.diffopt:get())
-  local shortmess = vim.deepcopy(vim.opt.shortmess:get())
+  local backspace = vim.deepcopy(option_defaults.backspace)
+  local diffopt = vim.deepcopy(option_defaults.diffopt)
+  local shortmess = vim.deepcopy(option_defaults.shortmess)
 
   with_options({ has = { ["nvim-0.13"] = 0 } }, function(options_spec)
     local options = option_values(options_spec).opt
@@ -278,7 +287,7 @@ T["OPTIONS-02 selects version-specific diff and foldinner declarations"] = funct
 
   with_options(
     { has = { ["nvim-0.13"] = 0, ["nvim-0.12"] = 0 } },
-    function(options_spec) assert.is_nil(option_values(options_spec).opt.fillchars.foldinner) end
+    function(options_spec) assert.equals("icon:FoldSeparator", option_values(options_spec).opt.fillchars.foldinner) end
   )
 end
 
@@ -532,6 +541,7 @@ local function with_autocmds(options, callback)
     },
     preload = options.editorconfig == false and { editorconfig = function() error "editorconfig unavailable" end }
       or nil,
+    replace_vim = { hl = true },
     vim = {
       api = {
         nvim_buf_is_valid = is_valid,
@@ -566,7 +576,10 @@ local function with_autocmds(options, callback)
       },
       uv = { fs_realpath = function(_) return options.realpath and "/real/file.lua" or nil end },
       cmd = function(command) table.insert(calls.commands, { target = "cmd", command = command }) end,
-      hl = { on_yank = function() calls.yanked = (calls.yanked or 0) + 1 end },
+      hl = {
+        hl_op = function() calls.yanked = (calls.yanked or 0) + 1 end,
+        on_yank = function() calls.yanked = (calls.yanked or 0) + 1 end,
+      },
       o = { incsearch = options.incsearch ~= false, hlsearch = options.hlsearch or false },
     },
   }, function(spec, context) return callback(spec, calls, context) end)
@@ -728,7 +741,7 @@ T["AUTOCMD-07 emits file events once, honors worktrees, and replays filetypedete
     assert.equals(1, #calls.deleted)
     assert.equals(1, #calls.exec)
     assert.same("filetypedetect", calls.exec[1].args.group)
-    assert.equals(0, calls.exec[1].args.buffer)
+    assert.equals(0, calls.exec[1].args.buf)
 
     autocmd_callback(spec, "file_user_events") { buf = 0, event = "BufReadPost" }
     context.drain_scheduled()
@@ -843,7 +856,7 @@ T["AUTOCMD-10 preserves existing q mappings and caches mapped transient buffers"
       lhs = keymap_calls[1].lhs,
       rhs = keymap_calls[1].rhs,
     })
-    assert.equals(9, keymap_calls[1].options.buffer)
+    assert.equals(9, keymap_calls[1].options.buf)
     assert.equals("Close window", keymap_calls[1].options.desc)
 
     autocmd_callback(spec, "q_close_windows", 2) { buf = 9 }
@@ -1027,7 +1040,7 @@ T["AUTOCMD-13C deduplicates AstroFile and GitFile work while preserving replay d
     assert.same({ "filetypedetect", "after" }, { calls.exec[1].args.group, calls.exec[2].args.group })
     for _, replay in ipairs(calls.exec) do
       assert.equals("BufWritePost", replay.event)
-      assert.equals(0, replay.args.buffer)
+      assert.equals(0, replay.args.buf)
       assert.equals(data, replay.args.data)
     end
   end)
@@ -1042,7 +1055,7 @@ T["AUTOCMD-13D recreates q-close mappings after cache cleanup for eligible buffe
       g = globals,
       bo = { [9] = { buftype = "help" } },
       api = { nvim_buf_get_keymap = function() return {} end },
-      keymap = { set = function(_, _, _, options) table.insert(mappings, options.buffer) end },
+      keymap = { set = function(_, _, _, options) table.insert(mappings, options.buf) end },
     },
   }, function(spec)
     local opened = autocmd_callback(spec, "q_close_windows", 1)

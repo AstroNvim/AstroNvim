@@ -23,7 +23,7 @@ local function with_health(options, callback)
       api = {
         nvim_exec2 = function(command, exec_options)
           calls.exec2 = { command = command, options = exec_options }
-          return { output = options.version_output or ("NVIM v" .. (options.neovim_version or "0.11.3") .. "\n") }
+          return { output = options.version_output or ("NVIM v" .. (options.neovim_version or "0.12.3") .. "\n") }
         end,
       },
       fn = {
@@ -105,7 +105,7 @@ end
 
 T["HEALTH-01 reports supported nightly and unsupported Neovim branches"] = function()
   local cases = {
-    { name = "supported", prerelease = false, has = 1, kind = "ok", message = "Using stable Neovim >= 0.11.0" },
+    { name = "supported", prerelease = false, has = 1, kind = "ok", message = "Using stable Neovim >= 0.12.0" },
     {
       name = "nightly",
       prerelease = true,
@@ -113,18 +113,18 @@ T["HEALTH-01 reports supported nightly and unsupported Neovim branches"] = funct
       kind = "warn",
       message = "Neovim nightly is not officially supported and may have breaking changes",
     },
-    { name = "unsupported", prerelease = false, has = 0, kind = "error", message = "Neovim >= 0.11.0 is required" },
+    { name = "unsupported", prerelease = false, has = 0, kind = "error", message = "Neovim >= 0.12.0 is required" },
   }
 
   for _, case in ipairs(cases) do
     with_health({ prerelease = case.prerelease, has = case.has }, function(calls)
       assert.equals("Checking requirements", calls[1].message, case.name)
       assert.is_not_nil(find_record(calls, "info", "AstroNvim Version: v5.0.0"), case.name)
-      assert.is_not_nil(find_record(calls, "info", "Neovim Version: v0.11.3"), case.name)
+      assert.is_not_nil(find_record(calls, "info", "Neovim Version: v0.12.3"), case.name)
       assert.is_not_nil(find_record(calls, case.kind, case.message), case.name)
       assert.same({ command = "version", options = { output = true } }, calls.exec2)
       assert.equals(1, calls.version_calls)
-      assert.same(case.prerelease and {} or { "nvim-0.11" }, calls.has or {})
+      assert.same(case.prerelease and {} or { "nvim-0.12" }, calls.has or {})
     end)
   end
 end
@@ -175,7 +175,7 @@ T["HEALTH-02 reports required Git errors, optional warnings, and selected altern
     )
     assert.same({ command = "version", options = { output = true } }, calls.exec2)
     assert.equals(1, calls.version_calls)
-    assert.same({ "nvim-0.11" }, calls.has)
+    assert.same({ "nvim-0.12" }, calls.has)
   end)
 end
 
@@ -212,7 +212,7 @@ T["HEALTH-03 reports every documented executable alternative"] = function()
   end
 end
 
-T["DEV-01 generates sorted snapshots with exclusions, current commits, preserved versions, and a Treesitter pin"] = function()
+T["DEV-01 generates sorted snapshots with AstroNvim exclusion, current commits, and preserved versions"] = function()
   with_dev({
     dev = true,
     commits = {
@@ -233,18 +233,22 @@ T["DEV-01 generates sorted snapshots with exclusions, current commits, preserved
   }, function(dev, calls)
     local snapshot = dev.generate_snapshot(true)
 
-    assert.same({ "a/plugin", "nvim-treesitter/nvim-treesitter", "z/plugin" }, plugin_names(snapshot))
-    assert.equals("a-current", snapshot[1].commit)
-    assert.equals("treesitter-current", snapshot[2].commit)
-    assert.equals("z-current", snapshot[3].commit)
-    assert.equals("^1", snapshot[3].version)
-    assert.equals(3, #calls.commands)
+    assert.same(
+      { "Bilal2453/luvit-meta", "a/plugin", "nvim-treesitter/nvim-treesitter", "z/plugin" },
+      plugin_names(snapshot)
+    )
+    assert.equals("luvit-current", snapshot[1].commit)
+    assert.equals("a-current", snapshot[2].commit)
+    assert.equals("treesitter-current", snapshot[3].commit)
+    assert.equals("z-current", snapshot[4].commit)
+    assert.equals("^1", snapshot[4].version)
+    assert.equals(4, #calls.commands)
     local git_calls = {}
     for _, call in ipairs(calls.commands) do
       local directory = call.command[3]
       git_calls[directory] = call
     end
-    for _, directory in ipairs { "/plugins/a", "/plugins/treesitter", "/plugins/z" } do
+    for _, directory in ipairs { "/plugins/luvit", "/plugins/a", "/plugins/treesitter", "/plugins/z" } do
       assert.same({
         command = { "git", "-C", directory, "rev-parse", "HEAD" },
         silent = false,
@@ -254,12 +258,11 @@ T["DEV-01 generates sorted snapshots with exclusions, current commits, preserved
 
     local contents = calls.writes[1].contents
     assert.is_nil(contents:find("AstroNvim/AstroNvim", 1, true))
-    assert.is_nil(contents:find("Bilal2453/luvit-meta", 1, true))
+    assert.is_not_nil(contents:find("Bilal2453/luvit-meta", 1, true))
     assert.is_true(contents:find('"a/plugin"', 1, true) < contents:find('"nvim-treesitter/nvim-treesitter"', 1, true))
     assert.is_true(contents:find('"nvim-treesitter/nvim-treesitter"', 1, true) < contents:find('"z/plugin"', 1, true))
     assert.is_not_nil(contents:find('version = "^1"', 1, true))
-    assert.is_not_nil(contents:find('commit = vim.fn.has "nvim-0.12" ~= 1 and ', 1, true))
-    assert.is_not_nil(contents:find('or "treesitter-current"', 1, true))
+    assert.is_not_nil(contents:find('commit = "treesitter-current"', 1, true))
   end)
 end
 
@@ -323,36 +326,31 @@ T["DEV-03 preserves current pins empty snapshots and write errors"] = function()
   end)
 end
 
-T["SNAPSHOT-01 keeps the explicit older-Neovim Treesitter release contract"] = function()
-  for _, case in ipairs {
-    { has_012 = 0, expected_treesitter_commit = "90cd6580e720caedacb91fdd587b747a6e77d61f" },
-    { has_012 = 1, expected_treesitter_commit = "61df84986b4b4ec469ee745a182e433d49f8c27e" },
-  } do
-    local has_calls = {}
-    unit_helpers.with_module("astronvim.lazy_snapshot", {
-      vim = {
-        fn = {
-          has = function(feature)
-            table.insert(has_calls, feature)
-            return case.has_012
-          end,
-        },
+T["SNAPSHOT-01 keeps the current optional Treesitter release pin"] = function()
+  local has_calls = {}
+  unit_helpers.with_module("astronvim.lazy_snapshot", {
+    vim = {
+      fn = {
+        has = function(feature)
+          table.insert(has_calls, feature)
+          return 1
+        end,
       },
-    }, function(snapshot)
-      local names = {}
-      local treesitter
-      for _, plugin in ipairs(snapshot) do
-        assert.is_nil(names[plugin[1]], "Duplicate snapshot plugin: " .. plugin[1])
-        names[plugin[1]] = true
-        assert.equals(true, plugin.optional, plugin[1])
-        assert.is_true((plugin.commit ~= nil) ~= (plugin.version ~= nil), "Expected one pin for " .. plugin[1])
-        if plugin[1] == "nvim-treesitter/nvim-treesitter" then treesitter = plugin end
-      end
-      assert.is_not_nil(treesitter)
-      assert.equals(case.expected_treesitter_commit, treesitter.commit)
-      assert.same({ "nvim-0.12" }, has_calls)
-    end)
-  end
+    },
+  }, function(snapshot)
+    local names = {}
+    local treesitter
+    for _, plugin in ipairs(snapshot) do
+      assert.is_nil(names[plugin[1]], "Duplicate snapshot plugin: " .. plugin[1])
+      names[plugin[1]] = true
+      assert.equals(true, plugin.optional, plugin[1])
+      assert.is_true((plugin.commit ~= nil) ~= (plugin.version ~= nil), "Expected one pin for " .. plugin[1])
+      if plugin[1] == "nvim-treesitter/nvim-treesitter" then treesitter = plugin end
+    end
+    assert.is_not_nil(treesitter)
+    assert.equals("ca581c3436fc2b236847f5b739ebc263739e5ca6", treesitter.commit)
+    assert.same({}, has_calls)
+  end)
 end
 
 T["HEALTH-04 reports plausible Neovim versions and rejects malformed tokens"] = function()

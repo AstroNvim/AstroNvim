@@ -49,7 +49,12 @@ end
 function M.classify_environment() return environment.classify(paths, lstat) end
 
 local function run_read_only_git(arguments)
-  return vim.system(vim.list_extend({ "env", "GIT_OPTIONAL_LOCKS=0", "git" }, arguments), { text = true }):wait()
+  return vim
+    .system(vim.list_extend({ "git" }, arguments), {
+      text = true,
+      env = { GIT_OPTIONAL_LOCKS = "0" },
+    })
+    :wait()
 end
 
 local function verify_repository(relative_path, expected_commit)

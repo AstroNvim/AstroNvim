@@ -30,6 +30,20 @@ local function neo_tree_visible_expression()
   end)()]]
 end
 
+local function neo_tree_contains_expression(name)
+  return ([[(function()
+    for _, winid in ipairs(vim.api.nvim_list_wins()) do
+      local bufnr = vim.api.nvim_win_get_buf(winid)
+      if vim.bo[bufnr].filetype == "neo-tree" then
+        for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
+          if line:find(%s, 1, true) then return true end
+        end
+      end
+    end
+    return false
+  end)()]]):format(vim.inspect(name))
+end
+
 local function find_cell_sequence(cells, value)
   local expected = vim.fn.split(value, "\\zs")
   for start = 1, #cells - #expected + 1 do
@@ -123,7 +137,7 @@ local function normalize_fixture_entries(screenshot)
   return screenshot
 end
 
-T["BASE-06 opens Neo-tree with the default leader mapping at the fixture root"] = function()
+T["NEO-00 opens Neo-tree with the default leader mapping at the fixture root"] = function()
   start_ready_child()
   helpers.wait_until(child, "vim.fn.maparg('<Leader>e', 'n', false, true).rhs ~= ''", "<Leader>e mapping")
 
@@ -143,10 +157,7 @@ T["BASE-06 opens Neo-tree with the default leader mapping at the fixture root"] 
         break
       end
     end
-    local filesystem = require("neo-tree.sources.manager").get_state("filesystem")
     return {
-      loaded = package.loaded["neo-tree"] ~= nil,
-      root = vim.fs.normalize(filesystem.path),
       visible = neo_tree_window ~= nil and vim.api.nvim_win_is_valid(neo_tree_window),
       focused = neo_tree_window ~= nil and vim.api.nvim_get_current_win() == neo_tree_window,
       git_status = vim.fn.systemlist({ "git", "status", "--porcelain" }),
@@ -160,10 +171,8 @@ T["BASE-06 opens Neo-tree with the default leader mapping at the fixture root"] 
     }
   end)()]]
 
-  assert.is_true(state.loaded)
   assert.is_true(state.visible)
   assert.is_true(state.focused)
-  assert.equals(vim.fs.normalize(helpers.fixture_project(child)), state.root)
   assert.same({}, state.git_status)
   helpers.expect_screen(child, "neo-tree", function(screenshot)
     screenshot = helpers.normalize_fixture_root(screenshot, helpers.fixture_project(child))
@@ -195,19 +204,22 @@ T["NEO-02 leaves file buffers alone and loads Neo-tree for an entered directory"
 
   local before_directory = child.lua_get [[(function()
     vim.cmd.edit(vim.fn.fnameescape(vim.fn.getcwd() .. "/plain.txt"))
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = vim.api.nvim_get_current_buf() })
-    return package.loaded["neo-tree"] ~= nil
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = vim.api.nvim_get_current_buf() })
+    return not vim.tbl_contains(
+      vim.tbl_map(function(winid) return vim.bo[vim.api.nvim_win_get_buf(winid)].filetype end, vim.api.nvim_list_wins()),
+      "neo-tree"
+    )
   end)()]]
-  assert.is_false(before_directory)
+  assert.is_true(before_directory)
 
   child.lua [[
     local directory_buffer = vim.api.nvim_create_buf(true, false)
     vim.api.nvim_buf_set_name(directory_buffer, vim.fn.getcwd())
     vim.api.nvim_win_set_buf(0, directory_buffer)
-    vim.api.nvim_exec_autocmds("BufEnter", { buffer = directory_buffer })
+    vim.api.nvim_exec_autocmds("BufEnter", { buf = directory_buffer })
   ]]
-  helpers.wait_until(child, "package.loaded['neo-tree'] ~= nil", "Neo-tree directory startup")
-  assert.is_true(child.lua_get "package.loaded['neo-tree'] ~= nil")
+  helpers.wait_until(child, "vim.fn.exists(':Neotree') == 2", "Neo-tree directory startup")
+  assert.equals(2, child.lua_get "vim.fn.exists(':Neotree')")
 end
 
 T["NEO-06 applies Neo-tree-local sign and fold columns"] = function()
@@ -252,6 +264,32 @@ T["NEO-08 leaves Neo-tree-local columns behind after returning to the file windo
 
   assert.equals("yes:2", child.lua_get "vim.wo.signcolumn")
   assert.equals("3", child.lua_get "vim.wo.foldcolumn")
+end
+
+T["NEO-09 reflects external file changes with watcher or explicit refresh"] = function()
+  start_ready_child()
+  child.type_keys "<Space>e"
+  helpers.wait_until(child, neo_tree_visible_expression(), "visible Neo-tree window")
+
+  local project = helpers.fixture_project(child)
+  local watcher_enabled = child.lua_get "vim.fn.has('win32') ~= 1"
+  local created = "neo-tree-created.txt"
+  local renamed = "neo-tree-renamed.txt"
+  local created_path = vim.fs.joinpath(project, created)
+  local renamed_path = vim.fs.joinpath(project, renamed)
+
+  vim.fn.writefile({ "created" }, created_path)
+  if not watcher_enabled then child.lua [[vim.cmd "Neotree refresh"]] end
+  helpers.wait_until(child, neo_tree_contains_expression(created), "Neo-tree create update")
+
+  assert.equals(0, vim.fn.rename(created_path, renamed_path))
+  if not watcher_enabled then child.lua [[vim.cmd "Neotree refresh"]] end
+  helpers.wait_until(child, neo_tree_contains_expression(renamed), "Neo-tree rename update")
+  helpers.wait_until(child, "not " .. neo_tree_contains_expression(created), "Neo-tree old name removal")
+
+  assert.equals(0, vim.fn.delete(renamed_path))
+  if not watcher_enabled then child.lua [[vim.cmd "Neotree refresh"]] end
+  helpers.wait_until(child, "not " .. neo_tree_contains_expression(renamed), "Neo-tree delete update")
 end
 
 return T

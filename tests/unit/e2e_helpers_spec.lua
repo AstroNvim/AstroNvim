@@ -20,6 +20,9 @@ local function with_helpers(options, callback)
     start_arguments = nil,
     stop_attempts = 0,
     system_commands = {},
+    lua_get_calls = 0,
+    wait_calls = 0,
+    clock = 0,
   }
   local root = options.root or "/fixture-root"
   if options.job_id then state.jobs_alive[options.job_id] = true end
@@ -29,6 +32,12 @@ local function with_helpers(options, callback)
 
   local child = {
     job = options.job_id and { id = options.job_id } or nil,
+    lua_get = function()
+      state.lua_get_calls = state.lua_get_calls + 1
+      local value = table.remove(options.wait_values or {}, 1)
+      if value == "error" then error "child RPC failed" end
+      return value == nil and false or value
+    end,
     start = function(arguments)
       state.start_arguments = arguments
       if options.start_error then error(options.start_error) end
@@ -116,6 +125,7 @@ local function with_helpers(options, callback)
         }
       end,
       uv = {
+        hrtime = function() return state.clock end,
         fs_copyfile = function(source, destination)
           if options.copy_error then return nil, options.copy_error end
           table.insert(state.copied_files, { source, destination })
@@ -133,8 +143,22 @@ local function with_helpers(options, callback)
         os_getenv = function() return nil end,
         os_tmpdir = function() return "/portable-temp" end,
       },
+      wait = function(timeout)
+        state.wait_calls = state.wait_calls + 1
+        state.clock = state.clock + timeout * 1000000
+      end,
     },
   }, function(helpers) return callback(helpers, state, root) end)
+end
+
+T["WAIT-01 retries child RPC conditions after a false result"] = function()
+  with_helpers({ wait_values = { false, true } }, function(helpers, state)
+    local child = helpers.start_child()
+    assert.is_true(helpers.wait_until(child, "ready", "child readiness", 100))
+    assert.equals(2, state.lua_get_calls)
+    assert.equals(1, state.wait_calls)
+    helpers.stop_child(child)
+  end)
 end
 
 T["PORT-01 creates fixtures under the platform temp directory and copies them through libuv"] = function()
@@ -239,7 +263,8 @@ T["TEST-05 discovers and cleans a fixture channel when startup fails before assi
     assert.same({ 43 }, state.jobstop_ids)
     assert.is_true(#state.jobwait_ids >= 2)
     assert.is_true(state.jobs_alive[43])
-    assert.same({ root }, state.deleted_roots)
+    assert.same({}, state.deleted_roots)
+    assert_contains(err, "Fixture retained for surviving child cleanup: " .. root)
     assert.is_false(fixture_available)
   end)
 end
@@ -275,10 +300,11 @@ T["TEST-05 reports surviving child jobs together with non-string stop errors"] =
     assert.is_false(ok)
     assert_contains(err, 'kind = "stop failure"')
     assert_contains(err, "Child Neovim process survived shutdown")
+    assert_contains(err, "Fixture retained for surviving child cleanup: " .. root)
     assert.same({ 42 }, state.jobstop_ids)
     assert.is_true(#state.jobwait_ids >= 2)
     assert.is_true(state.jobs_alive[42])
-    assert.same({ root }, state.deleted_roots)
+    assert.same({}, state.deleted_roots)
     assert.is_false(fixture_available)
   end)
 end

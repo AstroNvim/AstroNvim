@@ -1,6 +1,7 @@
 # Project gitignore
 coc-settings.json
 .tests/
+.ci-test-summary/
 
 # BEGIN pi deepwork
 .slim/deepwork/
@@ -38,6 +39,8 @@ tags
 # VS Code
 .history
 .vscode
+!tests/fixtures/project/.vscode/
+!tests/fixtures/project/.vscode/launch.json
 
 # JetBrains
 .idea
