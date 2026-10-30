@@ -108,9 +108,9 @@ return {
           event = { "FocusGained", "TermClose", "TermLeave" },
           desc = "Check if buffers changed on editor focus",
           callback = function()
-            if vim.bo.autoread or vim.bo.buftype == "nofile" then return end
+            if vim.bo.autoread == true or vim.bo.buftype == "nofile" then return end
             -- Neovim 0.12's checktime only reloads clean buffers when autoread is enabled.
-            local autoread = vim.bo.autoread
+            local autoread = vim.bo.autoread == true
             vim.bo.autoread = true
             vim.cmd "checktime"
             vim.bo.autoread = autoread
