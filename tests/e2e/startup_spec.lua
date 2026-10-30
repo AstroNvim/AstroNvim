@@ -14,8 +14,7 @@ local T = MiniTest.new_set {
 }
 
 T["STARTUP-01 starts the local AstroNvim distribution with the generated dependency graph"] = function()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  child = helpers.start_ready_child()
 
   local startup = child.lua_get [[(function()
     local manifest_file = assert(io.open(vim.env.ASTRONVIM_TEST_ROOT .. "/.tests/manifest.json", "rb"))

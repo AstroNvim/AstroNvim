@@ -13,8 +13,7 @@ local T = MiniTest.new_set {
 }
 
 T["NVIM-FS-01 uses native autoread or the supported checktime fallback"] = function()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  child = helpers.start_ready_child()
 
   local is_neovim_013 = child.lua_get "vim.fn.has('nvim-0.13') == 1"
   if not is_neovim_013 then

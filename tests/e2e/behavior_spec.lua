@@ -12,13 +12,8 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-end
-
 T["BEHAVIOR-01 changes buffer, window, and layout state with production mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua 'vim.cmd.edit "plain.txt"'
   local initial_buffer = child.lua_get "vim.api.nvim_get_current_buf()"
@@ -59,7 +54,7 @@ T["BEHAVIOR-01 changes buffer, window, and layout state with production mappings
 end
 
 T["BEHAVIOR-02 navigates tabs with production mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua "vim.cmd.tabnew()"
   child.lua "vim.cmd.tabnew()"
@@ -81,7 +76,7 @@ T["BEHAVIOR-02 navigates tabs with production mappings"] = function()
 end
 
 T["BEHAVIOR-03 toggles live UI state with production mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   assert.is_false(child.lua_get "vim.wo.wrap")
   child.type_keys "<Space>uw"
@@ -112,7 +107,7 @@ T["BEHAVIOR-03 toggles live UI state with production mappings"] = function()
 end
 
 T["BEHAVIOR-04 installs q close mapping on a help split and closes it from input"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   assert.equals(1, child.lua_get "#vim.api.nvim_list_wins()")
   child.lua 'vim.cmd "help help"'
@@ -127,7 +122,7 @@ T["BEHAVIOR-04 installs q close mapping on a help split and closes it from input
 end
 
 T["BEHAVIOR-05 applies large-buffer and quickfix autocmd behavior"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     vim.wo.list = true
@@ -149,7 +144,7 @@ T["BEHAVIOR-05 applies large-buffer and quickfix autocmd behavior"] = function()
 end
 
 T["BEHAVIOR-06 creates missing parent directories before writing fixture files"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local path = helpers.fixture_project(child) .. "/nested/fixture/created.txt"
   child.lua(([[

@@ -1,6 +1,7 @@
 local MiniTest = require "mini.test"
 local config = require "config"
 local helpers = require "helpers"
+local find_cell_sequence = helpers.find_cell_sequence
 
 local highlight_groups = { "NeoTreeDirectoryName", "NeoTreeFileName", "NeoTreeRootName" }
 local production_mapping_command = "<Cmd>Neotree toggle<CR>"
@@ -15,11 +16,6 @@ local T = MiniTest.new_set {
     end,
   },
 }
-
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-end
 
 local function neo_tree_visible_expression()
   return [[(function()
@@ -42,20 +38,6 @@ local function neo_tree_contains_expression(name)
     end
     return false
   end)()]]):format(vim.inspect(name))
-end
-
-local function find_cell_sequence(cells, value)
-  local expected = vim.fn.split(value, "\\zs")
-  for start = 1, #cells - #expected + 1 do
-    local matches = true
-    for index, cell in ipairs(expected) do
-      if cells[start + index - 1] ~= cell then
-        matches = false
-        break
-      end
-    end
-    if matches then return start end
-  end
 end
 
 local function normalize_fixture_entries(screenshot)
@@ -138,7 +120,7 @@ local function normalize_fixture_entries(screenshot)
 end
 
 T["NEO-00 opens Neo-tree with the default leader mapping at the fixture root"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   helpers.wait_until(child, "vim.fn.maparg('<Leader>e', 'n', false, true).rhs ~= ''", "<Leader>e mapping")
 
   local before_input = child.lua_get(neo_tree_visible_expression())
@@ -182,7 +164,7 @@ T["NEO-00 opens Neo-tree with the default leader mapping at the fixture root"] =
 end
 
 T["NEO-01 focuses Neo-tree from a file window and returns from its window"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   local origin = child.lua_get "vim.api.nvim_get_current_win()"
 
   child.type_keys "<Space>o"
@@ -200,7 +182,7 @@ T["NEO-01 focuses Neo-tree from a file window and returns from its window"] = fu
 end
 
 T["NEO-02 leaves file buffers alone and loads Neo-tree for an entered directory"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local before_directory = child.lua_get [[(function()
     vim.cmd.edit(vim.fn.fnameescape(vim.fn.getcwd() .. "/plain.txt"))
@@ -223,7 +205,7 @@ T["NEO-02 leaves file buffers alone and loads Neo-tree for an entered directory"
 end
 
 T["NEO-06 applies Neo-tree-local sign and fold columns"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   child.type_keys "<Space>e"
   helpers.wait_until(child, neo_tree_visible_expression(), "visible Neo-tree window")
   helpers.wait_until(
@@ -250,7 +232,7 @@ T["NEO-06 applies Neo-tree-local sign and fold columns"] = function()
 end
 
 T["NEO-08 leaves Neo-tree-local columns behind after returning to the file window"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   local origin = child.lua_get "vim.api.nvim_get_current_win()"
   child.lua [[
     vim.wo.signcolumn = "yes:2"
@@ -267,7 +249,7 @@ T["NEO-08 leaves Neo-tree-local columns behind after returning to the file windo
 end
 
 T["NEO-09 reflects external file changes with watcher or explicit refresh"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   child.type_keys "<Space>e"
   helpers.wait_until(child, neo_tree_visible_expression(), "visible Neo-tree window")
 

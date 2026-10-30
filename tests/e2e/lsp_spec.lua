@@ -14,8 +14,7 @@ local T = MiniTest.new_set {
 }
 
 T["LSP-E2E-01 attaches a real local server, registers a capability, and formats"] = function()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  child = helpers.start_ready_child()
   local project = helpers.fixture_project(child)
   local server = vim.fs.joinpath(config.root, "tests", "fixtures", "lsp_server.lua")
 

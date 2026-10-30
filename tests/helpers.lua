@@ -284,6 +284,13 @@ function M.start_child(child_environment)
   return child
 end
 
+function M.start_ready_child(plugins)
+  local child = M.start_child()
+  M.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  if plugins then child.lua(([=[require("lazy").load { plugins = %s }]=]):format(vim.inspect(plugins))) end
+  return child
+end
+
 function M.restart_child(child, child_environment)
   local case = assert(cases[child], "Child fixture is unavailable")
   local ok, err = xpcall(function()
@@ -348,6 +355,20 @@ local function golden_update_enabled() return vim.env.ASTRONVIM_TEST_UPDATE_GOLD
 local function assert_golden_path(path, kind)
   if vim.fn.filereadable(path) == 0 and not golden_update_enabled() then
     error(("Missing %s golden: %s. Set ASTRONVIM_TEST_UPDATE_GOLDENS=1 to create it."):format(kind, path), 0)
+  end
+end
+
+function M.find_cell_sequence(cells, value)
+  local expected = vim.fn.split(value, "\\zs")
+  for start = 1, #cells - #expected + 1 do
+    local matches = true
+    for index, cell in ipairs(expected) do
+      if cells[start + index - 1] ~= cell then
+        matches = false
+        break
+      end
+    end
+    if matches then return start, #expected end
   end
 end
 

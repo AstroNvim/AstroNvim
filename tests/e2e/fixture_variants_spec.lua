@@ -13,8 +13,7 @@ local T = MiniTest.new_set {
 }
 
 T["FIXTURE-01 validates file variants and live GuessIndent and Gitsigns effects"] = function()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  child = helpers.start_ready_child()
 
   local project = helpers.fixture_project(child)
   local state = child.lua_get(([=[(function()

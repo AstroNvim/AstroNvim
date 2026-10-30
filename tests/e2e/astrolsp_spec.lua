@@ -12,14 +12,8 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-  child.lua [[require("lazy").load { plugins = { "astrolsp" } }]]
-end
-
 T["LSP-07 forwards Format and format-on-save options through a fake formatter"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child { "astrolsp" }
 
   local state = child.lua_get [[(function()
     vim.cmd.enew()
@@ -98,7 +92,7 @@ T["LSP-07 forwards Format and format-on-save options through a fake formatter"] 
 end
 
 T["LSP-10 gives a fake none-ls client one AstroLSP attach path"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child { "astrolsp" }
 
   local state = child.lua_get [[(function()
     vim.cmd.enew()
@@ -151,7 +145,7 @@ T["LSP-10 gives a fake none-ls client one AstroLSP attach path"] = function()
 end
 
 T["LSP-12 scopes live signature triggers across window and buffer switches"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child { "astrolsp" }
 
   local state = child.lua_get [[(function()
     local calls = {}

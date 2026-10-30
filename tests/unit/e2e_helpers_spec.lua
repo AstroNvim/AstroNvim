@@ -21,6 +21,7 @@ local function with_helpers(options, callback)
     stop_attempts = 0,
     system_commands = {},
     lua_get_calls = 0,
+    lua_calls = {},
     wait_calls = 0,
     clock = 0,
   }
@@ -38,6 +39,7 @@ local function with_helpers(options, callback)
       if value == "error" then error "child RPC failed" end
       return value == nil and false or value
     end,
+    lua = function(expression) table.insert(state.lua_calls, expression) end,
     start = function(arguments)
       state.start_arguments = arguments
       if options.start_error then error(options.start_error) end
@@ -158,6 +160,18 @@ T["WAIT-01 retries child RPC conditions after a false result"] = function()
     assert.equals(2, state.lua_get_calls)
     assert.equals(1, state.wait_calls)
     helpers.stop_child(child)
+  end)
+end
+
+T["CHILD-01 starts a ready child and loads requested plugins"] = function()
+  with_helpers({ wait_values = { true } }, function(helpers, state, root)
+    local child = helpers.start_ready_child { "astrolsp" }
+
+    assert.equals(1, state.lua_get_calls)
+    assert.equals(1, #state.lua_calls)
+    assert_contains(state.lua_calls[1], "astrolsp")
+    helpers.stop_child(child)
+    assert.same({ root }, state.deleted_roots)
   end)
 end
 

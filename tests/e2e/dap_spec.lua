@@ -12,14 +12,8 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-  child.lua [[require("lazy").load { plugins = { "nvim-dap" } }]]
-end
-
 T["DAP-E2E-01 loads fixture launch configuration through nvim-dap"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child { "nvim-dap" }
   local project = helpers.fixture_project(child)
   local state = child.lua_get(([=[(function()
     local configure = require "astronvim.plugins.configs.nvim-dap"
@@ -38,7 +32,7 @@ T["DAP-E2E-01 loads fixture launch configuration through nvim-dap"] = function()
 end
 
 T["DAP-E2E-02 reports malformed launch configuration without breaking the child"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child { "nvim-dap" }
   local project = helpers.fixture_project(child)
   local state = child.lua_get(([=[(function()
     local configure = require "astronvim.plugins.configs.nvim-dap"

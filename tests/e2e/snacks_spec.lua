@@ -12,11 +12,6 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-end
-
 local function editor_state()
   return child.lua_get [[(function()
     local prompt_windows = 0
@@ -94,7 +89,7 @@ local function assert_select_closed(origin)
 end
 
 T["SNACKS-01 opens the dashboard and closes it through the production home mapping"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   helpers.wait_until(child, "vim.fn.maparg('<Leader>h', 'n', false, true).desc == 'Home Screen'", "home mapping")
 
   assert.equals("Home Screen", child.lua_get "vim.fn.maparg('<Leader>h', 'n', false, true).desc")
@@ -108,7 +103,7 @@ T["SNACKS-01 opens the dashboard and closes it through the production home mappi
 end
 
 T["INPUT-01 preserves insertion order and cursor position in vim.ui.input"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   local origin = editor_state()
   child.lua [[
     vim.api.nvim_exec_autocmds("UIEnter", {})
@@ -146,7 +141,7 @@ T["INPUT-01 preserves insertion order and cursor position in vim.ui.input"] = fu
 end
 
 T["INPUT-02 restores editor state after cancelling vim.ui.input"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   local origin = editor_state()
   child.lua [[
     vim.api.nvim_exec_autocmds("UIEnter", {})
@@ -167,7 +162,7 @@ T["INPUT-02 restores editor state after cancelling vim.ui.input"] = function()
 end
 
 T["SELECT-01 returns the chosen vim.ui.select item and restores editor state"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   local origin = editor_state()
   child.lua [[
     vim.api.nvim_exec_autocmds("UIEnter", {})
@@ -186,7 +181,7 @@ T["SELECT-01 returns the chosen vim.ui.select item and restores editor state"] =
 end
 
 T["SELECT-02 cancels vim.ui.select without a value and restores editor state"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   local origin = editor_state()
   child.lua [[
     vim.api.nvim_exec_autocmds("UIEnter", {})
@@ -205,7 +200,7 @@ T["SELECT-02 cancels vim.ui.select without a value and restores editor state"] =
 end
 
 T["SNACKS-08 repeats the home mapping without leaving dashboard UI behind"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
   for _ = 1, 2 do
     child.type_keys "<Space>h"
     helpers.wait_until(child, "vim.bo.filetype == 'snacks_dashboard'", "Snacks dashboard")

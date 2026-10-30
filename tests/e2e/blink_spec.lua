@@ -13,8 +13,7 @@ local T = MiniTest.new_set {
 }
 
 T["BLINK-E2E-01 opens a real buffer completion menu"] = function()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  child = helpers.start_ready_child()
   child.lua [[
     vim.cmd.enew()
     vim.api.nvim_buf_set_lines(0, 0, -1, false, { "astronvim", "" })

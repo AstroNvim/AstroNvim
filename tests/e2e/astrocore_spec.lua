@@ -13,18 +13,13 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-end
-
 local function terminal_sleep_command()
   if vim.fn.has "win32" == 1 then return "ping -n 11 127.0.0.1 > NUL" end
   return "sleep 10"
 end
 
 T["MAP-04 forwards buffer mapping arguments through registered mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     local buffer = require "astrocore.buffer"
@@ -83,7 +78,7 @@ T["MAP-04 forwards buffer mapping arguments through registered mappings"] = func
 end
 
 T["MAP-05 dispatches diagnostic float and jump mappings with counts and severities"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     _G.astronvim_test_diagnostic_calls = {}
@@ -116,7 +111,7 @@ T["MAP-05 dispatches diagnostic float and jump mappings with counts and severiti
 end
 
 T["AUTOCMD-02A keeps ordinary windows open and closes a sidebar-only secondary tab"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     vim.cmd "enew"
@@ -153,7 +148,7 @@ T["AUTOCMD-02A keeps ordinary windows open and closes a sidebar-only secondary t
 end
 
 T["AUTOCMD-02B terminates a disposable child when its final tab contains only sidebars"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local job = child.job
   local job_id = type(job) == "table" and job.id or job
@@ -182,7 +177,7 @@ T["AUTOCMD-02B terminates a disposable child when its final tab contains only si
 end
 
 T["AUTOCMD-03 tracks valid unique buffers across tabs deletion and terminal close"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua(([=[
     local astro = require "astrocore"
@@ -374,7 +369,7 @@ T["AUTOCMD-03 tracks valid unique buffers across tabs deletion and terminal clos
 end
 
 T["MAP-02 drives count-sensitive movement and safe file commands through mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     vim.wo.wrap = true
@@ -436,7 +431,7 @@ T["MAP-02 drives count-sensitive movement and safe file commands through mapping
 end
 
 T["MAP-06 navigates and resizes real split windows through mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     vim.cmd "vsplit"
@@ -492,7 +487,7 @@ T["MAP-06 navigates and resizes real split windows through mappings"] = function
 end
 
 T["MAP-07 opens lists and preserves visual selections while indenting"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     vim.fn.setqflist { { filename = "plain.txt", lnum = 1, text = "quickfix entry" } }
@@ -528,7 +523,7 @@ T["MAP-07 opens lists and preserves visual selections while indenting"] = functi
 end
 
 T["MAP-08 uses terminal navigation mappings in ordinary and floating terminal windows"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua(([=[
 
@@ -575,7 +570,7 @@ T["MAP-08 uses terminal navigation mappings in ordinary and floating terminal wi
 end
 
 T["AUTOCMD-13 covers sidebar exit and buffer tracking edge boundaries"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[
     vim.api.nvim_exec_autocmds("BufEnter", { buf = vim.api.nvim_get_current_buf() })
@@ -624,7 +619,7 @@ T["AUTOCMD-13 covers sidebar exit and buffer tracking edge boundaries"] = functi
 end
 
 T["AUTOCMD-02C closes a child with a single Aerial sidebar"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local job = child.job
   local job_id = type(job) == "table" and job.id or job
@@ -646,7 +641,7 @@ T["AUTOCMD-02C closes a child with a single Aerial sidebar"] = function()
 end
 
 T["AUTOCMD-05 creates local parent directories and skips URI write targets"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local path = helpers.fixture_project(child) .. "/autocmd-create-dir/fallback/file.txt"
   child.lua(([=[
@@ -684,7 +679,7 @@ T["AUTOCMD-05 creates local parent directories and skips URI write targets"] = f
 end
 
 T["AUTOCMD-10 keeps unrelated buffers unchanged and manages q-close mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua 'vim.cmd "help help"'
   local help_mapping = child.lua_get "vim.fn.maparg('q', 'n', false, true)"

@@ -1,6 +1,7 @@
 local MiniTest = require "mini.test"
 local config = require "config"
 local helpers = require "helpers"
+local find_cell_sequence = helpers.find_cell_sequence
 
 local child
 local T = MiniTest.new_set {
@@ -12,20 +13,6 @@ local T = MiniTest.new_set {
     end,
   },
 }
-
-local function find_cell_sequence(cells, value)
-  local expected = vim.fn.split(value, "\\zs")
-  for start = 1, #cells - #expected + 1 do
-    local matches = true
-    for index, cell in ipairs(expected) do
-      if cells[start + index - 1] ~= cell then
-        matches = false
-        break
-      end
-    end
-    if matches then return start, #expected end
-  end
-end
 
 local function normalize_empty_statusline_segments(screenshot)
   local row = #screenshot.text
@@ -57,8 +44,7 @@ local highlight_groups = {
 }
 
 T["DIAGNOSTICS-01 renders fixed diagnostics in the statusline and statuscolumn"] = function()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  child = helpers.start_ready_child()
 
   child.lua [[
     local bufnr = vim.api.nvim_create_buf(true, false)

@@ -12,11 +12,6 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-end
-
 local function expect_values(actual, expected)
   for key, value in pairs(expected) do
     MiniTest.expect.equality(actual[key], value)
@@ -24,7 +19,7 @@ local function expect_values(actual, expected)
 end
 
 T["CONTRACT-01 exposes required user entry points after startup"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local actual = child.lua_get [[{
     ready = vim.g.astronvim_test_ready,
@@ -51,7 +46,7 @@ T["CONTRACT-01 exposes required user entry points after startup"] = function()
 end
 
 T["CONTRACT-02 applies representative mappings and global options"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local actual = child.lua_get [[(function()
     local mappings = {}
@@ -117,7 +112,7 @@ T["CONTRACT-02 applies representative mappings and global options"] = function()
 end
 
 T["CONTRACT-03 registers required public autocmd behavior"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local actual = child.lua_get [[(function()
     local autocmds = {}

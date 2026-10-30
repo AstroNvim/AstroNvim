@@ -13,8 +13,7 @@ local T = MiniTest.new_set {
 }
 
 T["TREESITTER-E2E-01 parses a real Lua buffer and disables large-buffer parsing"] = function()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
+  child = helpers.start_ready_child()
 
   local parsed = child.lua_get [[(function()
     vim.cmd.enew()

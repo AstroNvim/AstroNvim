@@ -12,13 +12,8 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-end
-
 T["GIT-04 loads Gitsigns from AstroGitFile without changing editor state"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local state = child.lua_get [[(function()
     local buffer = vim.api.nvim_get_current_buf()
@@ -42,7 +37,7 @@ T["GIT-04 loads Gitsigns from AstroGitFile without changing editor state"] = fun
 end
 
 T["SESSION-04 hands the AstroNvim session mapping to Resession without persistence"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local state = child.lua_get [[(function()
     local mapping = vim.fn.maparg("<Leader>Sl", "n", false, true)
@@ -60,7 +55,7 @@ T["SESSION-04 hands the AstroNvim session mapping to Resession without persisten
 end
 
 T["TERM-04 applies terminal-local options and hidden-terminal mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local state = child.lua_get [[(function()
     local spec = require "astronvim.plugins.toggleterm"
@@ -128,7 +123,7 @@ T["TERM-04 applies terminal-local options and hidden-terminal mappings"] = funct
 end
 
 T["TERM-05 owns base options and bounds terminal lifecycle through AstroNvim mappings"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local state = child.lua_get [[(function()
     local spec = require "astronvim.plugins.toggleterm"
@@ -196,7 +191,7 @@ T["TERM-05 owns base options and bounds terminal lifecycle through AstroNvim map
 end
 
 T["INDENT-02 owns GuessIndent metadata and hands events to the matching buffer only"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   local state = child.lua_get [[(function()
     local calls = {}

@@ -12,13 +12,8 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-end
-
 T["MASON-E2E-01 opens the live Mason UI with the AstroNvim registry"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child()
 
   child.lua [[vim.cmd "Mason"]]
   helpers.wait_until(child, "vim.bo.filetype == 'mason'", "Mason UI")

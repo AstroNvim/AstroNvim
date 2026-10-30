@@ -12,14 +12,8 @@ local T = MiniTest.new_set {
   },
 }
 
-local function start_ready_child()
-  child = helpers.start_child()
-  helpers.wait_until(child, "vim.g.astronvim_test_ready == true", "VimEnter and LazyDone")
-  child.lua [[require("lazy").load { plugins = { "resession.nvim" } }]]
-end
-
 T["SESSION-E2E-01 saves and restores a real Resession session across child restart"] = function()
-  start_ready_child()
+  child = helpers.start_ready_child { "resession.nvim" }
   local project = helpers.fixture_project(child)
   local plain = vim.fs.joinpath(project, "plain.txt")
 
