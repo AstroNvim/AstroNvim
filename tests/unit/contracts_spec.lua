@@ -156,6 +156,17 @@ T["CI-CONTRACT-01 delegates Neovim testing and separates unprivileged CI from re
   assert.is_truthy(announcement:find("DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}", 1, true))
 end
 
+T["CI-CONTRACT-03 keeps the semantic suite aligned with e2e spec discovery"] = function()
+  local makefile = read_file(vim.fn.getcwd() .. "/Makefile")
+  local summary = read_file(vim.fn.getcwd() .. "/tests/ci_summary.lua")
+
+  assert.is_truthy(makefile:find("E2E_SPECS := $(sort $(wildcard tests/e2e/*_spec.lua))", 1, true))
+  assert.is_truthy(makefile:find("tests/unit/*.lua $(E2E_SPECS)", 1, true))
+  assert.is_truthy(summary:find("vim.islist(case_results)", 1, true))
+  assert.is_truthy(summary:find("case_results_complete", 1, true))
+  assert.is_truthy(summary:find("case_count_matches", 1, true))
+end
+
 T["CI-CONTRACT-02 exposes the standalone compatibility fingerprint command"] = function()
   local makefile = read_file(vim.fn.getcwd() .. "/Makefile")
 

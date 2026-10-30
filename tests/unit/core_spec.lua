@@ -560,7 +560,11 @@ local function with_autocmds(options, callback)
         end,
         nvim_get_mode = function() return { mode = options.mode or "n" } end,
       },
-      bo = { buftype = options.buftype or "", filetype = options.filetype or "" },
+      bo = {
+        autoread = options.autoread,
+        buftype = options.buftype or "",
+        filetype = options.filetype or "",
+      },
       b = { astrofile_checked = false, last_loc_restored = false, editorconfig = options.buffer_editorconfig },
       g = { vscode = options.vscode == true, editorconfig = options.global_editorconfig },
       fn = {
@@ -671,6 +675,11 @@ T["AUTOCMD-04 dispatches checktime only for real file buffers"] = function()
   with_autocmds({ buftype = "nofile" }, function(spec, calls)
     autocmd_callback(spec, "checktime")()
     assert.equals(0, #calls.commands)
+  end)
+
+  with_autocmds({ autoread = vim.NIL }, function(spec, calls)
+    autocmd_callback(spec, "checktime")()
+    assert.same({ { target = "cmd", command = "checktime" } }, calls.commands)
   end)
 end
 

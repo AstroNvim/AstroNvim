@@ -60,7 +60,10 @@ local output = read_file(output_path) or ""
 local clean_output = strip_ansi(output)
 local manifest = read_json(manifest_path) or {}
 local lock = read_json(lockfile_path) or {}
-local case_results = read_json(environment("ASTRONVIM_TEST_CASE_RESULTS", "")) or {}
+local case_results_path = environment("ASTRONVIM_TEST_CASE_RESULTS", "")
+local case_results = read_json(case_results_path)
+local case_results_complete = vim.islist(case_results)
+if not case_results_complete then case_results = {} end
 local status_code = tonumber(read_file(environment("ASTRONVIM_TEST_STATUS_FILE", "")) or "")
 local cases = parse_number(clean_output, "Total number of cases:%s*(%d+)")
 local failed = parse_number(clean_output, "Fails%s*%((%d+)%)")
@@ -96,6 +99,8 @@ local summary = {
     passed = cases and failed and cases - failed or nil,
     notes = notes,
     recorded_cases = #case_results,
+    case_results_complete = case_results_complete,
+    case_count_matches = case_results_complete and cases ~= nil and #case_results == cases,
   },
   plugins = plugins,
   case_results = case_results,
@@ -113,6 +118,15 @@ copy_file(lockfile_path, summary.artifacts.lockfile)
 copy_file(environment("ASTRONVIM_TEST_CASE_RESULTS", ""), summary.artifacts.cases)
 write_file(summary_dir .. "/summary.json", vim.json.encode(summary) .. "\n")
 
+local case_result_status = "not recorded"
+if summary.counts.case_results_complete then
+  if summary.counts.case_count_matches then
+    case_result_status = "complete"
+  else
+    case_result_status = "count mismatch (" .. tostring(summary.counts.recorded_cases) .. " recorded)"
+  end
+end
+
 local markdown = {
   "# AstroNvim test summary",
   "",
@@ -124,6 +138,7 @@ local markdown = {
   "- Actual Neovim: " .. summary.actual_neovim,
   "- Repository commit: " .. summary.repository_commit,
   "- Cases: " .. tostring(cases or "unknown") .. " total, " .. tostring(failed or "unknown") .. " failed",
+  "- Case results: " .. case_result_status,
   "- Plugins: " .. tostring(#plugins),
   "",
   "## Plugin revisions",

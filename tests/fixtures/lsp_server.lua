@@ -20,11 +20,57 @@ local function send_message(message)
   io.flush()
 end
 
+local operation_log = os.getenv "ASTRONVIM_E2E_LSP_LOG"
+local function write_log(entry)
+  if not operation_log then return end
+  local file = assert(io.open(operation_log, "ab"))
+  file:write(vim.json.encode(entry), "\n")
+  file:close()
+end
+
+local function record_initialize(message)
+  write_log {
+    method = message.method,
+    file_operations = vim.tbl_get(message, "params", "capabilities", "workspace", "fileOperations"),
+  }
+end
+
+local function record_operation(message)
+  local files = (message.params or {}).files or {}
+  local first_file = files[1] or {}
+  write_log { method = message.method, uri = first_file.uri }
+end
+
+local file_operation_options = {
+  filters = {
+    { scheme = "file", pattern = { glob = "**/*" } },
+  },
+}
+
+local function register_file_operations()
+  send_message {
+    jsonrpc = "2.0",
+    id = 100,
+    method = "client/registerCapability",
+    params = {
+      registrations = {
+        { id = "astronvim-e2e-file-create", method = "workspace/didCreateFiles", registerOptions = {} },
+        { id = "astronvim-e2e-file-delete", method = "workspace/didDeleteFiles", registerOptions = {} },
+        { id = "astronvim-e2e-file-rename", method = "workspace/didRenameFiles", registerOptions = {} },
+        { id = "astronvim-e2e-file-will-create", method = "workspace/willCreateFiles", registerOptions = {} },
+        { id = "astronvim-e2e-file-will-delete", method = "workspace/willDeleteFiles", registerOptions = {} },
+        { id = "astronvim-e2e-file-will-rename", method = "workspace/willRenameFiles", registerOptions = {} },
+      },
+    },
+  }
+end
+
 while true do
   local message = read_message()
   if not message then return end
 
   if message.method == "initialize" then
+    record_initialize(message)
     send_message {
       jsonrpc = "2.0",
       id = message.id,
@@ -32,26 +78,36 @@ while true do
         capabilities = {
           textDocumentSync = 1,
           documentFormattingProvider = true,
-          workspace = { fileOperations = { dynamicRegistration = true } },
+          workspace = {
+            fileOperations = {
+              dynamicRegistration = true,
+              didCreate = file_operation_options,
+              didDelete = file_operation_options,
+              didRename = file_operation_options,
+              willCreate = file_operation_options,
+              willDelete = file_operation_options,
+              willRename = file_operation_options,
+            },
+          },
         },
         serverInfo = { name = "AstroNvim e2e LSP", version = "1" },
       },
     }
   elseif message.method == "initialized" then
-    send_message {
-      jsonrpc = "2.0",
-      id = 100,
-      method = "client/registerCapability",
-      params = {
-        registrations = {
-          {
-            id = "astronvim-e2e-file-operations",
-            method = "workspace/didCreateFiles",
-            registerOptions = {},
-          },
-        },
-      },
-    }
+    register_file_operations()
+  elseif
+    message.method == "workspace/willCreateFiles"
+    or message.method == "workspace/willDeleteFiles"
+    or message.method == "workspace/willRenameFiles"
+  then
+    record_operation(message)
+    send_message { jsonrpc = "2.0", id = message.id, result = vim.NIL }
+  elseif
+    message.method == "workspace/didCreateFiles"
+    or message.method == "workspace/didDeleteFiles"
+    or message.method == "workspace/didRenameFiles"
+  then
+    record_operation(message)
   elseif message.method == "textDocument/formatting" then
     send_message {
       jsonrpc = "2.0",

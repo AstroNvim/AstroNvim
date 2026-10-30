@@ -142,6 +142,8 @@ T["BLINK-03 keeps selected completion declarations and dispatches Tab callbacks"
     local opts = spec.opts
     assert.same({ "lsp", "path", "snippets", "buffer" }, opts.sources.default)
     assert.same({ "show", "show_documentation", "hide_documentation" }, opts.keymap["<C-Space>"])
+    assert.same({ "accept", "fallback" }, opts.keymap["<CR>"])
+    assert.same({ "hide", "fallback" }, opts.keymap["<C-e>"])
     assert.equals("prefer_rust", opts.fuzzy.implementation)
     assert.is_false(opts.completion.list.selection.preselect)
     assert.is_true(opts.completion.list.selection.auto_insert)
