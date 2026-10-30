@@ -1,0 +1,215 @@
+---
+name: AstroNvim Neovim tests
+
+on:
+  workflow_call:
+    inputs:
+      minimum_neovim:
+        required: true
+        type: string
+      visual_neovim:
+        required: true
+        type: string
+      nightly_neovim:
+        required: true
+        type: string
+      timeout_minutes:
+        required: true
+        type: number
+
+jobs:
+  tests:
+    name: >-
+      ${{ matrix.platform }} Neovim ${{ matrix.neovim }} (${{ matrix.suite }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    continue-on-error: ${{ matrix.allow_failure }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            architecture: x86_64
+            neovim: ${{ inputs.minimum_neovim }}
+            suite: semantic
+            archive_root: nvim-linux-x86_64
+            archive_name: nvim-linux-x86_64.tar.gz
+            allow_failure: false
+            runtime_policy: stable
+          - os: ubuntu-latest
+            platform: linux
+            architecture: x86_64
+            neovim: ${{ inputs.visual_neovim }}
+            suite: full
+            archive_root: nvim-linux-x86_64
+            archive_name: nvim-linux-x86_64.tar.gz
+            allow_failure: false
+            runtime_policy: stable
+          - os: macos-15-intel
+            platform: macos
+            architecture: x86_64
+            neovim: ${{ inputs.minimum_neovim }}
+            suite: semantic
+            archive_root: nvim-macos-x86_64
+            archive_name: nvim-macos-x86_64.tar.gz
+            allow_failure: false
+            runtime_policy: stable
+          - os: macos-14
+            platform: macos
+            architecture: arm64
+            neovim: ${{ inputs.minimum_neovim }}
+            suite: semantic
+            archive_root: nvim-macos-arm64
+            archive_name: nvim-macos-arm64.tar.gz
+            allow_failure: false
+            runtime_policy: stable
+          - os: windows-latest
+            platform: windows
+            architecture: x86_64
+            neovim: ${{ inputs.minimum_neovim }}
+            suite: semantic
+            archive_root: nvim-win64
+            archive_name: nvim-win64.zip
+            allow_failure: false
+            runtime_policy: stable
+          - os: ubuntu-latest
+            platform: linux
+            architecture: x86_64
+            neovim: ${{ inputs.nightly_neovim }}
+            suite: semantic-nightly
+            archive_root: nvim-linux-x86_64
+            archive_name: nvim-linux-x86_64.tar.gz
+            allow_failure: true
+            runtime_policy: nightly
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        # actions/checkout v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install GNU Make on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: choco install make --no-progress --yes
+
+      - name: Install Neovim on Unix
+        if: runner.os != 'Windows'
+        env:
+          NEOVIM_VERSION: ${{ matrix.neovim }}
+          ARCHIVE_ROOT: ${{ matrix.archive_root }}
+          ARCHIVE_NAME: ${{ matrix.archive_name }}
+          RUNTIME_POLICY: ${{ matrix.runtime_policy }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/$ARCHIVE_NAME"
+          if [ "$RUNTIME_POLICY" = "nightly" ]; then
+            release_tag=nightly
+          else
+            release_tag="v$NEOVIM_VERSION"
+          fi
+          release_url="https://github.com/neovim/neovim/releases/download/$release_tag"
+          curl --fail --silent --show-error --location \
+            "$release_url/$ARCHIVE_NAME" --output "$archive"
+          tar --extract --gzip --file "$archive" --directory "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/$ARCHIVE_ROOT/bin" >> "$GITHUB_PATH"
+
+      - name: Install Neovim on Windows
+        if: runner.os == 'Windows'
+        env:
+          NEOVIM_VERSION: ${{ matrix.neovim }}
+          RUNTIME_POLICY: ${{ matrix.runtime_policy }}
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP "nvim-win64.zip"
+          $releaseBase = "https://github.com/neovim/neovim/releases/download"
+          $releaseTag = "v$($env:NEOVIM_VERSION)"
+          $releaseUrl = "$releaseBase/$releaseTag/nvim-win64.zip"
+          Invoke-WebRequest -Uri $releaseUrl -OutFile $archive
+          Expand-Archive -Path $archive -DestinationPath $env:RUNNER_TEMP -Force
+          $nvimPath = Join-Path $env:RUNNER_TEMP "nvim-win64"
+          Add-Content -Path $env:GITHUB_PATH -Value $nvimPath
+
+      - name: Verify requested Neovim version
+        env:
+          REQUESTED_NEOVIM: ${{ matrix.neovim }}
+          RUNTIME_POLICY: ${{ matrix.runtime_policy }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .ci-test-summary
+          nvim --version | tee .ci-test-summary/nvim-version.txt
+          actual="$(nvim --version | head -n 1 | \
+            sed -E 's/^NVIM v([0-9]+\.[0-9]+\.[0-9]+).*$/\1/')"
+          printf 'requested=%s actual=%s\n' "$REQUESTED_NEOVIM" "$actual"
+          if [ "$RUNTIME_POLICY" = "nightly" ]; then
+            case "$actual" in
+              0.13.*) ;;
+              *)
+                echo "Nightly moved outside the Neovim 0.13" >&2
+                echo "compatibility policy" >&2
+                exit 1
+                ;;
+            esac
+          else
+            test "$actual" = "$REQUESTED_NEOVIM"
+          fi
+
+      - name: Run ${{ matrix.suite }} test suite
+        id: run_tests
+        env:
+          ASTRONVIM_TEST_SUMMARY_DIR: .ci-test-summary
+          ASTRONVIM_TEST_OUTPUT: .ci-test-summary/test-output.log
+          ASTRONVIM_TEST_CASE_RESULTS: .ci-test-summary/cases.json
+          ASTRONVIM_TEST_STATUS_FILE: .ci-test-summary/status
+          ASTRONVIM_TEST_SUITE: ${{ matrix.suite }}
+          ASTRONVIM_TEST_REQUESTED_NEOVIM: ${{ matrix.neovim }}
+          ASTRONVIM_TEST_PLATFORM: ${{ matrix.platform }}
+          ASTRONVIM_TEST_ARCHITECTURE: ${{ matrix.architecture }}
+          ASTRONVIM_TEST_SHELL: bash
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$ASTRONVIM_TEST_SUMMARY_DIR"
+          case "$ASTRONVIM_TEST_SUITE" in
+            semantic|semantic-nightly)
+              make test-semantic > "$ASTRONVIM_TEST_OUTPUT" 2>&1
+              ;;
+            *)
+              make test > "$ASTRONVIM_TEST_OUTPUT" 2>&1
+              ;;
+          esac
+          status=$?
+          printf '%s\n' "$status" > "$ASTRONVIM_TEST_STATUS_FILE"
+          cat "$ASTRONVIM_TEST_OUTPUT"
+          exit "$status"
+
+      - name: Generate test summary
+        if: always()
+        env:
+          ASTRONVIM_TEST_SUMMARY_DIR: .ci-test-summary
+          ASTRONVIM_TEST_OUTPUT: .ci-test-summary/test-output.log
+          ASTRONVIM_TEST_CASE_RESULTS: .ci-test-summary/cases.json
+          ASTRONVIM_TEST_STATUS_FILE: .ci-test-summary/status
+          ASTRONVIM_TEST_SUITE: ${{ matrix.suite }}
+          ASTRONVIM_TEST_REQUESTED_NEOVIM: ${{ matrix.neovim }}
+          ASTRONVIM_TEST_PLATFORM: ${{ matrix.platform }}
+          ASTRONVIM_TEST_ARCHITECTURE: ${{ matrix.architecture }}
+          ASTRONVIM_TEST_SHELL: bash
+        shell: bash
+        run: nvim -l tests/ci_summary.lua
+
+      - name: Upload test summary and provenance
+        if: always()
+        # actions/upload-artifact v4.6.2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: astronvim-${{ matrix.platform }}-${{ matrix.neovim }}
+          if-no-files-found: warn
+          path: |
+            .ci-test-summary
+            .tests/manifest.json
+            .tests/lazy-lock.json
+            .tests/state/nvim/logs

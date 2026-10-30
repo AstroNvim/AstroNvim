@@ -1,3 +1,4 @@
+---
 name: AstroNvim
 on:
   push:
@@ -7,21 +8,62 @@ on:
     types: [opened, edited, synchronize]
   release:
     types: [published]
+  schedule:
+    - cron: "0 6 * * *"
+    - cron: "0 8 * * 1"
 
 jobs:
   CI:
-    uses: AstroNvim/.github/.github/workflows/plugin_ci.yml@main
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-    secrets: inherit
+    uses: AstroNvim/.github/.github/workflows/plugin_ci.yml@cf41eb9
+    if: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
     with:
       plugin_name: ${{ github.event.repository.name }}
-      is_production: ${{ github.event_name == 'push' }}
+      is_production: false
       docs: false
+
+  Tests:
+    uses: ./.github/workflows/neovim_testing.yml
+    if: >-
+      ${{ github.event_name == 'push'
+          || github.event_name == 'pull_request'
+          || github.event_name == 'schedule' }}
+    permissions:
+      contents: read
+    with:
+      minimum_neovim: "0.12.0"
+      visual_neovim: "0.12.4"
+      nightly_neovim: "nightly"
+      timeout_minutes: 30
+
+  Release:
+    needs: Tests
+    uses: AstroNvim/.github/.github/workflows/plugin_ci.yml@cf41eb9
+    if: ${{ github.event_name == 'push' }}
+    concurrency:
+      group: ${{ github.event.repository.name }}-release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+    secrets:
+      RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    with:
+      plugin_name: ${{ github.event.repository.name }}
+      is_production: true
+      docs: false
+
   PR:
-    uses: AstroNvim/.github/.github/workflows/validate_pr.yml@main
+    uses: AstroNvim/.github/.github/workflows/validate_pr.yml@cf41eb9
     if: ${{ github.event_name == 'pull_request_target' }}
-    secrets: inherit
+    permissions:
+      pull-requests: read
+
   Announcement:
-    uses: AstroNvim/.github/.github/workflows/discord_announcement.yml@main
+    uses: AstroNvim/.github/.github/workflows/discord_announcement.yml@cf41eb9
     if: ${{ github.event_name == 'release' }}
-    secrets: inherit
+    permissions:
+      contents: read
+    secrets:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

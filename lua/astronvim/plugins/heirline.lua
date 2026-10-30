@@ -1,3 +1,7 @@
+local function refresh_heirline_colors()
+  if package.loaded["heirline"] then require("astroui.status.heirline").refresh_colors() end
+end
+
 return {
   "rebelot/heirline.nvim",
   event = "BufEnter",
@@ -40,16 +44,17 @@ return {
           end,
           desc = "Vertical split buffer from tabline",
         }
-        opts.autocmds.heirline_colors = {
-          {
-            event = "User",
-            pattern = "AstroColorScheme",
-            desc = "Refresh heirline colors",
-            callback = function()
-              if package.loaded["heirline"] then require("astroui.status.heirline").refresh_colors() end
-            end,
-          },
-        }
+        local autocmds = opts.autocmds.heirline_colors or {}
+        for index = #autocmds, 1, -1 do
+          if autocmds[index].callback == refresh_heirline_colors then table.remove(autocmds, index) end
+        end
+        table.insert(autocmds, {
+          event = "User",
+          pattern = "AstroColorScheme",
+          desc = "Refresh heirline colors",
+          callback = refresh_heirline_colors,
+        })
+        opts.autocmds.heirline_colors = autocmds
       end,
     },
   },
@@ -58,9 +63,13 @@ return {
     local ui_config = require("astroui").config
     local cached_func = function(func, ...)
       local cached
+      local computed = false
       local args = { ... }
       return function(self)
-        if cached == nil then cached = func(unpack(args)) end
+        if not computed then
+          cached = func(unpack(args))
+          computed = true
+        end
         if type(cached) == "function" then return cached(self) end
         return cached
       end

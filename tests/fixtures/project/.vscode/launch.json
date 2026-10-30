@@ -1,0 +1,6 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "name": "Fixture", "type": "lua", "request": "launch" }
+  ]
+}

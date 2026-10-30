@@ -13,7 +13,12 @@ function M.version()
     return
   end
 
-  version_str = "v" .. vim.trim(version_str)
+  version_str = vim.trim(version_str)
+  if not version_str:match "^%d+%.%d+%.%d+$" then
+    astrocore.notify("Unable to calculate version", vim.log.levels.ERROR)
+    return
+  end
+  version_str = "v" .. version_str
 
   if not plugin.version then
     version_str = version_str .. "-dev"
@@ -42,8 +47,10 @@ function M.init()
   if M.did_init then return end
   M.did_init = true
 
+  local notify
   local success, err = pcall(function()
-    require("astronvim.notify").defer_startup()
+    notify = require "astronvim.notify"
+    notify.defer_startup()
 
     -- force setup during initialization
     local plugin = require("lazy.core.config").spec.plugins.AstroNvim
@@ -62,6 +69,7 @@ function M.init()
   end)
   if not success then
     M.did_init = false
+    if notify then pcall(notify.restore) end
     error(err, 0)
   end
 end
