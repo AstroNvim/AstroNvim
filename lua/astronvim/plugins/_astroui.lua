@@ -146,7 +146,6 @@ return {
     lazygit = {
       theme_path = vim.fs.normalize(vim.fn.stdpath "cache" .. "/astroui-lazygit-config.yml"),
       theme = {
-        [241] = { fg = "Special" },
         activeBorderColor = { fg = "MatchParen", bold = true },
         cherryPickedCommitBgColor = { bg = "Substitute" },
         cherryPickedCommitFgColor = { fg = "Substitute" },
