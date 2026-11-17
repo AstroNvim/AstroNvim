@@ -5,6 +5,8 @@ return {
     local opt = {}
     local get_icon = require("astroui").get_icon
 
+    -- TODO: Remove check when dropping support for Neovim v0.12
+    opt.autoread = vim.fn.has "nvim-0.13" == 1 -- automatically detect external changes to files
     opt.backspace = vim.list_extend(vim.opt.backspace:get(), { "nostop" }) -- don't stop backspace at insert
     opt.breakindent = true -- wrap indent to match  line start
     opt.clipboard = "unnamedplus" -- connection to the system clipboard
@@ -23,8 +25,7 @@ return {
       foldopen = get_icon "FoldOpened", -- fold open icon
       foldclose = get_icon "FoldClosed", -- fold close icon
       foldsep = get_icon "FoldSeparator", -- fold separator
-      -- TODO: Remove check when dropping support for Neovim v0.11
-      foldinner = vim.fn.has "nvim-0.12" == 1 and get_icon "FoldSeparator" or nil, -- nested fold separator
+      foldinner = get_icon "FoldSeparator", -- nested fold separator
     } -- disable `~` on nonexistent lines
     opt.ignorecase = true -- case insensitive searching
     opt.infercase = true -- infer cases in keyword completion
