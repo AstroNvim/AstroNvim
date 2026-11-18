@@ -131,6 +131,21 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup { "AstroNvim/AstroNvim", version = "^6", import = "astronvim.plugins" }
 ```
 
+## Development tests
+
+The heavy child-Neovim test harness lives in the separate [AstroNvim-e2e](https://github.com/AstroNvim/AstroNvim-e2e) repository. A normal AstroNvim clone does not contain the e2e fixtures, visual goldens, or generated dependency environment.
+
+Maintainers can run the local suite from sibling checkouts:
+
+```sh
+git clone https://github.com/AstroNvim/AstroNvim-e2e ../AstroNvim-e2e
+make test-unit
+make test-semantic
+make test
+```
+
+Use `E2E_REPOSITORY=/path/to/AstroNvim-e2e` when the test repository is not next to AstroNvim. CI checks out both repositories at explicit revisions and uploads generated dependency provenance as artifacts.
+
 ## 📦 Basic Setup
 
 #### Install LSP

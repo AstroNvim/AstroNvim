@@ -1,5 +1,7 @@
 # Project gitignore
 coc-settings.json
+.tests/
+.ci-test-summary/
 
 # Global gitignore
 # ----------------
