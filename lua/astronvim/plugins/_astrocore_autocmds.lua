@@ -3,6 +3,7 @@ local mid_mapping = false
 -- TODO: Remove this compatibility block when support for Neovim older than v0.13 is dropped.
 local if_nil = vim.nonnil or vim.F.if_nil
 local hl_op = vim.hl.hl_op or vim.hl.on_yank
+local buf_key = vim.fn.has "nvim-0.13" == 1 and "buf" or "buffer"
 
 return {
   "AstroNvim/astrocore",
@@ -108,8 +109,12 @@ return {
           event = { "FocusGained", "TermClose", "TermLeave" },
           desc = "Check if buffers changed on editor focus",
           callback = function()
-            if vim.bo.autoread then return end
-            if vim.bo.buftype ~= "nofile" then vim.cmd "checktime" end
+            if vim.bo.autoread == true or vim.bo.buftype == "nofile" then return end
+            -- Neovim 0.12's checktime only reloads clean buffers when autoread is enabled.
+            local autoread = vim.bo.autoread == true
+            vim.bo.autoread = true
+            vim.cmd "checktime"
+            vim.bo.autoread = autoread
           end,
         },
       },
@@ -171,7 +176,7 @@ return {
                     if autocmd.group_name and not skip_augroups[autocmd.group_name] then
                       vim.api.nvim_exec_autocmds(
                         args.event,
-                        { group = autocmd.group_name, buf = args.buf, data = args.data }
+                        { group = autocmd.group_name, data = args.data, [buf_key] = args.buf }
                       )
                       skip_augroups[autocmd.group_name] = true
                     end
