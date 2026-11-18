@@ -1,3 +1,6 @@
+-- TODO: remove check when dropping support for Neovim v0.12
+local buf_key = vim.fn.has "nvim-0.13" == 1 and "buf" or "buffer"
+
 return {
   "nvim-neo-tree/neo-tree.nvim",
   specs = {
@@ -35,7 +38,11 @@ return {
                 local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(args.buf))
                 if stats and stats.type == "directory" then
                   require("lazy").load { plugins = { "neo-tree.nvim" } }
-                  pcall(vim.api.nvim_exec_autocmds, "BufEnter", { group = "NeoTree_NetrwDeferred", buf = args.buf })
+                  pcall(
+                    vim.api.nvim_exec_autocmds,
+                    "BufEnter",
+                    { group = "NeoTree_NetrwDeferred", [buf_key] = args.buf }
+                  )
                   return true
                 end
               end

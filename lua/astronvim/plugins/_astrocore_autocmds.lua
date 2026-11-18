@@ -3,6 +3,7 @@ local mid_mapping = false
 -- TODO: Remove this compatibility block when support for Neovim older than v0.13 is dropped.
 local if_nil = vim.nonnil or vim.F.if_nil
 local hl_op = vim.hl.hl_op or vim.hl.on_yank
+local buf_key = vim.fn.has "nvim-0.13" == 1 and "buf" or "buffer"
 
 return {
   "AstroNvim/astrocore",
@@ -175,7 +176,7 @@ return {
                     if autocmd.group_name and not skip_augroups[autocmd.group_name] then
                       vim.api.nvim_exec_autocmds(
                         args.event,
-                        { group = autocmd.group_name, buf = args.buf, data = args.data }
+                        { group = autocmd.group_name, data = args.data, [buf_key] = args.buf }
                       )
                       skip_augroups[autocmd.group_name] = true
                     end
