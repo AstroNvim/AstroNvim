@@ -1,5 +1,41 @@
 # Changelog
 
+## [7.0.0](https://github.com/AstroNvim/AstroNvim/compare/v6.1.1...v7.0.0) (2026-11-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Neovim v0.11
+
+### Features
+
+* **aerial:** update to aerial v4 ([680d210](https://github.com/AstroNvim/AstroNvim/commit/680d210a0f11bb2a9aa35ba016b534553b673dea))
+* **smart-splits:** update to smart-splits v3 ([ac2945c](https://github.com/AstroNvim/AstroNvim/commit/ac2945c156e83a960cb54b8eaafdb328009a1994))
+* utilize new built in filesystem watchers rather than checktime in Neovim v0.13 ([44be6a7](https://github.com/AstroNvim/AstroNvim/commit/44be6a7dc9efccb6ba6af238d4a6697ea091ad3a))
+
+
+### Bug Fixes
+
+* **astrocore:** support autoread compatibility ([c6644b1](https://github.com/AstroNvim/AstroNvim/commit/c6644b13ff4202ea4eb3fcc4d20223777e7eb478))
+* **autocmds:** fix case where `autoread` can be `vim.NIL` ([070dac1](https://github.com/AstroNvim/AstroNvim/commit/070dac16a9a77a8663db386ce1522257655499c5))
+* **compat:** support Neovim 0.12 autocmd buffers ([95f12ad](https://github.com/AstroNvim/AstroNvim/commit/95f12adbefb37b116a7b588b74e3a9461dd9ccfc))
+* **dap:** avoid duplicate Blink source registration ([8caa885](https://github.com/AstroNvim/AstroNvim/commit/8caa8858463eaa65b2d56714988ca2c07e4d98a4))
+* **heirline:** preserve caches and color callbacks ([adb1c77](https://github.com/AstroNvim/AstroNvim/commit/adb1c77ac472719f0638bcc1505a442410bb36b9))
+* **lsp:** clean file-operation adapter state ([995e8a7](https://github.com/AstroNvim/AstroNvim/commit/995e8a70ccc6e42016c6bf2ee4a0a576ffaec2d8))
+* **lsp:** scope signature-help state by buffer ([3721150](https://github.com/AstroNvim/AstroNvim/commit/3721150999900fadf8d7ce39304db63e6094f253))
+* **mason:** preserve registry configuration ([65b55f5](https://github.com/AstroNvim/AstroNvim/commit/65b55f51388954c25ef8a58027473483db175048))
+* **neo-tree:** replace owned event handlers ([748b674](https://github.com/AstroNvim/AstroNvim/commit/748b674d58e89d8dfa5dd4896727f0f9a67c7124))
+* **notify:** preserve deferred notification state ([73ab383](https://github.com/AstroNvim/AstroNvim/commit/73ab383e3bb0a3b99dd03a77c478a5b5e6076a03))
+* **options:** preserve AstroCore option scopes ([04aeadd](https://github.com/AstroNvim/AstroNvim/commit/04aeaddbea67f4954fb6f72a85b68d05452e874a))
+* **ui:** correct terminal and tabline colors ([cf9aff0](https://github.com/AstroNvim/AstroNvim/commit/cf9aff0916515c7fc43ac7518aca257f57d3be12))
+* **version:** reject malformed version output ([fe64099](https://github.com/AstroNvim/AstroNvim/commit/fe64099170fd6769bae8115174ad3d291c160661))
+* **which-key:** preserve custom key labels ([2ec875a](https://github.com/AstroNvim/AstroNvim/commit/2ec875ae6083169bedfc326be6ab7a51c2cdf134))
+
+
+### Code Refactoring
+
+* drop support for Neovim v0.11 ([c48612a](https://github.com/AstroNvim/AstroNvim/commit/c48612a2f053538dc2f60e9b827a1fa0cae1bcb5))
+
 ## [6.1.1](https://github.com/AstroNvim/AstroNvim/compare/v6.1.0...v6.1.1) (2026-10-16)
 
 
